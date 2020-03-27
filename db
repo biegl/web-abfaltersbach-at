@@ -1,0 +1,3 @@
+#!/bin/bash
+
+docker exec -it abf-db bash -c "mysql -u root -proot db"
