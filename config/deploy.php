@@ -51,8 +51,7 @@ return [
 
         // Code and composer vendors are ready but nothing is built.
         'build' => [
-            'npm:install',
-            'npm:production',
+            //
         ],
 
         // Deployment is done but not live yet (before symlink)
@@ -99,6 +98,9 @@ return [
     'options' => [
         'application' => env('APP_NAME', 'Laravel'),
         'repository' => 'git@github.com:biegl/web-abfaltersbach-at.git',
+        'bin/php' => '/usr/bin/php-7.3',
+        'http_user' => 'web11265',
+        'writable_mode' => 'chmod',
     ],
 
     /*

@@ -28,3 +28,24 @@ $ ./php-artisan key:generate
 # Run artisan command inside the app container
 ./php-artisan
 ```
+
+## Deployment
+
+### Preparation
+
+The following commands will optimize the application prior to deployment:
+
+```
+./composer install --optimize-autoloader --no-dev && \
+./php-artisan config:cache && \
+./php-artisan route:cache && \
+./php-artisan view:cache
+```
+
+### Upload
+
+The following command uses Deployer (https://deployer.org/) to upload the latest remote version from the current branch.
+
+```
+./php-artisan deploy
+```
