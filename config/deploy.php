@@ -118,7 +118,6 @@ return [
         'darwin183.lcube-server.de' => [
             'deploy_path' => env('DEPLOY_PATH', ''),
             'user' => env('SSH_USER', ''),
-            'password' => env('SSH_PASSWORD', ''),
             'port' => env('SSH_PORT', ''),
         ],
     ],
