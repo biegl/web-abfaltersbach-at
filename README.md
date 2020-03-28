@@ -33,18 +33,14 @@ $ ./php-artisan key:generate
 
 ### Preparation
 
-The following commands will optimize the application prior to deployment:
-
-```
-./composer install --optimize-autoloader --no-dev && \
-./php-artisan config:cache && \
-./php-artisan view:cache
-```
-
 ### Upload
 
 The following command uses Deployer (https://deployer.org/) to upload the latest remote version from the current branch.
+All optimizations (e.g. composer) will be performed during deployment. Check `config/deploy.php` for further details.
 
 ```
 ./php-artisan deploy
 ```
+
+The upload uses the basic strategy and follows following process:
+https://github.com/lorisleiva/laravel-deployer/blob/master/docs/strategy-basic.md

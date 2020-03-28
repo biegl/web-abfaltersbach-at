@@ -46,7 +46,7 @@ return [
     'hooks' => [
         // Right before we start deploying.
         'start' => [
-            //
+            'artisan:down',
         ],
 
         // Code and composer vendors are ready but nothing is built.
@@ -61,11 +61,13 @@ return [
             'artisan:cache:clear',
             'artisan:config:cache',
             'artisan:migrate',
+            'artisan:view:cache',
         ],
 
         // Deployment is done and live
         'done' => [
-            //
+            'artisan:migrate:rollback',
+            'artisan:up',
         ],
 
         // Deployment succeeded.
@@ -80,7 +82,7 @@ return [
 
         // After a deployment has been rolled back.
         'rollback' => [
-            //
+            'artisan:up',
         ],
     ],
 
