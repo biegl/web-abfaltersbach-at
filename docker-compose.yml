@@ -15,10 +15,10 @@ services:
       - APACHE_RUN_GROUP=#${UID}
     volumes:
       - .:/var/www/html
+    depends_on:
+      - db
     networks:
-      backend:
-        aliases:
-          - app
+      - app-network
 
   db:
     image: mysql:5.7
@@ -27,6 +27,7 @@ services:
     tty: true
     volumes:
       - ./run/var:/var/lib/mysql
+      - ./run/dump/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "3306:3306"
     environment:
@@ -35,10 +36,8 @@ services:
       MYSQL_USER: web11265_1
       MYSQL_PASSWORD: ushBuichsapGad)
     networks:
-      backend:
-        aliases:
-          - mysql-db
+      - app-network
 
 networks:
-  backend:
-    name: backend-network
+  app-network:
+    driver: bridge
