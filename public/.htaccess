@@ -18,4 +18,7 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
+
+    # Send file requests to specific domain
+    Redirect /upload/ https://files.abfaltersbach.at/
 </IfModule>
