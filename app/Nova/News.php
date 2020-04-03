@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class News extends Resource
 {
@@ -59,6 +60,26 @@ class News extends Resource
             Text::make(__('fields.news.title'), 'title'),
             Trix::make(__('fields.news.text'), 'text')
                 ->alwaysShow(),
+            Date::make(__('fields.news.expiration_date'), 'expirationDate')
+                ->format('YYYY-MM-DD'),
+        ];
+    }
+
+    /**
+     * Override fields for index view.
+     *
+     * @param NovaRequest $request
+     * @return array
+     */
+    public function fieldsForIndex(NovaRequest $request)
+    {
+        return [
+            Date::make(__('fields.news.publish_date'), 'date')
+                ->format('YYYY-MM-DD')
+                ->sortable(),
+            Text::make(__('fields.news.title'), 'title'),
+            Text::make(__('fields.news.text'), 'text')
+                ->asHtml(),
             Date::make(__('fields.news.expiration_date'), 'expirationDate')
                 ->format('YYYY-MM-DD'),
         ];
