@@ -47,6 +47,7 @@ return [
         // Right before we start deploying.
         'start' => [
             'artisan:down',
+            'composer config http-basic.nova.laravel.com ${NOVA_USERNAME} ${NOVA_PASSWORD}'
         ],
 
         // Code and composer vendors are ready but nothing is built.
