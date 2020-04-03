@@ -1,0 +1,19 @@
+<?php
+
+return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Fields Language Lines
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    'news' => [
+        'publish_date' => 'Publish Date',
+        'title' => 'News Title',
+        'text' => 'News Content',
+        'expiration_date' => 'Expiration Date',
+    ],
+
+];
