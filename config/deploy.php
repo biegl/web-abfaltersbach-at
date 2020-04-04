@@ -46,7 +46,7 @@ return [
     'hooks' => [
         // Right before we start deploying.
         'start' => [
-            'composer:config',
+            //
         ],
 
         // Code and composer vendors are ready but nothing is built.
