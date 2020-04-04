@@ -46,8 +46,7 @@ return [
     'hooks' => [
         // Right before we start deploying.
         'start' => [
-            'artisan:down',
-            'composer config http-basic.nova.laravel.com ${NOVA_USERNAME} ${NOVA_PASSWORD}'
+            'composer:config',
         ],
 
         // Code and composer vendors are ready but nothing is built.
@@ -67,8 +66,7 @@ return [
 
         // Deployment is done and live
         'done' => [
-            'artisan:migrate:rollback',
-            'artisan:up',
+            //
         ],
 
         // Deployment succeeded.
@@ -104,6 +102,8 @@ return [
         'bin/php' => '/usr/bin/php-7.3',
         'http_user' => 'web11265',
         'writable_mode' => 'chmod',
+        'nova_username' => env('NOVA_USERNAME'),
+        'nova_password' => env('NOVA_PASSWORD'),
     ],
 
     /*
@@ -152,7 +152,7 @@ return [
      */
 
     'include' => [
-        //
+        'recipe/composer-config.php',
     ],
 
     /*
