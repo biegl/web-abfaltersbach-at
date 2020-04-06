@@ -20,6 +20,13 @@ return [
         'date'     => 'Event Date',
         'text'     => 'Event Description',
         'filepath' => 'Attachment',
+    ],
+
+    'file' => [
+        'title'    => 'File Name',
+        'file'     => 'File Path',
+        'page'     => 'Page',
+        'position' => 'Position',
     ]
 
 ];
