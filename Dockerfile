@@ -13,13 +13,16 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libzip-dev \
     libreadline-dev \
+    locales \
     sudo \
     unzip \
     zip \
     && rm -rf /var/lib/apt/lists/*
 
+
 # 2. Apache configs + document root.
 RUN echo "ServerName app.local" >> /etc/apache2/apache2.conf
+RUN echo "de_AT.UTF-8 UTF-8" >> /etc/locale.gen && locale-gen
 
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
