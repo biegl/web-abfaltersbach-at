@@ -1,0 +1,19 @@
+@import "../colors";
+
+.newslist_header {
+    text-transform: uppercase;
+    font-family: "Source Sans Pro", sans-serif;
+    border-bottom: 2px solid $highlightColor;
+}
+
+.newslist_item_title {
+    border-bottom: 1px solid #ccc;
+}
+
+.newslist_item_date {
+    text-align: right;
+    color: #999;
+    float: right;
+    font-size: 12px;
+    margin-top: 16px;
+}

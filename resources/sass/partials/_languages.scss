@@ -1,0 +1,58 @@
+// LANGUAGES
+.header-languages:before {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+.header-languages:before {
+    transform: rotate(30deg);
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: -10px;
+    width: 500px;
+    height: 200px;
+    z-index: 10;
+}
+
+.header-languages__list {
+    position: relative;
+    padding: 0 16px;
+    margin: 0;
+    z-index: 20;
+    text-align: right;
+}
+
+.header-languages__item:first-child {
+    margin: 0;
+}
+.header-languages__item--active {
+    font-weight: bold;
+}
+.header-languages__item {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    line-height: normal;
+    display: inline-block;
+    margin: 0 0 0 25px;
+    height: 20px;
+    line-height: 20px;
+    font-size: 0.875em;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.header-languages__item-link,
+.header-languages__item-link:visited {
+    color: $textColor;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+        text-decoration: underline;
+    }
+}
+
+.header-languages__item--active {
+    font-weight: bold;
+}

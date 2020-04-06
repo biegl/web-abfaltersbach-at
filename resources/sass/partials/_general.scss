@@ -1,0 +1,32 @@
+@import "../colors";
+
+body {
+    background: #ffffff;
+    color: $textColor;
+    margin: 0;
+    padding: 0;
+}
+
+button {
+    padding: 0;
+    background: none;
+    cursor: pointer;
+    outline: 0;
+    border: 0;
+}
+
+a,
+a:visited {
+    color: $textColor;
+}
+
+a:active,
+a:hover {
+    outline: 0;
+    color: $textColor;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}

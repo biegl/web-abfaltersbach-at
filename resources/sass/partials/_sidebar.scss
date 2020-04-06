@@ -1,0 +1,41 @@
+.card-header {
+    border-radius: 0 !important;
+    border: none;
+    background: #333;
+    color: #fff;
+    margin: -1px;
+
+    .card-header__title {
+        margin: 0;
+    }
+}
+
+.sidebar {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar .card {
+    background: $highlightColor;
+
+    .fa-link {
+        font-size: 14px;
+        position: relative;
+        top: 5px;
+    }
+}
+
+.download-file__item {
+    line-height: 1rem;
+}
+
+.download-file__name {
+    word-break: break-all;
+}
+
+.download-file__size {
+    color: #fff;
+}
+
+.download-file__extension {
+    font-size: 1rem;
+}

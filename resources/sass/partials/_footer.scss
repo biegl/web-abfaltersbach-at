@@ -1,0 +1,79 @@
+.footer {
+    background-position: center;
+    background-size: cover;
+    background-clip: border-box;
+    position: relative;
+    padding: 50px 0;
+    color: #fff;
+    font-size: 0.9rem;
+
+    h3 {
+        font-size: 1.1rem;
+    }
+
+    h4 {
+        font-size: 1rem;
+        margin: 0;
+    }
+
+    a,
+    a:visited {
+        color: #fff;
+    }
+
+    &:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.8);
+    }
+}
+
+.footer__inner {
+    position: relative;
+    z-index: 1;
+}
+
+.webcam__image {
+    border: 2px solid #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 100%;
+}
+
+.weather-widget__temperature {
+    font-size: 3rem;
+}
+
+.weather-widget {
+    text-align: center;
+}
+
+.weather-widget__temperature-unit {
+    font-size: 1.5rem;
+    font-weight: bold;
+    opacity: 0.7;
+    position: relative;
+    top: -1rem;
+}
+
+.weather-widget__icon {
+    font-size: 3rem;
+}
+
+// Google Maps
+.google-map {
+    img {
+        border: 2px solid #fff;
+        width: 100%;
+    }
+}
+
+.async-img {
+    background: #efefef;
+    color: #666;
+    text-align: center;
+    display: inline-block;
+}

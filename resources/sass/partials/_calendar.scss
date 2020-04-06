@@ -1,0 +1,51 @@
+@import "../colors";
+
+.calendar_month_header {
+    background: $highlightColor;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.calendar_day {
+    word-break: break-word;
+    font-size: 0.8em;
+    line-height: 1.2em;
+}
+.calendar_date {
+    text-align: center;
+    background: #000;
+    border-radius: 5px;
+    padding: 3px 5px;
+    min-width: 40px;
+}
+
+.calendar_date_month {
+    color: #fff;
+    text-transform: uppercase;
+    line-height: 1em;
+}
+
+.calendar_date_day {
+    color: $highlightColor;
+    font-size: 2em;
+    line-height: 1em;
+}
+
+.calendar_day_meta {
+    font-size: 11px;
+    color: #666666;
+}
+.calendar_time {
+    white-space: nowrap;
+}
+
+.calendar_attachment {
+    a,
+    a:visited {
+        text-decoration: underline;
+    }
+}

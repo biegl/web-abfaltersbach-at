@@ -1,0 +1,20 @@
+@import "../colors";
+
+.content {
+    margin: 50px 0;
+}
+
+.text-content {
+    a,
+    a:visited {
+        text-decoration: underline;
+    }
+}
+
+.card {
+    border-radius: 0;
+}
+
+.card-img {
+    border-radius: 0;
+}

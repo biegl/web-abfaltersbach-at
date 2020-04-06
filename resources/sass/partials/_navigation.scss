@@ -1,0 +1,61 @@
+// TOP HEADER
+.header-topbar {
+    color: #ffffff;
+    background-color: $highlightColor;
+    position: relative;
+    margin-top: -48px;
+    z-index: 20;
+    overflow: hidden;
+}
+
+.navbar {
+    padding: 0;
+}
+
+.nav-link {
+    padding: 2rem 0.85rem !important;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+
+    .active & {
+        background: #333;
+        color: #fff !important;
+    }
+
+    &:after {
+        margin-left: -5px;
+        position: absolute;
+        bottom: 15px;
+        left: 50%;
+    }
+}
+
+.dropdown-menu {
+    border-radius: 0;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.25);
+    margin: 0;
+    border: none;
+    padding: 0;
+}
+
+.nav-item {
+    &:hover,
+    &:focus {
+        .dropdown-menu {
+            display: block;
+        }
+
+        .nav-link {
+            color: rgba(0, 0, 0, 0.7);
+        }
+    }
+}
+
+.dropdown-item {
+    font-size: 0.9rem;
+
+    &:active,
+    &.active {
+        background: #2d93c5;
+    }
+}
