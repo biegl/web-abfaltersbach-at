@@ -46,6 +46,16 @@ class News extends Resource
     ];
 
     /**
+     * Localize Name in side menu.
+     *
+     * @return string
+     */
+    static function label()
+    {
+        return __('resource.titles.news');
+    }
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Illuminate\Http\Request  $request
