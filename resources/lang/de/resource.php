@@ -3,9 +3,10 @@
 return [
 
     'titles' => [
-        'event' => 'Veranstaltungen',
-        'news'  => 'News',
-        'file'  => 'Dateien',
+        'events' => 'Veranstaltungen',
+        'news'   => 'News',
+        'files'  => 'Dateien',
+        'pages'  => 'Seiten',
     ],
 
 ];

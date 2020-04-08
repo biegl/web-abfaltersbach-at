@@ -16,17 +16,22 @@ return [
         'expiration_date' => 'Expiration Date',
     ],
 
-    'event' => [
+    'events' => [
         'date'     => 'Event Date',
         'text'     => 'Event Description',
         'filepath' => 'Attachment',
     ],
 
-    'file' => [
+    'files' => [
         'title'    => 'File Name',
         'file'     => 'File Path',
         'page'     => 'Page',
         'position' => 'Position',
-    ]
+    ],
+
+    'pages' => [
+        'title'   => 'Title',
+        'content' => 'Content',
+    ],
 
 ];

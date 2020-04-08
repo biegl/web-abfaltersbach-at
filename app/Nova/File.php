@@ -3,26 +3,25 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\File;
+use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Trix;
-use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Event extends Resource
+class FileItem extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = 'App\Event';
+    public static $model = 'App\File';
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'text';
+    public static $title = 'title';
 
     /**
      * The columns that should be searched.
@@ -30,9 +29,8 @@ class Event extends Resource
      * @var array
      */
     public static $search = [
-        'date',
-        'text',
-        'filepath',
+        'title',
+        'file'
     ];
 
     /**
@@ -41,8 +39,8 @@ class Event extends Resource
      * @var array
      */
     public static $orderBy = [
-        'date' => 'desc',
-        'ID' => 'desc',
+        'title' => 'desc',
+        'file' => 'desc',
     ];
 
     /**
@@ -52,7 +50,7 @@ class Event extends Resource
      */
     static function label()
     {
-        return __('resource.titles.events');
+        return __('resource.titles.file');
     }
 
     /**
@@ -64,30 +62,33 @@ class Event extends Resource
     public function fields(Request $request)
     {
         return [
-            Date::make(__('fields.events.date'), 'date')
-                ->format('YYYY-MM-DD')
+            Text::make(__('fields.files.title'), 'title')
                 ->sortable(),
-            Trix::make(__('fields.events.text'), 'text')
-                ->alwaysShow(),
-            Text::make(__('fields.events.filepath'), 'filepath'),
+            File::make(__('fields.files.file'), 'file')
+                ->storeOriginalName('file_orig_name')
+                ->storeSize('file_size')
+                ->sortable(),
+            Text::make(__('fields.files.page'), 'navID')
+                ->readonly(),
+            Text::make(__('fields.files.position'), 'position')
+                ->readonly(),
         ];
     }
 
-    /**
-     * Override fields for index view.
-     *
-     * @param NovaRequest $request
-     * @return array
-     */
-    public function fieldsForIndex(NovaRequest $request)
+    public function fieldsForIndex(Request $request)
     {
         return [
-            Date::make(__('fields.events.date'), 'date')
-                ->format('YYYY-MM-DD')
+            Text::make(__('fields.files.title'), function () {
+                $extension = pathinfo(storage_path() . $this->file)['extension'];
+                $url = $this->file;
+                $title = $this->title;
+
+                return view('backend.partials.index.file_title', compact('extension', 'url', 'title'))->render();
+            })->asHtml(),
+            File::make(__('fields.files.file'), 'file')
                 ->sortable(),
-            Text::make(__('fields.events.text'), 'text')
-                ->asHtml(),
-            Text::make(__('fields.events.filepath'), 'filepath'),
+            ID::make(__('fields.files.page'), 'navID'),
+            ID::make(__('fields.files.position'), 'position'),
         ];
     }
 

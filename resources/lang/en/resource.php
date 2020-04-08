@@ -3,9 +3,10 @@
 return [
 
     'titles' => [
-        'event' => 'Events',
-        'news'  => 'News',
-        'file'  => 'Files',
+        'events' => 'Events',
+        'news'   => 'News',
+        'files'  => 'Files',
+        'pages'  => 'Pages',
     ],
 
 ];

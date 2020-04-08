@@ -16,17 +16,22 @@ return [
         'expiration_date' => 'Sichtbar Bis',
     ],
 
-    'event' => [
+    'events' => [
         'date'     => 'Veranstaltungsdatum',
         'text'     => 'Inhalt',
         'filepath' => 'Anhang',
     ],
 
-    'file' => [
+    'files' => [
         'title'    => 'Dateiname',
         'file'     => 'Dateipfad',
         'page'     => 'Seite',
         'position' => 'Position',
-    ]
+    ],
+
+    'pages' => [
+        'title'   => 'Seitentitel',
+        'content' => 'Inhalt',
+    ],
 
 ];
