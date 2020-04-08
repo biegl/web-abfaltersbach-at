@@ -19,9 +19,6 @@ class CreateFilesTable extends Migration
             $table->integer('position');
             $table->text('title', 255);
             $table->text('file', 255);
-            $table->integer('file_size')->nullabe();
-            $table->text('file_orig_name', 255)->nullabe();
-            $table->timestamps();
         });
     }
 

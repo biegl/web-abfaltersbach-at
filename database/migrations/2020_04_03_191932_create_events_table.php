@@ -18,7 +18,6 @@ class CreateEventsTable extends Migration
             $table->date('date');
             $table->text('text');
             $table->string('filepath', 255);
-            $table->timestamps();
         });
     }
 
