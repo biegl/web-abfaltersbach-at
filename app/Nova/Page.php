@@ -3,25 +3,25 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\File;
-use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Files extends Resource
+class Page extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = 'App\File';
+    public static $model = 'App\Page';
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'title';
+    public static $title = 'seitentitel';
 
     /**
      * The columns that should be searched.
@@ -29,8 +29,8 @@ class Files extends Resource
      * @var array
      */
     public static $search = [
-        'title',
-        'file'
+        'seitentitel',
+        'inhalt',
     ];
 
     /**
@@ -39,8 +39,7 @@ class Files extends Resource
      * @var array
      */
     public static $orderBy = [
-        'title' => 'desc',
-        'file' => 'desc',
+        'seitentitel' => 'asc',
     ];
 
     /**
@@ -50,7 +49,7 @@ class Files extends Resource
      */
     static function label()
     {
-        return __('resource.titles.file');
+        return __('resource.titles.pages');
     }
 
     /**
@@ -62,33 +61,25 @@ class Files extends Resource
     public function fields(Request $request)
     {
         return [
-            Text::make(__('fields.file.title'), 'title')
+            Text::make(__('fields.pages.title'), 'seitentitel')
                 ->sortable(),
-            File::make(__('fields.file.file'), 'file')
-                ->storeOriginalName('file_orig_name')
-                ->storeSize('file_size')
-                ->sortable(),
-            Text::make(__('fields.file.page'), 'navID')
-                ->readonly(),
-            Text::make(__('fields.file.position'), 'position')
-                ->readonly(),
+            Trix::make(__('fields.pages.content'), 'inhalt'),
         ];
     }
 
-    public function fieldsForIndex(Request $request)
+    /**
+     * Override fields for index view.
+     *
+     * @param NovaRequest $request
+     * @return array
+     */
+    public function fieldsForIndex(NovaRequest $request)
     {
         return [
-            Text::make(__('fields.file.title'), function () {
-                $extension = pathinfo(storage_path() . $this->file)['extension'];
-                $url = $this->file;
-                $title = $this->title;
-
-                return view('backend.partials.index.file_title', compact('extension', 'url', 'title'))->render();
-            })->asHtml(),
-            File::make(__('fields.file.file'), 'file')
+            Text::make(__('fields.pages.title'), 'seitentitel')
                 ->sortable(),
-            ID::make(__('fields.file.page'), 'navID'),
-            ID::make(__('fields.file.position'), 'position'),
+            Text::make(__('fields.pages.content'), 'inhalt')
+                ->asHtml(),
         ];
     }
 
