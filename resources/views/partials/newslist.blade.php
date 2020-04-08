@@ -5,7 +5,7 @@
 
         @foreach ($news as $news_item)
 
-        <li class="newslist_item mb-1">
+        <li class="newslist_item mb-4">
             <h3 class="newslist_item_title">
                 {{ $news_item->title }}
                 <small class="newslist_item_date">{{ $news_item->date->format('d.m.') }}</small>

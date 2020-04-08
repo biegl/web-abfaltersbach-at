@@ -32,9 +32,9 @@ services:
       - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: web11265_1
-      MYSQL_USER: web11265_1
-      MYSQL_PASSWORD: ushBuichsapGad)
+      MYSQL_DATABASE: web11265_gem
+      MYSQL_USER: web11265_gem
+      MYSQL_PASSWORD: 123456
     networks:
       - app-network
 
