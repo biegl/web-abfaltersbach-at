@@ -24,6 +24,40 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
 
+
+            @foreach($navigation as $topLevelItem)
+
+                @if ($topLevelItem->hasChildren)
+
+                    <li class="nav-item dropdown{{ ($topLevelItem->isActive) ? ' active' : '' }}">
+                        <a id="dropdown-{{ $topLevelItem->ID }}" class="nav-link dropdown-toggle" href="{{ $topLevelItem->url }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ $topLevelItem->name }}
+                            <span class="sr-only">(current)</span>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdown-{{ $topLevelItem->ID }}">
+
+                            @foreach($topLevelItem->children()->visible()->orderBy('position')->get() as $child)
+
+                                <a class="dropdown-item" href="{{ $child->url }}">{{ $child->name }}</a>
+
+                            @endforeach
+
+                        </div>
+                    </li>
+
+                @else
+
+                    <li class="nav-item{{ ($topLevelItem->isActive) ? ' active' : '' }}">
+                        <a class="nav-link" href="" role="button">
+                            {{ $topLevelItem->name }}
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+
+                @endif
+
+            @endforeach
+
         </ul>
         </div>
     </div>
