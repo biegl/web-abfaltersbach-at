@@ -1,0 +1,23 @@
+{% macro nav_loop(page) %}
+  {% import _self as macros %}
+  {% for p in page.children.visible %}
+    {% set active_page = (p.active or p.activeChild) ? ' active' : '' %}
+    {% set isTopLevelNavigationItem = p.parent.root %}
+    {% set navigation_level = isTopLevelNavigationItem ? '0' : '1' %}
+    {% if p.children.visible.count > 0 %}
+      <li class="nav-item dropdown{{ active_page }}">
+        <a id="dropdown-{{ p.id }}" class="nav-link dropdown-toggle" href="{{ p.url }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ p.menu }} <span class="sr-only">(current)</span></a>
+        <div class="dropdown-menu" aria-labelledby="dropdown-{{ p.id }}">
+          {% for child in p.children.visible %}
+            {% set active_child = (child.active) ? ' active' : '' %}
+            <a class="dropdown-item{{ active_child }}" href="{{ child.url }}">{{ child.menu }}</a>
+          {% endfor %}
+        </div>
+      </li>
+    {% else %}
+      <li class="nav-item{{ active_page }}">
+        <a class="nav-link" href="{{ p.url }}">{{ p.menu }} <span class="sr-only">(current)</span></a>
+      </li>
+    {% endif %}
+  {% endfor %}
+{% endmacro %}

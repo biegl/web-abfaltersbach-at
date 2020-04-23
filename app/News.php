@@ -35,4 +35,12 @@ class News extends Model
             ->whereDate('expirationDate', '>=', date('Y-m-d'))
             ->orWhereNull('expirationDate');
     }
+
+    public function scopeTop($query)
+    {
+        return $query
+            ->notExpired()
+            ->orderBy('date', 'desc')
+            ->limit(20);
+    }
 }

@@ -36,4 +36,11 @@ class Event extends Model
             ->whereBetween('date', [$start, $end])
             ->orderBy('date', 'asc');
     }
+
+    public function scopeByMonth($query)
+    {
+        return $query->upcoming()->get()->groupBy(function ($d) {
+            return Carbon::parse($d->date)->formatLocalized('%B');
+        });
+    }
 }

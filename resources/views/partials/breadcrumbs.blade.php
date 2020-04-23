@@ -1,11 +1,23 @@
 <nav aria-label="breadcrumb" class="col">
     <ol class="breadcrumb" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
-        <li class="breadcrumb-item">
-            <span itemprop="title" aria-current="page">{{ __('breadcrumbs.home') }}</span>
-            {{-- <a href="" itemprop="url"><span itemprop="title">{{ crumb.menu }}</span></a>
-            <span itemprop="title">{{ crumb.menu }}</span>
-            <a href="" itemprop="url"><span itemprop="title">{{ crumb.menu }}</span></a>
-            <span itemprop="title" aria-current="page">{{ crumb.menu }}</span> --}}
-        </li>
+
+        @foreach($breadcrumbs as $crumb)
+
+            <li class="breadcrumb-item">
+
+                @if($loop->last)
+
+                    <span itemprop="title" aria-current="page">{{ $crumb->name }}</span>
+
+                @else
+
+                    <a href="{{ $crumb->url }}" itemprop="url"><span itemprop="title">{{ $crumb->name }}</span></a>
+
+                @endif
+
+            </li>
+
+        @endforeach
+
     </ol>
 </nav>

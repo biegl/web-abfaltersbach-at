@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'HomeController@index');
+Route::get('/startseite', function () {
+    return redirect('/');
+});
+
+Route::get('{any}', 'PageController@show')->where('any', '.*');
 
 Route::resource('news', 'NewsController');

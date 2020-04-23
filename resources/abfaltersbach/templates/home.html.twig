@@ -1,0 +1,64 @@
+{% extends 'partials/base.html.twig' %}
+
+{% block content %}
+    <h2 class="newslist_header mb-3">News</h2>
+    <ul class="newslist list-unstyled">
+        {% for newsitem in newslist %}
+        <li class"newslist_item mb-1">
+            <h3 class="newslist_item_title">
+                {{ newsitem['title'] }}
+                <small class="newslist_item_date">{{ newsitem['date']|date('d.m.') }}</small>
+            </h3>
+            <div class="newslist_item_body">
+                {{ newsitem['text'] }}
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+{% block sidebar %}
+    <div class="calendar">
+        <ul class="list-unstyled">
+        {% if eventlist is empty %}
+            {% set month = 'now'|date('F') %}
+            <li class="media calendar_month_header mb-3">{{ month }}</li>
+            Keine Veranstaltungen vorhanden
+        {% endif %}
+        {% for month, events in eventlist %}
+            <li class="media calendar_month_header mb-3">{{ month }}</li>
+            {% for event in events %}
+            <li class="media mb-3">
+                <div class="mr-3 calendar_date">
+                    <div class="calendar_date_month">{{ substr(month, 0, 3) }}</div><div class="calendar_date_day">{{ event.date|date('d') }}</div>
+                </div>
+                <div class="media-body calendar_day">
+                    <div class="calendar_day_body">
+                        {{ event.text }}
+                    </div>
+                    <div class="calendar_day_meta">
+                        {% if event.location %}
+                            <span class="calendar_location mr-2">
+                                <em class="fas fa-map-marker-alt"></em>&nbsp;{{ event.location }}
+                            </span>
+                        {% endif %}
+                        {% if event.startTime %}
+                            <span class="calendar_time">
+                                <em class="far fa-clock"></em>&nbsp;{{ event.startTime }}{% if event.endTime %} - {{ event.endTime }}{% endif %}
+                            </span>
+                        {% endif %}
+                        {% if event.filepath %}
+                            <div>
+                                <span class="calendar_attachment">
+                                    <em class="fas fa-link"></em>&nbsp;
+                                    <a href="{{ event.filepath }}" target="_blank">Download</a>
+                                </span>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

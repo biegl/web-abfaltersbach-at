@@ -1,9 +1,7 @@
-@if ($news)
+<h2 class="newslist_header mb-3">{{ __('newslist.header') }}</h2>
+<ol class="newslist list-unstyled">
 
-    <h2 class="newslist_header mb-3">{{ __('newslist.header') }}</h2>
-    <ol class="newslist list-unstyled">
-
-        @foreach ($news as $news_item)
+    @forelse ($news as $news_item)
 
         <li class="newslist_item mb-4">
             <h3 class="newslist_item_title">
@@ -13,20 +11,18 @@
 
             @isset ($news_item->text)
 
-            <div class="newslist_item_body">
-                {!! $news_item->text !!}
-            </div>
+                <div class="newslist_item_body">
+                    {!! $news_item->text !!}
+                </div>
 
             @endisset
 
         </li>
 
-        @endforeach
+    @empty
 
-    </ol>
+        <li>No news entries available</li>
 
-@else
+    @endforelse
 
-    <p>No news entries available</p>
-
-@endif
+</ol>

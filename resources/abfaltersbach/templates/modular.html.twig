@@ -1,0 +1,11 @@
+{% extends 'partials/base.html.twig' %}
+
+{% block content %}
+  {{ page.content|raw }}
+  {% for module in page.collection() %}
+    {{ module.content }}
+  {% endfor %}
+{% endblock %}
+{% block sidebar %}
+  {% include 'partials/downloads.html.twig' %}
+{% endblock %}

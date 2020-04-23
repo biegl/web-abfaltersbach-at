@@ -1,0 +1,7 @@
+<div class="row">
+  {% for person in page.collection %}
+    <div class="col-md-6">
+      {% include 'partials/person.html.twig' with { 'person': person } %}
+    </div>
+  {% endfor %}
+</div>

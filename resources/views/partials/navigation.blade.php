@@ -24,7 +24,6 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
 
-
             @foreach($navigation as $topLevelItem)
 
                 @if ($topLevelItem->hasChildren)
@@ -38,7 +37,7 @@
 
                             @foreach($topLevelItem->children()->visible()->orderBy('position')->get() as $child)
 
-                                <a class="dropdown-item" href="{{ $child->url }}">{{ $child->name }}</a>
+                                <a class="dropdown-item{{ ($child->isActive) ? ' active' : '' }}" href="{{ $child->url }}">{{ $child->name }}</a>
 
                             @endforeach
 
@@ -48,7 +47,7 @@
                 @else
 
                     <li class="nav-item{{ ($topLevelItem->isActive) ? ' active' : '' }}">
-                        <a class="nav-link" href="" role="button">
+                        <a class="nav-link" href="{{ $topLevelItem->url }}" role="button">
                             {{ $topLevelItem->name }}
                             <span class="sr-only">(current)</span>
                         </a>

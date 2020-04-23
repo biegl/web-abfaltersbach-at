@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Request;
+use App\Router\Helper as RouterHelper;
+use Str;
 
 class Navigation extends Model
 {
@@ -25,21 +27,22 @@ class Navigation extends Model
 
     public function getIsActiveAttribute()
     {
-        return Request::is($this->url);
+        $path = RouterHelper::normalizeUrl(Request::path());
+        return Str::contains($path, $this->url);
     }
 
     public function getSlugAttribute()
     {
-        return $this->linkname;
+        return trim($this->linkname);
     }
 
     public function getUrlAttribute()
     {
         if (!$this->hasParent) {
-            return "/" . $this->slug;
+            return RouterHelper::normalizeUrl($this->slug);
         }
 
-        return "/" . $this->parent()->slug . "/" . $this->slug;
+        return RouterHelper::normalizeUrl($this->parent()->slug . "/" . $this->slug);
     }
 
     public function children()
@@ -50,6 +53,17 @@ class Navigation extends Model
     public function parent()
     {
         return $this->belongsTo('App\Navigation', 'refID')->first();
+    }
+
+    public static function breadcrumbs(\App\Page $page)
+    {
+        $nav_item = Navigation::where('ID', $page->navigation_id)->first();
+
+        return array_filter(array_unique([
+            Navigation::landingPage(),
+            $nav_item->parent(),
+            $nav_item,
+        ]));
     }
 
     /**
@@ -64,6 +78,14 @@ class Navigation extends Model
             ->visible()
             ->where('refID', null)
             ->orderBy('position');
+    }
+
+    public function scopeLandingPage($query)
+    {
+        return $query
+            ->visible()
+            ->where('linkname', 'startseite')
+            ->first();
     }
 
     /**
