@@ -23,6 +23,11 @@ class Router
     private static $urlMap = [];
 
     /**
+     * @var string The name of the cache bucket.
+     */
+    private static $CACHE_KEY_URL_MAP = 'navigation.urlmap';
+
+    /**
      * @var array Request-level cache
      */
     private static $cache = [];
@@ -49,11 +54,9 @@ class Router
         $pageId = $urlMap[$url];
 
         if (($page = Page::find($pageId)) === null) {
-            /*
-             * If the page was not found on the disk, clear the URL cache
-             * and try again.
-             */
-            // $this->clearCache();
+
+            // If the page was not found, clear the URL cache and try again.
+            $this->clearCache();
 
             return self::$cache[$url] = Page::find($pageId);
         }
@@ -75,71 +78,14 @@ class Router
     }
 
     /**
-     * Loads the URL map - a list of page file names and corresponding URL patterns.
-     * The URL map can is cached. The clearUrlMap() method resets the cache. By default
-     * the map is updated every time when a page is saved in the back-end, or
-     * when the interval defined with the cms.urlCacheTtl expires.
-     * @return boolean Returns true if the URL map was loaded from the cache. Otherwise returns false.
+     * Loads the URL map - a list of page URLs and corresponding page IDs.
+     * The URL map is cached. The clearCache() method resets the cache.
      */
     protected function loadUrlMap()
     {
-        // $key = $this->getCacheKey('static-page-url-map');
-
-        // $cacheable = Config::get('cms.enableRoutesCache');
-        // $cached = $cacheable ? Cache::get($key, false) : false;
-
-        // if (!$cached || ($unserialized = @unserialize($cached)) === false) {
-        /*
-             * The item doesn't exist in the cache, create the map
-             */
-        // $pageList = new PageList($this->theme);
-
-        $pages = Navigation::visible()->get();
-
-        $map = [];
-
-        foreach ($pages as $page) {
-            $url = $page->url;
-
-            if (!$url) {
-                continue;
-            }
-
-            $url = Str::lower(RouterHelper::normalizeUrl($url));
-
-            // Correct URL for startpage
-            if ($url === '/startseite') {
-                $url = '/';
-            }
-
-            $map[$url] = $page->ID;
-        }
-
-        self::$urlMap = $map;
-
-        // if ($cacheable) {
-        //     $expiresAt = now()->addMinutes(Config::get('cms.urlCacheTtl', 1));
-        //     Cache::put($key, serialize($map), $expiresAt);
-        // }
-
-        return false;
-        // }
-
-        // self::$urlMap = $unserialized;
-
-        // return true;
-    }
-
-    /**
-     * Returns the caching URL key depending on the theme.
-     * @param string $keyName Specifies the base key name.
-     * @return string Returns the theme-specific key name.
-     */
-    protected function getCacheKey($keyName)
-    {
-        // $key = crc32($this->theme->getPath()) . $keyName;
-        // Event::fire('pages.router.getCacheKey', [&$key]);
-        // return $key;
+        self::$urlMap = Cache::remember(self::$CACHE_KEY_URL_MAP, config('cache.defaultTTL'), function () {
+            return Navigation::getUrlMap();
+        });
     }
 
     /**
@@ -147,6 +93,6 @@ class Router
      */
     public function clearCache()
     {
-        // Cache::forget($this->getCacheKey('static-page-url-map'));
+        Cache::forget(self::$CACHE_KEY_URL_MAP);
     }
 }

@@ -66,6 +66,32 @@ class Navigation extends Model
         ]));
     }
 
+    public static function getUrlMap()
+    {
+        $pages = Navigation::visible()->get();
+
+        $map = [];
+
+        foreach ($pages as $page) {
+            $url = $page->url;
+
+            if (!$url) {
+                continue;
+            }
+
+            $url = Str::lower(RouterHelper::normalizeUrl($url));
+
+            // Correct URL for startpage
+            if ($url === '/startseite') {
+                $url = '/';
+            }
+
+            $map[$url] = $page->ID;
+        }
+
+        return $map;
+    }
+
     /**
      * Scope a query to only include top level navigation items.
      *

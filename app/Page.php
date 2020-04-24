@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\News;
 use App\Event;
+use Cache;
 
 class Page extends Model
 {
@@ -17,6 +18,16 @@ class Page extends Model
         'seitentitel',
         'inhalt',
     ];
+
+    /**
+     * @var string The name of the cache bucket.
+     */
+    private static $CACHE_KEY_GROUPED_EVENTS = 'events.grouped_by_month';
+
+    /**
+     * @var string The name of the cache bucket.
+     */
+    private static $CACHE_KEY_TOP_NEWS = 'news.top';
 
     public function getContentAttribute()
     {
@@ -45,8 +56,15 @@ class Page extends Model
 
         switch ($this->templateName) {
             case 'page.home':
-                $news = News::top()->get();
-                $grouped_events = Event::byMonth();
+                $news = Cache::remember(self::$CACHE_KEY_TOP_NEWS, config('cache:defaultTTL'), function () {
+                    return News::top()->get();
+                });
+
+                // Load grouped events from cache
+                $grouped_events = Cache::remember(self::$CACHE_KEY_GROUPED_EVENTS, config('cache.defaultTTL'), function () {
+                    return Event::byMonth();
+                });
+
                 return compact('content', 'navigation', 'breadcrumbs', 'news', 'grouped_events');
             default:
                 return compact('content', 'navigation', 'breadcrumbs');
