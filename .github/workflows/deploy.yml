@@ -11,7 +11,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build Docker Container
-        run: docker-compose up -d
+        env:
+          - PORT:8080
+        run: |
+          echo "::set-env name=UID::$(echo $UID)"
+          docker-compose up -d
 
   deploy:
     runs-on: ubuntu-latest
