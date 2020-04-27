@@ -13,8 +13,9 @@ jobs:
       - name: Build Docker Container
         env:
           LOCAL_PORT: 8080
+          UID: 1000
         run: |
-          echo "::set-env name=UID::$(echo $UID)"
+          echo "::set-env name=UID::$UID"
           docker-compose up -d
 
   deploy:
