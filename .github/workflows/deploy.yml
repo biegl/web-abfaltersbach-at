@@ -1,0 +1,22 @@
+name: Deploy website
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  runs-on: ubuntu-latest
+
+  build:
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build Docker Container
+        run: docker-compose up -d
+
+  deploy:
+    needs: build
+    steps:
+      - name: Deploy website
+        run: |
+          ./php-artisan deploy
