@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Build Docker Container
         env:
-          PORT: 8080
+          LOCAL_PORT: 8080
         run: |
           echo "::set-env name=UID::$(echo $UID)"
           docker-compose up -d
