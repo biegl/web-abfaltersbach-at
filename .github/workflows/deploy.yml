@@ -14,6 +14,6 @@ jobs:
         env:
           LOCAL_PORT: 8080
           UID: 1000
-        run: |
-          docker-compose up -d
-          ./php-artisan deploy
+        run: docker-compose up -d
+      - name: Deploy
+        run: ./php-artisan deploy
