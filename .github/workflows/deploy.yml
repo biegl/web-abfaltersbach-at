@@ -13,7 +13,7 @@ jobs:
 
       - name: Login Dockerhub
         run: |
-          echo '${{ secrets.REGISTRY_PASSWORD }}' | docker login --username ${{ REGISTRY_USERNAME }} --password-stdin
+          echo '${{ secrets.REGISTRY_PASSWORD }}' | docker login --username ${{ secrets.REGISTRY_USERNAME }} --password-stdin
 
       - name: Docker Compose
         env:
