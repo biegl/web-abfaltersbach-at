@@ -1,57 +1,23 @@
-FROM php:7.3-apache
+# PHP Images can be found at https://hub.docker.com/_/php/
+FROM php:7.3-alpine
 
-# 1. Install development packages and clean up apt cache.
-RUN apt-get update && apt-get install -y \
-    curl \
-    g++ \
-    git \
-    libbz2-dev \
-    libfreetype6-dev \
-    libicu-dev \
-    libjpeg-dev \
-    libmcrypt-dev \
-    libpng-dev \
-    libzip-dev \
-    libreadline-dev \
-    locales \
-    sudo \
-    unzip \
-    zip \
-    && rm -rf /var/lib/apt/lists/*
+# The application will be copied in /home/application and the original document root will be replaced in the apache configuration
+VOLUME /home/application/
 
+# Custom Document Root
+ENV APACHE_DOCUMENT_ROOT /home/application/public
 
-# 2. Apache configs + document root.
-RUN echo "ServerName app.local" >> /etc/apache2/apache2.conf
-RUN echo "de_AT.UTF-8 UTF-8" >> /etc/locale.gen && locale-gen
+# Concatenated RUN commands
+RUN apk add --update apache2 php7-apache2 php7-mbstring php7-session php7-json php7-pdo php7-openssl php7-tokenizer php7-pdo php7-pdo_mysql php7-xml php7-simplexml\
+    && chmod -R 777 /home/application \
+    && chown -R www-data:www-data /home/application \
+    && mkdir -p /run/apache2 \
+    && sed -i '/LoadModule rewrite_module/s/^#//g' /etc/apache2/httpd.conf \
+    && sed -i '/LoadModule session_module/s/^#//g' /etc/apache2/httpd.conf \
+    && sed -ri -e 's!/var/www/localhost/htdocs!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/httpd.conf \
+    && sed -i 's/AllowOverride\ None/AllowOverride\ All/g' /etc/apache2/httpd.conf \
+    && docker-php-ext-install pdo_mysql \
+    && rm  -rf /tmp/* /var/cache/apk/*
 
-ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
-
-# 3. mod_rewrite for URL rewrite and mod_headers for .htaccess extra headers like Access-Control-Allow-Origin-
-RUN a2enmod rewrite headers
-
-# 4. Start with base PHP config, then add extensions.
-RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
-
-RUN docker-php-ext-install \
-    bcmath \
-    bz2 \
-    calendar \
-    iconv \
-    intl \
-    mbstring \
-    opcache \
-    pdo_mysql \
-    zip
-
-# 5. Composer.
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# 6. We need a user with the same UID/GID as the host user
-# so when we execute CLI commands, all the host file's permissions and ownership remain intact.
-# Otherwise commands from inside the container would create root-owned files and directories.
-ARG uid
-RUN useradd -G www-data,root -u $uid -d /home/devuser devuser
-RUN mkdir -p /home/devuser/.composer && \
-    chown -R devuser:devuser /home/devuser
+# Launch the httpd in foreground
+CMD rm -rf /run/apache2/* || true && /usr/sbin/httpd -DFOREGROUND

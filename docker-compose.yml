@@ -2,10 +2,7 @@ version: "3.5"
 
 services:
   app:
-    build:
-      context: "."
-      args:
-        uid: ${UID}
+    image: buerma/web-abfaltersbach-at:latest
     tty: true
     container_name: abf-app
     ports:
@@ -14,7 +11,7 @@ services:
       - APACHE_RUN_USER=#${UID}
       - APACHE_RUN_GROUP=#${UID}
     volumes:
-      - .:/var/www/html
+      - .:/home/application
     depends_on:
       - db
     networks:
