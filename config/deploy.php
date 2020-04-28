@@ -51,7 +51,7 @@ return [
 
         // Code and composer vendors are ready but nothing is built.
         'build' => [
-            'composer:config',
+            //
         ],
 
         // Deployment is done but not live yet (before symlink)
@@ -100,10 +100,15 @@ return [
         'application' => env('APP_NAME', 'Laravel'),
         'repository' => 'git@github.com:biegl/web-abfaltersbach-at.git',
         'bin/php' => '/usr/bin/php-7.3',
+        'bin/composer' => '/usr/bin/php-7.3 /var/www/web11265/htdocs/laravel/composer.phar',
         'http_user' => 'web11265',
         'writable_mode' => 'chmod',
         'nova_username' => env('NOVA_USERNAME'),
         'nova_password' => env('NOVA_PASSWORD'),
+        'shared_files' => [
+            ".env",
+            "auth.json",
+        ],
     ],
 
     /*

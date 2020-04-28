@@ -15,6 +15,12 @@ jobs:
         run: |
           echo '${{ secrets.REGISTRY_PASSWORD }}' | docker login --username ${{ secrets.REGISTRY_USERNAME }} --password-stdin
 
+      - name: Create .env file
+        run: |
+          echo "DEPLOY_PATH=${{ secrets.DEPLOY_PATH }}" >> .env
+          echo "SSH_USER=${{ secrets.SSH_USER }}" >> .env
+          echo "SSH_PORT=${{ secrets.SSH_PORT }}" >> .env
+
       - name: Docker Compose
         env:
           LOCAL_PORT: 8080
@@ -22,4 +28,5 @@ jobs:
         run: docker-compose up -d
 
       - name: Deploy
-        run: ./php-artisan deploy
+        run: |
+          docker exec abf-app /usr/bin/expect -c "set timeout -1; spawn php artisan deploy; expect -re \"password\"; send \"${{ secrets.SSH_PASSWORD }}\n\"; expect -re \"Successfully deployed\"; send \"\r\";"
