@@ -127,6 +127,9 @@ return [
             'deploy_path' => env('DEPLOY_PATH', ''),
             'user' => env('SSH_USER', ''),
             'port' => env('SSH_PORT', ''),
+            'sshOptions' => [
+                'StrictHostKeyChecking' => false,
+            ],
         ],
     ],
 
