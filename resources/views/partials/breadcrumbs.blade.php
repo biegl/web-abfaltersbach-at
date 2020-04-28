@@ -1,7 +1,7 @@
 <nav aria-label="breadcrumb" class="col">
     <ol class="breadcrumb" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
 
-        @foreach($breadcrumbs as $crumb)
+        @forelse($breadcrumbs as $crumb)
 
             <li class="breadcrumb-item">
 
@@ -17,7 +17,9 @@
 
             </li>
 
-        @endforeach
+        @empty
+
+        @endforelse
 
     </ol>
 </nav>
