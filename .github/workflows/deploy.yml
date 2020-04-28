@@ -27,6 +27,11 @@ jobs:
           UID: 1000
         run: docker-compose up -d
 
+      - name: Install composer dependencies
+        run: |
+          ./composer config http-basic.nova.laravel.com "${{ secrets.NOVA_USERNAME }}" "${{ secrets.NOVA_PASSWORD }}"
+          ./composer install
+
       - name: Deploy
         run: |
           docker exec abf-app /usr/bin/expect -c "set timeout -1; spawn php artisan deploy; expect -re \"password\"; send \"${{ secrets.SSH_PASSWORD }}\n\"; expect -re \"Successfully deployed\"; send \"\r\";"
