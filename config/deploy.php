@@ -51,7 +51,7 @@ return [
 
         // Code and composer vendors are ready but nothing is built.
         'build' => [
-            //
+            'composer:config',
         ],
 
         // Deployment is done but not live yet (before symlink)

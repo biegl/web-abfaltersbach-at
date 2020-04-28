@@ -33,6 +33,19 @@ $ ./php-artisan key:generate
 
 ### Preparation
 
+Create new docker image
+
+```
+docker build -t buerma/web-abfaltersbach-at:latest .
+```
+
+Push new docker image to registry
+
+```
+docker login
+docker push buerma/web-abfaltersbach-at:latest
+```
+
 ### Upload
 
 The following command uses Deployer (https://deployer.org/) to upload the latest remote version from the current branch.
