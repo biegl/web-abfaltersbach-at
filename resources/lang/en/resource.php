@@ -7,6 +7,7 @@ return [
         'news'   => 'News',
         'files'  => 'Files',
         'pages'  => 'Pages',
+        'users'  => 'Users',
     ],
 
 ];

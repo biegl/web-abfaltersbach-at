@@ -34,6 +34,16 @@ class User extends Resource
     ];
 
     /**
+     * Localize Name in side menu.
+     *
+     * @return string
+     */
+    static function label()
+    {
+        return __('resource.titles.users');
+    }
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Illuminate\Http\Request  $request
