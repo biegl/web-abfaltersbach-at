@@ -128,7 +128,7 @@ return [
             'user' => env('SSH_USER', ''),
             'port' => env('SSH_PORT', ''),
             'sshOptions' => [
-                'StrictHostKeyChecking' => false,
+                'StrictHostKeyChecking' => 'NO',
             ],
         ],
     ],
