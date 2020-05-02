@@ -1,0 +1,20 @@
+{
+    "extends": ["config:base"],
+    "labels": ["dependencies"],
+    "masterIssue": true,
+    "packageRules": [
+        {
+            "updateTypes": ["minor", "patch", "pin", "digest"],
+            "automerge": true
+        }
+    ],
+    "prCreation": "not-pending",
+    "schedule": ["after 10pm and before 5am on every weekday", "every weekend"],
+    "semanticCommits": true,
+    "stabilityDays": 14,
+    "timezone": "Europe/Vienna",
+    "vulnerabilityAlerts": {
+        "labels": ["security"],
+        "assignees": ["@biegl"]
+    }
+}
