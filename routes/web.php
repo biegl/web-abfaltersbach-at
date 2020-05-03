@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/startseite', function () {
-    return redirect('/');
-});
+Route::get('/startseite', 'PageController@landing');
 
 Route::fallback('PageController@show');

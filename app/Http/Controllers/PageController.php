@@ -11,6 +11,15 @@ use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
+
+    /**
+     * Redirects the user to the landing page.
+     */
+    public function landing(Request $request)
+    {
+        return redirect('/');
+    }
+
     public function show(Request $request)
     {
         $router = new Router;
