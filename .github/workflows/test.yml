@@ -1,0 +1,59 @@
+name: Test Suite
+
+on: pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Login Dockerhub
+        run: |
+          echo '${{ secrets.REGISTRY_PASSWORD }}' | docker login --username ${{ secrets.REGISTRY_USERNAME }} --password-stdin
+
+      - name: Create .env file
+        run: |
+          cp .env.testing .env
+
+      - name: Docker Compose
+        env:
+          LOCAL_PORT: 8080
+          UID: 1000
+        run: docker-compose up -d
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install composer dependencies
+        run: |
+          docker exec abf-app composer config http-basic.nova.laravel.com "${{ secrets.NOVA_USERNAME }}" "${{ secrets.NOVA_PASSWORD }}"
+          docker exec abf-app composer update --no-interaction --no-progress  --prefer-dist --optimize-autoloader --ignore-platform-reqs
+          docker exec abf-app php artisan key:generate
+          docker exec abf-app php artisan config:cache
+          docker exec abf-app php artisan route:cache
+          docker exec abf-app npm install
+          docker exec abf-app npm run prod
+          docker exec abf-app php artisan migrate --seed
+          docker exec abf-app php artisan storage:link
+
+      - name: Test
+        run: |
+          docker exec abf-app php artisan serve &
+          docker exec abf-app vendor/bin/phpunit

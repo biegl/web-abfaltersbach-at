@@ -11,7 +11,7 @@
     "prCreation": "not-pending",
     "schedule": ["after 10pm and before 5am on every weekday", "every weekend"],
     "semanticCommits": true,
-    "stabilityDays": 14,
+    "stabilityDays": 3,
     "timezone": "Europe/Vienna",
     "vulnerabilityAlerts": {
         "labels": ["security"],
