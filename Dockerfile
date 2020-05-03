@@ -10,7 +10,7 @@ ENV APACHE_DOCUMENT_ROOT /home/application/public
 
 # Concatenated RUN commands
 RUN set -ex \
-    && apk add --update apache2 bash expect g++ git icu-dev libzip-dev php7-apache2 php7-mbstring php7-session php7-json php7-pdo php7-openssl php7-tokenizer php7-pdo php7-pdo_mysql php7-xml php7-simplexml openssh \
+    && apk add --update apache2 bash expect g++ git icu-dev libzip-dev npm php7-apache2 php7-mbstring php7-session php7-json php7-pdo php7-openssl php7-tokenizer php7-pdo php7-pdo_mysql php7-xml php7-simplexml openssh \
     && chmod -R 777 /home/application \
     && chown -R www-data:www-data /home/application \
     && mkdir -p /run/apache2 \
