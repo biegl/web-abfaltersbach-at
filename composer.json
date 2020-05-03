@@ -19,7 +19,7 @@
         "fruitcake/laravel-cors": "1.0.6",
         "guzzlehttp/guzzle": "6.5.3",
         "laravel/framework": "7.5.2",
-        "laravel/nova": "3.3.2",
+        "laravel/nova": "3.5.0",
         "laravel/tinker": "2.4.0",
         "laravel/ui": "2.0.1",
         "lorisleiva/laravel-deployer": "0.3.2"
