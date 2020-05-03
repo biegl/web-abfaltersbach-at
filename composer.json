@@ -21,7 +21,7 @@
         "laravel/framework": "7.9.2",
         "laravel/nova": "3.5.0",
         "laravel/tinker": "2.4.0",
-        "laravel/ui": "2.0.1",
+        "laravel/ui": "2.0.3",
         "lorisleiva/laravel-deployer": "0.3.2"
     },
     "require-dev": {
