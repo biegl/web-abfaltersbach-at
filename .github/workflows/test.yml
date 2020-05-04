@@ -1,10 +1,6 @@
 name: Test Suite
 
-on:
-  pull_request:
-  push:
-    branches:
-      - renovate/*
+on: pull_request
 
 jobs:
   build:
