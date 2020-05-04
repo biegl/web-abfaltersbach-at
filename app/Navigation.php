@@ -15,6 +15,8 @@ class Navigation extends Model
 
     protected $with = ['children'];
 
+    public $timestamps = false;
+
     public function getHasChildrenAttribute()
     {
         return $this->children()->count() > 0;

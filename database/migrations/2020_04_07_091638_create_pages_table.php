@@ -15,13 +15,13 @@ class CreatePagesTable extends Migration
     {
         Schema::create('tbl_site', function (Blueprint $table) {
             $table->increments('ID');
-            $table->integer('navigation_id');
+            $table->integer('navigation_id')->nullable();
             $table->text('seitentitel', 255);
             $table->text('keywords');
             $table->text('template', 50);
             $table->text('template_name', 45);
             $table->text('inhalt');
-            $table->timestamp('timestamp');
+            $table->timestamp('timestamp')->nullable();
             $table->text('description');
         });
     }
