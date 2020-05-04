@@ -13,6 +13,8 @@ class Page extends Model
 
     protected $primaryKey = 'ID';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'ID',
         'seitentitel',

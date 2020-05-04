@@ -13,14 +13,14 @@ class CreateNavigationTable extends Migration
      */
     public function up()
     {
-        Schema::create('navigation', function (Blueprint $table) {
+        Schema::create('tbl_navigation', function (Blueprint $table) {
             $table->increments('ID');
             $table->integer('refID')->nullable();
             $table->integer('position');
             $table->tinyInteger('level');
             $table->text('name', 75);
             $table->text('linkname', 75);
-            $table->set('navianzeigen', ['Ja', 'Nein']);
+            $table->enum('navianzeigen', ['Ja', 'Nein']);
         });
     }
 
@@ -31,6 +31,6 @@ class CreateNavigationTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('navigation');
+        Schema::dropIfExists('tbl_navigation');
     }
 }
