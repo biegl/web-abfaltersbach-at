@@ -7,6 +7,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Navigation::class, function (Faker $faker) {
     return [
+        'refID' => $faker->numberBetween(0, 10),
         'position' => $faker->numberBetween(0, 10),
         'level' => $faker->numberBetween(0, 1),
         'name' => $faker->text(10),

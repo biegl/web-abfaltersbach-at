@@ -57,6 +57,11 @@ class Navigation extends Model
         return $this->belongsTo('App\Navigation', 'refID')->first();
     }
 
+    public function files()
+    {
+        return $this->hasMany('App\File', 'navID')->orderBy('position', 'asc');
+    }
+
     public static function breadcrumbs(\App\Page $page)
     {
         $nav_item = Navigation::where('ID', $page->navigation_id)->first();
