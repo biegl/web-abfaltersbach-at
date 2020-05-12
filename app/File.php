@@ -26,6 +26,5 @@ class File extends Model
 
     public function getFileSizeAttribute()
     {
-        return 100;
     }
 }
