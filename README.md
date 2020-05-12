@@ -33,6 +33,12 @@ $ ./php-artisan key:generate
 
 ### Preparation
 
+Build assets for production
+
+```
+./npm run prod
+```
+
 Create new docker image
 
 ```
