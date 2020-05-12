@@ -69,7 +69,20 @@ class Page extends Model
 
                 return compact('content', 'navigation', 'breadcrumbs', 'news', 'grouped_events');
             default:
-                return compact('content', 'navigation', 'breadcrumbs');
+                $files = $this->files;
+                return compact('content', 'navigation', 'breadcrumbs', 'files');
         }
+    }
+
+    public function files()
+    {
+        return $this->hasManyThrough(
+            'App\File',
+            'App\Navigation',
+            'ID', // Foreign key on navigation table
+            'navID', // Foreign key on files table
+            'navigation_id', // Local key on pages table
+            'ID' // Local key on navigation table
+        );
     }
 }

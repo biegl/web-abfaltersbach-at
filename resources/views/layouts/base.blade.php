@@ -9,6 +9,7 @@
 
         <link rel="icon" href="{{ asset('images/favicon.ico') }}">
 
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" crossorigin="anonymous">
         <link rel="stylesheet"  href="//fonts.googleapis.com/css?family=Source+Sans+Pro%3A400%2C400italic%2C600%2C600italic%2C700%2C700italic%7CLora%3A400%2C400italic%2C700%2C700italic&#038;ver=5.1.1" type="text/css" media="all">
         <link href="/css/app.css" rel="stylesheet">
 

@@ -3,11 +3,11 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\File;
+use Laravel\Nova\Fields\File as FileField;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 
-class FileItem extends Resource
+class File extends Resource
 {
     /**
      * The model the resource corresponds to.
@@ -50,7 +50,7 @@ class FileItem extends Resource
      */
     static function label()
     {
-        return __('resource.titles.file');
+        return __('resource.titles.files');
     }
 
     /**
@@ -64,14 +64,12 @@ class FileItem extends Resource
         return [
             Text::make(__('fields.files.title'), 'title')
                 ->sortable(),
-            File::make(__('fields.files.file'), 'file')
+            FileField::make(__('fields.files.file'), 'file')
                 ->storeOriginalName('file_orig_name')
                 ->storeSize('file_size')
                 ->sortable(),
-            Text::make(__('fields.files.page'), 'navID')
-                ->readonly(),
-            Text::make(__('fields.files.position'), 'position')
-                ->readonly(),
+            Text::make(__('fields.files.page'), 'navID'),
+            Text::make(__('fields.files.position'), 'position'),
         ];
     }
 
@@ -85,7 +83,7 @@ class FileItem extends Resource
 
                 return view('backend.partials.index.file_title', compact('extension', 'url', 'title'))->render();
             })->asHtml(),
-            File::make(__('fields.files.file'), 'file')
+            FileField::make(__('fields.files.file'), 'file')
                 ->sortable(),
             ID::make(__('fields.files.page'), 'navID'),
             ID::make(__('fields.files.position'), 'position'),

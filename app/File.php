@@ -10,10 +10,21 @@ class File extends Model
 
     protected $primaryKey = 'ID';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'navID',
         'position',
         'title',
         'filepath',
     ];
+
+    public function getExtensionAttribute()
+    {
+        return pathinfo($this->file, PATHINFO_EXTENSION);
+    }
+
+    public function getFileSizeAttribute()
+    {
+    }
 }

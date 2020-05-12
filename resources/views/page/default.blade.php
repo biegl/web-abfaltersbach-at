@@ -5,4 +5,5 @@
 @endsection
 
 @section('sidebar')
+    @include('partials.files')
 @endsection
