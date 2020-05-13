@@ -12,13 +12,13 @@
                     <li class="media mb-2 download-file__item">
                         <i class="far fa-file {{ create_fa_ext_icon($file) }} mr-2 download-file__extension" title="{{ __('files.type') }}: {{ strtoupper($file->extension) }}"></i>
                         <div class="media-body">
-                            <a href="https://files.abfaltersbach.at/{{ str_replace('/upload/', '', $file->file) }}" target="_blank">
+                            <a href="{{ asset($file->file) }}" target="_blank">
                                 <div class="download-file__name">{{ $file->title }}</div>
                             </a>
 
                             @if ($file->fileSize)
 
-                                <small class="download-file__size"><span class="sr-only">{{ __('files.filesize') }}</span> {{ $file->fileSize }}</small>
+                                <small class="download-file__size"><span class="sr-only">{{ __('files.filesize') }}</span> {{ \App\File::humanReadableFileSize($file->fileSize) }}</small>
 
                             @endif
 
