@@ -30,9 +30,11 @@
                     <div class="col-md-9 text-content">
                         @yield('content')
                     </div>
-                    <aside class="col-md-3">
-                        @yield('sidebar')
-                    </aside>
+                    <div class="col-md-3">
+                        <aside class="sidebar">
+                            @yield('sidebar')
+                        </aside>
+                    </div>
                 </aside>
             </div>
         </section>
