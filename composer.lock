@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a9d7526c65aa5410eb02ebfb63610746",
+    "content-hash": "580dc517b3ca2f490e70a64fb2a4e680",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1421,17 +1421,17 @@
         },
         {
             "name": "laravel/nova",
-            "version": "v3.5.0",
+            "version": "v3.6.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:laravel/nova.git",
-                "reference": "0504a1c5155715d8b4f4996e943d0d329382e22f"
+                "reference": "fd5584ece923cc03f3514c6e8cd53a292683c5b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://nova.laravel.com/dist/laravel/nova/laravel-nova-0504a1c5155715d8b4f4996e943d0d329382e22f-zip-b9ae13.zip",
-                "reference": "0504a1c5155715d8b4f4996e943d0d329382e22f",
-                "shasum": "4484e73e663d9a0c10c1c84eae05c1634d565d12"
+                "url": "https://nova.laravel.com/dist/laravel/nova/laravel-nova-fd5584ece923cc03f3514c6e8cd53a292683c5b5-zip-303b8a.zip",
+                "reference": "fd5584ece923cc03f3514c6e8cd53a292683c5b5",
+                "shasum": "05c64fbebe214635756015793c2093e250053fe7"
             },
             "require": {
                 "brick/money": "^0.4.2",
@@ -1491,7 +1491,7 @@
                 "admin",
                 "laravel"
             ],
-            "time": "2020-04-28T19:54:39+00:00"
+            "time": "2020-05-12T15:15:04+00:00"
         },
         {
             "name": "laravel/tinker",
