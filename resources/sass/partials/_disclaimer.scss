@@ -1,0 +1,160 @@
+#tcn_notice {
+    box-sizing: border-box;
+    align-items: flex-end;
+
+    background-color: #000;
+    box-align: center;
+    box-pack: justify;
+
+    color: #d0d0d0;
+    display: flex;
+
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    left: 2%;
+
+    padding: 20px;
+    position: fixed;
+
+    top: 100%;
+    transform: translateY(-120%);
+    width: 40%;
+    z-index: 10001;
+
+    .content {
+        margin: 5px 0;
+        padding-right: 20px;
+    }
+
+    .close_notice {
+        cursor: pointer;
+        margin: 10px 0 0;
+        transition: all 200ms;
+    }
+
+    .close_notice.button {
+        background: transparent;
+        border-color: rgba(255, 255, 255, 0.5);
+        border-style: solid;
+        border-width: 1px;
+        color: #fff;
+    }
+    .close_notice.button:hover {
+        border-color: rgba(255, 255, 255, 1);
+    }
+
+    .codeitem {
+        line-height: 1;
+    }
+
+    .switch {
+        display: inline-block;
+        position: relative;
+        width: 50px;
+    }
+
+    input {
+        display: none;
+    }
+
+    .slider {
+        background-color: #c0392b;
+        border-radius: 20px;
+        bottom: 0;
+        cursor: pointer;
+        display: inline-block;
+        height: 24px;
+        left: 0;
+        line-height: 24px;
+        position: relative;
+        right: 0;
+        top: 0;
+        transition: 0.4s;
+        vertical-align: middle;
+        width: 44px;
+    }
+
+    .slider::before {
+        background-color: #fff;
+        border-radius: 10px;
+        bottom: 2px;
+        content: "";
+        height: 20px;
+        left: 2px;
+        position: absolute;
+        transition: 0.4s;
+        width: 20px;
+    }
+
+    input:checked + .slider {
+        background-color: #27ae60;
+    }
+
+    input:focus + .slider {
+        box-shadow: 0 0 1px #27ae60;
+    }
+
+    a,
+    a:visited,
+    a:hover,
+    a:focus {
+        color: #ebb60a;
+    }
+
+    input:checked + .slider::before {
+        transform: translateX(20px);
+    }
+
+    .button,
+    input[type="submit"],
+    input[type="button"] {
+        display: inline-block;
+        padding: 10px 30px;
+        text-decoration: none;
+        color: #fff;
+        background: #316488;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-family: "Poppins", sans-serif;
+        font-weight: 600;
+        border: 2px solid #fff;
+        border-radius: 30px;
+        position: relative;
+    }
+    .button:after,
+    input[type="submit"]:after,
+    input[type="button"]:after {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border-radius: 100%;
+        background: #fff;
+        vertical-align: middle;
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        margin-left: -10px;
+        margin-top: -10px;
+    }
+    .button:hover,
+    input[type="submit"]:hover,
+    input[type="button"]:hover {
+        background: #000;
+        color: #fff;
+    }
+    .button:focus,
+    input[type="submit"]:focus,
+    input[type="button"]:focus {
+        color: #fff;
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    #tcn_notice {
+        left: 0;
+        right: 0;
+        width: 100%;
+        transform: translateY(-100%);
+    }
+}
