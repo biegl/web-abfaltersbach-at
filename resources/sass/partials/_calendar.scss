@@ -18,9 +18,34 @@
 .calendar_date {
     text-align: center;
     background: #000;
-    border-radius: 5px;
     padding: 3px 5px;
     min-width: 40px;
+}
+
+.calendar_date--big {
+    background: #000;
+    padding: 0.5rem;
+
+    .calendar_date {
+        margin: -0.5rem;
+        margin-bottom: 0;
+        background: $highlightColor;
+    }
+
+    .calendar_date_month {
+        font-size: 1.5em;
+        padding: 0.5rem 0;
+    }
+
+    .calendar_date_day {
+        font-size: 7em;
+        color: #000;
+    }
+
+    .calendar_day {
+        font-size: 1rem;
+        color: #fff;
+    }
 }
 
 .calendar_date_month {

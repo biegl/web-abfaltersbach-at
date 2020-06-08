@@ -29,6 +29,11 @@ class Page extends Model
     /**
      * @var string The name of the cache bucket.
      */
+    private static $CACHE_KEY_CURRENT_EVENTS = 'events.current';
+
+    /**
+     * @var string The name of the cache bucket.
+     */
     private static $CACHE_KEY_TOP_NEWS = 'news.top';
 
     public function getContentAttribute()
@@ -67,7 +72,11 @@ class Page extends Model
                     return Event::byMonth();
                 });
 
-                return compact('content', 'navigation', 'breadcrumbs', 'news', 'grouped_events');
+                $current_events = Cache::remember(self::$CACHE_KEY_CURRENT_EVENTS, config('cache.defaultTTL'), function () {
+                    return Event::current()->get();
+                });
+
+                return compact('content', 'navigation', 'breadcrumbs', 'news', 'grouped_events', 'current_events');
             default:
                 $files = $this->files;
                 return compact('content', 'navigation', 'breadcrumbs', 'files');
