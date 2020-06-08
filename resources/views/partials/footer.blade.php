@@ -1,4 +1,4 @@
-<footer class="footer" style="background-image: url();">
+<footer class="footer">
     <div class="footer__inner">
         <div class="container">
             <div class="row">
