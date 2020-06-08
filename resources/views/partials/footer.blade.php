@@ -5,7 +5,7 @@
                 <div class="col-md-3 mt-3 mt-md-0">
                 <h3>Webcam</h3>
                 <a href="https://www.residence-mitterdorfer.at/webcam" target="_blank">
-                    <img class="webcam__image async-img" style="height:48%;" data-src="https://www.residence-mitterdorfer.at/webcam/webcam.jpg?{{ Session::getId() }}" alt="Aktuelles Webcam Bild der Gemeinde Abfaltersbach">
+                    <img class="webcam__image async-img" data-src="https://www.residence-mitterdorfer.at/webcam/webcam.jpg?{{ Session::getId() }}" alt="Aktuelles Webcam Bild der Gemeinde Abfaltersbach">
                 </a>
                 </div>
                 <div class="col-md-3 mt-3 mt-md-0">
