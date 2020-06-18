@@ -57,3 +57,16 @@ jobs:
         run: |
           docker exec abf-app php artisan serve &
           docker exec abf-app vendor/bin/phpunit
+
+  automerge:
+    name: Automerge Dependabot Pull Request
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]'
+    steps:
+      - name: automerge
+        uses: "pascalgn/automerge-action@v0.8.4"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          MERGE_LABELS: "!WIP"
+          MERGE_METHOD: "squash"
