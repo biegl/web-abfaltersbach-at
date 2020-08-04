@@ -34,6 +34,6 @@ class LogoutTest extends TestCase
         $user->api_token = null;
         $user->save();
 
-        $this->json('get', '/api/articles', [], $headers)->assertStatus(401);
+        $this->json('get', '/api/news', [], $headers)->assertStatus(401);
     }
 }

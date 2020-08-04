@@ -17,12 +17,13 @@ class NewsTest extends TestCase
         $headers = ['Authorization' => "Bearer $token"];
         $payload = [
             'title' => 'Lorem',
-            'body' => 'Ipsum',
+            'text' => 'Ipsum',
+            'date' => '2020-08-04',
         ];
 
-        $this->json('POST', '/api/articles', $payload, $headers)
-            ->assertStatus(200)
-            ->assertJson(['id' => 1, 'title' => 'Lorem', 'body' => 'Ipsum']);
+        $this->json('POST', '/api/news', $payload, $headers)
+            ->assertStatus(201)
+            ->assertJson(['title' => 'Lorem', 'text' => 'Ipsum']);
     }
 
     public function testsNewsAreUpdatedCorrectly()
@@ -30,22 +31,24 @@ class NewsTest extends TestCase
         $user = factory(User::class)->create();
         $token = $user->generateToken();
         $headers = ['Authorization' => "Bearer $token"];
-        $article = factory(News::class)->create([
-            'title' => 'First Article',
+        $news = factory(News::class)->create([
+            'title' => 'First News',
             'text' => 'First Body',
+            'date' => '2020-08-04',
         ]);
 
         $payload = [
             'title' => 'Lorem',
             'text' => 'Ipsum',
+            'date' => '2020-08-04',
         ];
 
-        $response = $this->json('PUT', '/api/news/' . $article->id, $payload, $headers)
+        $response = $this->json('PUT', '/api/news/' . $news->ID, $payload, $headers)
             ->assertStatus(200)
             ->assertJson([
-                'id' => 1,
+                'ID' => $news->ID,
                 'title' => 'Lorem',
-                'text' => 'Ipsum'
+                'text' => 'Ipsum',
             ]);
     }
 
@@ -57,9 +60,10 @@ class NewsTest extends TestCase
         $news = factory(News::class)->create([
             'title' => 'First News',
             'text' => 'First Body',
+            'date' => '2020-08-04',
         ]);
 
-        $this->json('DELETE', '/api/news/' . $news->id, [], $headers)
+        $this->json('DELETE', '/api/news/' . $news->ID, [], $headers)
             ->assertStatus(204);
     }
 
@@ -81,26 +85,8 @@ class NewsTest extends TestCase
 
         $response = $this->json('GET', '/api/news', [], $headers)
             ->assertStatus(200)
-            ->assertJson([
-                [
-                    'ID' => 1,
-                    'date' => '2020-08-04T06 =>01 =>32.000000Z',
-                    'expirationDate' => '2020-10-02T06:01:32.000000Z',
-                    'title' => 'First News',
-                    'text' => 'First Body',
-                    'galleryId' => null
-                ],
-                [
-                    'ID' => 2,
-                    'date' => '2020-08-04T06 =>01 =>32.000000Z',
-                    'expirationDate' => '2021-03-28T06 =>01 =>32.000000Z',
-                    'title' => 'Second News',
-                    'text' => 'Second Body',
-                    'galleryId' => null
-                ]
-            ])
             ->assertJsonStructure([
-                '*' => ['ID', 'body', 'text'],
+                '*' => ['ID', 'title', 'text', 'date', 'expirationDate'],
             ]);
     }
 }

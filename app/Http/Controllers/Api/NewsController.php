@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreNews;
 use App\News;
 use Illuminate\Http\Request;
 
@@ -21,12 +22,12 @@ class NewsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\StoreNews  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreNews $request)
     {
-        $news = News::create($request->all());
+        $news = News::create($request->validated());
         return response()->json($news, 201);
     }
 
@@ -48,9 +49,9 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, News $news)
+    public function update(StoreNews $request, News $news)
     {
-        $news->update($request->all());
+        $news->update($request->validated());
         return response()->json($news, 200);
     }
 
@@ -60,7 +61,7 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function delete(News $news)
+    public function destroy(News $news)
     {
         $news->delete();
         return response()->json(null, 204);

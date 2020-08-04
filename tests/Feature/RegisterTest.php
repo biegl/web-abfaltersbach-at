@@ -36,9 +36,12 @@ class RegisterTest extends TestCase
         $this->json('post', '/api/register')
             ->assertStatus(422)
             ->assertJson([
-                'name' => ['The name field is required.'],
-                'email' => ['The email field is required.'],
-                'password' => ['The password field is required.'],
+                'message' => 'The given data was invalid.',
+                'errors' => [
+                    'name' => ['validation.required'],
+                    'email' => ['validation.required'],
+                    'password' => ['validation.required']
+                ]
             ]);
     }
 
@@ -53,7 +56,10 @@ class RegisterTest extends TestCase
         $this->json('post', '/api/register', $payload)
             ->assertStatus(422)
             ->assertJson([
-                'password' => ['The password confirmation does not match.'],
+                'message' => 'The given data was invalid.',
+                'errors' => [
+                    'password' => ['validation.confirmed']
+                ]
             ]);
     }
 }
