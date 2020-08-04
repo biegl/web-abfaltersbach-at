@@ -17,11 +17,11 @@
         "php": "^7.2.5",
         "fideloper/proxy": "4.3.0",
         "fruitcake/laravel-cors": "2.0.1",
-        "guzzlehttp/guzzle": "6.5.3",
+        "guzzlehttp/guzzle": "6.5.4",
         "laravel/framework": "7.11.0",
         "laravel/nova": "3.6.0",
         "laravel/tinker": "2.4.0",
-        "laravel/ui": "2.0.3",
+        "laravel/ui": "^2.1",
         "lorisleiva/laravel-deployer": "0.3.2"
     },
     "require-dev": {
@@ -73,6 +73,9 @@
         ],
         "post-update-cmd": [
             "@php artisan nova:publish"
+        ],
+        "test": [
+            "vendor/bin/phpunit"
         ]
     }
 }
