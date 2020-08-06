@@ -16,7 +16,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        return News::all();
+        return News::orderBy('date', 'desc')->get();
     }
 
     /**

@@ -1,11 +1,11 @@
 const global = window as any
 
 export default function authHeader() {
-  let user = JSON.parse(global.localStorage.getItem('user'))
+    const user = JSON.parse(global.localStorage.getItem('user'))
 
-  if (user && user.accessToken) {
-    return { Authorization: 'Bearer ' + user.access_token }
-  } else {
-    return {}
-  }
+    if (user && user.api_token) {
+        return { Authorization: `Bearer ${user.api_token}` }
+    } else {
+        return {}
+    }
 }
