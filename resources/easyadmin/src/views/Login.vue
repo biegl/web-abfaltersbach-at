@@ -14,6 +14,7 @@
             type="text"
             class="form-control"
             name="username"
+            autocomplete="username"
           />
         </div>
         <div class="form-group">
@@ -23,6 +24,7 @@
             type="password"
             class="form-control"
             name="password"
+            autocomplete="current-password"
           />
           <div v-if="false" class="alert alert-danger" role="alert">
             Password is required!
@@ -66,7 +68,7 @@ export default {
   },
   created() {
     if (this.loggedIn) {
-      this.$router.push('/profile')
+      this.$router.push('/')
     }
   },
   methods: {
@@ -76,7 +78,7 @@ export default {
       if (this.user.username && this.user.password) {
         this.$store.dispatch('auth/login', this.user).then(
           () => {
-            this.$router.push('/profile')
+            this.$router.push('/')
           },
           error => {
             this.loading = false
