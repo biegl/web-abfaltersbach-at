@@ -2,10 +2,13 @@
   <div id="app">
     <nav class="navbar navbar-expand navbar-dark bg-dark">
       <div class="navbar-nav mr-auto">
-        <li class="nav-item">
+        <li v-if="currentUser" class="nav-item">
           <router-link to="/" class="nav-link">
             <font-awesome-icon icon="home" />Home
           </router-link>
+        </li>
+        <li v-if="currentUser" class="nav-item">
+          <router-link to="/news" class="nav-link">News</router-link>
         </li>
         <li v-if="currentUser" class="nav-item">
           <router-link to="/user" class="nav-link">User</router-link>

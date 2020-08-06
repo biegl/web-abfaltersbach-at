@@ -13,6 +13,11 @@ const routes: Array<RouteRecordRaw> = [
       name: 'Login',
       component: Login,
   },
+  {
+    path: '/news',
+    name: 'News',
+    component: () => import(/* webpackChunkName: "news" */ '../views/News.vue'),
+  }
 //   {
 //     path: '/about',
 //     name: 'About',

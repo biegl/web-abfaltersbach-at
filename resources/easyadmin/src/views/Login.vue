@@ -14,6 +14,7 @@
             type="text"
             class="form-control"
             name="username"
+            required
             autocomplete="username"
           />
         </div>
@@ -24,6 +25,7 @@
             type="password"
             class="form-control"
             name="password"
+            required
             autocomplete="current-password"
           />
           <div v-if="false" class="alert alert-danger" role="alert">
@@ -36,7 +38,7 @@
               v-show="loading"
               class="spinner-border spinner-border-sm"
             ></span>
-            <span>Login</span>
+            <span v-show="!loading">Login</span>
           </button>
         </div>
         <div class="form-group">
@@ -73,6 +75,10 @@ export default {
   },
   methods: {
     handleLogin() {
+      if (this.loading) {
+        return
+      }
+
       this.loading = true
 
       if (this.user.username && this.user.password) {
