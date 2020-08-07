@@ -3,7 +3,9 @@ import { auth } from './auth.module'
 import { news } from './news.module'
 
 export default createStore({
-  state: {},
+  state: {
+      news: []
+  },
   mutations: {},
   actions: {},
   modules: {
