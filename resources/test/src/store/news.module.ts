@@ -1,7 +1,13 @@
 import NewsService from '../services/news.service'
+import News from '../models/news'
 
 const global = window as any
-const initialState = { items: [] }
+
+interface NewsState {
+    items: News[]
+}
+
+const initialState: NewsState = { items: [] }
 
 export const news = {
     namespaced: true,
@@ -19,7 +25,7 @@ export const news = {
                 }
             )
         },
-        delete({ commit }, id) {
+        delete({ commit }, id: string) {
             return NewsService.delete(id).then(
                 () => {
                     commit('deleteSuccess', id)
@@ -32,14 +38,14 @@ export const news = {
         },
     },
     mutations: {
-        loadSuccess(state, news) {
+        loadSuccess(state: NewsState, news: News[]) {
             state.items = news
         },
-        loadFailure(state) {
+        loadFailure(state: NewsState) {
             state.items = []
         },
-        deleteSuccess(state, id) {
-            state.items = state.items.filter(news => news.ID !== id)
+        deleteSuccess(state: NewsState, id: string) {
+            state.items = state.items.filter((news: News) => news.ID !== id)
         },
     },
 }

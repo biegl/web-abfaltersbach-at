@@ -135,12 +135,10 @@
 
 <script lang="ts">
 import moment from 'moment'
+import Vue from 'vue'
 
-export default {
+export default Vue.extend({
     name: 'News',
-    setup() {
-        return { moment }
-    },
     data() {
         return {
             isLoading: false,
@@ -149,7 +147,7 @@ export default {
         }
     },
     computed: {
-        news(): any {
+        news() {
             return this.$store.state.news.items
         },
     },
@@ -170,7 +168,7 @@ export default {
             console.log(1)
         },
         cancelCreateNews() {
-            this.data.1isCreating = false
+            this.isCreating = false
         },
         deleteNews(id: number) {
             if (window.confirm('Soll der Eintrag wirklich gelöscht werden?')) {
@@ -178,7 +176,7 @@ export default {
             }
         },
     },
-}
+})
 </script>
 
 <style scoped>
