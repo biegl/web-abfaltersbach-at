@@ -4,7 +4,8 @@
             <div class="navbar-nav mr-auto">
                 <li v-if="currentUser" class="nav-item">
                     <router-link to="/" class="nav-link">
-                        <font-awesome-icon icon="home" />Home
+                        <i class="fa fa-home"></i>
+                        Home
                     </router-link>
                 </li>
                 <li v-if="currentUser" class="nav-item">
@@ -18,7 +19,8 @@
             <div v-if="!currentUser" class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <router-link to="/login" class="nav-link">
-                        <font-awesome-icon icon="sign-in-alt" />Login
+                        <i class="fa fa-sign-in-alt"></i>
+                        Login
                     </router-link>
                 </li>
             </div>
@@ -26,13 +28,14 @@
             <div v-if="currentUser" class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <router-link to="/profile" class="nav-link">
-                        <font-awesome-icon icon="user" />
+                        <i class="fa fa-user"></i>
                         {{ currentUser.username }}
                     </router-link>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href @click.prevent="logOut">
-                        <font-awesome-icon icon="sign-out-alt" />LogOut
+                        <i class="fa fa-sign-out-alt"></i>
+                        LogOut
                     </a>
                 </li>
             </div>

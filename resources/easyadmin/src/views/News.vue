@@ -22,6 +22,7 @@
                         type="text"
                         class="form-control form-control-sm"
                         aria-describedby="titelHelp"
+                        required
                         autofocus
                     />
                     <small id="titelHelp" class="form-text text-muted">
@@ -29,35 +30,39 @@
                     </small>
                 </div>
 
-                <div class="form-row">
+                <div class="form-group form-row">
                     <div class="col">
-                        <label for="exampleInputEmail1">Date</label>
-                        <input
-                            type="text"
-                            class="form-control form-control-sm"
-                            aria-describedby="titelHelp"
+                        <label for="date">Datum</label>
+                        <date-picker
+                            v-model="draftNewsEntry.date"
+                            help-id="dateHelp"
                         />
-                        <small id="titelHelp" class="form-text text-muted">
-                            Die Überschrift für den Newseintrag
+                        <small id="dateHelp" class="form-text text-muted">
+                            Der News Eintrag wird ab diesem Datum angezeigt
                         </small>
                     </div>
                     <div class="col">
-                        <label for="exampleInputEmail1">Anzeigen bis</label>
-                        <input
-                            type="text"
-                            class="form-control form-control-sm"
-                            aria-describedby="titelHelp"
+                        <label for="date">Anzeigen bis</label>
+                        <date-picker
+                            v-model="draftNewsEntry.expirationDate"
+                            help-id="expirationDateHelp"
                         />
-                        <small id="titelHelp" class="form-text text-muted">
-                            Die Überschrift für den Newseintrag
+                        <small
+                            id="expirationDateHelp"
+                            class="form-text text-muted"
+                        >
+                            Der News Eintrag wird ab diesem Datum angezeigt
                         </small>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Titel</label>
-                    <textarea class="form-control form-control-sm" rows="3">
-                    </textarea>
+                    <label for="exampleInputEmail1">Text</label>
+                    <ckeditor
+                        :editor="editor"
+                        v-model="draftNewsEntry.text"
+                        :config="editorConfig"
+                    ></ckeditor>
                 </div>
 
                 <button
@@ -95,14 +100,14 @@
                     </tr>
                     <tr v-for="news in news" :key="news.ID">
                         <td>
-                            <span class="no-break">{{
-                                moment(news.date).format("DD-MM-YYYY")
-                            }}</span>
+                            <span class="no-break">
+                                {{ news.date | moment }}
+                            </span>
                         </td>
                         <td>
-                            <span class="no-break">{{
-                                moment(news.expirationDate).format("DD-MM-YYYY")
-                            }}</span>
+                            <span class="no-break">
+                                {{ news.expirationDate | moment }}
+                            </span>
                         </td>
                         <td>
                             <div class="text-truncate">{{ news.title }}</div>
@@ -135,19 +140,39 @@
 
 <script lang="ts">
 import Vue from "vue";
+import moment from "moment";
+import News from "../models/news";
+import DatePicker from "../components/DatePicker";
+
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import "@ckeditor/ckeditor5-build-classic/build/translations/de";
 
 export default Vue.extend({
+    components: {
+        DatePicker,
+    },
     name: "News",
     data() {
         return {
             isLoading: false,
             isCreating: true,
             isSubmitting: false,
+            draftNewsEntry: new News(),
+            editor: ClassicEditor,
+            editorConfig: {
+                height: 400,
+                language: "de",
+            },
         };
     },
     computed: {
         news() {
             return this.$store.state.news.items;
+        },
+    },
+    filters: {
+        moment: function(date) {
+            return moment(date).format("DD. MMMM YYYY");
         },
     },
     created() {
@@ -163,7 +188,7 @@ export default Vue.extend({
         createNews() {
             this.isCreating = true;
         },
-        submitNews() {
+        addNews() {
             console.log(1);
         },
         cancelCreateNews() {
@@ -186,7 +211,7 @@ export default Vue.extend({
     vertical-align: middle;
 }
 .date {
-    width: 115px;
+    width: 165px;
 }
 .no-break {
     white-space: nowrap;
@@ -200,5 +225,13 @@ export default Vue.extend({
     border-top: 1px solid #ddd;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
     padding: 25px 0;
+    min-height: 300px;
+    max-height: 50%;
+    overflow: auto;
+}
+</style>
+<style>
+.ck-editor__editable {
+    min-height: 150px;
 }
 </style>
