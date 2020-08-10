@@ -53,6 +53,14 @@
             </li>
             <li>
                 <a
+                    href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-e2e-nightwatch"
+                    target="_blank"
+                    rel="noopener"
+                    >e2e-nightwatch</a
+                >
+            </li>
+            <li>
+                <a
                     href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-typescript"
                     target="_blank"
                     rel="noopener"
@@ -135,15 +143,11 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
+import { Component, Prop, Vue } from "vue-property-decorator";
 
-@Options({
-    props: {
-        msg: String
-    }
-})
+@Component
 export default class HelloWorld extends Vue {
-    msg!: string;
+    @Prop() private msg!: string;
 }
 </script>
 

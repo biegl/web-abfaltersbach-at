@@ -96,12 +96,12 @@
                     <tr v-for="news in news" :key="news.ID">
                         <td>
                             <span class="no-break">{{
-                                moment(news.date).format('DD-MM-YYYY')
+                                moment(news.date).format("DD-MM-YYYY")
                             }}</span>
                         </td>
                         <td>
                             <span class="no-break">{{
-                                moment(news.expirationDate).format('DD-MM-YYYY')
+                                moment(news.expirationDate).format("DD-MM-YYYY")
                             }}</span>
                         </td>
                         <td>
@@ -134,51 +134,48 @@
 </template>
 
 <script lang="ts">
-import moment from 'moment'
+import Vue from "vue";
 
-export default {
-    name: 'News',
-    setup() {
-        return { moment }
-    },
+export default Vue.extend({
+    name: "News",
     data() {
         return {
             isLoading: false,
             isCreating: true,
             isSubmitting: false,
-        }
+        };
     },
     computed: {
-        news(): any {
-            return this.$store.state.news.items
+        news() {
+            return this.$store.state.news.items;
         },
     },
     created() {
-        this.loadNews()
+        this.loadNews();
     },
     methods: {
         loadNews() {
-            this.isLoading = true
-            this.$store.dispatch('news/load').finally(() => {
-                this.isLoading = false
-            })
+            this.isLoading = true;
+            this.$store.dispatch("news/load").finally(() => {
+                this.isLoading = false;
+            });
         },
         createNews() {
-            this.isCreating = true
+            this.isCreating = true;
         },
         submitNews() {
-            console.log(1)
+            console.log(1);
         },
         cancelCreateNews() {
-            this.data.1isCreating = false
+            this.isCreating = false;
         },
         deleteNews(id: number) {
-            if (window.confirm('Soll der Eintrag wirklich gelöscht werden?')) {
-                this.$store.dispatch('news/delete', id)
+            if (window.confirm("Soll der Eintrag wirklich gelöscht werden?")) {
+                this.$store.dispatch("news/delete", id);
             }
         },
     },
-}
+});
 </script>
 
 <style scoped>
@@ -201,7 +198,7 @@ export default {
     right: 0;
     background: #fff;
     border-top: 1px solid #ddd;
-    box-shadow: 0 0 10px rgba(0,0,0,0.25);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
     padding: 25px 0;
 }
 </style>

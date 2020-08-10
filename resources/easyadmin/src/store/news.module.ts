@@ -1,7 +1,11 @@
-import NewsService from '../services/news.service'
+import NewsService from "../services/news.service";
+import News from "../models/news";
 
-const global = window as any
-const initialState = { items: [] }
+interface NewsState {
+    items: News[];
+}
+
+const initialState: NewsState = { items: [] };
 
 export const news = {
     namespaced: true,
@@ -10,36 +14,36 @@ export const news = {
         load({ commit }) {
             return NewsService.getAll().then(
                 news => {
-                    commit('loadSuccess', news)
-                    return Promise.resolve(news)
+                    commit("loadSuccess", news);
+                    return Promise.resolve(news);
                 },
                 error => {
-                    commit('loadFailure')
-                    return Promise.reject(error)
+                    commit("loadFailure");
+                    return Promise.reject(error);
                 }
-            )
+            );
         },
-        delete({ commit }, id) {
+        delete({ commit }, id: string) {
             return NewsService.delete(id).then(
                 () => {
-                    commit('deleteSuccess', id)
-                    return Promise.resolve()
+                    commit("deleteSuccess", id);
+                    return Promise.resolve();
                 },
                 error => {
-                    return Promise.reject(error)
+                    return Promise.reject(error);
                 }
-            )
+            );
         },
     },
     mutations: {
-        loadSuccess(state, news) {
-            state.items = news
+        loadSuccess(state: NewsState, news: News[]) {
+            state.items = news;
         },
-        loadFailure(state) {
-            state.items = []
+        loadFailure(state: NewsState) {
+            state.items = [];
         },
-        deleteSuccess(state, id) {
-            state.items = state.items.filter(news => news.ID !== id)
+        deleteSuccess(state: NewsState, id: string) {
+            state.items = state.items.filter((news: News) => news.ID !== id);
         },
     },
-}
+};
