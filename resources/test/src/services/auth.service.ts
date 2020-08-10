@@ -1,8 +1,8 @@
-import axios from 'axios'
-import User from '@/models/user'
-import Config from '../config';
+import axios from "axios";
+import User from "@/models/user";
+import Config from "../config";
 
-const BASE_URL = Config.host + '/api'
+const BASE_URL = Config.host + "/api";
 class AuthService {
     login(user: User) {
         return axios
@@ -12,16 +12,19 @@ class AuthService {
             })
             .then(response => {
                 if (response.data.user.api_token) {
-                    localStorage.setItem('user', JSON.stringify(response.data.user))
+                    localStorage.setItem(
+                        "user",
+                        JSON.stringify(response.data.user)
+                    );
                 }
 
-                return response.data.user
-            })
+                return response.data.user;
+            });
     }
 
     logout() {
-        localStorage.removeItem('user')
+        localStorage.removeItem("user");
     }
 }
 
-export default new AuthService()
+export default new AuthService();

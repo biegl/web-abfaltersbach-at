@@ -1,8 +1,6 @@
 import NewsService from '../services/news.service'
 import News from '../models/news'
 
-const global = window as any
-
 interface NewsState {
     items: News[]
 }
