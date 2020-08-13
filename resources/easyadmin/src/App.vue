@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <nav class="navbar navbar-expand navbar-dark bg-dark">
+        <nav class="navbar navbar-expand navbar-dark fixed-top bg-dark">
             <div class="navbar-nav mr-auto">
                 <li v-if="currentUser" class="nav-item">
                     <router-link to="/" class="nav-link">
@@ -65,3 +65,8 @@ export default Vue.extend({
     },
 });
 </script>
+<style>
+    body {
+        padding-top: 4.5rem;
+    }
+</style>

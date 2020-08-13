@@ -23,17 +23,42 @@ export const news = {
                 }
             );
         },
-        delete({ commit }, id: string) {
-            return NewsService.delete(id).then(
+        delete({ commit }, news: News) {
+            return NewsService.delete(news.ID).then(
                 () => {
-                    commit("deleteSuccess", id);
+                    commit("deleteSuccess", news.ID);
                     return Promise.resolve();
                 },
                 error => {
+                    commit("deleteFailure");
                     return Promise.reject(error);
                 }
             );
         },
+        create({ commit }, news: News) {
+            return NewsService.create(news).then(
+                createdNews => {
+                    commit("createSuccess", createdNews);
+                    return Promise.resolve(createdNews);
+                },
+                error => {
+                    commit("createFailure");
+                    return Promise.reject(error);
+                }
+            );
+        },
+        update({ commit }, news: News) {
+            return NewsService.update(news).then(
+                updatedNews => {
+                    commit("updateSuccess", updatedNews);
+                    return Promise.resolve(updatedNews);
+                },
+                error => {
+                    commit("updateFailure");
+                    return Promise.reject(error);
+                }
+            );
+        }
     },
     mutations: {
         loadSuccess(state: NewsState, news: News[]) {
@@ -44,6 +69,24 @@ export const news = {
         },
         deleteSuccess(state: NewsState, id: string) {
             state.items = state.items.filter((news: News) => news.ID !== id);
+        },
+        deleteFailure(state: NewsState) {
+            console.error("Deleting News failed");
+        },
+        createSuccess(state: NewsState, news: News) {
+            state.items = [news, ...state.items];
+        },
+        createFailure(state: NewsState) {
+            console.error("Creating News failed");
+        },
+        updateSuccess(state: NewsState, createdNews: News) {
+            state.items = state.items.map(news => {
+                if (news.ID === createdNews.ID) { return createdNews }
+                return news
+            })
+        },
+        updateFailure(state: NewsState) {
+            console.error("Updating News failed");
         },
     },
 };

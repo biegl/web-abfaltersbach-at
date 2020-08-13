@@ -15,6 +15,18 @@ class NewsService {
     delete(id: string): Promise<void> {
         return axios.delete(`${BASE_URL}/${id}`, { headers: authHeader() });
     }
+
+    create(news: News): Promise<News> {
+        return axios
+            .post(BASE_URL, news, { headers: authHeader() })
+            .then(response => response.data);
+    }
+
+    update(news: News): Promise<News> {
+        return axios
+            .put(`${BASE_URL}/${news.ID}`, news, { headers: authHeader() })
+            .then(response => response.data);
+    }
 }
 
 export default new NewsService();

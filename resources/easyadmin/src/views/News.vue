@@ -15,7 +15,7 @@
             class="spinner-border spinner-border-sm"
         ></span>
         <div class="news-create" v-if="isCreating">
-            <form @submit="addNews" class="container">
+            <form @submit="submitNews" class="container">
                 <div class="form-group">
                     <label for="exampleInputEmail1">Titel</label>
                     <input
@@ -24,6 +24,7 @@
                         aria-describedby="titelHelp"
                         required
                         autofocus
+                        v-model="draftNewsEntry.title"
                     />
                     <small id="titelHelp" class="form-text text-muted">
                         Die Überschrift für den Newseintrag
@@ -78,12 +79,18 @@
                     class="btn btn-primary"
                     v-bind:disabled="isSubmitting"
                 >
-                    Erstellen
+                    <span
+                        v-show="isSubmitting"
+                        class="spinner-border spinner-border-sm"
+                    ></span>
+                    <span v-show="!isSubmitting">
+                        Erstellen
+                    </span>
                 </button>
             </form>
         </div>
         <div v-show="!isLoading">
-            <table class="table table-bordered">
+            <table class="table table-bordered table-sm">
                 <thead>
                     <tr>
                         <th scope="col" class="date">Datum</th>
@@ -118,6 +125,7 @@
                                 class="btn btn-default"
                                 aria-label="Bearbeiten"
                                 title="Bearbeiten"
+                                @click="editNews(news)"
                             >
                                 <i class="icon-edit"></i>
                             </button>
@@ -126,7 +134,7 @@
                                 class="btn btn-default"
                                 aria-label="Löschen"
                                 title="Löschen"
-                                @click="deleteNews(news.ID)"
+                                @click="deleteNews(news)"
                             >
                                 <i class="icon-trash"></i>
                             </button>
@@ -172,6 +180,9 @@ export default Vue.extend({
     },
     filters: {
         moment: function(date) {
+            if (!date) {
+                return "";
+            }
             return moment(date).format("DD. MMMM YYYY");
         },
     },
@@ -186,17 +197,38 @@ export default Vue.extend({
             });
         },
         createNews() {
+            this.draftNewsEntry = new News();
             this.isCreating = true;
         },
-        addNews() {
-            console.log(1);
+        editNews(news) {
+            this.draftNewsEntry = news;
+            this.isCreating = true;
+        },
+        submitNews(event) {
+            event.preventDefault();
+            if (this.isSubmitting) {
+                return;
+            }
+
+            this.isSubmitting = true;
+
+            const action = this.draftNewsEntry.ID ? "update" : "create";
+
+            this.$store
+                .dispatch(`news/${action}`, this.draftNewsEntry)
+                .then(news => {
+                    this.isCreating = false;
+                })
+                .finally(() => {
+                    this.isSubmitting = false;
+                });
         },
         cancelCreateNews() {
             this.isCreating = false;
         },
-        deleteNews(id: number) {
+        deleteNews(news: News) {
             if (window.confirm("Soll der Eintrag wirklich gelöscht werden?")) {
-                this.$store.dispatch("news/delete", id);
+                this.$store.dispatch("news/delete", news);
             }
         },
     },
