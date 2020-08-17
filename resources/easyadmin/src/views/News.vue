@@ -1,19 +1,5 @@
 <template>
     <div>
-        <div>
-            <button
-                class="btn btn-primary float-right"
-                v-bind:disabled="isCreating"
-                @click="createNews"
-            >
-                Erstellen
-            </button>
-            <h2>News</h2>
-        </div>
-        <span
-            v-show="isLoading"
-            class="spinner-border spinner-border-sm"
-        ></span>
         <div class="news-create" v-if="isCreating">
             <form @submit="submitNews" class="container">
                 <div class="row">
@@ -40,8 +26,12 @@
                                     v-model="draftNewsEntry.date"
                                     help-id="dateHelp"
                                 />
-                                <small id="dateHelp" class="form-text text-muted">
-                                    Der News Eintrag wird ab diesem Datum angezeigt
+                                <small
+                                    id="dateHelp"
+                                    class="form-text text-muted"
+                                >
+                                    Der News Eintrag wird ab diesem Datum
+                                    angezeigt
                                 </small>
                             </div>
                             <div class="col">
@@ -54,7 +44,8 @@
                                     id="expirationDateHelp"
                                     class="form-text text-muted"
                                 >
-                                    Der News Eintrag wird ab diesem Datum angezeigt
+                                    Der News Eintrag wird ab diesem Datum
+                                    angezeigt
                                 </small>
                             </div>
                         </div>
@@ -96,59 +87,82 @@
                 </div>
             </form>
         </div>
-        <div v-show="!isLoading">
-            <table class="table table-bordered table-sm">
-                <thead>
-                    <tr>
-                        <th scope="col" class="date">Datum</th>
-                        <th scope="col" class="date">Gültig bis</th>
-                        <th scope="col">Titel</th>
-                        <th scope="col" width="108"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-if="news.length == 0">
-                        <td colspan="4">
-                            Im Moment sind kein News vorhanden.
-                        </td>
-                    </tr>
-                    <tr v-for="news in news" :key="news.ID">
-                        <td>
-                            <span class="no-break">
-                                {{ news.date | moment }}
-                            </span>
-                        </td>
-                        <td>
-                            <span class="no-break">
-                                {{ news.expirationDate | moment }}
-                            </span>
-                        </td>
-                        <td>
-                            <div class="text-truncate">{{ news.title }}</div>
-                        </td>
-                        <td>
-                            <button
-                                type="button"
-                                class="btn btn-default"
-                                aria-label="Bearbeiten"
-                                title="Bearbeiten"
-                                @click="editNews(news)"
-                            >
-                                <i class="icon-edit"></i>
-                            </button>
-                            <button
-                                type="button"
-                                class="btn btn-default"
-                                aria-label="Löschen"
-                                title="Löschen"
-                                @click="deleteNews(news)"
-                            >
-                                <i class="icon-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="row">
+            <div class="col-md-10">
+                <div>
+                    <button
+                        class="btn btn-primary float-right"
+                        v-bind:disabled="isCreating"
+                        @click="createNews"
+                    >
+                        Erstellen
+                    </button>
+                    <h2>News</h2>
+                </div>
+                <span
+                    v-show="isLoading"
+                    class="spinner-border spinner-border-sm"
+                ></span>
+                <div v-show="!isLoading">
+                    <table class="table table-bordered table-sm">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="date">Datum</th>
+                                <th scope="col" class="date">Gültig bis</th>
+                                <th scope="col">Titel</th>
+                                <th scope="col" width="108"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-if="news.length == 0">
+                                <td colspan="4">
+                                    Im Moment sind kein News vorhanden.
+                                </td>
+                            </tr>
+                            <tr v-for="news in news" :key="news.ID">
+                                <td>
+                                    <span class="no-break">
+                                        {{ news.date | moment }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="no-break">
+                                        {{ news.expirationDate | moment }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="text-truncate">
+                                        {{ news.title }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <button
+                                        type="button"
+                                        class="btn btn-default"
+                                        aria-label="Bearbeiten"
+                                        title="Bearbeiten"
+                                        @click="editNews(news)"
+                                    >
+                                        <i class="icon-edit"></i>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="btn btn-default"
+                                        aria-label="Löschen"
+                                        title="Löschen"
+                                        @click="deleteNews(news)"
+                                    >
+                                        <i class="icon-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <file-manager></file-manager>
+            </div>
         </div>
     </div>
 </template>
@@ -158,6 +172,7 @@ import Vue from "vue";
 import moment from "moment";
 import News from "../models/news";
 import DatePicker from "../components/DatePicker";
+import FileManager from "../components/FileManager";
 
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import "@ckeditor/ckeditor5-build-classic/build/translations/de";
@@ -165,23 +180,29 @@ import "@ckeditor/ckeditor5-build-classic/build/translations/de";
 export default Vue.extend({
     components: {
         DatePicker,
+        FileManager,
     },
     name: "News",
     data() {
         return {
             isLoading: false,
-            isCreating: true,
+            isCreating: false,
             isSubmitting: false,
             draftNewsEntry: new News(),
             editor: ClassicEditor,
             editorConfig: {
                 height: 400,
                 language: "de",
-                toolbar: ["heading", "bold", "italic", "|", "bulletedList", "numberedList", "|", "link", "ckfinder"],
-                ckfinder: {
-                    uploadUrl:
-                        "https://example.com/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images&responseType=json",
-                },
+                toolbar: [
+                    "heading",
+                    "bold",
+                    "italic",
+                    "|",
+                    "bulletedList",
+                    "numberedList",
+                    "|",
+                    "link",
+                ],
             },
         };
     },

@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Exception;
 
 class File extends Model
 {
@@ -24,6 +25,8 @@ class File extends Model
         'filepath',
     ];
 
+    protected $appends = ['extension', 'fileSize'];
+
     public function getExtensionAttribute()
     {
         return pathinfo($this->file, PATHINFO_EXTENSION);
@@ -31,7 +34,11 @@ class File extends Model
 
     public function getFileSizeAttribute()
     {
-        return Storage::disk('attachments')->size(str_replace('/upload', '', $this->file));
+        try {
+            return Storage::disk('attachments')->size(str_replace('/upload', '', $this->file));
+        } catch (Exception $error) {
+            return 0;
+        }
     }
 
     /**

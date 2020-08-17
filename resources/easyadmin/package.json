@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^21.0.0",
-    "@ckeditor/ckeditor5-ckfinder": "^21.0.0",
     "@ckeditor/ckeditor5-vue": "^1.0.1",
     "core-js": "^3.6.5",
     "moment": "^2.27.0",
