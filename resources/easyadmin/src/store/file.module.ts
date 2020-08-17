@@ -15,6 +15,14 @@ export const files = {
         load({ commit }) {
             return FileService.getAll().then(
                 files => {
+                    files = files.map(file => new File(
+                        file.ID,
+                        file.title,
+                        file.file,
+                        file.extension,
+                        file.fileSize
+                    ));
+
                     commit("loadSuccess", files);
                     return Promise.resolve(files);
                 },

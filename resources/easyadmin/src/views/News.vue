@@ -1,94 +1,7 @@
 <template>
-    <div>
-        <div class="news-create" v-if="isCreating">
-            <form @submit="submitNews" class="container">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Titel</label>
-                            <input
-                                type="text"
-                                class="form-control form-control-sm"
-                                aria-describedby="titelHelp"
-                                required
-                                autofocus
-                                v-model="draftNewsEntry.title"
-                            />
-                            <small id="titelHelp" class="form-text text-muted">
-                                Die Überschrift für den Newseintrag
-                            </small>
-                        </div>
-
-                        <div class="form-group form-row">
-                            <div class="col">
-                                <label for="date">Datum</label>
-                                <date-picker
-                                    v-model="draftNewsEntry.date"
-                                    help-id="dateHelp"
-                                />
-                                <small
-                                    id="dateHelp"
-                                    class="form-text text-muted"
-                                >
-                                    Der News Eintrag wird ab diesem Datum
-                                    angezeigt
-                                </small>
-                            </div>
-                            <div class="col">
-                                <label for="date">Anzeigen bis</label>
-                                <date-picker
-                                    v-model="draftNewsEntry.expirationDate"
-                                    help-id="expirationDateHelp"
-                                />
-                                <small
-                                    id="expirationDateHelp"
-                                    class="form-text text-muted"
-                                >
-                                    Der News Eintrag wird ab diesem Datum
-                                    angezeigt
-                                </small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Text</label>
-                            <ckeditor
-                                :editor="editor"
-                                v-model="draftNewsEntry.text"
-                                :config="editorConfig"
-                            ></ckeditor>
-                        </div>
-
-                        <div class="text-right">
-                            <button
-                                type="button"
-                                class="btn"
-                                @click="cancelCreateNews"
-                                v-bind:disabled="isSubmitting"
-                            >
-                                Abbrechen
-                            </button>
-                            <button
-                                type="submit"
-                                class="btn btn-primary"
-                                v-bind:disabled="isSubmitting"
-                            >
-                                <span
-                                    v-show="isSubmitting"
-                                    class="spinner-border spinner-border-sm"
-                                ></span>
-                                <span v-show="!isSubmitting">
-                                    Erstellen
-                                </span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="row">
-            <div class="col-md-10">
+    <div class="news-container">
+        <div class="workspace">
+            <div class="main-content">
                 <div>
                     <button
                         class="btn btn-primary float-right"
@@ -103,7 +16,7 @@
                     v-show="isLoading"
                     class="spinner-border spinner-border-sm"
                 ></span>
-                <div v-show="!isLoading">
+                <div class="news-table-container" v-show="!isLoading">
                     <table class="table table-bordered table-sm">
                         <thead>
                             <tr>
@@ -143,7 +56,7 @@
                                         title="Bearbeiten"
                                         @click="editNews(news)"
                                     >
-                                        <i class="icon-edit"></i>
+                                        <i class="fa fa-edit"></i>
                                     </button>
                                     <button
                                         type="button"
@@ -152,15 +65,109 @@
                                         title="Löschen"
                                         @click="deleteNews(news)"
                                     >
-                                        <i class="icon-trash"></i>
+                                        <i class="fa fa-trash"></i>
                                     </button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
+                <div class="news-create" v-if="isCreating">
+                    <form @submit="submitNews" class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1"
+                                        >Titel</label
+                                    >
+                                    <input
+                                        type="text"
+                                        class="form-control form-control-sm"
+                                        aria-describedby="titelHelp"
+                                        required
+                                        autofocus
+                                        v-model="draftNewsEntry.title"
+                                    />
+                                    <small
+                                        id="titelHelp"
+                                        class="form-text text-muted"
+                                    >
+                                        Die Überschrift für den Newseintrag
+                                    </small>
+                                </div>
+
+                                <div class="form-group form-row">
+                                    <div class="col">
+                                        <label for="date">Datum</label>
+                                        <date-picker
+                                            v-model="draftNewsEntry.date"
+                                            help-id="dateHelp"
+                                        />
+                                        <small
+                                            id="dateHelp"
+                                            class="form-text text-muted"
+                                        >
+                                            Der News Eintrag wird ab diesem
+                                            Datum angezeigt
+                                        </small>
+                                    </div>
+                                    <div class="col">
+                                        <label for="date">Anzeigen bis</label>
+                                        <date-picker
+                                            v-model="
+                                                draftNewsEntry.expirationDate
+                                            "
+                                            help-id="expirationDateHelp"
+                                        />
+                                        <small
+                                            id="expirationDateHelp"
+                                            class="form-text text-muted"
+                                        >
+                                            Der News Eintrag wird ab diesem
+                                            Datum angezeigt
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Text</label>
+                                    <ckeditor
+                                        :editor="editor"
+                                        v-model="draftNewsEntry.text"
+                                        :config="editorConfig"
+                                    ></ckeditor>
+                                </div>
+
+                                <div class="text-right">
+                                    <button
+                                        type="button"
+                                        class="btn"
+                                        @click="cancelCreateNews"
+                                        v-bind:disabled="isSubmitting"
+                                    >
+                                        Abbrechen
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        class="btn btn-primary"
+                                        v-bind:disabled="isSubmitting"
+                                    >
+                                        <span
+                                            v-show="isSubmitting"
+                                            class="spinner-border spinner-border-sm"
+                                        ></span>
+                                        <span v-show="!isSubmitting">
+                                            Erstellen
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="col-md-2">
+            <div class="sidebar-right">
                 <file-manager></file-manager>
             </div>
         </div>
@@ -269,8 +276,35 @@ export default Vue.extend({
 </script>
 
 <style scoped>
+.news-container {
+    height: 100%;
+    overflow: hidden;
+    margin: 0;
+}
+.workspace {
+    display: flex;
+    height: 100%;
+}
+.news-container > .row > div {
+    background: #fff;
+}
+.main-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 20px;
+    position: relative;
+}
+.news-table-container {
+    height: 100%;
+    overflow: auto;
+    margin-top: 20px;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
 .table {
     table-layout: fixed;
+    margin: -1px 0;
 }
 .table td {
     vertical-align: middle;
@@ -282,7 +316,7 @@ export default Vue.extend({
     white-space: nowrap;
 }
 .news-create {
-    position: fixed;
+    position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
@@ -291,8 +325,12 @@ export default Vue.extend({
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
     padding: 25px 0;
     min-height: 300px;
-    max-height: 50%;
-    overflow: auto;
+}
+.sidebar-right {
+    width: 200px;
+    border-left: 1px solid #ddd;
+    background: #fff;
+    z-index: 1;
 }
 </style>
 <style>

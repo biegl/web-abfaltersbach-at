@@ -19,7 +19,7 @@
             />
             <div class="input-group-append">
                 <button class="btn btn-outline-secondary btn-sm" type="button">
-                    <i class="fa icon-calendar"></i>
+                    <i class="fa fa-calendar"></i>
                 </button>
             </div>
         </div>

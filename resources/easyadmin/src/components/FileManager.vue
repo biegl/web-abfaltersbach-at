@@ -1,26 +1,59 @@
 <template>
-    <div>
+    <div class="file-manager">
         <h3>Dateimanager</h3>
-        Dateien Bilder
-
-        <div>
-            <span
-                v-show="isLoading"
-                class="spinner-border spinner-border-sm"
-            ></span>
-        </div>
-        <ol v-show="!isLoading" class="file-list">
-            <li v-for="file in files" :key="file.ID">
-                <div class="file-name">
-                    <small><i :class="`fa fa-file-${file.extension}-o`"></i></small>
-                    {{ file.title }}
-                </div>
-                <div class="file-meta">
-                    <small>{{ file.fileSize }}</small>
-                    <small>{{ file.file }}</small>
-                </div>
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a
+                    class="nav-link"
+                    v-bind:class="{ active: activeFilter == 'files' }"
+                    @click="activeFilter = 'files'"
+                    >Dateien</a
+                >
             </li>
-        </ol>
+            <li class="nav-item">
+                <a
+                    class="nav-link"
+                    v-bind:class="{ active: activeFilter == 'images' }"
+                    @click="activeFilter = 'images'"
+                    >Bilder</a
+                >
+            </li>
+        </ul>
+
+        <div class="file-list-container">
+            <div v-show="isLoading">
+                <span class="spinner-border spinner-border-sm"></span>
+            </div>
+            <ol v-if="activeFilter == 'files' && !isLoading" class="file-list">
+                <li v-for="file in fileList" :key="file.ID">
+                    <div class="file-name">
+                        <small
+                            ><i :class="`fa fa-file-${file.extension}-o`"></i
+                        ></small>
+                        {{ file.title }}
+                    </div>
+                    <div class="file-meta">
+                        <small>{{ file.fileSize }}</small>
+                        <small>{{ file.file }}</small>
+                    </div>
+                </li>
+            </ol>
+            <ol v-if="activeFilter == 'images' && !isLoading" class="file-list">
+                <li v-for="file in imageList" :key="file.ID">
+                    <div class="file-name">
+                        <small
+                            ><i :class="`fa fa-file-${file.extension}-o`"></i
+                        ></small>
+                        {{ file.title }}
+                    </div>
+                    <div class="file-meta">
+                        <small>{{ file.fileSize }}</small>
+                        <small>{{ file.file }}</small>
+                    </div>
+                </li>
+            </ol>
+        </div>
+        <div class="file-drop-zone"></div>
     </div>
 </template>
 
@@ -33,6 +66,7 @@ export default Vue.extend({
     data() {
         return {
             isLoading: false,
+            activeFilter: "files",
         };
     },
 
@@ -40,9 +74,13 @@ export default Vue.extend({
         files() {
             return this.$store.state.files.files;
         },
+        fileList() {
+            return this.files.filter(file => file.isFile)
+        },
+        imageList() {
+            return this.files.filter(file => file.isImage)
+        }
     },
-
-    filters: {},
 
     created() {
         this.loadFiles();
@@ -63,6 +101,12 @@ export default Vue.extend({
 });
 </script>
 <style scoped>
+.file-manager {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
 .file-list {
     overflow: auto;
     max-height: 100%;
@@ -80,5 +124,15 @@ ol {
 .file-meta {
     overflow: hidden;
     text-overflow: ellipsis;
+}
+.file-list-container {
+    overflow: auto;
+    flex-grow: 1;
+}
+.file-drop-zone {
+    min-height: 70px;
+    height: 100px;
+    background: #eee;
+    margin: 0 -20px -20px;
 }
 </style>
