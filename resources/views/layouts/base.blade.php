@@ -33,11 +33,12 @@
         @endif
     </head>
     <body>
+        <a href="#main-content" class="sr-only">Zum Inhalt springen</a>
         @include('partials.disclaimer')
 
         @include('partials.header')
 
-        <section class="content">
+        <section id="main-content" class="content">
             <div class="container">
                 <div class="row">
                     <div class="col-md-9 text-content">
@@ -48,7 +49,7 @@
                             @yield('sidebar')
                         </aside>
                     </div>
-                </aside>
+                </div>
             </div>
         </section>
 
