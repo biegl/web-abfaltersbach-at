@@ -9,21 +9,25 @@
 
                 @foreach ($files as $file)
 
-                    <li class="media mb-2 download-file__item">
-                        <i class="far fa-file {{ create_fa_ext_icon($file) }} mr-2 download-file__extension" title="{{ __('files.type') }}: {{ strtoupper($file->extension) }}"></i>
-                        <div class="media-body">
-                            <a href="{{ asset($file->file) }}" target="_blank">
-                                <div class="download-file__name">{{ $file->title }}</div>
-                            </a>
+                    @if ($file->exists)
 
-                            @if ($file->fileSize)
+                        <li class="media mb-2 download-file__item">
+                            <i class="far fa-file {{ create_fa_ext_icon($file) }} mr-2 download-file__extension" title="{{ __('files.type') }}: {{ strtoupper($file->extension) }}"></i>
+                            <div class="media-body">
+                                <a href="{{ asset($file->file) }}" target="_blank">
+                                    <div class="download-file__name">{{ $file->title }}</div>
+                                </a>
 
-                                <small class="download-file__size"><span class="sr-only">{{ __('files.filesize') }}</span> {{ \App\File::humanReadableFileSize($file->fileSize) }}</small>
+                                @if ($file->fileSize)
 
-                            @endif
+                                    <small class="download-file__size"><span class="sr-only">{{ __('files.filesize') }}</span> {{ \App\File::humanReadableFileSize($file->fileSize) }}</small>
 
-                        </div>
-                    </li>
+                                @endif
+
+                            </div>
+                        </li>
+
+                    @endif
 
                 @endforeach
 
