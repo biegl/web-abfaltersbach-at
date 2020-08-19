@@ -9,6 +9,8 @@
 </div>
 <nav id="navigation" class="navbar navbar-expand-lg sticky-top navbar-light bg-light">
     <div class="container">
+        <img src="{{ asset('images/logo/wappen_abfaltersbach.png') }}" class="navigation__logo-image" alt="Wappen der Gemeinde Abfaltersbach">
+        <a href="/" class="navbar__title">Gemeinde Abfaltersbach</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>

@@ -29,9 +29,18 @@ class File extends Model
         return pathinfo($this->file, PATHINFO_EXTENSION);
     }
 
+    public function getExistsAttribute()
+    {
+        return Storage::disk('attachments')->exists($this);
+    }
+
     public function getFileSizeAttribute()
     {
-        return Storage::disk('attachments')->size(str_replace('/upload', '', $this->file));
+        if (Storage::disk('attachments')->exists($this->file)) {
+            return Storage::disk('attachments')->size(str_replace('/upload', '', $this->file));
+        }
+
+        return 0;
     }
 
     /**
