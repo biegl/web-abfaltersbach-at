@@ -62,6 +62,7 @@ class Page extends Model
         $content = $this->content;
         $navigation = Navigation::topLevel()->get();
         $breadcrumbs = Navigation::breadcrumbs($this);
+        $subnavigation = Navigation::subnavigation($this);
 
         switch ($this->templateName) {
             case 'page.home':
@@ -81,7 +82,7 @@ class Page extends Model
                 return compact('content', 'navigation', 'breadcrumbs', 'news', 'grouped_events', 'current_events');
             default:
                 $files = $this->files;
-                return compact('content', 'navigation', 'breadcrumbs', 'files');
+                return compact('content', 'navigation', 'breadcrumbs', 'subnavigation', 'files');
         }
     }
 
