@@ -177,9 +177,9 @@
 <script lang="ts">
 import Vue from "vue";
 import moment from "moment";
-import News from "../models/news";
-import DatePicker from "../components/DatePicker";
-import FileManager from "../components/FileManager";
+import News from "@/models/news";
+import DatePicker from "@/components/DatePicker";
+import FileManager from "@/components/FileManager";
 
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import "@ckeditor/ckeditor5-build-classic/build/translations/de";

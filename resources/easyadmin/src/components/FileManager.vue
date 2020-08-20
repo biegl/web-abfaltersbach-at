@@ -53,15 +53,22 @@
                 </li>
             </ol>
         </div>
-        <div class="file-drop-zone"></div>
+        <div class="file-drop-zone">
+            <uppy-uploader :max-file-size-in-bytes="1000000"></uppy-uploader>
+        </div>
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
+import UppyUploader from "../components/UppyUploader";
 
 export default Vue.extend({
     name: "FileManager",
+
+    components: {
+        UppyUploader
+    },
 
     data() {
         return {
@@ -131,8 +138,9 @@ ol {
 }
 .file-drop-zone {
     min-height: 70px;
-    height: 100px;
+    height: 150px;
     background: #eee;
     margin: 0 -20px -20px;
+    flex-shrink: 0;
 }
 </style>
