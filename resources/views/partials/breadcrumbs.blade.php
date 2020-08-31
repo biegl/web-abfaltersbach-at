@@ -1,3 +1,4 @@
+@if (isset($breadcrumbs))
 <nav aria-label="breadcrumb" class="col">
     <ol class="breadcrumb" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
 
@@ -23,3 +24,4 @@
 
     </ol>
 </nav>
+@endif

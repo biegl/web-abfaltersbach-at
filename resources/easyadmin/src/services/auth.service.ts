@@ -25,6 +25,14 @@ class AuthService {
     logout() {
         localStorage.removeItem("user");
     }
+
+    resetPasswort(username: string) {
+        return axios
+            .post(`${BASE_URL}/reset-password`, {
+                email: username
+            })
+            .then(response => response.data);
+    }
 }
 
 export default new AuthService();

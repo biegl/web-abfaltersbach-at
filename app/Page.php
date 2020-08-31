@@ -38,6 +38,11 @@ class Page extends Model
      */
     private static $CACHE_KEY_TOP_NEWS = 'news.top';
 
+    public function getTitleAttribute()
+    {
+        return $this->seitentitel;
+    }
+
     public function getContentAttribute()
     {
         return $this->inhalt;
@@ -59,7 +64,7 @@ class Page extends Model
 
     public function getModulesAttribute()
     {
-        $title = $this->seitentitel;
+        $title = $this->title;
         $content = $this->content;
         $navigation = Navigation::topLevel()->get();
         $breadcrumbs = Navigation::breadcrumbs($this);

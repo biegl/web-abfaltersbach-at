@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import Home from "../views/Home.vue";
 import Login from "@/views/Login.vue";
+import ForgotPassword from "@/views/ForgotPassword.vue";
 
 Vue.use(VueRouter);
 
@@ -15,6 +16,11 @@ const routes: Array<RouteConfig> = [
         path: "/login",
         name: "Login",
         component: Login,
+    },
+    {
+        path: "/forgot-password",
+        name: "ForgotPassword",
+        component: ForgotPassword,
     },
     {
         path: "/news",

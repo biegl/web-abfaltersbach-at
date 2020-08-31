@@ -6,31 +6,17 @@
                 src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
                 class="profile-img-card"
             />
-            <form name="form" @submit.prevent="handleLogin">
+            <form name="form" @submit.prevent="resetPassword">
                 <div class="form-group">
                     <label for="username">Benutzername</label>
                     <input
-                        v-model="user.username"
+                        v-model="username"
                         type="text"
                         class="form-control"
                         name="username"
                         required
                         autocomplete="username"
                     />
-                </div>
-                <div class="form-group">
-                    <label for="password">Passwort</label>
-                    <input
-                        v-model="user.password"
-                        type="password"
-                        class="form-control"
-                        name="password"
-                        required
-                        autocomplete="current-password"
-                    />
-                    <div v-if="false" class="alert alert-danger" role="alert">
-                        Passwort ist erforderlich!
-                    </div>
                 </div>
                 <div class="form-group">
                     <button
@@ -41,11 +27,8 @@
                             v-show="loading"
                             class="spinner-border spinner-border-sm"
                         ></span>
-                        <span v-show="!loading">Anmelden</span>
+                        <span v-show="!loading">Passwort zurücksetzen</span>
                     </button>
-                    <router-link to="/forgot-password" class="nav-link">
-                        Passwort vergessen
-                    </router-link>
                 </div>
                 <div class="form-group">
                     <div v-if="message" class="alert alert-danger" role="alert">
@@ -62,34 +45,24 @@ import User from "../models/user";
 import Vue from "vue";
 
 export default Vue.extend({
-    name: "Login",
+    name: "ForgotPassword",
     data() {
         return {
-            user: new User("", "", ""),
             loading: false,
             message: "",
+            username: ""
         };
     },
-    computed: {
-        loggedIn() {
-            return this.$store.state.auth.status.loggedIn;
-        },
-    },
-    created() {
-        if (this.loggedIn) {
-            this.$router.push("/");
-        }
-    },
     methods: {
-        handleLogin() {
+        resetPassword() {
             if (this.loading) {
                 return;
             }
 
             this.loading = true;
 
-            if (this.user.username && this.user.password) {
-                this.$store.dispatch("auth/login", this.user).then(
+            if (this.username) {
+                this.$store.dispatch("auth/resetPassword", this.username).then(
                     () => {
                         this.$router.push("/");
                     },
