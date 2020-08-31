@@ -18,8 +18,3 @@ Route::get('/admin', 'AdminController@show');
 Route::fallback('PageController@show');
 
 Route::get('/home', 'HomeController@index')->name('home');
-
-// Helpers
-Route::get('/phpinfo', function() {
-    return phpinfo();
-});
