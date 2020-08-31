@@ -54,10 +54,19 @@ jobs:
           docker exec abf-app php artisan migrate --seed
           docker exec abf-app php artisan storage:link
 
-      - name: Test
+      - name: Test PHP
         run: |
           docker exec abf-app php artisan serve &
           docker exec abf-app vendor/bin/phpunit
+
+      - name: Test EasyAdmin
+        working-directory: ./resources/easyadmin
+        run: |
+          npm install
+          npm run build --if-present
+          npm run test:unit
+        env:
+          CI: true
 
   automerge:
     name: Automerge Dependabot Pull Request

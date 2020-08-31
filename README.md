@@ -29,6 +29,12 @@ $ ./php-artisan key:generate
 ./php-artisan
 ```
 
+### Backend - EasyAdmin
+The self-contained application is located in "resources/easyadmin"
+```
+npm run serve
+```
+
 ## Deployment
 
 ### Preparation

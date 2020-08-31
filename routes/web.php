@@ -14,5 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/startseite', 'PageController@landing');
-
+Route::get('/admin', 'AdminController@show');
 Route::fallback('PageController@show');
+
+Route::get('/home', 'HomeController@index')->name('home');
