@@ -30,10 +30,11 @@
                 </div>
                 </div>
                 <div class="col-md-3 mt-3 mt-md-0">
-                <address>
                     <h3>Gemeinde Abfaltersbach</h3>
-                    9913 Abfaltersbach 183<br>
-                    Tirol<br>
+                    <address>
+                        9913 Abfaltersbach 183<br>
+                        Tirol<br>
+                    </address>
                     <br>
                     <i class="fa fa-phone mr-2" title="Telefon"></i> +43 (0) 4846 6210<br>
                     <i class="fa fa-fax mr-2" title="Fax"></i> +43 (0) 4846 6210-5<br>
@@ -41,7 +42,6 @@
                     <br><br>
                     <h4>Öffnungszeiten:</h4>
                     Montag - Freitag: 08:00 - 12:00
-                </address>
                 </div>
             </div>
             <div class="row">
@@ -52,4 +52,6 @@
             </div>
         </div>
     </div>
+    <a href="#navigation" class="sr-only">Zur Navigation springen</a>
+    <a href="#main-content" class="sr-only">Zum Inhalt springen</a>
 </footer>

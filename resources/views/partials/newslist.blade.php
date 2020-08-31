@@ -4,16 +4,11 @@
     @forelse ($news as $news_item)
 
         <li class="newslist_item mb-4">
-            <h3 class="newslist_item_title">
-                {{ $news_item->title }}
-                <small class="newslist_item_date">{{ $news_item->date->format('d.m.') }}</small>
-            </h3>
+            <h3 class="newslist_item_title">{{ $news_item->title }} <small class="newslist_item_date">{{ $news_item->date->format('d.m.') }}</small></h3>
 
             @isset ($news_item->text)
 
-                <div class="newslist_item_body">
-                    {!! $news_item->text !!}
-                </div>
+                <div class="newslist_item_body">{!! $news_item->text !!}</div>
 
             @endisset
 

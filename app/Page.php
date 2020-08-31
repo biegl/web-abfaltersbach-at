@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+
 use App\News;
 use App\Event;
 use Cache;
@@ -57,9 +59,11 @@ class Page extends Model
 
     public function getModulesAttribute()
     {
+        $title = $this->seitentitel;
         $content = $this->content;
         $navigation = Navigation::topLevel()->get();
         $breadcrumbs = Navigation::breadcrumbs($this);
+        $subnavigation = Navigation::subnavigation($this);
 
         switch ($this->templateName) {
             case 'page.home':
@@ -76,10 +80,10 @@ class Page extends Model
                     return Event::current()->get();
                 });
 
-                return compact('content', 'navigation', 'breadcrumbs', 'news', 'grouped_events', 'current_events');
+                return compact('title', 'content', 'navigation', 'breadcrumbs', 'news', 'grouped_events', 'current_events');
             default:
                 $files = $this->files;
-                return compact('content', 'navigation', 'breadcrumbs', 'files');
+                return compact('title', 'content', 'navigation', 'breadcrumbs', 'subnavigation', 'files');
         }
     }
 

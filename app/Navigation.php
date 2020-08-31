@@ -73,6 +73,21 @@ class Navigation extends Model
         ]));
     }
 
+    public static function subnavigation(\App\Page $page)
+    {
+        $nav_item = Navigation::where('ID', $page->navigation_id)->first();
+
+        if ($nav_item->parent()) {
+            return $nav_item
+                ->parent()
+                ->children()
+                ->visible()
+                ->get();
+        }
+
+        return [];
+    }
+
     public static function getUrlMap()
     {
         $pages = Navigation::visible()->get();
