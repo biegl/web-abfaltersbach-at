@@ -61,7 +61,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import UppyUploader from "../components/UppyUploader";
+import UppyUploader from "./UppyUploader.vue";
 
 export default Vue.extend({
     name: "FileManager",

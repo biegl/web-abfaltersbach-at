@@ -178,8 +178,8 @@
 import Vue from "vue";
 import moment from "moment";
 import News from "@/models/news";
-import DatePicker from "@/components/DatePicker";
-import FileManager from "@/components/FileManager";
+import DatePicker from "@/components/DatePicker.vue";
+import FileManager from "@/components/FileManager.vue";
 
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import "@ckeditor/ckeditor5-build-classic/build/translations/de";
