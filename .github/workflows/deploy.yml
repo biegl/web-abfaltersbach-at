@@ -33,11 +33,11 @@ jobs:
           docker exec abf-app composer install
 
       - name: Build EasyAdmin
-          working-directory: ./resources/easyadmin
-          run: |
-            npm install
-            npm run build --if-present
-            cp -R ./dist ../../public/admin
+        working-directory: ./resources/easyadmin
+        run: |
+          npm install
+          npm run build --if-present
+          cp -R ./dist ../../public/admin
 
       - name: Deploy
         run: |
