@@ -145,12 +145,31 @@
             .nav-link {
                 color: #fff !important;
             }
+
+            &:focus-within {
+                .nav-link {
+                    background: #fff !important;
+                    color: #333 !important;
+                }
+            }
         }
     }
 
     .navbar-collapse {
         overflow: auto;
         height: calc(100vh - 50px);
+    }
+
+    .nav-link {
+        &:focus,
+        &:hover {
+            background: $highlightColor !important;
+            color: #333 !important;
+        }
+    }
+
+    .nav-item.active > .nav-link {
+        background: #333 !important;
     }
 
     .nav-item.active .dropdown-item {

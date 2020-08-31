@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-        <title>Gemeinde Abfaltersbach</title>
+        <title>Gemeinde Abfaltersbach - {{ $title }}</title>
 
         <link rel="icon" href="{{ asset('images/favicon.ico') }}">
 
@@ -38,7 +38,7 @@
 
         @include('partials.header')
 
-        <section id="main-content" class="content">
+        <section id="main-content" class="content" tabindex="-1">
             <div class="container">
                 <div class="row">
                     <div class="col-md-9 text-content">

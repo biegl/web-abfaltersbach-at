@@ -59,6 +59,7 @@ class Page extends Model
 
     public function getModulesAttribute()
     {
+        $title = $this->seitentitel;
         $content = $this->content;
         $navigation = Navigation::topLevel()->get();
         $breadcrumbs = Navigation::breadcrumbs($this);
@@ -79,10 +80,10 @@ class Page extends Model
                     return Event::current()->get();
                 });
 
-                return compact('content', 'navigation', 'breadcrumbs', 'news', 'grouped_events', 'current_events');
+                return compact('title', 'content', 'navigation', 'breadcrumbs', 'news', 'grouped_events', 'current_events');
             default:
                 $files = $this->files;
-                return compact('content', 'navigation', 'breadcrumbs', 'subnavigation', 'files');
+                return compact('title', 'content', 'navigation', 'breadcrumbs', 'subnavigation', 'files');
         }
     }
 
