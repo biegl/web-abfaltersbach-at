@@ -49,7 +49,8 @@
                 </div>
                 <div class="form-group">
                     <div v-if="message" class="alert alert-danger" role="alert">
-                        {{ message }}
+                        <span v-if="message.errors.email[0] == 'auth.failed'">Benutzername und/oder Passwort falsch!</span>
+                        <span v-else>{{ message.message }}</span>
                     </div>
                 </div>
             </form>

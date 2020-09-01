@@ -15,8 +15,8 @@ return [
     'reset' => [
         'header' => 'Passwort zurücksetzen',
         'label' => [
-            'newPassword' => 'Passwort',
-            'E-Mail Adresse',
+            'newPassword' => 'Neues Passwort',
+            'email' => 'EMail Adresse',
             'confirm' => 'Passwort bestätigen',
         ],
         'button' => [
@@ -25,4 +25,6 @@ return [
     ],
     'request' => 'Passwort vergessen?',
     'user' => 'Kein Benutzer mit dieser Email vorhanden',
+    'throttle' => 'Zu viele Anfragen. Bitte versuchen Sie es später erneut',
+    'sent' => 'Eine Email zum Zurücksetzen des Passworts wurde an die angegebene Email Adresse verschickt',
 ];
