@@ -43,13 +43,15 @@
                         ></span>
                         <span v-show="!loading">Anmelden</span>
                     </button>
-                    <router-link to="/forgot-password" class="nav-link">
+                    <a href="/password/reset" class="nav-link">
                         Passwort vergessen
-                    </router-link>
+                    </a>
                 </div>
                 <div class="form-group">
                     <div v-if="message" class="alert alert-danger" role="alert">
-                        <span v-if="message.errors.email[0] == 'auth.failed'">Benutzername und/oder Passwort falsch!</span>
+                        <span v-if="message.errors.email[0] == 'auth.failed'"
+                            >Benutzername und/oder Passwort falsch!</span
+                        >
                         <span v-else>{{ message.message }}</span>
                     </div>
                 </div>
