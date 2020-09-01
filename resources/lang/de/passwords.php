@@ -25,6 +25,6 @@ return [
     ],
     'request' => 'Passwort vergessen?',
     'user' => 'Kein Benutzer mit dieser Email vorhanden',
-    'throttle' => 'Zu viele Anfragen. Bitte versuchen Sie es später erneut',
+    'throttled' => 'Zu viele Anfragen. Bitte versuchen Sie es später erneut',
     'sent' => 'Eine Email zum Zurücksetzen des Passworts wurde an die angegebene Email Adresse verschickt',
 ];
