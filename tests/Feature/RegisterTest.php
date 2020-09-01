@@ -58,7 +58,7 @@ class RegisterTest extends TestCase
             ->assertJson([
                 'message' => 'The given data was invalid.',
                 'errors' => [
-                    'password' => ['validation.confirmed']
+                    'password' => ['Die Passwörter stimmen nicht überein']
                 ]
             ]);
     }

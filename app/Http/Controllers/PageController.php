@@ -30,8 +30,9 @@ class PageController extends Controller
         if (!$page) {
             $navigation = Navigation::topLevel()->get();
             $breadcrumbs = [];
+            $title = "Not Found";
 
-            return view('errors.404', compact('navigation', 'breadcrumbs'));
+            return view('errors.404', compact('title', 'navigation', 'breadcrumbs'));
         }
 
         $modules = $page->modules;

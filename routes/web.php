@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +15,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/startseite', 'PageController@landing');
-Route::get('/admin', 'AdminController@show');
+Auth::routes();
 Route::fallback('PageController@show');
-
-Route::get('/home', 'HomeController@index')->name('home');

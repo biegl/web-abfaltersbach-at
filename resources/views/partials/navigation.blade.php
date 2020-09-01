@@ -7,6 +7,7 @@
         </div>
     </div>
 </div>
+@if (isset($navigation))
 <nav id="navigation" class="navbar navbar-expand-lg sticky-top navbar-light bg-light">
     <div class="container">
         <img src="{{ asset('images/logo/wappen_abfaltersbach.png') }}" class="navigation__logo-image" alt="Wappen der Gemeinde Abfaltersbach">
@@ -55,3 +56,4 @@
         </div>
     </div>
 </nav>
+@endif

@@ -8,7 +8,7 @@
             />
             <form name="form" @submit.prevent="handleLogin">
                 <div class="form-group">
-                    <label for="username">Username</label>
+                    <label for="username">Benutzername</label>
                     <input
                         v-model="user.username"
                         type="text"
@@ -19,7 +19,7 @@
                     />
                 </div>
                 <div class="form-group">
-                    <label for="password">Password</label>
+                    <label for="password">Passwort</label>
                     <input
                         v-model="user.password"
                         type="password"
@@ -29,7 +29,7 @@
                         autocomplete="current-password"
                     />
                     <div v-if="false" class="alert alert-danger" role="alert">
-                        Password is required!
+                        Passwort ist erforderlich!
                     </div>
                 </div>
                 <div class="form-group">
@@ -41,12 +41,18 @@
                             v-show="loading"
                             class="spinner-border spinner-border-sm"
                         ></span>
-                        <span v-show="!loading">Login</span>
+                        <span v-show="!loading">Anmelden</span>
                     </button>
+                    <a href="/password/reset" class="nav-link">
+                        Passwort vergessen
+                    </a>
                 </div>
                 <div class="form-group">
                     <div v-if="message" class="alert alert-danger" role="alert">
-                        {{ message }}
+                        <span v-if="message.errors.email[0] == 'auth.failed'"
+                            >Benutzername und/oder Passwort falsch!</span
+                        >
+                        <span v-else>{{ message.message }}</span>
                     </div>
                 </div>
             </form>
