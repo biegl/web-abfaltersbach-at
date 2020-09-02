@@ -58,7 +58,7 @@ export const news = {
                     return Promise.reject(error);
                 }
             );
-        }
+        },
     },
     mutations: {
         loadSuccess(state: NewsState, news: News[]) {
@@ -70,22 +70,24 @@ export const news = {
         deleteSuccess(state: NewsState, id: string) {
             state.items = state.items.filter((news: News) => news.ID !== id);
         },
-        deleteFailure(state: NewsState) {
+        deleteFailure() {
             console.error("Deleting News failed");
         },
         createSuccess(state: NewsState, news: News) {
             state.items = [news, ...state.items];
         },
-        createFailure(state: NewsState) {
+        createFailure() {
             console.error("Creating News failed");
         },
         updateSuccess(state: NewsState, createdNews: News) {
             state.items = state.items.map(news => {
-                if (news.ID === createdNews.ID) { return createdNews }
-                return news
-            })
+                if (news.ID === createdNews.ID) {
+                    return createdNews;
+                }
+                return news;
+            });
         },
-        updateFailure(state: NewsState) {
+        updateFailure() {
             console.error("Updating News failed");
         },
     },

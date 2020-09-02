@@ -1,13 +1,13 @@
-import axios from 'axios'
-import authHeader from './auth-header'
-import Config from '../config'
+import axios from "axios";
+import authHeader from "./auth-header";
+import Config from "../config";
 
-const BASE_URL = `${Config.host}/api/users`
+const BASE_URL = `${Config.host}/api/users`;
 
 class UserService {
     getAll() {
-        return axios.get(BASE_URL, { headers: authHeader() })
+        return axios.get(BASE_URL, { headers: authHeader() });
     }
 }
 
-export default new UserService()
+export default new UserService();

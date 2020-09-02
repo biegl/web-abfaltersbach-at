@@ -66,16 +66,16 @@ export default Vue.extend({
 });
 </script>
 <style>
-    body {
-        height: 100%;
-        width: 100%;
-        overflow: hidden;
-    }
-    .content-box {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 56px;
-        bottom: 0;
-    }
+body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+.content-box {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 56px;
+    bottom: 0;
+}
 </style>

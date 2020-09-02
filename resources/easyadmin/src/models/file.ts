@@ -5,7 +5,13 @@ export default class File {
     extension: string;
     fileSize: number;
 
-    constructor(ID: string, title: string, file: string, extension: string, fileSize: number) {
+    constructor(
+        ID: string,
+        title: string,
+        file: string,
+        extension: string,
+        fileSize: number
+    ) {
         this.ID = ID;
         this.title = title;
         this.file = file;
@@ -14,7 +20,9 @@ export default class File {
     }
 
     get isImage(): boolean {
-        return ['png', 'bmp', 'jpg', 'jpeg', 'tiff', 'webp'].includes(this.extension);
+        return ["png", "bmp", "jpg", "jpeg", "tiff", "webp"].includes(
+            this.extension
+        );
     }
 
     get isFile(): boolean {

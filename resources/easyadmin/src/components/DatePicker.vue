@@ -12,7 +12,7 @@
             <input
                 type="text"
                 class="form-control form-control-sm"
-                v-bind:aria-describedby="helpId "
+                v-bind:aria-describedby="helpId"
                 readonly
                 id="date"
                 v-bind:value="selectedDate | moment"
@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Vue } from "vue-property-decorator";
 import moment from "moment";
 
 export default Vue.extend({
@@ -37,7 +37,7 @@ export default Vue.extend({
         event: "change",
     },
 
-    props: ['selectedDate', 'helpId'],
+    props: ["selectedDate", "helpId"],
 
     data() {
         return {

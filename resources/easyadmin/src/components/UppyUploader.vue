@@ -21,7 +21,6 @@ import Uppy from "@uppy/core";
 import German from "@uppy/locales/lib/de_DE";
 import XHRUpload from "@uppy/xhr-upload";
 import Dashboard from "@uppy/dashboard";
-import Form from "@uppy/form";
 
 import notify from "../services/notify.service";
 import axios from "axios";
