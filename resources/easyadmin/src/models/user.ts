@@ -2,6 +2,8 @@ export default class User {
     username: string;
     email: string;
     password: string;
+    api_token: string;
+    role: number;
 
     constructor(username: string, email: string, password: string) {
         this.username = username;
