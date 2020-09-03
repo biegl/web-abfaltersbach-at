@@ -18,6 +18,10 @@ Route::middleware('auth:api', 'cors')->group(function () {
     Route::resource('files', 'Api\FilesController');
 });
 
+Route::middleware('auth:api', 'cors', 'isAdmin')->group(function () {
+    Route::resource('users', 'Api\UsersController');
+});
+
 Route::middleware('cors')->group(function () {
     Route::post('register', 'Auth\RegisterController@register');
     Route::post('login', 'Auth\LoginController@login');

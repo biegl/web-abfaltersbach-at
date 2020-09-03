@@ -6,7 +6,12 @@ const BASE_URL = `${Config.host}/api/users`;
 
 class UserService {
     getAll() {
-        return axios.get(BASE_URL, { headers: authHeader() });
+        return axios.get(BASE_URL, { headers: authHeader() })
+            .then(response => response.data);
+    }
+
+    delete(id: number): Promise<void> {
+        return axios.delete(`${BASE_URL}/${id}`, { headers: authHeader() });
     }
 }
 

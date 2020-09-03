@@ -2,21 +2,21 @@
     <div id="app">
         <nav class="navbar navbar-expand navbar-dark fixed-top bg-dark">
             <div class="navbar-nav mr-auto">
-                <li v-if="currentUser" class="nav-item">
+                <li v-if="isLoggedIn" class="nav-item">
                     <router-link to="/" class="nav-link">
                         <i class="fa fa-home"></i>
-                        Home
+                        Startseite
                     </router-link>
                 </li>
-                <li v-if="currentUser" class="nav-item">
+                <li v-if="isAdmin" class="nav-item">
                     <router-link to="/news" class="nav-link">News</router-link>
                 </li>
-                <li v-if="currentUser" class="nav-item">
-                    <router-link to="/user" class="nav-link">User</router-link>
+                <li v-if="isAdmin" class="nav-item">
+                    <router-link to="/users" class="nav-link">User</router-link>
                 </li>
             </div>
 
-            <div v-if="!currentUser" class="navbar-nav ml-auto">
+            <div v-if="!isLoggedIn" class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <router-link to="/login" class="nav-link">
                         <i class="fa fa-sign-in-alt"></i>
@@ -25,7 +25,7 @@
                 </li>
             </div>
 
-            <div v-if="currentUser" class="navbar-nav ml-auto">
+            <div v-if="isLoggedIn" class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <router-link to="/profile" class="nav-link">
                         <i class="fa fa-user"></i>
@@ -50,12 +50,19 @@
 <script lang="ts">
 import User from "./models/user";
 import Vue from "vue";
+import { Role } from "./helpers/role";
 
 export default Vue.extend({
     computed: {
         currentUser(): User {
             return this.$store.state.auth.user;
         },
+        isLoggedIn(): boolean {
+            return !!this.currentUser
+        },
+        isAdmin(): boolean {
+            return this.currentUser && this.currentUser.role === Role.Admin
+        }
     },
     methods: {
         logOut() {

@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreNews;
-use App\News;
+use App\User;
+use App\Http\Requests\StoreUser;
 
-class NewsController extends Controller
+class UsersController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +16,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        return News::orderBy('date', 'desc')->get();
+        return User::all();
     }
 
     /**
@@ -24,21 +25,21 @@ class NewsController extends Controller
      * @param  \App\Http\Requests\StoreNews  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreNews $request)
+    public function store(StoreUser $request)
     {
-        $news = News::create($request->validated());
-        return response()->json($news, 201);
+        $user = User::create($request->validated());
+        return response()->json($user, 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  News  $news
+     * @param  User  $news
      * @return \Illuminate\Http\Response
      */
-    public function show(News $news)
+    public function show(User $user)
     {
-        return $news;
+        return $user;
     }
 
     /**
@@ -48,10 +49,10 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreNews $request, News $news)
+    public function update(StoreUser $request, User $user)
     {
-        $news->update($request->validated());
-        return response()->json($news, 200);
+        $user->update($request->validated());
+        return response()->json($user, 200);
     }
 
     /**
@@ -60,9 +61,9 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(News $news)
+    public function destroy(User $user)
     {
-        $news->delete();
+        $user->delete();
         return response()->json(null, 204);
     }
 }
