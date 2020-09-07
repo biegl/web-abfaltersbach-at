@@ -19,6 +19,7 @@ Route::middleware('auth:api', 'cors')->group(function () {
 });
 
 Route::middleware('auth:api', 'cors', 'isAdmin')->group(function () {
+    Route::post('users/{user}/revoke', 'Api\UsersController@revoke');
     Route::resource('users', 'Api\UsersController');
 });
 

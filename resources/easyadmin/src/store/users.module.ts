@@ -23,10 +23,22 @@ export const users = {
                 }
             );
         },
+        add({ commit }, user: User) {
+            return UserService.add(user).then(
+                addedUser => {
+                    commit("addSuccess", addedUser);
+                    return Promise.resolve();
+                },
+                error => {
+                    commit("addFailure");
+                    return Promise.reject(error);
+                }
+            );
+        },
         update({ commit }, user: User) {
             return UserService.update(user).then(
-                () => {
-                    commit("updateSuccess", user);
+                updatedUser => {
+                    commit("updateSuccess", updatedUser);
                     return Promise.resolve();
                 },
                 error => {
@@ -36,13 +48,25 @@ export const users = {
             );
         },
         delete({ commit }, user: User) {
-            return UserService.delete(user.id).then(
+            return UserService.delete(user).then(
                 () => {
                     commit("deleteSuccess", user.id);
                     return Promise.resolve();
                 },
                 error => {
                     commit("deleteFailure");
+                    return Promise.reject(error);
+                }
+            );
+        },
+        revoke({ commit }, user: User) {
+            return UserService.revoke(user).then(
+                () => {
+                    commit("revokeSuccess", user.id);
+                    return Promise.resolve();
+                },
+                error => {
+                    commit("revokeFailure");
                     return Promise.reject(error);
                 }
             );
@@ -62,11 +86,24 @@ export const users = {
             console.error("Deleting User failed");
         },
         updateSuccess(state: UserState, updatedUser: User) {
-            state.all = state.all.map((user: User) => user.id === updatedUser.id ? updatedUser : user);
+            state.all = state.all.map((user: User) =>
+                user.id === updatedUser.id ? updatedUser : user
+            );
         },
         updateFailure() {
             console.error("Updating User failed");
         },
+        addSuccess(state: UserState, addedUser: User) {
+            state.all = [...state.all, addedUser];
+        },
+        addFailure() {
+            console.error("Adding User failed");
+        },
+        revokeSuccess(state: UserState) {
+            console.log('Password has been revoked');
+        },
+        revokeFailure() {
+            console.error("Revoking password failed");
+        },
     },
-
 };

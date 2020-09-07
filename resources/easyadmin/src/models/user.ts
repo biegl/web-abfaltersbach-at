@@ -1,3 +1,5 @@
+import { Role } from "./../helpers/role";
+
 export default class User {
     id: number;
     username: string;
@@ -10,5 +12,6 @@ export default class User {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.role = Role.User;
     }
 }
