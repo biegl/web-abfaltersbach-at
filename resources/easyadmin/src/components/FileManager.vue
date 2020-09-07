@@ -60,14 +60,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Vue } from "vue-property-decorator";
 import UppyUploader from "./UppyUploader.vue";
 
 export default Vue.extend({
     name: "FileManager",
 
     components: {
-        UppyUploader
+        UppyUploader,
     },
 
     data() {
@@ -82,11 +82,11 @@ export default Vue.extend({
             return this.$store.state.files.files;
         },
         fileList() {
-            return this.files.filter(file => file.isFile)
+            return this.files.filter(file => file.isFile);
         },
         imageList() {
-            return this.files.filter(file => file.isImage)
-        }
+            return this.files.filter(file => file.isImage);
+        },
     },
 
     created() {

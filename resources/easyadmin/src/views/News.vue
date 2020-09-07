@@ -177,7 +177,7 @@
 <script lang="ts">
 import Vue from "vue";
 import moment from "moment";
-import News from "@/models/news";
+import News from "../models/news";
 import DatePicker from "@/components/DatePicker.vue";
 import FileManager from "@/components/FileManager.vue";
 
@@ -256,7 +256,7 @@ export default Vue.extend({
 
             this.$store
                 .dispatch(`news/${action}`, this.draftNewsEntry)
-                .then(news => {
+                .then(() => {
                     this.isCreating = false;
                 })
                 .finally(() => {

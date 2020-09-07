@@ -15,13 +15,16 @@ export const files = {
         load({ commit }) {
             return FileService.getAll().then(
                 files => {
-                    files = files.map(file => new File(
-                        file.ID,
-                        file.title,
-                        file.file,
-                        file.extension,
-                        file.fileSize
-                    ));
+                    files = files.map(
+                        file =>
+                            new File(
+                                file.ID,
+                                file.title,
+                                file.file,
+                                file.extension,
+                                file.fileSize
+                            )
+                    );
 
                     commit("loadSuccess", files);
                     return Promise.resolve(files);
@@ -67,7 +70,7 @@ export const files = {
                     return Promise.reject(error);
                 }
             );
-        }
+        },
     },
     mutations: {
         loadSuccess(state: FileState, files: File[]) {
@@ -79,22 +82,24 @@ export const files = {
         deleteSuccess(state: FileState, id: string) {
             state.files = state.files.filter((file: File) => file.ID !== id);
         },
-        deleteFailure(state: FileState) {
+        deleteFailure() {
             console.error("Deleting File failed");
         },
         createSuccess(state: FileState, file: File) {
             state.files = [file, ...state.files];
         },
-        createFailure(state: FileState) {
+        createFailure() {
             console.error("Creating File failed");
         },
         updateSuccess(state: FileState, createdFile: File) {
             state.files = state.files.map(file => {
-                if (file.ID === createdFile.ID) { return createdFile }
-                return file
-            })
+                if (file.ID === createdFile.ID) {
+                    return createdFile;
+                }
+                return file;
+            });
         },
-        updateFailure(state: FileState) {
+        updateFailure() {
             console.error("Updating File failed");
         },
     },

@@ -1,0 +1,7 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    RewriteRule ^index\.html$ - [L]
+    RewriteCond %{REQUEST_URI} !^/(img|font-awesome|css|js|bootstrap|favicon)/
+    RewriteRule . index.html [L]
+</IfModule>

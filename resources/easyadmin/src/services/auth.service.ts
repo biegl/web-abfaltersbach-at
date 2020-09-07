@@ -4,6 +4,10 @@ import Config from "../config";
 
 const BASE_URL = Config.host + "/api";
 class AuthService {
+    get currentUser(): User {
+        return JSON.parse(window.localStorage.getItem("user"));
+    }
+
     login(user: User) {
         return axios
             .post(`${BASE_URL}/login`, {

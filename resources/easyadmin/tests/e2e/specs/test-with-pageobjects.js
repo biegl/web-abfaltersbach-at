@@ -30,5 +30,5 @@ module.exports = {
         welcomeSection.expect
             .element("@cliPluginLinks")
             .text.to.contain("e2e-nightwatch");
-    }
+    },
 };
