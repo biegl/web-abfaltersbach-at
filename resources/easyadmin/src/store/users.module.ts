@@ -100,7 +100,7 @@ export const users = {
             console.error("Adding User failed");
         },
         revokeSuccess(state: UserState) {
-            console.log('Password has been revoked');
+            console.log("Password has been revoked");
         },
         revokeFailure() {
             console.error("Revoking password failed");

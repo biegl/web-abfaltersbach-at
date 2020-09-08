@@ -28,6 +28,7 @@ class AuthService {
 
     logout() {
         localStorage.removeItem("user");
+        return axios.post(`${BASE_URL}/logout`);
     }
 }
 

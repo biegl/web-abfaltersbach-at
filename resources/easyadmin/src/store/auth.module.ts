@@ -29,8 +29,16 @@ export const auth = {
             );
         },
         logout({ commit }) {
-            AuthService.logout();
-            commit("logout");
+            return AuthService.logout().then(
+                () => {
+                    commit("logout");
+                    return Promise.resolve();
+                },
+                error => {
+                    commit("logoutError");
+                    return Promise.reject(error);
+                }
+            );
         },
     },
     mutations: {
