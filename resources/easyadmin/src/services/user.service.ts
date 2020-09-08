@@ -13,7 +13,9 @@ class UserService {
     }
 
     delete(user: User): Promise<void> {
-        return axios.delete(`${BASE_URL}/${user.id}`, { headers: authHeader() });
+        return axios.delete(`${BASE_URL}/${user.id}`, {
+            headers: authHeader(),
+        });
     }
 
     update(user: User): Promise<User> {
@@ -30,7 +32,11 @@ class UserService {
 
     revoke(user: User): Promise<void> {
         return axios
-            .post(`${BASE_URL}/${user.id}/revoke`, {}, { headers: authHeader() })
+            .post(
+                `${BASE_URL}/${user.id}/revoke`,
+                {},
+                { headers: authHeader() }
+            )
             .then(response => response.data);
     }
 }

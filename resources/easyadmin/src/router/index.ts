@@ -1,9 +1,9 @@
-import { Role } from './../helpers/role';
+import { Role } from "./../helpers/role";
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import Home from "../views/Home.vue";
 import Login from "@/views/Login.vue";
-import authService from '@/services/auth.service';
+import authService from "@/services/auth.service";
 
 Vue.use(VueRouter);
 
@@ -34,9 +34,9 @@ const routes: Array<RouteConfig> = [
         meta: { authorize: [Role.Admin] },
     },
     {
-        path: '*',
-        redirect: '/',
-    }
+        path: "*",
+        redirect: "/login",
+    },
 ];
 
 const router = new VueRouter({
@@ -53,13 +53,13 @@ router.beforeEach((to, from, next) => {
     if (authorize) {
         if (!currentUser) {
             // not logged in so redirect to login page with the return url
-            return next({ path: '/login', query: { returnUrl: to.path } });
+            return next({ path: "/login", query: { returnUrl: to.path } });
         }
 
         // check if route is restricted by role
         if (authorize.length && !authorize.includes(currentUser.role)) {
             // role not authorised so redirect to home page
-            return next({ path: '/' });
+            return next({ path: "/" });
         }
     }
 

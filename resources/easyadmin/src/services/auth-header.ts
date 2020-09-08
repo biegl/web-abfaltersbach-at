@@ -1,4 +1,4 @@
-import authService from './auth.service';
+import authService from "./auth.service";
 
 export default function authHeader() {
     const user = authService.currentUser;
