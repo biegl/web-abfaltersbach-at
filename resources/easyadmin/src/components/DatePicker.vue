@@ -3,6 +3,9 @@
         :attributes="attrs"
         v-bind:value="selectedDate"
         v-on:input="selectDate($event)"
+        :min-date="this.minDate"
+        locale="de"
+        is-dark
         :popover="{
             placement: 'bottom',
             visibility: 'click',
@@ -21,6 +24,14 @@
                 <button class="btn btn-outline-secondary btn-sm" type="button">
                     <i class="fa fa-calendar"></i>
                 </button>
+                <button
+                    v-if="clearButton"
+                    class="btn btn-outline-secondary btn-sm"
+                    type="button"
+                    @click="clearDate"
+                >
+                    <i class="fa fa-ban"></i>
+                </button>
             </div>
         </div>
     </v-date-picker>
@@ -37,7 +48,7 @@ export default Vue.extend({
         event: "change",
     },
 
-    props: ["selectedDate", "helpId"],
+    props: ["selectedDate", "helpId", "minDate", "clearButton"],
 
     data() {
         return {
@@ -57,7 +68,13 @@ export default Vue.extend({
 
     methods: {
         selectDate(date) {
-            this.$emit("change", date);
+            const formattedDate = moment(date).format("YYYY-MM-DD");
+            this.$emit("change", formattedDate);
+        },
+        clearDate(event) {
+            event.stopImmediatePropagation();
+            event.preventDefault();
+            this.$emit("change", null);
         },
     },
 });

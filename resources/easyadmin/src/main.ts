@@ -10,7 +10,7 @@ import store from "./store";
 Vue.use(CKEditor);
 Vue.config.productionTip = false;
 Vue.use(VCalendar, {
-    locale: "de-DE",
+    locale: "de",
 });
 
 Vue.use(CKEditor);

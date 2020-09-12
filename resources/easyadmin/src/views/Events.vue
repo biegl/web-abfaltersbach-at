@@ -1,5 +1,5 @@
 <template>
-    <div class="news-container">
+    <div class="events-container">
         <div class="workspace">
             <div class="main-content">
                 <div class="container">
@@ -9,20 +9,17 @@
                                 <button
                                     class="btn btn-primary float-right"
                                     v-bind:disabled="isCreating"
-                                    @click="createNews"
+                                    @click="createEvent"
                                 >
                                     Erstellen
                                 </button>
-                                <h1>News</h1>
+                                <h1>Veranstaltungen</h1>
                             </div>
                             <table class="table table-bordered table-sm">
                                 <thead>
                                     <tr>
                                         <th scope="col" class="date">Datum</th>
-                                        <th scope="col" class="date">
-                                            Gültig bis
-                                        </th>
-                                        <th scope="col">Titel</th>
+                                        <th scope="col">Beschreibung</th>
                                         <th scope="col" width="108"></th>
                                     </tr>
                                 </thead>
@@ -33,35 +30,27 @@
                                                 v-show="isLoading"
                                                 class="spinner-border spinner-border-sm"
                                             ></span>
-                                            Newseinträge werden geladen
+                                            Veranstaltungen werden geladen
                                         </td>
                                     </tr>
                                 </tbody>
-                                <tbody v-else-if="news.length == 0">
+                                <tbody v-else-if="events.length == 0">
                                     <tr>
-                                        <td colspan="4">
-                                            Im Moment sind keine News vorhanden.
+                                        <td colspan="3">
+                                            Im Moment sind keine Veranstaltungen
+                                            geplant.
                                         </td>
                                     </tr>
                                 </tbody>
                                 <tbody v-else>
-                                    <tr v-for="news in news" :key="news.ID">
+                                    <tr v-for="event in events" :key="event.ID">
                                         <td>
                                             <span class="no-break">
-                                                {{ news.date | moment }}
+                                                {{ event.date | moment }}
                                             </span>
                                         </td>
                                         <td>
-                                            <span class="no-break">
-                                                {{
-                                                    news.expirationDate | moment
-                                                }}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <div class="text-truncate">
-                                                {{ news.title }}
-                                            </div>
+                                            <div v-html="event.text"></div>
                                         </td>
                                         <td>
                                             <button
@@ -69,7 +58,7 @@
                                                 class="btn btn-default"
                                                 aria-label="Bearbeiten"
                                                 title="Bearbeiten"
-                                                @click="editNews(news)"
+                                                @click="editEvent(event)"
                                             >
                                                 <i class="fa fa-edit"></i>
                                             </button>
@@ -78,7 +67,7 @@
                                                 class="btn btn-danger"
                                                 aria-label="Löschen"
                                                 title="Löschen"
-                                                @click="deleteNews(news)"
+                                                @click="deleteEvent(event)"
                                             >
                                                 <i class="fa fa-trash"></i>
                                             </button>
@@ -90,14 +79,14 @@
                     </div>
                 </div>
 
-                <news-entry-form
+                <event-entry-form
                     v-show="isCreating"
-                    @cancelForm="cancelNewsForm"
+                    @cancelForm="cancelEventForm"
                     @onSubmissionStart="isSubmitting = true"
                     @onSubmissionEnd="isSubmitting = false"
                     @onSubmissionSuccess="isCreating = false"
                     :bus="eventBus"
-                ></news-entry-form>
+                ></event-entry-form>
             </div>
         </div>
     </div>
@@ -106,14 +95,14 @@
 <script lang="ts">
 import Vue from "vue";
 import moment from "moment";
-import News from "../models/news";
-import NewsEntryForm from "@/components/NewsEntryForm.vue";
+import Event from "../models/event";
+import EventEntryForm from "@/components/EventEntryForm.vue";
 
 export default Vue.extend({
     components: {
-        NewsEntryForm,
+        EventEntryForm,
     },
-    name: "News",
+    name: "Events",
     data() {
         return {
             isLoading: false,
@@ -123,8 +112,8 @@ export default Vue.extend({
         };
     },
     computed: {
-        news() {
-            return this.$store.state.news.items;
+        events() {
+            return this.$store.state.events.all;
         },
     },
     filters: {
@@ -136,29 +125,29 @@ export default Vue.extend({
         },
     },
     created() {
-        this.loadNews();
+        this.loadEvents();
     },
     methods: {
-        loadNews() {
+        loadEvents() {
             this.isLoading = true;
-            this.$store.dispatch("news/load").finally(() => {
+            this.$store.dispatch("events/load").finally(() => {
                 this.isLoading = false;
             });
         },
-        createNews() {
+        createEvent() {
             this.isCreating = true;
-            this.eventBus.$emit("edit", new News());
+            this.eventBus.$emit("edit", new Event());
         },
-        editNews(news) {
+        editEvent(event) {
             this.isCreating = true;
-            this.eventBus.$emit("edit", news);
+            this.eventBus.$emit("edit", event);
         },
-        cancelNewsForm() {
+        cancelEventForm() {
             this.isCreating = false;
         },
-        deleteNews(news: News) {
+        deleteEvent(event: Event) {
             if (window.confirm("Soll der Eintrag wirklich gelöscht werden?")) {
-                this.$store.dispatch("news/delete", news);
+                this.$store.dispatch("events/delete", event);
             }
         },
     },
@@ -166,7 +155,7 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-.news-container {
+.events-container {
     background: #fff;
     margin: 0;
 }
@@ -174,7 +163,7 @@ export default Vue.extend({
     display: flex;
     height: 100%;
 }
-.news-container > .row > div {
+.events-container > .row > div {
     background: #fff;
 }
 .main-content {
@@ -184,7 +173,7 @@ export default Vue.extend({
     padding: 20px;
     position: relative;
 }
-.news-table-container {
+.events-table-container {
     height: 100%;
     overflow: auto;
     margin-top: 20px;
@@ -192,7 +181,6 @@ export default Vue.extend({
     border-bottom: 1px solid #ddd;
 }
 .table {
-    table-layout: fixed;
     margin: -1px 0;
 }
 .table td {
@@ -203,11 +191,5 @@ export default Vue.extend({
 }
 .no-break {
     white-space: nowrap;
-}
-.sidebar-right {
-    width: 200px;
-    border-left: 1px solid #ddd;
-    background: #fff;
-    z-index: 1;
 }
 </style>

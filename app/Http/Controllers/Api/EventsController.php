@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Event;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreNews;
-use App\News;
+use App\Http\Requests\StoreEvent;
 
-class NewsController extends Controller
+class EventsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,30 +15,30 @@ class NewsController extends Controller
      */
     public function index()
     {
-        return News::orderBy('date', 'desc')->limit(20)->get();
+        return Event::orderBy('date', 'desc')->limit(20)->get();
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreNews  $request
+     * @param  \App\Http\Requests\StoreEvent  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreNews $request)
+    public function store(StoreEvent $request)
     {
-        $news = News::create($request->validated());
-        return response()->json($news, 201);
+        $event = Event::create($request->validated());
+        return response()->json($event, 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  News  $news
+     * @param  Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function show(News $news)
+    public function show(Event $event)
     {
-        return $news;
+        return $event;
     }
 
     /**
@@ -48,10 +48,10 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreNews $request, News $news)
+    public function update(StoreEvent $request, Event $event)
     {
-        $news->update($request->validated());
-        return response()->json($news, 200);
+        $event->update($request->validated());
+        return response()->json($event, 200);
     }
 
     /**
@@ -60,9 +60,9 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(News $news)
+    public function destroy(Event $event)
     {
-        $news->delete();
+        $event->delete();
         return response()->json(null, 204);
     }
 }
