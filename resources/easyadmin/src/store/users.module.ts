@@ -99,7 +99,7 @@ export const users = {
         addFailure() {
             console.error("Adding User failed");
         },
-        revokeSuccess(state: UserState) {
+        revokeSuccess() {
             console.log("Password has been revoked");
         },
         revokeFailure() {

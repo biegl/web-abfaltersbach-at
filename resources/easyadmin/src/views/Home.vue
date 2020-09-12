@@ -1,18 +1,50 @@
 <template>
-    <div class="home">
-        <img alt="Vue logo" src="../assets/logo.png" />
-        <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+    <div class="container mt-3 p-3">
+        <div class="row">
+            <div class="col">
+                <h1>Willkommen, {{ user.name }}</h1>
+                <p>
+                    Wählen Sie einen Menüpunkt aus um den jeweiligen Bereich zu
+                    bearbeiten
+                </p>
+                <ul>
+                    <li>
+                        <router-link to="/news">News</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/events">Veranstaltungen</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/pages">Seiten</router-link>
+                    </li>
+                    <li v-if="isAdmin">
+                        <router-link to="/users">User</router-link>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
+import { Vue } from "vue-property-decorator";
+import { Role } from "../helpers/role";
+import User from "../models/user";
 
-@Component({
-    components: {
-        HelloWorld,
+export default Vue.extend({
+    name: "Home",
+    computed: {
+        user(): User {
+            return this.$store.state.auth.user;
+        },
+        isAdmin(): boolean {
+            return this.user && this.user.role === Role.Admin;
+        },
     },
-})
-export default class Home extends Vue {}
+});
 </script>
+<style>
+.container {
+    background: #fff;
+}
+</style>

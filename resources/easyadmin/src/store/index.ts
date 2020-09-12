@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { auth } from "./auth.module";
+import { events } from "./events.module";
 import { news } from "./news.module";
 import { files } from "./file.module";
 import { users } from "./users.module";
@@ -14,6 +15,7 @@ export default new Vuex.Store({
     modules: {
         auth,
         news,
+        events,
         files,
         users,
     },

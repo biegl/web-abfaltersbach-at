@@ -8,8 +8,13 @@
                         Startseite
                     </router-link>
                 </li>
-                <li v-if="isAdmin" class="nav-item">
+                <li v-if="isLoggedIn" class="nav-item">
                     <router-link to="/news" class="nav-link">News</router-link>
+                </li>
+                <li v-if="isLoggedIn" class="nav-item">
+                    <router-link to="/events" class="nav-link"
+                        >Veranstaltungen</router-link
+                    >
                 </li>
                 <li v-if="isAdmin" class="nav-item">
                     <router-link to="/users" class="nav-link">User</router-link>
@@ -91,14 +96,15 @@ export default Vue.extend({
 }
 </style>
 <style>
-html{
+html {
     height: 100%;
 }
 body {
     height: 100%;
     width: 100%;
     overflow: hidden;
-    background: url(https://source.unsplash.com/daily?grayscale) center center no-repeat;
+    background: url(https://source.unsplash.com/daily?grayscale) center center
+        no-repeat;
     background-size: cover;
 }
 .content-box {
@@ -107,5 +113,6 @@ body {
     right: 0;
     top: 56px;
     bottom: 0;
+    overflow: auto;
 }
 </style>

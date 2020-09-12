@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreNews extends FormRequest
+class StoreEvent extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,8 @@ class StoreNews extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|max:255',
             'text' => 'required',
             'date' => 'required|date|date_format:Y-m-d',
-            'expirationDate' => 'date|date_format:Y-m-d|after_or_equal:date',
         ];
     }
 }

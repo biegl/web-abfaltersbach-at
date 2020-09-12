@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class News extends Model
 {
@@ -21,8 +22,8 @@ class News extends Model
     ];
 
     protected $casts = [
-        'date' => 'datetime',
-        'expirationDate' => 'datetime',
+        'date' => 'datetime:Y-m-d',
+        'expirationDate' => 'datetime:Y-m-d',
     ];
 
     /**

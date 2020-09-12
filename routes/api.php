@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api', 'cors')->group(function () {
     Route::resource('news', 'Api\NewsController');
     Route::resource('files', 'Api\FilesController');
+    Route::resource('events', 'Api\EventsController');
 });
 
 Route::middleware('auth:api', 'cors', 'isAdmin')->group(function () {
