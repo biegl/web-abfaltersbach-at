@@ -24,7 +24,7 @@ export const users = {
             );
         },
         add({ commit }, user: User) {
-            return UserService.add(user).then(
+            return UserService.create(user).then(
                 addedUser => {
                     commit("addSuccess", addedUser);
                     return Promise.resolve();
@@ -80,7 +80,7 @@ export const users = {
             state.all = [];
         },
         deleteSuccess(state: UserState, id: number) {
-            state.all = state.all.filter((user: User) => user.id !== id);
+            state.all = state.all.filter((user: User) => user.id != `${id}`);
         },
         deleteFailure() {
             console.error("Deleting User failed");

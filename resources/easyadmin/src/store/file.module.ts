@@ -36,9 +36,9 @@ export const files = {
             );
         },
         delete({ commit }, file: File) {
-            return FileService.delete(file.ID).then(
+            return FileService.delete(file).then(
                 () => {
-                    commit("deleteSuccess", file.ID);
+                    commit("deleteSuccess", file.id);
                     return Promise.resolve();
                 },
                 error => {
@@ -80,7 +80,7 @@ export const files = {
             state.files = [];
         },
         deleteSuccess(state: FileState, id: string) {
-            state.files = state.files.filter((file: File) => file.ID !== id);
+            state.files = state.files.filter((file: File) => file.id !== id);
         },
         deleteFailure() {
             console.error("Deleting File failed");
@@ -93,7 +93,7 @@ export const files = {
         },
         updateSuccess(state: FileState, createdFile: File) {
             state.files = state.files.map(file => {
-                if (file.ID === createdFile.ID) {
+                if (file.id === createdFile.id) {
                     return createdFile;
                 }
                 return file;

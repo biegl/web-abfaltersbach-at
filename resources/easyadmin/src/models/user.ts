@@ -1,7 +1,8 @@
 import { Role } from "./../helpers/role";
+import BaseObject from "./base";
 
-export default class User {
-    id: number;
+export default class User implements BaseObject {
+    id: string;
     username: string;
     email: string;
     password: string;
