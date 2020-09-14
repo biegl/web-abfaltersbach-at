@@ -3,7 +3,7 @@
         <div class="card card-container">
             <img
                 id="profile-img"
-                src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+                src="/images/wappen_abfaltersbach.png"
                 class="profile-img-card"
             />
             <form name="form" @submit.prevent="handleLogin">
@@ -139,8 +139,5 @@ label {
     height: 96px;
     margin: 0 auto 10px;
     display: block;
-    -moz-border-radius: 50%;
-    -webkit-border-radius: 50%;
-    border-radius: 50%;
 }
 </style>

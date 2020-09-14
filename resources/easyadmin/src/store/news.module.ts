@@ -2,10 +2,10 @@ import NewsService from "../services/news.service";
 import News from "../models/news";
 
 interface NewsState {
-    items: News[];
+    all: News[];
 }
 
-const initialState: NewsState = { items: [] };
+const initialState: NewsState = { all: [] };
 
 export const news = {
     namespaced: true,
@@ -24,9 +24,9 @@ export const news = {
             );
         },
         delete({ commit }, news: News) {
-            return NewsService.delete(news.ID).then(
+            return NewsService.delete(news).then(
                 () => {
-                    commit("deleteSuccess", news.ID);
+                    commit("deleteSuccess", news.id);
                     return Promise.resolve();
                 },
                 error => {
@@ -62,26 +62,26 @@ export const news = {
     },
     mutations: {
         loadSuccess(state: NewsState, news: News[]) {
-            state.items = news;
+            state.all = news;
         },
         loadFailure(state: NewsState) {
-            state.items = [];
+            state.all = [];
         },
         deleteSuccess(state: NewsState, id: string) {
-            state.items = state.items.filter((news: News) => news.ID !== id);
+            state.all = state.all.filter((news: News) => news.id !== id);
         },
         deleteFailure() {
             console.error("Deleting News failed");
         },
         createSuccess(state: NewsState, news: News) {
-            state.items = [news, ...state.items];
+            state.all = [news, ...state.all];
         },
         createFailure() {
             console.error("Creating News failed");
         },
         updateSuccess(state: NewsState, createdNews: News) {
-            state.items = state.items.map(news => {
-                if (news.ID === createdNews.ID) {
+            state.all = state.all.map(news => {
+                if (news.id === createdNews.id) {
                     return createdNews;
                 }
                 return news;

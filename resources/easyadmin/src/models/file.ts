@@ -1,4 +1,10 @@
-export default class File {
+import BaseObject from "./base";
+
+export default class File implements BaseObject {
+    get id(): string {
+        return this.ID;
+    }
+
     ID = "";
     title = "";
     file: string;

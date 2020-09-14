@@ -24,9 +24,9 @@ export const events = {
             );
         },
         delete({ commit }, event: Event) {
-            return EventService.delete(event.ID).then(
+            return EventService.delete(event).then(
                 () => {
-                    commit("deleteSuccess", event.ID);
+                    commit("deleteSuccess", event.id);
                     return Promise.resolve();
                 },
                 error => {
@@ -68,7 +68,7 @@ export const events = {
             state.all = [];
         },
         deleteSuccess(state: EventState, id: string) {
-            state.all = state.all.filter((event: Event) => event.ID !== id);
+            state.all = state.all.filter((event: Event) => event.id !== id);
         },
         deleteFailure() {
             console.error("Deleting Event failed");
@@ -81,7 +81,7 @@ export const events = {
         },
         updateSuccess(state: EventState, createdEvent: Event) {
             state.all = state.all.map(event => {
-                if (event.ID === createdEvent.ID) {
+                if (event.id === createdEvent.id) {
                     return createdEvent;
                 }
                 return event;

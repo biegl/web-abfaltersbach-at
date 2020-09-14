@@ -2,38 +2,15 @@ import User from "../models/user";
 import axios from "axios";
 import authHeader from "./auth-header";
 import Config from "../config";
+import BaseService from "./base.service";
 
-const BASE_URL = `${Config.host}/api/users`;
-
-class UserService {
-    getAll() {
-        return axios
-            .get(BASE_URL, { headers: authHeader() })
-            .then(response => response.data);
-    }
-
-    delete(user: User): Promise<void> {
-        return axios.delete(`${BASE_URL}/${user.id}`, {
-            headers: authHeader(),
-        });
-    }
-
-    update(user: User): Promise<User> {
-        return axios
-            .put(`${BASE_URL}/${user.id}`, user, { headers: authHeader() })
-            .then(response => response.data);
-    }
-
-    add(user: User): Promise<User> {
-        return axios
-            .post(BASE_URL, user, { headers: authHeader() })
-            .then(response => response.data);
-    }
+class UserService extends BaseService<User> {
+    baseUrl = `${Config.host}/api/users`;
 
     revoke(user: User): Promise<void> {
         return axios
             .post(
-                `${BASE_URL}/${user.id}/revoke`,
+                `${this.baseUrl}/${user.id}/revoke`,
                 {},
                 { headers: authHeader() }
             )
