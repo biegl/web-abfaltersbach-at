@@ -9,4 +9,13 @@ export default class Event implements BaseObject {
     date: Date = new Date();
     text?: string;
     filepath?: string;
+
+    static init(obj: Partial<Event>): Event {
+        const event = new Event();
+        event.ID = obj.ID;
+        event.date = obj.date;
+        event.text = obj.text;
+        event.filepath = obj.filepath;
+        return event;
+    }
 }

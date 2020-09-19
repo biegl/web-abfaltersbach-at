@@ -14,8 +14,9 @@ export const news = {
         load({ commit }) {
             return NewsService.getAll().then(
                 news => {
-                    commit("loadSuccess", news);
-                    return Promise.resolve(news);
+                    const models = news.map(obj => News.init(obj));
+                    commit("loadSuccess", models);
+                    return Promise.resolve(models);
                 },
                 error => {
                     commit("loadFailure");
@@ -38,8 +39,9 @@ export const news = {
         create({ commit }, news: News) {
             return NewsService.create(news).then(
                 createdNews => {
-                    commit("createSuccess", createdNews);
-                    return Promise.resolve(createdNews);
+                    const model = News.init(createdNews);
+                    commit("createSuccess", model);
+                    return Promise.resolve(model);
                 },
                 error => {
                     commit("createFailure");
@@ -50,8 +52,9 @@ export const news = {
         update({ commit }, news: News) {
             return NewsService.update(news).then(
                 updatedNews => {
-                    commit("updateSuccess", updatedNews);
-                    return Promise.resolve(updatedNews);
+                    const model = News.init(updatedNews);
+                    commit("updateSuccess", model);
+                    return Promise.resolve(model);
                 },
                 error => {
                     commit("updateFailure");

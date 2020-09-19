@@ -15,19 +15,9 @@ export const files = {
         load({ commit }) {
             return FileService.getAll().then(
                 files => {
-                    files = files.map(
-                        file =>
-                            new File(
-                                file.ID,
-                                file.title,
-                                file.file,
-                                file.extension,
-                                file.fileSize
-                            )
-                    );
-
-                    commit("loadSuccess", files);
-                    return Promise.resolve(files);
+                    const models = files.map(file =>File.init(file));
+                    commit("loadSuccess", models);
+                    return Promise.resolve(models);
                 },
                 error => {
                     commit("loadFailure");
@@ -50,8 +40,9 @@ export const files = {
         create({ commit }, file: File) {
             return FileService.create(file).then(
                 createdFile => {
-                    commit("createSuccess", createdFile);
-                    return Promise.resolve(createdFile);
+                    const model = File.init(createdFile);
+                    commit("createSuccess", model);
+                    return Promise.resolve(model);
                 },
                 error => {
                     commit("createFailure");
@@ -62,8 +53,9 @@ export const files = {
         update({ commit }, file: File) {
             return FileService.update(file).then(
                 updatedFile => {
-                    commit("updateSuccess", updatedFile);
-                    return Promise.resolve(updatedFile);
+                    const model = File.init(updatedFile);
+                    commit("updateSuccess", model);
+                    return Promise.resolve(model);
                 },
                 error => {
                     commit("updateFailure");

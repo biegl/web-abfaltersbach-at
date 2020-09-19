@@ -11,20 +11,6 @@ export default class File implements BaseObject {
     extension: string;
     fileSize: number;
 
-    constructor(
-        ID: string,
-        title: string,
-        file: string,
-        extension: string,
-        fileSize: number
-    ) {
-        this.ID = ID;
-        this.title = title;
-        this.file = file;
-        this.extension = extension;
-        this.fileSize = fileSize;
-    }
-
     get isImage(): boolean {
         return ["png", "bmp", "jpg", "jpeg", "tiff", "webp"].includes(
             this.extension
@@ -33,5 +19,15 @@ export default class File implements BaseObject {
 
     get isFile(): boolean {
         return !this.isImage;
+    }
+
+    static init(obj: Partial<File>): File {
+        const file = new File();
+        file.ID = obj.ID;
+        file.title = obj.title;
+        file.file = obj.file;
+        file.extension = obj.extension;
+        file.fileSize = obj.fileSize;
+        return file;
     }
 }

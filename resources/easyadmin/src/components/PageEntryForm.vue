@@ -1,10 +1,10 @@
 <template>
     <div class="form-container">
         <div class="form-background"></div>
-        <div class="news-create">
+        <div class="event-create">
             <form @submit="submitForm" class="container form">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Titel</label>
                             <input
@@ -13,53 +13,26 @@
                                 aria-describedby="titelHelp"
                                 required
                                 autofocus
-                                v-model="newsEntry.title"
+                                v-model="pageEntry.seitentitel"
                             />
                             <small id="titelHelp" class="form-text text-muted">
-                                Die Überschrift für den Newseintrag
+                                Die Überschrift der Seite
                             </small>
                         </div>
-
-                        <div class="form-group form-row">
-                            <div class="col">
-                                <label for="date">Datum</label>
-                                <date-picker
-                                    v-model="newsEntry.date"
-                                    help-id="dateHelp"
-                                    @change="checkExpirationDate"
-                                />
-                                <small
-                                    id="dateHelp"
-                                    class="form-text text-muted"
-                                >
-                                    Der News Eintrag wird ab diesem Datum
-                                    angezeigt
-                                </small>
-                            </div>
-                            <div class="col">
-                                <label for="date">Anzeigen bis</label>
-                                <date-picker
-                                    v-model="newsEntry.expirationDate"
-                                    :minDate="newsEntry.date"
-                                    help-id="expirationDateHelp"
-                                    clearButton="true"
-                                />
-                                <small
-                                    id="expirationDateHelp"
-                                    class="form-text text-muted"
-                                >
-                                    Der News Eintrag wird ab diesem Datum
-                                    angezeigt
-                                </small>
-                            </div>
-                        </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Text</label>
+                            <label for="exampleInputEmail1">Inhalt</label>
+                            <textarea
+                                v-if="adminMode && !!adminMode"
+                                v-model="pageEntry.inhalt"
+                                class="form-control"
+                                rows="20"
+                            ></textarea>
                             <ckeditor
+                                v-else
                                 :editor="editor"
-                                v-model="newsEntry.text"
+                                v-model="pageEntry.inhalt"
                                 :config="editorConfig"
                             ></ckeditor>
                         </div>
@@ -97,23 +70,18 @@
 import { Vue } from "vue-property-decorator";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import "@ckeditor/ckeditor5-build-classic/build/translations/de";
-import DatePicker from "@/components/DatePicker.vue";
-import News from "../models/news";
+import Page from "../models/page";
 import moment from "moment";
 
 export default Vue.extend({
-    name: "NewsEntryForm",
+    name: "PageEntryForm",
 
-    props: ["bus"],
-
-    components: {
-        DatePicker,
-    },
+    props: ["bus", "adminMode"],
 
     data() {
         return {
             isSubmitting: false,
-            newsEntry: new News(),
+            pageEntry: new Page(),
             editor: ClassicEditor,
             editorConfig: {
                 height: 400,
@@ -145,11 +113,10 @@ export default Vue.extend({
 
             this.isSubmitting = true;
             this.$emit("onSubmissionStart", true);
-
-            const action = this.newsEntry.ID ? "update" : "create";
+            const action = this.pageEntry.id ? "update" : "create";
 
             this.$store
-                .dispatch(`news/${action}`, this.newsEntry)
+                .dispatch(`pages/${action}`, this.pageEntry)
                 .then(() => {
                     this.isCreating = false;
                     this.$emit("onSubmissionSuccess");
@@ -162,24 +129,11 @@ export default Vue.extend({
                     this.$emit("onSubmissionEnd", false);
                 });
         },
-        edit(news: News) {
-            this.newsEntry = News.init(news);
+        edit(page: Page) {
+            this.pageEntry = Page.init(page);
         },
         cancelForm() {
             this.$emit("cancelForm");
-        },
-        checkExpirationDate() {
-            const { date, expirationDate } = this.newsEntry;
-
-            if (!expirationDate || !date) {
-                return;
-            }
-            const startDate = moment(date);
-            const endDate = moment(expirationDate);
-
-            if (startDate > endDate) {
-                this.newsEntry.expirationDate = date;
-            }
         },
     },
 });
@@ -197,7 +151,7 @@ export default Vue.extend({
     z-index: 1;
     background: #fff;
 }
-.news-create {
+.event-create {
     position: fixed;
     bottom: 0;
     left: 0;

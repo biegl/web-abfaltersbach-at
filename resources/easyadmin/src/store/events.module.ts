@@ -14,8 +14,9 @@ export const events = {
         load({ commit }) {
             return EventService.getAll().then(
                 events => {
-                    commit("loadSuccess", events);
-                    return Promise.resolve(events);
+                    const models = events.map(event => Event.init(event));
+                    commit("loadSuccess", models);
+                    return Promise.resolve(models);
                 },
                 error => {
                     commit("loadFailure");
@@ -38,8 +39,9 @@ export const events = {
         create({ commit }, event: Event) {
             return EventService.create(event).then(
                 createdEvent => {
-                    commit("createSuccess", createdEvent);
-                    return Promise.resolve(createdEvent);
+                    const model = Event.init(createdEvent);
+                    commit("createSuccess", model);
+                    return Promise.resolve(model);
                 },
                 error => {
                     commit("createFailure");
@@ -50,8 +52,9 @@ export const events = {
         update({ commit }, event: Event) {
             return EventService.update(event).then(
                 updatedEvent => {
-                    commit("updateSuccess", updatedEvent);
-                    return Promise.resolve(updatedEvent);
+                    const model = Event.init(updatedEvent);
+                    commit("updateSuccess", model);
+                    return Promise.resolve(model);
                 },
                 error => {
                     commit("updateFailure");
