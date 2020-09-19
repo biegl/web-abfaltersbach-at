@@ -127,7 +127,7 @@ export default Vue.extend({
                 });
         },
         edit(event: Event) {
-            this.eventEntry = Object.assign({}, event);
+            this.eventEntry = Event.init(event);
         },
         cancelForm() {
             this.$emit("cancelForm");

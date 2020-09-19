@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\News;
-use App\Event;
 use App\Navigation;
 use App\Router;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class PageController extends Controller

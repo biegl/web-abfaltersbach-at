@@ -9,10 +9,12 @@ export default class User implements BaseObject {
     api_token: string;
     role: number;
 
-    constructor(username: string, email: string, password: string) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.role = Role.User;
+    static init(obj: Partial<User>): User {
+        const user = new User();
+        user.username = obj.username;
+        user.email = obj.email;
+        user.password = obj.password;
+        user.role = obj.role;
+        return user
     }
 }

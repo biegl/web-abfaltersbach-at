@@ -3,11 +3,10 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 
 use App\News;
 use App\Event;
-use Cache;
+use Illuminate\Support\Facades\Cache;
 
 class Page extends Model
 {
@@ -18,25 +17,9 @@ class Page extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'ID',
         'seitentitel',
         'inhalt',
     ];
-
-    /**
-     * @var string The name of the cache bucket.
-     */
-    private static $CACHE_KEY_GROUPED_EVENTS = 'events.grouped_by_month';
-
-    /**
-     * @var string The name of the cache bucket.
-     */
-    private static $CACHE_KEY_CURRENT_EVENTS = 'events.current';
-
-    /**
-     * @var string The name of the cache bucket.
-     */
-    private static $CACHE_KEY_TOP_NEWS = 'news.top';
 
     public function getTitleAttribute()
     {
@@ -72,16 +55,16 @@ class Page extends Model
 
         switch ($this->templateName) {
             case 'page.home':
-                $news = Cache::remember(self::$CACHE_KEY_TOP_NEWS, config('cache:defaultTTL'), function () {
+                $news = Cache::remember(News::$CACHE_KEY_TOP_NEWS, config('cache.defaultTTL'), function () {
                     return News::top()->get();
                 });
 
                 // Load grouped events from cache
-                $grouped_events = Cache::remember(self::$CACHE_KEY_GROUPED_EVENTS, config('cache.defaultTTL'), function () {
+                $grouped_events = Cache::remember(Event::$CACHE_KEY_GROUPED_EVENTS, config('cache.defaultTTL'), function () {
                     return Event::byMonth();
                 });
 
-                $current_events = Cache::remember(self::$CACHE_KEY_CURRENT_EVENTS, config('cache.defaultTTL'), function () {
+                $current_events = Cache::remember(Event::$CACHE_KEY_CURRENT_EVENTS, config('cache.defaultTTL'), function () {
                     return Event::current()->get();
                 });
 

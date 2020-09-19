@@ -22,6 +22,16 @@ class Event extends Model
     ];
 
     /**
+     * @var string The name of the cache bucket.
+     */
+    public static $CACHE_KEY_GROUPED_EVENTS = 'events.grouped_by_month';
+
+    /**
+     * @var string The name of the cache bucket.
+     */
+    public static $CACHE_KEY_CURRENT_EVENTS = 'events.current';
+
+    /**
      * Scope a query to only include upcoming events.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreNews;
 use App\News;
+use Illuminate\Support\Facades\Cache;
 
 class NewsController extends Controller
 {
@@ -27,13 +28,14 @@ class NewsController extends Controller
     public function store(StoreNews $request)
     {
         $news = News::create($request->validated());
+        Cache::forget(News::$CACHE_KEY_TOP_NEWS);
         return response()->json($news, 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  News  $news
+     * @param  \App\News  $news
      * @return \Illuminate\Http\Response
      */
     public function show(News $news)
@@ -45,24 +47,26 @@ class NewsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\News  $news
      * @return \Illuminate\Http\Response
      */
     public function update(StoreNews $request, News $news)
     {
         $news->update($request->validated());
+        Cache::forget(News::$CACHE_KEY_TOP_NEWS);
         return response()->json($news, 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\News  $news
      * @return \Illuminate\Http\Response
      */
     public function destroy(News $news)
     {
         $news->delete();
+        Cache::forget(News::$CACHE_KEY_TOP_NEWS);
         return response()->json(null, 204);
     }
 }

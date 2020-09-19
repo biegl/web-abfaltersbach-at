@@ -1,5 +1,5 @@
 <template>
-    <div class="news-container">
+    <div class="pages-container">
         <div class="workspace">
             <div class="main-content">
                 <div class="container">
@@ -9,67 +9,49 @@
                                 <button
                                     class="btn btn-primary float-right"
                                     v-bind:disabled="isCreating"
-                                    @click="createNews"
+                                    @click="createPage"
                                 >
                                     Erstellen
                                 </button>
-                                <h1>News</h1>
+                                <h1>Seiten</h1>
                             </div>
                             <table class="table table-bordered table-sm">
                                 <thead>
                                     <tr>
-                                        <th scope="col" class="date">Datum</th>
-                                        <th scope="col" class="date">
-                                            Gültig bis
-                                        </th>
-                                        <th scope="col">Titel</th>
+                                        <th scope="col" class="date">Titel</th>
                                         <th scope="col" width="108"></th>
                                     </tr>
                                 </thead>
                                 <tbody v-if="isLoading">
                                     <tr>
-                                        <td colspan="4">
+                                        <td colspan="2">
                                             <span
                                                 v-show="isLoading"
                                                 class="spinner-border spinner-border-sm"
                                             ></span>
-                                            Newseinträge werden geladen
+                                            Seiten werden geladen
                                         </td>
                                     </tr>
                                 </tbody>
-                                <tbody v-else-if="news.length == 0">
+                                <tbody v-else-if="pages.length == 0">
                                     <tr>
-                                        <td colspan="4">
-                                            Im Moment sind keine News vorhanden.
+                                        <td colspan="2">
+                                            Keine Seiten vorhanden.
                                         </td>
                                     </tr>
                                 </tbody>
                                 <tbody v-else>
-                                    <tr v-for="news in news" :key="news.ID">
+                                    <tr v-for="page in pages" :key="page.id">
                                         <td>
-                                            <span class="no-break">
-                                                {{ news.date | moment }}
-                                            </span>
+                                            <div>{{ page.seitentitel }}</div>
                                         </td>
-                                        <td>
-                                            <span class="no-break">
-                                                {{
-                                                    news.expirationDate | moment
-                                                }}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <div class="text-truncate">
-                                                {{ news.title }}
-                                            </div>
-                                        </td>
-                                        <td>
+                                        <td class="table-actions">
                                             <button
                                                 type="button"
                                                 class="btn btn-default"
                                                 aria-label="Bearbeiten"
                                                 title="Bearbeiten"
-                                                @click="editNews(news)"
+                                                @click="editPage(page)"
                                             >
                                                 <i class="fa fa-edit"></i>
                                             </button>
@@ -78,7 +60,7 @@
                                                 class="btn btn-danger"
                                                 aria-label="Löschen"
                                                 title="Löschen"
-                                                @click="deleteNews(news)"
+                                                @click="deletePage(page)"
                                             >
                                                 <i class="fa fa-trash"></i>
                                             </button>
@@ -90,14 +72,15 @@
                     </div>
                 </div>
 
-                <news-entry-form
+                <page-entry-form
                     v-show="isCreating"
-                    @cancelForm="cancelNewsForm"
+                    @cancelForm="cancelPageForm"
                     @onSubmissionStart="isSubmitting = true"
                     @onSubmissionEnd="isSubmitting = false"
                     @onSubmissionSuccess="isCreating = false"
                     :bus="eventBus"
-                ></news-entry-form>
+                    :adminMode="isAdmin"
+                ></page-entry-form>
             </div>
         </div>
     </div>
@@ -106,14 +89,16 @@
 <script lang="ts">
 import Vue from "vue";
 import moment from "moment";
-import News from "../models/news";
-import NewsEntryForm from "@/components/NewsEntryForm.vue";
+import Page from "../models/page";
+import PageEntryForm from "@/components/PageEntryForm.vue";
+import User from "../models/user";
+import { Role } from "../helpers/role";
 
 export default Vue.extend({
     components: {
-        NewsEntryForm,
+        PageEntryForm,
     },
-    name: "News",
+    name: "Pages",
     data() {
         return {
             isLoading: false,
@@ -123,8 +108,14 @@ export default Vue.extend({
         };
     },
     computed: {
-        news() {
-            return this.$store.state.news.all;
+        pages() {
+            return this.$store.state.pages.all;
+        },
+        currentUser(): User {
+            return this.$store.state.auth.user;
+        },
+        isAdmin(): boolean {
+            return this.currentUser && this.currentUser.role === Role.Admin;
         },
     },
     filters: {
@@ -136,29 +127,29 @@ export default Vue.extend({
         },
     },
     created() {
-        this.loadNews();
+        this.loadPages();
     },
     methods: {
-        loadNews() {
+        loadPages() {
             this.isLoading = true;
-            this.$store.dispatch("news/load").finally(() => {
+            this.$store.dispatch("pages/load").finally(() => {
                 this.isLoading = false;
             });
         },
-        createNews() {
+        createPage() {
             this.isCreating = true;
-            this.eventBus.$emit("edit", new News());
+            this.eventBus.$emit("edit", new Page());
         },
-        editNews(news) {
+        editPage(page: Page) {
             this.isCreating = true;
-            this.eventBus.$emit("edit", news);
+            this.eventBus.$emit("edit", page);
         },
-        cancelNewsForm() {
+        cancelPageForm() {
             this.isCreating = false;
         },
-        deleteNews(news: News) {
-            if (window.confirm("Soll der Eintrag wirklich gelöscht werden?")) {
-                this.$store.dispatch("news/delete", news);
+        deletePage(page: Page) {
+            if (window.confirm("Soll die Seite wirklich gelöscht werden?")) {
+                this.$store.dispatch("pages/delete", page);
             }
         },
     },
@@ -166,7 +157,7 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-.news-container {
+.pages-container {
     background: #fff;
     margin: 0;
 }
@@ -174,7 +165,7 @@ export default Vue.extend({
     display: flex;
     height: 100%;
 }
-.news-container > .row > div {
+.pages-container > .row > div {
     background: #fff;
 }
 .main-content {
@@ -184,7 +175,7 @@ export default Vue.extend({
     padding: 20px;
     position: relative;
 }
-.news-table-container {
+.pages-table-container {
     height: 100%;
     overflow: auto;
     margin-top: 20px;
@@ -192,7 +183,6 @@ export default Vue.extend({
     border-bottom: 1px solid #ddd;
 }
 .table {
-    table-layout: fixed;
     margin: -1px 0;
 }
 .table td {
@@ -204,10 +194,7 @@ export default Vue.extend({
 .no-break {
     white-space: nowrap;
 }
-.sidebar-right {
-    width: 200px;
-    border-left: 1px solid #ddd;
-    background: #fff;
-    z-index: 1;
+.table-actions {
+    text-align: right;
 }
 </style>

@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
 
 class News extends Model
 {
@@ -12,6 +11,11 @@ class News extends Model
     protected $primaryKey = 'ID';
 
     public $timestamps = false;
+
+       /**
+     * @var string The name of the cache bucket.
+     */
+    public static $CACHE_KEY_TOP_NEWS = 'news.top';
 
     protected $fillable = [
         'title',

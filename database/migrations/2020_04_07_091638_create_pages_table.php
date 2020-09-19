@@ -20,7 +20,7 @@ class CreatePagesTable extends Migration
             $table->text('keywords');
             $table->text('template', 50);
             $table->text('template_name', 45);
-            $table->text('inhalt');
+            $table->text('inhalt')->nullable();
             $table->timestamp('timestamp')->nullable();
             $table->text('description');
         });

@@ -5,6 +5,7 @@ import { events } from "./events.module";
 import { news } from "./news.module";
 import { files } from "./file.module";
 import { users } from "./users.module";
+import { pages } from "./pages.module";
 
 Vue.use(Vuex);
 
@@ -18,5 +19,6 @@ export default new Vuex.Store({
         events,
         files,
         users,
+        pages,
     },
 });

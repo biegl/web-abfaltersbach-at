@@ -234,7 +234,7 @@ export default Vue.extend({
             });
         },
         createUser() {
-            this.user = new User("", "", "");
+            this.user = new User();
             this.isCreating = true;
         },
         isEditMode(user): boolean {

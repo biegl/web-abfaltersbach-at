@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Event;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEvent;
+use Illuminate\Support\Facades\Cache;
 
 class EventsController extends Controller
 {
@@ -27,6 +28,8 @@ class EventsController extends Controller
     public function store(StoreEvent $request)
     {
         $event = Event::create($request->validated());
+        Cache::forget(Event::$CACHE_KEY_CURRENT_EVENTS);
+        Cache::forget(Event::$CACHE_KEY_GROUPED_EVENTS);
         return response()->json($event, 201);
     }
 
@@ -51,6 +54,8 @@ class EventsController extends Controller
     public function update(StoreEvent $request, Event $event)
     {
         $event->update($request->validated());
+        Cache::forget(Event::$CACHE_KEY_CURRENT_EVENTS);
+        Cache::forget(Event::$CACHE_KEY_GROUPED_EVENTS);
         return response()->json($event, 200);
     }
 
@@ -63,6 +68,8 @@ class EventsController extends Controller
     public function destroy(Event $event)
     {
         $event->delete();
+        Cache::forget(Event::$CACHE_KEY_CURRENT_EVENTS);
+        Cache::forget(Event::$CACHE_KEY_GROUPED_EVENTS);
         return response()->json(null, 204);
     }
 }
