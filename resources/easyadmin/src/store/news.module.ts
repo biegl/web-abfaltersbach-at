@@ -31,7 +31,6 @@ export const news = {
                     return Promise.resolve();
                 },
                 error => {
-                    commit("deleteFailure");
                     return Promise.reject(error);
                 }
             );
@@ -44,7 +43,6 @@ export const news = {
                     return Promise.resolve(model);
                 },
                 error => {
-                    commit("createFailure");
                     return Promise.reject(error);
                 }
             );
@@ -57,7 +55,6 @@ export const news = {
                     return Promise.resolve(model);
                 },
                 error => {
-                    commit("updateFailure");
                     return Promise.reject(error);
                 }
             );
@@ -73,14 +70,8 @@ export const news = {
         deleteSuccess(state: NewsState, id: string) {
             state.all = state.all.filter((news: News) => news.id !== id);
         },
-        deleteFailure() {
-            console.error("Deleting News failed");
-        },
         createSuccess(state: NewsState, news: News) {
             state.all = [news, ...state.all];
-        },
-        createFailure() {
-            console.error("Creating News failed");
         },
         updateSuccess(state: NewsState, createdNews: News) {
             state.all = state.all.map(news => {
@@ -89,9 +80,6 @@ export const news = {
                 }
                 return news;
             });
-        },
-        updateFailure() {
-            console.error("Updating News failed");
         },
     },
 };

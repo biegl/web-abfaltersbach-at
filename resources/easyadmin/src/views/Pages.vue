@@ -77,7 +77,8 @@
                     @cancelForm="cancelPageForm"
                     @onSubmissionStart="isSubmitting = true"
                     @onSubmissionEnd="isSubmitting = false"
-                    @onSubmissionSuccess="isCreating = false"
+                    @onSubmissionSuccess="onFormSubmissionSuccess"
+                    @onSubmissionError="onFormSubmissionError"
                     :bus="eventBus"
                     :adminMode="isAdmin"
                 ></page-entry-form>
@@ -132,9 +133,16 @@ export default Vue.extend({
     methods: {
         loadPages() {
             this.isLoading = true;
-            this.$store.dispatch("pages/load").finally(() => {
-                this.isLoading = false;
-            });
+            this.$store
+                .dispatch("pages/load")
+                .catch(() => {
+                    this.$snotify.error(
+                        "Die Seiten konnten nicht geladen werden"
+                    );
+                })
+                .finally(() => {
+                    this.isLoading = false;
+                });
         },
         createPage() {
             this.isCreating = true;
@@ -149,8 +157,25 @@ export default Vue.extend({
         },
         deletePage(page: Page) {
             if (window.confirm("Soll die Seite wirklich gelöscht werden?")) {
-                this.$store.dispatch("pages/delete", page);
+                this.$store
+                    .dispatch("pages/delete", page)
+                    .then(() => {
+                        this.$snotify.success("Die Seite wurde gelöscht!");
+                    })
+                    .catch(() => {
+                        this.$snotify.error(
+                            "Die Seite konnte nicht gelöscht werden!"
+                        );
+                    });
             }
+        },
+        onFormSubmissionSuccess() {
+            this.$snotify.success("Die Seite wurde gespeichert!");
+            this.isCreating = false;
+        },
+        onFormSubmissionError() {
+            this.$snotify.error("Die Seite konnte nicht gespeichert werden!");
+            this.isCreating = false;
         },
     },
 });

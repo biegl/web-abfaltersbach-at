@@ -71,7 +71,6 @@ import { Vue } from "vue-property-decorator";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import "@ckeditor/ckeditor5-build-classic/build/translations/de";
 import Page from "../models/page";
-import moment from "moment";
 
 export default Vue.extend({
     name: "PageEntryForm",
