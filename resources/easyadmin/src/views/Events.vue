@@ -84,7 +84,8 @@
                     @cancelForm="cancelEventForm"
                     @onSubmissionStart="isSubmitting = true"
                     @onSubmissionEnd="isSubmitting = false"
-                    @onSubmissionSuccess="isCreating = false"
+                    @onSubmissionSuccess="onFormSubmissionSuccess"
+                    @onSubmissionError="onFormSubmissionError"
                     :bus="eventBus"
                 ></event-entry-form>
             </div>
@@ -130,9 +131,16 @@ export default Vue.extend({
     methods: {
         loadEvents() {
             this.isLoading = true;
-            this.$store.dispatch("events/load").finally(() => {
-                this.isLoading = false;
-            });
+            this.$store
+                .dispatch("events/load")
+                .catch(() => {
+                    this.$snotify.error(
+                        "Veranstaltungen konnten nicht geladen werden"
+                    );
+                })
+                .finally(() => {
+                    this.isLoading = false;
+                });
         },
         createEvent() {
             this.isCreating = true;
@@ -147,8 +155,29 @@ export default Vue.extend({
         },
         deleteEvent(event: Event) {
             if (window.confirm("Soll der Eintrag wirklich gelöscht werden?")) {
-                this.$store.dispatch("events/delete", event);
+                this.$store
+                    .dispatch("events/delete", event)
+                    .then(() => {
+                        this.$snotify.success(
+                            "Die Veranstaltung wurde gelöscht!"
+                        );
+                    })
+                    .catch(() => {
+                        this.$snotify.error(
+                            "Die Veranstaltung konnte nicht gelöscht werden!"
+                        );
+                    });
             }
+        },
+        onFormSubmissionSuccess() {
+            this.$snotify.success("Die Veranstaltung wurde gespeichert!");
+            this.isCreating = false;
+        },
+        onFormSubmissionError() {
+            this.$snotify.error(
+                "Die Veranstaltung konnte nicht gespeichert werden!"
+            );
+            this.isCreating = false;
         },
     },
 });

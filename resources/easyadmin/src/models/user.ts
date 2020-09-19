@@ -1,4 +1,3 @@
-import { Role } from "./../helpers/role";
 import BaseObject from "./base";
 
 export default class User implements BaseObject {
@@ -15,6 +14,6 @@ export default class User implements BaseObject {
         user.email = obj.email;
         user.password = obj.password;
         user.role = obj.role;
-        return user
+        return user;
     }
 }

@@ -43,6 +43,7 @@
         </nav>
 
         <div class="content-box">
+            <vue-snotify></vue-snotify>
             <div class="logout-info" v-if="isLoggingOut">
                 <span class="spinner-border spinner-border-sm"></span>
                 Sie werden abgemeldet
@@ -85,6 +86,9 @@ export default Vue.extend({
     },
 });
 </script>
+<style lang="sass">
+@import "~vue-snotify/styles/material.css"
+</style>
 <style scoped>
 .logout-info {
     position: absolute;

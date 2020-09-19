@@ -6,7 +6,6 @@ export default class Page implements BaseObject {
     }
 
     ID = "";
-    navigation_id: number;
     seitentitel: string;
     keywords: string;
     template: string;
@@ -17,7 +16,6 @@ export default class Page implements BaseObject {
     static init(obj: Partial<Page>): Page {
         const page = new Page();
         page.ID = obj.ID;
-        page.navigation_id = obj.navigation_id;
         page.seitentitel = obj.seitentitel;
         page.keywords = obj.keywords;
         page.template = obj.template;

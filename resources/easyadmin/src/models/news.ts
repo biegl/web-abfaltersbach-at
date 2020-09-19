@@ -19,6 +19,5 @@ export default class News implements BaseObject {
         news.date = obj.date;
         news.expirationDate = obj.expirationDate;
         return news;
-
     }
 }

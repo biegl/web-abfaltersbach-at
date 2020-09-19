@@ -30,7 +30,6 @@ export const users = {
                     return Promise.resolve();
                 },
                 error => {
-                    commit("addFailure");
                     return Promise.reject(error);
                 }
             );
@@ -42,7 +41,6 @@ export const users = {
                     return Promise.resolve();
                 },
                 error => {
-                    commit("updateFailure");
                     return Promise.reject(error);
                 }
             );
@@ -54,7 +52,6 @@ export const users = {
                     return Promise.resolve();
                 },
                 error => {
-                    commit("deleteFailure");
                     return Promise.reject(error);
                 }
             );
@@ -66,7 +63,6 @@ export const users = {
                     return Promise.resolve();
                 },
                 error => {
-                    commit("revokeFailure");
                     return Promise.reject(error);
                 }
             );
@@ -82,28 +78,16 @@ export const users = {
         deleteSuccess(state: UserState, id: number) {
             state.all = state.all.filter((user: User) => user.id != `${id}`);
         },
-        deleteFailure() {
-            console.error("Deleting User failed");
-        },
         updateSuccess(state: UserState, updatedUser: User) {
             state.all = state.all.map((user: User) =>
                 user.id === updatedUser.id ? updatedUser : user
             );
         },
-        updateFailure() {
-            console.error("Updating User failed");
-        },
         addSuccess(state: UserState, addedUser: User) {
             state.all = [...state.all, addedUser];
         },
-        addFailure() {
-            console.error("Adding User failed");
-        },
         revokeSuccess() {
             console.log("Password has been revoked");
-        },
-        revokeFailure() {
-            console.error("Revoking password failed");
         },
     },
 };

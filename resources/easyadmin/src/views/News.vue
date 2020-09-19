@@ -95,7 +95,8 @@
                     @cancelForm="cancelNewsForm"
                     @onSubmissionStart="isSubmitting = true"
                     @onSubmissionEnd="isSubmitting = false"
-                    @onSubmissionSuccess="isCreating = false"
+                    @onSubmissionSuccess="onFormSubmissionSuccess"
+                    @onSubmissionError="onFormSubmissionError"
                     :bus="eventBus"
                 ></news-entry-form>
             </div>
@@ -141,9 +142,14 @@ export default Vue.extend({
     methods: {
         loadNews() {
             this.isLoading = true;
-            this.$store.dispatch("news/load").finally(() => {
-                this.isLoading = false;
-            });
+            this.$store
+                .dispatch("news/load")
+                .catch(() => {
+                    this.$snotify.error("News konnten nicht geladen werden");
+                })
+                .finally(() => {
+                    this.isLoading = false;
+                });
         },
         createNews() {
             this.isCreating = true;
@@ -158,8 +164,25 @@ export default Vue.extend({
         },
         deleteNews(news: News) {
             if (window.confirm("Soll der Eintrag wirklich gelöscht werden?")) {
-                this.$store.dispatch("news/delete", news);
+                this.$store
+                    .dispatch("news/delete", news)
+                    .then(() => {
+                        this.$snotify.success("News wurde gelöscht!");
+                    })
+                    .catch(() => {
+                        this.$snotify.error(
+                            "News konnte nicht gelöscht werden!"
+                        );
+                    });
             }
+        },
+        onFormSubmissionSuccess() {
+            this.$snotify.success("News wurde gespeichert!");
+            this.isCreating = false;
+        },
+        onFormSubmissionError() {
+            this.$snotify.error("News konnte nicht gespeichert werden!");
+            this.isCreating = false;
         },
     },
 });

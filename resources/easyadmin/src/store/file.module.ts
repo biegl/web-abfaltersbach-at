@@ -15,7 +15,7 @@ export const files = {
         load({ commit }) {
             return FileService.getAll().then(
                 files => {
-                    const models = files.map(file =>File.init(file));
+                    const models = files.map(file => File.init(file));
                     commit("loadSuccess", models);
                     return Promise.resolve(models);
                 },
@@ -32,7 +32,6 @@ export const files = {
                     return Promise.resolve();
                 },
                 error => {
-                    commit("deleteFailure");
                     return Promise.reject(error);
                 }
             );
@@ -45,7 +44,6 @@ export const files = {
                     return Promise.resolve(model);
                 },
                 error => {
-                    commit("createFailure");
                     return Promise.reject(error);
                 }
             );
@@ -58,7 +56,6 @@ export const files = {
                     return Promise.resolve(model);
                 },
                 error => {
-                    commit("updateFailure");
                     return Promise.reject(error);
                 }
             );
@@ -74,14 +71,8 @@ export const files = {
         deleteSuccess(state: FileState, id: string) {
             state.files = state.files.filter((file: File) => file.id !== id);
         },
-        deleteFailure() {
-            console.error("Deleting File failed");
-        },
         createSuccess(state: FileState, file: File) {
             state.files = [file, ...state.files];
-        },
-        createFailure() {
-            console.error("Creating File failed");
         },
         updateSuccess(state: FileState, createdFile: File) {
             state.files = state.files.map(file => {
@@ -90,9 +81,6 @@ export const files = {
                 }
                 return file;
             });
-        },
-        updateFailure() {
-            console.error("Updating File failed");
         },
     },
 };

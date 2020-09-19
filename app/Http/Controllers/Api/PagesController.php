@@ -51,7 +51,7 @@ class PagesController extends Controller
     public function update(StorePage $request, Page $page)
     {
         $page->update($request->validated());
-        return response()->json($request->validated(), 200);
+        return response()->json($page, 200);
     }
 
     /**

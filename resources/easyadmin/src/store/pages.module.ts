@@ -14,7 +14,7 @@ export const pages = {
         load({ commit }) {
             return PageService.getAll().then(
                 pages => {
-                    const models = pages.map(obj => Page.init(obj))
+                    const models = pages.map(obj => Page.init(obj));
                     commit("loadSuccess", models);
                     return Promise.resolve(models);
                 },
@@ -31,7 +31,6 @@ export const pages = {
                     return Promise.resolve();
                 },
                 error => {
-                    commit("deleteFailure");
                     return Promise.reject(error);
                 }
             );
@@ -44,7 +43,6 @@ export const pages = {
                     return Promise.resolve(model);
                 },
                 error => {
-                    commit("createFailure");
                     return Promise.reject(error);
                 }
             );
@@ -57,7 +55,6 @@ export const pages = {
                     return Promise.resolve(model);
                 },
                 error => {
-                    commit("updateFailure");
                     return Promise.reject(error);
                 }
             );
@@ -73,14 +70,8 @@ export const pages = {
         deleteSuccess(state: PageState, id: string) {
             state.all = state.all.filter((page: Page) => page.id !== id);
         },
-        deleteFailure() {
-            console.error("Deleting Page failed");
-        },
         createSuccess(state: PageState, page: Page) {
             state.all = [page, ...state.all];
-        },
-        createFailure() {
-            console.error("Creating Page failed");
         },
         updateSuccess(state: PageState, updatedPage: Page) {
             state.all = state.all.map(page => {
@@ -89,9 +80,6 @@ export const pages = {
                 }
                 return page;
             });
-        },
-        updateFailure() {
-            console.error("Updating Page failed");
         },
     },
 };
