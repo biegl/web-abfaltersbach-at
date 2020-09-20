@@ -1,9 +1,9 @@
-(function ($, axios) {
+(function ($) {
     var queryParams = [
-        "locationId=2783062",
+        "id=2783062",
         "lang=de",
         "appId=eb8433667be1dbb5b880f9fb619818cd",
-        "unit=metric",
+        "units=metric",
     ];
 
     var requestUrl =
@@ -11,7 +11,8 @@
         queryParams.join("&");
 
     // Load weather information
-    axios.get(requestUrl).then(function (data) {
+    $.get(requestUrl).then(function (data) {
+        console.log(data)
         var weather = data.weather[0];
 
         $(".weather-widget__temperature-degrees").text(
@@ -24,4 +25,4 @@
 
         $(".weather-widget__description").text(weather.description);
     });
-})(window.jQuery || window.$, window.axios);
+})(window.jQuery || window.$);
