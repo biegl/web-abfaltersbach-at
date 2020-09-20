@@ -1,4 +1,4 @@
-import { FileService } from '@/services/file.service';
+import FileService from "@/services/file.service";
 import PageService from "@/services/page.service";
 import Page from "@/models/page";
 
@@ -77,7 +77,7 @@ export const pages = {
                     return Promise.reject(error);
                 }
             );
-        }
+        },
     },
     mutations: {
         loadSuccess(state: PageState, pages: Page[]) {
@@ -109,18 +109,22 @@ export const pages = {
                     return Page.init(page);
                 }
                 return obj;
-            })
+            });
             state.selectedPage = page;
         },
         deleteFileSuccess(state: PageState, { news, file }) {
             state.all = state.all.map(obj => {
                 if (obj.id == news.id) {
-                    obj.attachments = news.attachments.filter(attachment => attachment.id != file.id);
+                    obj.attachments = news.attachments.filter(
+                        attachment => attachment.id != file.id
+                    );
                 }
                 return obj;
             });
 
-            state.selectedPage.attachments = state.selectedPage.attachments.filter(attachment => attachment.id != file.id);
-        }
+            state.selectedPage.attachments = state.selectedPage.attachments.filter(
+                attachment => attachment.id != file.id
+            );
+        },
     },
 };

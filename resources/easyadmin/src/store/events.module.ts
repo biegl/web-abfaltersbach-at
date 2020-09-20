@@ -1,7 +1,6 @@
-import EventService from "../services/event.service";
-import Event from "../models/event";
-import FileService from '@/services/file.service';
-import File from "../models/file";
+import EventService from "@/services/event.service";
+import Event from "@/models/event";
+import FileService from "@/services/file.service";
 
 interface EventState {
     all: Event[];
@@ -78,7 +77,7 @@ export const events = {
                     return Promise.reject(error);
                 }
             );
-        }
+        },
     },
     mutations: {
         loadSuccess(state: EventState, events: Event[]) {
@@ -110,18 +109,22 @@ export const events = {
                     return Event.init(event);
                 }
                 return obj;
-            })
+            });
             state.selectedEvent = event;
         },
         deleteFileSuccess(state: EventState, { event, file }) {
             state.all = state.all.map(obj => {
                 if (obj.id == event.id) {
-                    obj.attachments = event.attachments.filter(attachment => attachment.id != file.id);
+                    obj.attachments = event.attachments.filter(
+                        attachment => attachment.id != file.id
+                    );
                 }
                 return obj;
             });
 
-            state.selectedEvent.attachments = state.selectedEvent.attachments.filter(attachment => attachment.id != file.id);
-        }
+            state.selectedEvent.attachments = state.selectedEvent.attachments.filter(
+                attachment => attachment.id != file.id
+            );
+        },
     },
 };

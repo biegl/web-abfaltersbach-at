@@ -54,11 +54,28 @@
                                             <div v-html="event.text"></div>
                                         </td>
                                         <td>
-                                            <span v-if="!event.attachments || event.attachments.length == 0">-</span>
+                                            <span
+                                                v-if="
+                                                    !event.attachments ||
+                                                        event.attachments
+                                                            .length == 0
+                                                "
+                                                >-</span
+                                            >
                                             <ul class="events-file-list" v-else>
-                                                <li v-for="file in event.attachments" :key="file.ID">
-                                                    <a :href="file.frontendPath">{{ file.title }}</a>
-                                                    <br/><small>{{ file.readableFileSize }}</small>
+                                                <li
+                                                    v-for="file in event.attachments"
+                                                    :key="file.ID"
+                                                >
+                                                    <a
+                                                        :href="
+                                                            file.frontendPath
+                                                        "
+                                                        >{{ file.title }}</a
+                                                    >
+                                                    <br /><small>{{
+                                                        file.readableFileSize
+                                                    }}</small>
                                                 </li>
                                             </ul>
                                         </td>
@@ -125,7 +142,7 @@ export default Vue.extend({
         },
         selectedEvent() {
             return this.$store.state.events.selectedEvent;
-        }
+        },
     },
     filters: {
         moment: function(date) {

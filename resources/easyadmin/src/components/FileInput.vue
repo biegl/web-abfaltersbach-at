@@ -12,7 +12,6 @@ import XHRUpload from "@uppy/xhr-upload";
 import FileInput from "@uppy/file-input";
 import ProgressBar from "@uppy/progress-bar";
 import authService from "../services/auth.service";
-import File from "../models/file";
 
 import "@uppy/core/dist/style.css";
 import "@uppy/file-input/dist/style.css";
@@ -78,7 +77,9 @@ export default {
                     const { failed, successful } = event;
 
                     if (successful && successful.length > 0) {
-                        const files = successful.map(data => data.response.body);
+                        const files = successful.map(
+                            data => data.response.body
+                        );
                         this.$emit("onUploadSuccessful", files);
                     }
 

@@ -19,7 +19,9 @@
                                 <thead>
                                     <tr>
                                         <th scope="col" class="date">Titel</th>
-                                        <th scope="col" class="date">Dateien</th>
+                                        <th scope="col" class="date">
+                                            Dateien
+                                        </th>
                                         <th scope="col" width="108"></th>
                                     </tr>
                                 </thead>
@@ -47,11 +49,28 @@
                                             <div>{{ page.seitentitel }}</div>
                                         </td>
                                         <td>
-                                            <span v-if="!page.attachments || page.attachments.length == 0">-</span>
+                                            <span
+                                                v-if="
+                                                    !page.attachments ||
+                                                        page.attachments
+                                                            .length == 0
+                                                "
+                                                >-</span
+                                            >
                                             <ul class="pages-file-list" v-else>
-                                                <li v-for="file in page.attachments" :key="file.ID">
-                                                    <a :href="file.frontendPath">{{ file.title }}</a>
-                                                    <small>{{ file.readableFileSize }}</small>
+                                                <li
+                                                    v-for="file in page.attachments"
+                                                    :key="file.ID"
+                                                >
+                                                    <a
+                                                        :href="
+                                                            file.frontendPath
+                                                        "
+                                                        >{{ file.title }}</a
+                                                    >
+                                                    <small>{{
+                                                        file.readableFileSize
+                                                    }}</small>
                                                 </li>
                                             </ul>
                                         </td>

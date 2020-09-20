@@ -131,8 +131,8 @@ export default Vue.extend({
             return false;
         },
         eventEntry() {
-            return this.$store.state.events.selectedEvent
-        }
+            return this.$store.state.events.selectedEvent;
+        },
     },
 
     data() {
@@ -197,18 +197,25 @@ export default Vue.extend({
             this.$snotify.error("Beim Upload ist ein Fehler aufgetreten!");
         },
         deleteFile(file) {
-            if (!window.confirm(`Soll die Datei "${file.title}" wirklich gelöscht werden?`)) {
-                return
+            if (
+                !window.confirm(
+                    `Soll die Datei "${file.title}" wirklich gelöscht werden?`
+                )
+            ) {
+                return;
             }
 
-            this.$store.dispatch("events/deleteFile", { event: this.eventEntry, file })
+            this.$store
+                .dispatch("events/deleteFile", { event: this.eventEntry, file })
                 .then(() => {
                     this.$snotify.success("Die Datei wurde gelöscht.");
                 })
                 .catch(() => {
-                    this.$snotify.error("Die Datei konnte nicht gelöscht werden!");
+                    this.$snotify.error(
+                        "Die Datei konnte nicht gelöscht werden!"
+                    );
                 });
-        }
+        },
     },
 });
 </script>

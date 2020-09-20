@@ -1,4 +1,4 @@
-import Config from '@/config';
+import Config from "@/config";
 import BaseObject from "./base";
 
 export default class File implements BaseObject {

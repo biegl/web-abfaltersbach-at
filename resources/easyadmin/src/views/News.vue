@@ -65,11 +65,28 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <span v-if="!news.attachments || news.attachments.length == 0">-</span>
+                                            <span
+                                                v-if="
+                                                    !news.attachments ||
+                                                        news.attachments
+                                                            .length == 0
+                                                "
+                                                >-</span
+                                            >
                                             <ul class="news-file-list" v-else>
-                                                <li v-for="file in news.attachments" :key="file.ID">
-                                                    <a :href="file.frontendPath">{{ file.title }}</a>
-                                                    <small>{{ file.readableFileSize }}</small>
+                                                <li
+                                                    v-for="file in news.attachments"
+                                                    :key="file.ID"
+                                                >
+                                                    <a
+                                                        :href="
+                                                            file.frontendPath
+                                                        "
+                                                        >{{ file.title }}</a
+                                                    >
+                                                    <small>{{
+                                                        file.readableFileSize
+                                                    }}</small>
                                                 </li>
                                             </ul>
                                         </td>
@@ -136,7 +153,7 @@ export default Vue.extend({
         },
         selectedNews() {
             return this.$store.state.news.selectedNews;
-        }
+        },
     },
     filters: {
         moment: function(date) {

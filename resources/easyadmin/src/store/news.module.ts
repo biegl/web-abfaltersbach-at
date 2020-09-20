@@ -1,4 +1,4 @@
-import FileService from '@/services/file.service';
+import FileService from "@/services/file.service";
 import NewsService from "@/services/news.service";
 import News from "@/models/news";
 
@@ -77,7 +77,7 @@ export const news = {
                     return Promise.reject(error);
                 }
             );
-        }
+        },
     },
     mutations: {
         loadSuccess(state: NewsState, news: News[]) {
@@ -109,18 +109,22 @@ export const news = {
                     return News.init(news);
                 }
                 return obj;
-            })
+            });
             state.selectedNews = news;
         },
         deleteFileSuccess(state: NewsState, { news, file }) {
             state.all = state.all.map(obj => {
                 if (obj.id == news.id) {
-                    obj.attachments = news.attachments.filter(attachment => attachment.id != file.id);
+                    obj.attachments = news.attachments.filter(
+                        attachment => attachment.id != file.id
+                    );
                 }
                 return obj;
             });
 
-            state.selectedNews.attachments = state.selectedNews.attachments.filter(attachment => attachment.id != file.id);
-        }
+            state.selectedNews.attachments = state.selectedNews.attachments.filter(
+                attachment => attachment.id != file.id
+            );
+        },
     },
 };

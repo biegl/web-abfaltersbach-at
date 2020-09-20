@@ -20,7 +20,9 @@ export default class News implements BaseObject {
         news.text = obj.text;
         news.date = obj.date;
         news.expirationDate = obj.expirationDate;
-        news.attachments = obj.attachments ? obj.attachments.map(fileObj => File.init(fileObj)) : [];
+        news.attachments = obj.attachments
+            ? obj.attachments.map(fileObj => File.init(fileObj))
+            : [];
         return news;
     }
 }

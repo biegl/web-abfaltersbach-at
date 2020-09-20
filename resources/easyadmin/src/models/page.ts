@@ -24,7 +24,9 @@ export default class Page implements BaseObject {
         page.inhalt = obj.inhalt;
         page.timestamp = obj.timestamp;
         page.description = obj.description;
-        page.attachments = obj.attachments ? obj.attachments.map(fileObj => File.init(fileObj)) : [];
+        page.attachments = obj.attachments
+            ? obj.attachments.map(fileObj => File.init(fileObj))
+            : [];
         return page;
     }
 }
