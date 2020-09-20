@@ -11610,6 +11610,12 @@ blockquote {
   margin: 9px 0 0 10px;
 }
 
+.newslist_item_files {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
 #tcn_notice {
   box-sizing: border-box;
   align-items: flex-end;

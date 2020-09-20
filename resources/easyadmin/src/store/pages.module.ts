@@ -1,5 +1,5 @@
-import PageService from "../services/page.service";
-import Page from "../models/page";
+import PageService from "@/services/page.service";
+import Page from "@/models/page";
 
 interface PageState {
     all: Page[];

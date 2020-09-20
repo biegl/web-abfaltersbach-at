@@ -17,7 +17,6 @@ import File from "../models/file";
 import "@uppy/core/dist/style.css";
 import "@uppy/file-input/dist/style.css";
 import "@uppy/progress-bar/dist/style.css";
-import Config from "../config";
 
 export default {
     name: "FileInput",
@@ -65,7 +64,7 @@ export default {
                 })
                 .use(XHRUpload, {
                     limit: 10,
-                    endpoint: `${Config.host}/api/${this.route}/attach`,
+                    endpoint: this.route,
                     formData: true,
                     fieldName: "file",
                     headers: {

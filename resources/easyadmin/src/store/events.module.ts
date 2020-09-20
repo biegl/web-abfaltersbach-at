@@ -120,6 +120,8 @@ export const events = {
                 }
                 return obj;
             });
+
+            state.selectedEvent.attachments = state.selectedEvent.attachments.filter(attachment => attachment.id != file.id);
         }
     },
 };

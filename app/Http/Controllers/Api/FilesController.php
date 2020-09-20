@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Event;
 use App\File;
+use App\News;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreFile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -69,6 +72,17 @@ class FilesController extends Controller
     {
         Storage::delete([$file->file]);
         $file->delete();
+
+        // Delete cache if necessary
+        if (isset($file->attachable) && get_class($file->attachable) == 'App\Event') {
+            Cache::forget(Event::$CACHE_KEY_CURRENT_EVENTS);
+            Cache::forget(Event::$CACHE_KEY_GROUPED_EVENTS);
+        }
+
+        if (isset($file->attachable) && get_class($file->attachable) == 'App\News') {
+            Cache::forget(News::$CACHE_KEY_TOP_NEWS);
+        }
+
         return response()->json(null, 204);
     }
 

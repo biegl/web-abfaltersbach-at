@@ -1,5 +1,5 @@
-import AuthService from "../services/auth.service";
-import User from "../models/user";
+import AuthService from "@/services/auth.service";
+import User from "@/models/user";
 
 const user = JSON.parse(window.localStorage.getItem("user"));
 

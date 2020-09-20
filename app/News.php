@@ -12,7 +12,9 @@ class News extends Model
 
     public $timestamps = false;
 
-       /**
+    public $with = ['attachments'];
+
+    /**
      * @var string The name of the cache bucket.
      */
     public static $CACHE_KEY_TOP_NEWS = 'news.top';
@@ -49,5 +51,13 @@ class News extends Model
             ->notExpired()
             ->orderBy('date', 'desc')
             ->limit(20);
+    }
+
+    /**
+     * Get all of the news' attachments.
+     */
+    public function attachments()
+    {
+        return $this->morphMany(File::class, 'attachable');
     }
 }

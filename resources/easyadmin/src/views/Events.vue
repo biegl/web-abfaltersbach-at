@@ -37,7 +37,7 @@
                                 </tbody>
                                 <tbody v-else-if="events.length == 0">
                                     <tr>
-                                        <td colspan="3">
+                                        <td colspan="4">
                                             Im Moment sind keine Veranstaltungen
                                             geplant.
                                         </td>
@@ -117,7 +117,6 @@ export default Vue.extend({
         return {
             isLoading: false,
             isSubmitting: false,
-            eventBus: new Vue(),
         };
     },
     computed: {

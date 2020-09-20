@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Event;
-use App\File;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEvent;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class EventsController extends Controller
 {
@@ -76,6 +74,12 @@ class EventsController extends Controller
         return response()->json(null, 204);
     }
 
+    /**
+     * Attaches a file to a specific event.
+     * @param  \App\News $news
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
     public function attachFile(Event $event, Request $request)
     {
         $file = FilesController::storeFile($request);

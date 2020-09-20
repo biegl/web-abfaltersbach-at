@@ -1,11 +1,13 @@
-import NewsService from "../services/news.service";
-import News from "../models/news";
+import FileService from '@/services/file.service';
+import NewsService from "@/services/news.service";
+import News from "@/models/news";
 
 interface NewsState {
     all: News[];
+    selectedNews: News;
 }
 
-const initialState: NewsState = { all: [] };
+const initialState: NewsState = { all: [], selectedNews: null };
 
 export const news = {
     namespaced: true,
@@ -23,6 +25,9 @@ export const news = {
                     return Promise.reject(error);
                 }
             );
+        },
+        select({ commit }, news: News) {
+            commit("selectNews", news);
         },
         delete({ commit }, news: News) {
             return NewsService.delete(news).then(
@@ -59,10 +64,27 @@ export const news = {
                 }
             );
         },
+        updateNews({ commit }, news: News) {
+            commit("updateNews", news);
+        },
+        deleteFile({ commit }, { news, file }) {
+            return FileService.delete(file).then(
+                () => {
+                    commit("deleteFileSuccess", { news, file });
+                    return Promise.resolve();
+                },
+                error => {
+                    return Promise.reject(error);
+                }
+            );
+        }
     },
     mutations: {
         loadSuccess(state: NewsState, news: News[]) {
             state.all = news;
+        },
+        selectNews(state: NewsState, news: News) {
+            state.selectedNews = news;
         },
         loadFailure(state: NewsState) {
             state.all = [];
@@ -81,5 +103,24 @@ export const news = {
                 return news;
             });
         },
+        updateNews(state: NewsState, news: News) {
+            state.all = state.all.map(obj => {
+                if (obj.id == news.id) {
+                    return News.init(news);
+                }
+                return obj;
+            })
+            state.selectedNews = news;
+        },
+        deleteFileSuccess(state: NewsState, { news, file }) {
+            state.all = state.all.map(obj => {
+                if (obj.id == news.id) {
+                    obj.attachments = news.attachments.filter(attachment => attachment.id != file.id);
+                }
+                return obj;
+            });
+
+            state.selectedNews.attachments = state.selectedNews.attachments.filter(attachment => attachment.id != file.id);
+        }
     },
 };

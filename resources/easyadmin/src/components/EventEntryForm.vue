@@ -100,6 +100,7 @@ import DatePicker from "@/components/DatePicker.vue";
 import Event from "../models/event";
 import FileInput from "@/components/FileInput.vue";
 import moment from "moment";
+import Config from "../config";
 
 export default Vue.extend({
     name: "EventEntryForm",
@@ -115,7 +116,7 @@ export default Vue.extend({
                 return "";
             }
 
-            return `events/${this.eventEntry.id}`;
+            return `${Config.host}/api/events/${this.eventEntry.id}/attach`;
         },
         isSubmissionDisabled() {
             if (this.isSubmitting) {
@@ -192,7 +193,7 @@ export default Vue.extend({
             this.$store.dispatch("events/updateEvent", Event.init(obj[0]));
             this.$snotify.success("Upload erfolgreich");
         },
-        onUploadFailed(obj) {
+        onUploadFailed() {
             this.$snotify.error("Beim Upload ist ein Fehler aufgetreten!");
         },
         deleteFile(file) {
@@ -202,7 +203,6 @@ export default Vue.extend({
 
             this.$store.dispatch("events/deleteFile", { event: this.eventEntry, file })
                 .then(() => {
-                    this.eventEntry.attachments = this.eventEntry.attachments.filter(attachment => attachment.id != file.id);
                     this.$snotify.success("Die Datei wurde gelöscht.");
                 })
                 .catch(() => {
