@@ -27,7 +27,7 @@ class StoreNews extends FormRequest
             'title' => 'required|max:255',
             'text' => 'required',
             'date' => 'required|date|date_format:Y-m-d',
-            'expirationDate' => 'date|date_format:Y-m-d|after_or_equal:date',
+            'expirationDate' => '',
         ];
     }
 }
