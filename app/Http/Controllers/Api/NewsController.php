@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreNews;
 use App\News;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
 class NewsController extends Controller
@@ -66,7 +67,16 @@ class NewsController extends Controller
      */
     public function destroy(News $news)
     {
+        // Delete attachments
+        foreach($news->attachments as $file) {
+            Storage::delete([$file->file]);
+            $file->delete();
+        }
+
+        // Delete news
         $news->delete();
+
+        // Clear cache
         Cache::forget(News::$CACHE_KEY_TOP_NEWS);
         return response()->json(null, 204);
     }

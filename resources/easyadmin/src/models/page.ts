@@ -1,4 +1,5 @@
 import BaseObject from "./base";
+import File from "./file";
 
 export default class Page implements BaseObject {
     get id(): string {
@@ -12,6 +13,7 @@ export default class Page implements BaseObject {
     inhalt: string;
     timestamp: Date;
     description: string;
+    attachments?: File[];
 
     static init(obj: Partial<Page>): Page {
         const page = new Page();
@@ -22,6 +24,7 @@ export default class Page implements BaseObject {
         page.inhalt = obj.inhalt;
         page.timestamp = obj.timestamp;
         page.description = obj.description;
+        page.attachments = obj.attachments ? obj.attachments.map(fileObj => File.init(fileObj)) : [];
         return page;
     }
 }

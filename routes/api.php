@@ -19,6 +19,7 @@ Route::middleware('auth:api', 'cors')->group(function () {
     Route::resource('files', 'Api\FilesController');
     Route::post('events/{event}/attach', 'Api\EventsController@attachFile');
     Route::resource('events', 'Api\EventsController');
+    Route::post('pages/{page}/attach', 'Api\PagesController@attachFile');
     Route::resource('pages', 'Api\PagesController');
 });
 

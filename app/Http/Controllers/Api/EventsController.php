@@ -6,6 +6,7 @@ use App\Event;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEvent;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
 class EventsController extends Controller
@@ -68,9 +69,19 @@ class EventsController extends Controller
      */
     public function destroy(Event $event)
     {
+        // Delete attachments
+        foreach($event->attachments as $file) {
+            Storage::delete([$file->file]);
+            $file->delete();
+        }
+
+        // Delete event
         $event->delete();
+
+        // Clear cache
         Cache::forget(Event::$CACHE_KEY_CURRENT_EVENTS);
         Cache::forget(Event::$CACHE_KEY_GROUPED_EVENTS);
+
         return response()->json(null, 204);
     }
 
