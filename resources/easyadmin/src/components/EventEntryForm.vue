@@ -1,18 +1,57 @@
 <template>
-    <div class="form-container">
+    <div class="form-container" v-if="eventEntry">
         <div class="form-background"></div>
         <div class="event-create">
             <form @submit="submitForm" class="container form">
                 <div class="row">
                     <div class="col-md-4">
-                        <label for="date">Datum</label>
-                        <date-picker
-                            v-model="eventEntry.date"
-                            help-id="dateHelp"
-                        />
-                        <small id="dateHelp" class="form-text text-muted">
-                            Datum der Veranstaltung
-                        </small>
+                        <div class="form-group">
+                            <label for="date">Datum</label>
+                            <date-picker
+                                v-model="eventEntry.date"
+                                help-id="dateHelp"
+                            />
+                            <small id="dateHelp" class="form-text text-muted">
+                                Datum der Veranstaltung
+                            </small>
+                        </div>
+                        <div class="form-group">
+                            <label for="file">Dateien</label>
+                            <ul
+                                class="file-list"
+                                v-if="
+                                    eventEntry.attachments &&
+                                        eventEntry.attachments.length > 0
+                                "
+                            >
+                                <li
+                                    v-for="file in eventEntry.attachments"
+                                    :key="file.ID"
+                                >
+                                    {{ file.title }}
+                                    <button
+                                        type="button"
+                                        class="btn"
+                                        @click="deleteFile(file)"
+                                    >
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </li>
+                            </ul>
+                            <file-input
+                                @onUploadSuccessful="onUploadSuccessful"
+                                @onUploadFailed="onUploadFailed"
+                                :route="attachmentRoute"
+                                v-if="eventEntry.id"
+                            />
+                            <div v-else>
+                                <small
+                                    >Dateien können erst hochgeladen werden,
+                                    nachdem die Veranstaltung gespeichert
+                                    wurde.</small
+                                >
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-8">
                         <div class="form-group">
@@ -36,7 +75,7 @@
                             <button
                                 type="submit"
                                 class="btn btn-primary"
-                                v-bind:disabled="isSubmitting"
+                                v-bind:disabled="isSubmissionDisabled"
                             >
                                 <span
                                     v-show="isSubmitting"
@@ -59,21 +98,45 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import "@ckeditor/ckeditor5-build-classic/build/translations/de";
 import DatePicker from "@/components/DatePicker.vue";
 import Event from "../models/event";
+import FileInput from "@/components/FileInput.vue";
 import moment from "moment";
 
 export default Vue.extend({
     name: "EventEntryForm",
 
-    props: ["bus"],
-
     components: {
         DatePicker,
+        FileInput,
+    },
+
+    computed: {
+        attachmentRoute() {
+            if (!this.eventEntry.id) {
+                return "";
+            }
+
+            return `events/${this.eventEntry.id}`;
+        },
+        isSubmissionDisabled() {
+            if (this.isSubmitting) {
+                return true;
+            } else if (
+                !this.eventEntry.text ||
+                this.eventEntry.text.length == 0
+            ) {
+                return true;
+            }
+
+            return false;
+        },
+        eventEntry() {
+            return this.$store.state.events.selectedEvent
+        }
     },
 
     data() {
         return {
             isSubmitting: false,
-            eventEntry: new Event(),
             editor: ClassicEditor,
             editorConfig: {
                 height: 400,
@@ -91,10 +154,6 @@ export default Vue.extend({
         };
     },
 
-    mounted() {
-        this.bus.$on("edit", this.edit);
-    },
-
     methods: {
         submitForm(event) {
             event.preventDefault();
@@ -106,7 +165,7 @@ export default Vue.extend({
             this.isSubmitting = true;
             this.$emit("onSubmissionStart", true);
 
-            const action = this.eventEntry.ID ? "update" : "create";
+            const action = this.eventEntry.id ? "update" : "create";
             this.eventEntry.date = moment(this.eventEntry.date).format(
                 "YYYY-MM-DD"
             );
@@ -126,12 +185,30 @@ export default Vue.extend({
                     this.$emit("onSubmissionEnd", false);
                 });
         },
-        edit(event: Event) {
-            this.eventEntry = Event.init(event);
-        },
         cancelForm() {
             this.$emit("cancelForm");
         },
+        onUploadSuccessful(obj) {
+            this.$store.dispatch("events/updateEvent", Event.init(obj[0]));
+            this.$snotify.success("Upload erfolgreich");
+        },
+        onUploadFailed(obj) {
+            this.$snotify.error("Beim Upload ist ein Fehler aufgetreten!");
+        },
+        deleteFile(file) {
+            if (!window.confirm(`Soll die Datei "${file.title}" wirklich gelöscht werden?`)) {
+                return
+            }
+
+            this.$store.dispatch("events/deleteFile", { event: this.eventEntry, file })
+                .then(() => {
+                    this.eventEntry.attachments = this.eventEntry.attachments.filter(attachment => attachment.id != file.id);
+                    this.$snotify.success("Die Datei wurde gelöscht.");
+                })
+                .catch(() => {
+                    this.$snotify.error("Die Datei konnte nicht gelöscht werden!");
+                });
+        }
     },
 });
 </script>
@@ -158,6 +235,11 @@ export default Vue.extend({
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
     padding: 25px 0;
     min-height: 300px;
+}
+.file-list {
+    list-style: none;
+    margin: 0 0 1rem;
+    padding: 0;
 }
 </style>
 <style>

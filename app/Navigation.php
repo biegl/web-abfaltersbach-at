@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Request;
 use App\Router\Helper as RouterHelper;
-use Str;
+use Illuminate\Support\Str;
 
 class Navigation extends Model
 {

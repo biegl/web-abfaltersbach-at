@@ -1,11 +1,14 @@
 import EventService from "../services/event.service";
 import Event from "../models/event";
+import FileService from '@/services/file.service';
+import File from "../models/file";
 
 interface EventState {
     all: Event[];
+    selectedEvent: Event;
 }
 
-const initialState: EventState = { all: [] };
+const initialState: EventState = { all: [], selectedEvent: null };
 
 export const events = {
     namespaced: true,
@@ -23,6 +26,9 @@ export const events = {
                     return Promise.reject(error);
                 }
             );
+        },
+        select({ commit }, event: Event) {
+            commit("selectEvent", event);
         },
         delete({ commit }, event: Event) {
             return EventService.delete(event).then(
@@ -59,6 +65,20 @@ export const events = {
                 }
             );
         },
+        updateEvent({ commit }, event: Event) {
+            commit("updateEvent", event);
+        },
+        deleteFile({ commit }, { event, file }) {
+            return FileService.delete(file).then(
+                () => {
+                    commit("deleteFileSuccess", { event, file });
+                    return Promise.resolve();
+                },
+                error => {
+                    return Promise.reject(error);
+                }
+            );
+        }
     },
     mutations: {
         loadSuccess(state: EventState, events: Event[]) {
@@ -66,6 +86,9 @@ export const events = {
         },
         loadFailure(state: EventState) {
             state.all = [];
+        },
+        selectEvent(state: EventState, event: Event) {
+            state.selectedEvent = event;
         },
         deleteSuccess(state: EventState, id: string) {
             state.all = state.all.filter((event: Event) => event.id !== id);
@@ -81,5 +104,22 @@ export const events = {
                 return event;
             });
         },
+        updateEvent(state: EventState, event: Event) {
+            state.all = state.all.map(obj => {
+                if (obj.id == event.id) {
+                    return Event.init(event);
+                }
+                return obj;
+            })
+            state.selectedEvent = event;
+        },
+        deleteFileSuccess(state: EventState, { event, file }) {
+            state.all = state.all.map(obj => {
+                if (obj.id == event.id) {
+                    obj.attachments = event.attachments.filter(attachment => attachment.id != file.id);
+                }
+                return obj;
+            });
+        }
     },
 };

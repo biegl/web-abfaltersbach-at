@@ -21,6 +21,8 @@ class Event extends Model
         'date' => 'datetime',
     ];
 
+    public $with = ['attachments'];
+
     /**
      * @var string The name of the cache bucket.
      */
@@ -69,5 +71,13 @@ class Event extends Model
         return $query->upcoming()->get()->groupBy(function ($d) {
             return Carbon::parse($d->date)->formatLocalized('%B');
         });
+    }
+
+    /**
+     * Get all of the event's attachments.
+     */
+    public function attachments()
+    {
+        return $this->morphMany(File::class, 'attachable');
     }
 }

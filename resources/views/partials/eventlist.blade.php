@@ -9,10 +9,33 @@
 
             @forelse ($current_events as $event)
 
-                <li class="media mb-3">
+                <li class="media pt-3">
                     <div class="media-body calendar_day">
                         <div class="calendar_day_body">{!! $event->text !!}</div>
-                        <div class="calendar_day_meta"></div>
+
+                        @if ($event->attachments->count() > 0)
+
+                            <div>
+                                <ul class="calendar_day_files mt-2">
+
+                                    @foreach ($event->attachments as $file)
+
+                                        <li>
+                                            <i class="far fa-file {{ create_fa_ext_icon($file) }} mr-2 download-file__extension" title="{{ __('files.type') }}: {{ strtoupper($file->extension) }}"></i>
+                                            <a href="/files/{{ $file->title }}">
+                                                {{ $file->title }}
+                                            </a>
+                                        </li>
+
+                                    @endforeach
+
+                                </ul>
+                            </div>
+
+                        @endif
+
+                        <div class="calendar_day_meta">
+                        </div>
                     </div>
                 </li>
 
@@ -40,6 +63,28 @@
                     </div>
                     <div class="media-body calendar_day">
                         <div class="calendar_day_body">{!! $event->text !!}</div>
+
+                        @if ($event->attachments->count() > 0)
+
+                            <div>
+                                <ul class="calendar_day_files">
+
+                                    @foreach ($event->attachments as $file)
+
+                                        <li>
+                                            <i class="far fa-file {{ create_fa_ext_icon($file) }} mr-2 download-file__extension" title="{{ __('files.type') }}: {{ strtoupper($file->extension) }}"></i>
+                                            <a href="/files/{{ $file->title }}">
+                                                {{ $file->title }}
+                                            </a>
+                                        </li>
+
+                                    @endforeach
+
+                                </ul>
+                            </div>
+
+                        @endif
+
                         <div class="calendar_day_meta"></div>
                     </div>
                 </li>

@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Event;
+use App\File;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEvent;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class EventsController extends Controller
 {
@@ -71,5 +74,14 @@ class EventsController extends Controller
         Cache::forget(Event::$CACHE_KEY_CURRENT_EVENTS);
         Cache::forget(Event::$CACHE_KEY_GROUPED_EVENTS);
         return response()->json(null, 204);
+    }
+
+    public function attachFile(Event $event, Request $request)
+    {
+        $file = FilesController::storeFile($request);
+        $event->attachments()->save($file);
+        Cache::forget(Event::$CACHE_KEY_CURRENT_EVENTS);
+        Cache::forget(Event::$CACHE_KEY_GROUPED_EVENTS);
+        return response()->json($event->fresh(), 200);
     }
 }

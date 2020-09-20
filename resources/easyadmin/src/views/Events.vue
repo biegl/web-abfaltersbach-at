@@ -8,7 +8,7 @@
                             <div class="mt-3">
                                 <button
                                     class="btn btn-primary float-right"
-                                    v-bind:disabled="isCreating"
+                                    v-bind:disabled="!!selectedEvent"
                                     @click="createEvent"
                                 >
                                     Erstellen
@@ -20,6 +20,7 @@
                                     <tr>
                                         <th scope="col" class="date">Datum</th>
                                         <th scope="col">Beschreibung</th>
+                                        <th scope="col">Dateien</th>
                                         <th scope="col" width="108"></th>
                                     </tr>
                                 </thead>
@@ -53,6 +54,15 @@
                                             <div v-html="event.text"></div>
                                         </td>
                                         <td>
+                                            <span v-if="!event.attachments || event.attachments.length == 0">-</span>
+                                            <ul class="events-file-list" v-else>
+                                                <li v-for="file in event.attachments" :key="file.ID">
+                                                    <a :href="file.frontendPath">{{ file.title }}</a>
+                                                    <br/><small>{{ file.readableFileSize }}</small>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                        <td>
                                             <button
                                                 type="button"
                                                 class="btn btn-default"
@@ -80,13 +90,12 @@
                 </div>
 
                 <event-entry-form
-                    v-show="isCreating"
+                    v-show="!!selectedEvent"
                     @cancelForm="cancelEventForm"
                     @onSubmissionStart="isSubmitting = true"
                     @onSubmissionEnd="isSubmitting = false"
                     @onSubmissionSuccess="onFormSubmissionSuccess"
                     @onSubmissionError="onFormSubmissionError"
-                    :bus="eventBus"
                 ></event-entry-form>
             </div>
         </div>
@@ -107,7 +116,6 @@ export default Vue.extend({
     data() {
         return {
             isLoading: false,
-            isCreating: false,
             isSubmitting: false,
             eventBus: new Vue(),
         };
@@ -116,6 +124,9 @@ export default Vue.extend({
         events() {
             return this.$store.state.events.all;
         },
+        selectedEvent() {
+            return this.$store.state.events.selectedEvent;
+        }
     },
     filters: {
         moment: function(date) {
@@ -143,15 +154,13 @@ export default Vue.extend({
                 });
         },
         createEvent() {
-            this.isCreating = true;
-            this.eventBus.$emit("edit", new Event());
+            this.$store.dispatch("events/select", new Event());
         },
         editEvent(event) {
-            this.isCreating = true;
-            this.eventBus.$emit("edit", event);
+            this.$store.dispatch("events/select", Event.init(event));
         },
         cancelEventForm() {
-            this.isCreating = false;
+            this.$store.dispatch("events/select", null);
         },
         deleteEvent(event: Event) {
             if (window.confirm("Soll der Eintrag wirklich gelöscht werden?")) {
@@ -171,19 +180,18 @@ export default Vue.extend({
         },
         onFormSubmissionSuccess() {
             this.$snotify.success("Die Veranstaltung wurde gespeichert!");
-            this.isCreating = false;
+            this.$store.dispatch("events/select", null);
         },
         onFormSubmissionError() {
             this.$snotify.error(
                 "Die Veranstaltung konnte nicht gespeichert werden!"
             );
-            this.isCreating = false;
         },
     },
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .events-container {
     background: #fff;
     margin: 0;
@@ -220,5 +228,14 @@ export default Vue.extend({
 }
 .no-break {
     white-space: nowrap;
+}
+.events-file-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+        white-space: nowrap;
+    }
 }
 </style>
