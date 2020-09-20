@@ -16,6 +16,8 @@ class Page extends Model
 
     public $timestamps = false;
 
+    public $with = ['attachments'];
+
     protected $fillable = [
         'seitentitel',
         'inhalt',
@@ -70,7 +72,7 @@ class Page extends Model
 
                 return compact('title', 'content', 'navigation', 'breadcrumbs', 'news', 'grouped_events', 'current_events');
             default:
-                $files = $this->files;
+                $files = $this->files->merge($this->attachments);
                 return compact('title', 'content', 'navigation', 'breadcrumbs', 'subnavigation', 'files');
         }
     }
@@ -85,5 +87,13 @@ class Page extends Model
             'navigation_id', // Local key on pages table
             'ID' // Local key on navigation table
         );
+    }
+
+    /**
+     * Get all of the page's attachments.
+     */
+    public function attachments()
+    {
+        return $this->morphMany(File::class, 'attachable');
     }
 }

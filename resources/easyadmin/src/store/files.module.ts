@@ -1,5 +1,5 @@
-import FileService from "../services/file.service";
-import File from "../models/file";
+import FileService from "@/services/file.service";
+import File from "@/models/file";
 
 interface FileState {
     files: File[];

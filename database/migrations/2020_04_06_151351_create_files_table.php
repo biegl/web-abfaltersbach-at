@@ -16,7 +16,7 @@ class CreateFilesTable extends Migration
         Schema::create('tbl_downloads', function (Blueprint $table) {
             $table->increments('ID');
             $table->integer('navID')->nullable();
-            $table->integer('position');
+            $table->integer('position')->nullable();
             $table->text('title', 255);
             $table->text('file', 255);
             $table->timestamps();

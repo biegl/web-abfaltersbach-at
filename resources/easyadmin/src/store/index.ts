@@ -3,7 +3,7 @@ import Vuex from "vuex";
 import { auth } from "./auth.module";
 import { events } from "./events.module";
 import { news } from "./news.module";
-import { files } from "./file.module";
+import { files } from "./files.module";
 import { users } from "./users.module";
 import { pages } from "./pages.module";
 

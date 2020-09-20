@@ -1,10 +1,10 @@
 <template>
-    <div class="form-container">
+    <div class="form-container" v-if="newsEntry">
         <div class="form-background"></div>
         <div class="news-create">
             <form @submit="submitForm" class="container form">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Titel</label>
                             <input
@@ -54,7 +54,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Text</label>
                             <ckeditor
@@ -63,7 +63,49 @@
                                 :config="editorConfig"
                             ></ckeditor>
                         </div>
-
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="file">Dateien</label>
+                            <ul
+                                class="file-list"
+                                v-if="
+                                    newsEntry.attachments &&
+                                        newsEntry.attachments.length > 0
+                                "
+                            >
+                                <li
+                                    v-for="file in newsEntry.attachments"
+                                    :key="file.ID"
+                                >
+                                    {{ file.title }}
+                                    <button
+                                        type="button"
+                                        class="btn"
+                                        @click="deleteFile(file)"
+                                    >
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </li>
+                            </ul>
+                            <file-input
+                                @onUploadSuccessful="onUploadSuccessful"
+                                @onUploadFailed="onUploadFailed"
+                                :route="attachmentRoute"
+                                v-if="newsEntry.id"
+                            />
+                            <div v-else>
+                                <small
+                                    >Dateien können erst hochgeladen werden,
+                                    nachdem die Veranstaltung gespeichert
+                                    wurde.</small
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
                         <div class="text-right">
                             <button
                                 type="button"
@@ -98,22 +140,22 @@ import { Vue } from "vue-property-decorator";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import "@ckeditor/ckeditor5-build-classic/build/translations/de";
 import DatePicker from "@/components/DatePicker.vue";
+import FileInput from "@/components/FileInput.vue";
 import News from "../models/news";
 import moment from "moment";
+import Config from "../config";
 
 export default Vue.extend({
     name: "NewsEntryForm",
 
-    props: ["bus"],
-
     components: {
         DatePicker,
+        FileInput,
     },
 
     data() {
         return {
             isSubmitting: false,
-            newsEntry: new News(),
             editor: ClassicEditor,
             editorConfig: {
                 height: 400,
@@ -131,8 +173,17 @@ export default Vue.extend({
         };
     },
 
-    mounted() {
-        this.bus.$on("edit", this.edit);
+    computed: {
+        attachmentRoute() {
+            if (!this.newsEntry.id) {
+                return "";
+            }
+
+            return `${Config.host}/api/news/${this.newsEntry.id}/attach`;
+        },
+        newsEntry() {
+            return this.$store.state.news.selectedNews;
+        },
     },
 
     methods: {
@@ -162,9 +213,6 @@ export default Vue.extend({
                     this.$emit("onSubmissionEnd", false);
                 });
         },
-        edit(news: News) {
-            this.newsEntry = News.init(news);
-        },
         cancelForm() {
             this.$emit("cancelForm");
         },
@@ -180,6 +228,33 @@ export default Vue.extend({
             if (startDate > endDate) {
                 this.newsEntry.expirationDate = date;
             }
+        },
+        onUploadSuccessful(obj) {
+            this.$store.dispatch("news/updateNews", News.init(obj[0]));
+            this.$snotify.success("Upload erfolgreich");
+        },
+        onUploadFailed() {
+            this.$snotify.error("Beim Upload ist ein Fehler aufgetreten!");
+        },
+        deleteFile(file) {
+            if (
+                !window.confirm(
+                    `Soll die Datei "${file.title}" wirklich gelöscht werden?`
+                )
+            ) {
+                return;
+            }
+
+            this.$store
+                .dispatch("news/deleteFile", { news: this.newsEntry, file })
+                .then(() => {
+                    this.$snotify.success("Die Datei wurde gelöscht.");
+                })
+                .catch(() => {
+                    this.$snotify.error(
+                        "Die Datei konnte nicht gelöscht werden!"
+                    );
+                });
         },
     },
 });
@@ -207,6 +282,11 @@ export default Vue.extend({
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
     padding: 25px 0;
     min-height: 300px;
+}
+.file-list {
+    list-style: none;
+    margin: 0 0 1rem;
+    padding: 0;
 }
 </style>
 <style>

@@ -8,7 +8,7 @@
                             <div class="mt-3">
                                 <button
                                     class="btn btn-primary float-right"
-                                    v-bind:disabled="isCreating"
+                                    v-bind:disabled="selectedPage"
                                     @click="createPage"
                                 >
                                     Erstellen
@@ -19,12 +19,15 @@
                                 <thead>
                                     <tr>
                                         <th scope="col" class="date">Titel</th>
+                                        <th scope="col" class="date">
+                                            Dateien
+                                        </th>
                                         <th scope="col" width="108"></th>
                                     </tr>
                                 </thead>
                                 <tbody v-if="isLoading">
                                     <tr>
-                                        <td colspan="2">
+                                        <td colspan="3">
                                             <span
                                                 v-show="isLoading"
                                                 class="spinner-border spinner-border-sm"
@@ -35,7 +38,7 @@
                                 </tbody>
                                 <tbody v-else-if="pages.length == 0">
                                     <tr>
-                                        <td colspan="2">
+                                        <td colspan="3">
                                             Keine Seiten vorhanden.
                                         </td>
                                     </tr>
@@ -44,6 +47,32 @@
                                     <tr v-for="page in pages" :key="page.id">
                                         <td>
                                             <div>{{ page.seitentitel }}</div>
+                                        </td>
+                                        <td>
+                                            <span
+                                                v-if="
+                                                    !page.attachments ||
+                                                        page.attachments
+                                                            .length == 0
+                                                "
+                                                >-</span
+                                            >
+                                            <ul class="pages-file-list" v-else>
+                                                <li
+                                                    v-for="file in page.attachments"
+                                                    :key="file.ID"
+                                                >
+                                                    <a
+                                                        :href="
+                                                            file.frontendPath
+                                                        "
+                                                        >{{ file.title }}</a
+                                                    >
+                                                    <small>{{
+                                                        file.readableFileSize
+                                                    }}</small>
+                                                </li>
+                                            </ul>
                                         </td>
                                         <td class="table-actions">
                                             <button
@@ -73,13 +102,12 @@
                 </div>
 
                 <page-entry-form
-                    v-show="isCreating"
+                    v-show="selectedPage"
                     @cancelForm="cancelPageForm"
                     @onSubmissionStart="isSubmitting = true"
                     @onSubmissionEnd="isSubmitting = false"
                     @onSubmissionSuccess="onFormSubmissionSuccess"
                     @onSubmissionError="onFormSubmissionError"
-                    :bus="eventBus"
                     :adminMode="isAdmin"
                 ></page-entry-form>
             </div>
@@ -103,14 +131,15 @@ export default Vue.extend({
     data() {
         return {
             isLoading: false,
-            isCreating: false,
             isSubmitting: false,
-            eventBus: new Vue(),
         };
     },
     computed: {
         pages() {
             return this.$store.state.pages.all;
+        },
+        selectedPage() {
+            return this.$store.state.pages.selectedPage;
         },
         currentUser(): User {
             return this.$store.state.auth.user;
@@ -145,15 +174,13 @@ export default Vue.extend({
                 });
         },
         createPage() {
-            this.isCreating = true;
-            this.eventBus.$emit("edit", new Page());
+            this.$store.dispatch("pages/select", new Page());
         },
         editPage(page: Page) {
-            this.isCreating = true;
-            this.eventBus.$emit("edit", page);
+            this.$store.dispatch("pages/select", page);
         },
         cancelPageForm() {
-            this.isCreating = false;
+            this.$store.dispatch("pages/select", null);
         },
         deletePage(page: Page) {
             if (window.confirm("Soll die Seite wirklich gelöscht werden?")) {
@@ -171,11 +198,10 @@ export default Vue.extend({
         },
         onFormSubmissionSuccess() {
             this.$snotify.success("Die Seite wurde gespeichert!");
-            this.isCreating = false;
+            this.$store.dispatch("pages/select", null);
         },
         onFormSubmissionError() {
             this.$snotify.error("Die Seite konnte nicht gespeichert werden!");
-            this.isCreating = false;
         },
     },
 });

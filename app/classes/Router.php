@@ -4,7 +4,6 @@ namespace App;
 
 use App\Navigation;
 use Cache;
-use Config;
 use App\Page;
 use App\Support\Str;
 use App\Router\Helper as RouterHelper;

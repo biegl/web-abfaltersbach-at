@@ -12,6 +12,27 @@
 
             @endisset
 
+            @if ($news_item->attachments->count() > 0)
+
+                <div>
+                    <ul class="newslist_item_files">
+
+                        @foreach ($news_item->attachments as $file)
+
+                            <li>
+                                <i class="far fa-file {{ create_fa_ext_icon($file) }} mr-2 download-file__extension" title="{{ __('files.type') }}: {{ strtoupper($file->extension) }}"></i>
+                                <a href="/files/{{ $file->title }}">
+                                    {{ $file->title }}
+                                </a>
+                            </li>
+
+                        @endforeach
+
+                    </ul>
+                </div>
+
+            @endif
+
         </li>
 
     @empty

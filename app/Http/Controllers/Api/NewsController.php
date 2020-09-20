@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreNews;
 use App\News;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
@@ -65,8 +67,31 @@ class NewsController extends Controller
      */
     public function destroy(News $news)
     {
+        // Delete attachments
+        foreach($news->attachments as $file) {
+            Storage::delete([$file->file]);
+            $file->delete();
+        }
+
+        // Delete news
         $news->delete();
+
+        // Clear cache
         Cache::forget(News::$CACHE_KEY_TOP_NEWS);
         return response()->json(null, 204);
+    }
+
+    /**
+     * Attaches a file to a specific news.
+     * @param  \App\News $news
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function attachFile(News $news, Request $request)
+    {
+        $file = FilesController::storeFile($request);
+        $news->attachments()->save($file);
+        Cache::forget(News::$CACHE_KEY_TOP_NEWS);
+        return response()->json($news->fresh(), 200);
     }
 }

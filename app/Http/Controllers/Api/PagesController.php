@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePage;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Page;
 
 class PagesController extends Controller
@@ -62,7 +64,27 @@ class PagesController extends Controller
      */
     public function destroy(Page $page)
     {
+        // Delete attachments
+        foreach($page->attachments as $file) {
+            Storage::delete([$file->file]);
+            $file->delete();
+        }
+
+        // Delete page
         $page->delete();
         return response()->json(null, 204);
+    }
+
+    /**
+     * Attaches a file to a specific page.
+     * @param  \App\Page $page
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function attachFile(Page $page, Request $request)
+    {
+        $file = FilesController::storeFile($request);
+        $page->attachments()->save($file);
+        return response()->json($page->fresh(), 200);
     }
 }

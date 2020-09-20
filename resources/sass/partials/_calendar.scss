@@ -47,6 +47,16 @@
         font-size: 1rem;
         color: #fff;
     }
+
+    .media + .media {
+        border-top: 1px solid;
+    }
+
+    .calendar_day_files {
+        a {
+            color: $highlightColor;
+        }
+    }
 }
 
 .calendar_date_month {
@@ -79,5 +89,16 @@
     a,
     a:visited {
         text-decoration: underline;
+    }
+}
+
+.calendar_day_files {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    a {
+        text-decoration: underline;
+        line-height: 1rem;
     }
 }

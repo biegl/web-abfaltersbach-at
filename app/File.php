@@ -16,16 +16,16 @@ class File extends Model
 
     protected $primaryKey = 'ID';
 
-    public $timestamps = false;
-
     protected $fillable = [
         'navID',
         'position',
         'title',
-        'filepath',
+        'file',
     ];
 
     protected $appends = ['extension', 'fileSize'];
+
+    static $DISK_NAME = 'attachments';
 
     public function getExtensionAttribute()
     {
@@ -34,13 +34,13 @@ class File extends Model
 
     public function getExistsAttribute()
     {
-        return Storage::disk('attachments')->exists($this);
+        return Storage::disk(self::$DISK_NAME)->exists($this);
     }
 
     public function getFileSizeAttribute()
     {
         try {
-            return Storage::disk('attachments')->size(str_replace('/upload', '', $this->file));
+            return Storage::disk(self::$DISK_NAME)->size(str_replace('/upload', '', $this->file));
         } catch (Exception $error) {
             return 0;
         }
@@ -58,5 +58,13 @@ class File extends Model
     {
         for ($i = 0; ($bytes / self::BYTE_NEXT) >= 0.9 && $i < count(self::BYTE_UNITS); $i++) $bytes /= self::BYTE_NEXT;
         return round($bytes, is_null($precision) ? self::BYTE_PRECISION[$i] : $precision) . self::BYTE_UNITS[$i];
+    }
+
+    /**
+     * Get all of the owning attachable models.
+     */
+    public function attachable()
+    {
+        return $this->morphTo();
     }
 }
