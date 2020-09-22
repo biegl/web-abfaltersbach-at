@@ -1,6 +1,6 @@
 export default class Config {
     static host =
         process.env.NODE_ENV === "production"
-            ? "//test.abfaltersbach.at"
+            ? "//abfaltersbach.at"
             : "//localhost:8000";
 }
