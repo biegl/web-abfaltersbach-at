@@ -29,7 +29,6 @@ jobs:
 
       - name: Install composer dependencies
         run: |
-          docker exec abf-app composer config http-basic.nova.laravel.com "${{ secrets.NOVA_USERNAME }}" "${{ secrets.NOVA_PASSWORD }}"
           docker exec abf-app composer install
 
       - name: Deploy

@@ -44,7 +44,6 @@ jobs:
 
       - name: Install composer dependencies
         run: |
-          docker exec abf-app composer config http-basic.nova.laravel.com "${{ secrets.NOVA_USERNAME }}" "${{ secrets.NOVA_PASSWORD }}"
           docker exec abf-app composer update --no-interaction --no-progress  --prefer-dist --optimize-autoloader --ignore-platform-reqs
           docker exec abf-app php artisan key:generate
           docker exec abf-app php artisan config:cache
