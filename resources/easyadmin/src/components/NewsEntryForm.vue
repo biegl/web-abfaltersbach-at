@@ -142,7 +142,7 @@ import "@ckeditor/ckeditor5-build-classic/build/translations/de";
 import DatePicker from "@/components/DatePicker.vue";
 import FileInput from "@/components/FileInput.vue";
 import News from "../models/news";
-import moment from "moment";
+import { DateTime } from "luxon";
 import Config from "../config";
 
 export default Vue.extend({
@@ -222,8 +222,8 @@ export default Vue.extend({
             if (!expirationDate || !date) {
                 return;
             }
-            const startDate = moment(date);
-            const endDate = moment(expirationDate);
+            const startDate = DateTime.fromISO(date);
+            const endDate = DateTime.fromISO(expirationDate);
 
             if (startDate > endDate) {
                 this.newsEntry.expirationDate = date;

@@ -99,7 +99,7 @@ import "@ckeditor/ckeditor5-build-classic/build/translations/de";
 import DatePicker from "@/components/DatePicker.vue";
 import Event from "../models/event";
 import FileInput from "@/components/FileInput.vue";
-import moment from "moment";
+import { DateTime } from "luxon";
 import Config from "../config";
 
 export default Vue.extend({
@@ -167,9 +167,9 @@ export default Vue.extend({
             this.$emit("onSubmissionStart", true);
 
             const action = this.eventEntry.id ? "update" : "create";
-            this.eventEntry.date = moment(this.eventEntry.date).format(
-                "YYYY-MM-DD"
-            );
+            this.eventEntry.date = DateTime.fromISO(
+                this.eventEntry.date
+            ).toFormat("y-MM-dd");
             this.eventEntry.text = this.eventEntry.text.replace(/<\/?p>/g, "");
 
             this.$store
