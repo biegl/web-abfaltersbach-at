@@ -49,14 +49,12 @@
                                     <tr v-for="news in news" :key="news.ID">
                                         <td>
                                             <span class="no-break">
-                                                {{ news.date | moment }}
+                                                {{ news.date | date }}
                                             </span>
                                         </td>
                                         <td>
                                             <span class="no-break">
-                                                {{
-                                                    news.expirationDate | moment
-                                                }}
+                                                {{ news.expirationDate | date }}
                                             </span>
                                         </td>
                                         <td>
@@ -91,24 +89,26 @@
                                             </ul>
                                         </td>
                                         <td>
-                                            <button
-                                                type="button"
-                                                class="btn btn-default"
-                                                aria-label="Bearbeiten"
-                                                title="Bearbeiten"
-                                                @click="editNews(news)"
-                                            >
-                                                <i class="fa fa-edit"></i>
-                                            </button>
-                                            <button
-                                                type="button"
-                                                class="btn btn-danger"
-                                                aria-label="Löschen"
-                                                title="Löschen"
-                                                @click="deleteNews(news)"
-                                            >
-                                                <i class="fa fa-trash"></i>
-                                            </button>
+                                            <div class="row-actions">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-default"
+                                                    aria-label="Bearbeiten"
+                                                    title="Bearbeiten"
+                                                    @click="editNews(news)"
+                                                >
+                                                    <i class="fa fa-edit"></i>
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-danger"
+                                                    aria-label="Löschen"
+                                                    title="Löschen"
+                                                    @click="deleteNews(news)"
+                                                >
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -132,7 +132,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import moment from "moment";
+import { DateTime } from "luxon";
 import News from "../models/news";
 import NewsEntryForm from "@/components/NewsEntryForm.vue";
 
@@ -156,11 +156,13 @@ export default Vue.extend({
         },
     },
     filters: {
-        moment: function(date) {
-            if (!date) {
+        date: function(dateString) {
+            if (!dateString) {
                 return "";
             }
-            return moment(date).format("DD. MMMM YYYY");
+            return DateTime.fromISO(dateString)
+                .setLocale("de")
+                .toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY);
         },
     },
     created() {
@@ -270,6 +272,13 @@ export default Vue.extend({
             overflow: hidden;
             text-overflow: ellipsis;
         }
+    }
+}
+.row-actions {
+    text-align: right;
+
+    button + button {
+        margin-left: 5px;
     }
 }
 </style>

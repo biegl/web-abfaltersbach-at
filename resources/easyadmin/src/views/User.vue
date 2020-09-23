@@ -136,7 +136,10 @@
                                                 />
                                             </td>
                                             <td>
-                                                {{ user.email_verified_at }}
+                                                {{
+                                                    user.email_verified_at
+                                                        | date
+                                                }}
                                             </td>
                                             <td>
                                                 <div v-if="!isEditMode(user)">
@@ -165,7 +168,10 @@
                                                 </select>
                                             </td>
                                             <td>
-                                                <div v-if="isEditMode(user)">
+                                                <div
+                                                    v-if="isEditMode(user)"
+                                                    class="row-actions"
+                                                >
                                                     <button
                                                         type="button"
                                                         class="btn btn-default"
@@ -200,7 +206,7 @@
                                                         ></span>
                                                     </button>
                                                 </div>
-                                                <div v-else>
+                                                <div v-else class="row-actions">
                                                     <button
                                                         type="button"
                                                         class="btn btn-default"
@@ -258,6 +264,7 @@
 <script lang="ts">
 import Vue from "vue";
 import User from "../models/user";
+import { DateTime } from "luxon";
 
 export default Vue.extend({
     name: "User",
@@ -272,6 +279,16 @@ export default Vue.extend({
     computed: {
         users() {
             return this.$store.state.users.all;
+        },
+    },
+    filters: {
+        date: function(dateString) {
+            if (!dateString) {
+                return "";
+            }
+            return DateTime.fromISO(dateString)
+                .setLocale("de")
+                .toLocaleString(DateTime.DATETIME_MED);
         },
     },
     created() {
@@ -381,7 +398,7 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .user-container {
     background: #fff;
     margin: 0;
@@ -402,5 +419,12 @@ export default Vue.extend({
 }
 .table td {
     vertical-align: middle;
+}
+.row-actions {
+    text-align: right;
+
+    button + button {
+        margin-left: 5px;
+    }
 }
 </style>

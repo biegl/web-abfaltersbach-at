@@ -18,7 +18,7 @@
                 v-bind:aria-describedby="helpId"
                 readonly
                 id="date"
-                v-bind:value="selectedDate | moment"
+                v-bind:value="selectedDate | date"
             />
             <div class="input-group-append">
                 <button class="btn btn-outline-secondary btn-sm" type="button">
@@ -39,7 +39,7 @@
 
 <script lang="ts">
 import { Vue } from "vue-property-decorator";
-import moment from "moment";
+import { DateTime } from "luxon";
 
 export default Vue.extend({
     name: "DatePicker",
@@ -57,18 +57,20 @@ export default Vue.extend({
     },
 
     filters: {
-        moment: function(date?: Date): string {
+        date: function(date?: string): string {
             if (!date) {
                 return "";
             }
 
-            return moment(date).format("DD. MMMM YYYY");
+            return DateTime.fromISO(date)
+                .setLocale("de")
+                .toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY);
         },
     },
 
     methods: {
         selectDate(date) {
-            const formattedDate = moment(date).format("YYYY-MM-DD");
+            const formattedDate = DateTime.fromJSDate(date).toFormat("y-MM-dd");
             this.$emit("change", formattedDate);
         },
         clearDate(event) {

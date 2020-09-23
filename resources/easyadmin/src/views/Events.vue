@@ -47,7 +47,7 @@
                                     <tr v-for="event in events" :key="event.ID">
                                         <td>
                                             <span class="no-break">
-                                                {{ event.date | moment }}
+                                                {{ event.date | date }}
                                             </span>
                                         </td>
                                         <td>
@@ -80,24 +80,26 @@
                                             </ul>
                                         </td>
                                         <td>
-                                            <button
-                                                type="button"
-                                                class="btn btn-default"
-                                                aria-label="Bearbeiten"
-                                                title="Bearbeiten"
-                                                @click="editEvent(event)"
-                                            >
-                                                <i class="fa fa-edit"></i>
-                                            </button>
-                                            <button
-                                                type="button"
-                                                class="btn btn-danger"
-                                                aria-label="Löschen"
-                                                title="Löschen"
-                                                @click="deleteEvent(event)"
-                                            >
-                                                <i class="fa fa-trash"></i>
-                                            </button>
+                                            <div class="row-actions">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-default"
+                                                    aria-label="Bearbeiten"
+                                                    title="Bearbeiten"
+                                                    @click="editEvent(event)"
+                                                >
+                                                    <i class="fa fa-edit"></i>
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-danger"
+                                                    aria-label="Löschen"
+                                                    title="Löschen"
+                                                    @click="deleteEvent(event)"
+                                                >
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -121,7 +123,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import moment from "moment";
+import { DateTime } from "luxon";
 import Event from "../models/event";
 import EventEntryForm from "@/components/EventEntryForm.vue";
 
@@ -145,11 +147,13 @@ export default Vue.extend({
         },
     },
     filters: {
-        moment: function(date) {
-            if (!date) {
+        date: function(dateString) {
+            if (!dateString) {
                 return "";
             }
-            return moment(date).format("DD. MMMM YYYY");
+            return DateTime.fromISO(dateString)
+                .setLocale("de")
+                .toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY);
         },
     },
     created() {
@@ -252,6 +256,13 @@ export default Vue.extend({
 
     li {
         white-space: nowrap;
+    }
+}
+.row-actions {
+    text-align: right;
+
+    button + button {
+        margin-left: 5px;
     }
 }
 </style>

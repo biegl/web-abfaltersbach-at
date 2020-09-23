@@ -74,25 +74,27 @@
                                                 </li>
                                             </ul>
                                         </td>
-                                        <td class="table-actions">
-                                            <button
-                                                type="button"
-                                                class="btn btn-default"
-                                                aria-label="Bearbeiten"
-                                                title="Bearbeiten"
-                                                @click="editPage(page)"
-                                            >
-                                                <i class="fa fa-edit"></i>
-                                            </button>
-                                            <button
-                                                type="button"
-                                                class="btn btn-danger"
-                                                aria-label="Löschen"
-                                                title="Löschen"
-                                                @click="deletePage(page)"
-                                            >
-                                                <i class="fa fa-trash"></i>
-                                            </button>
+                                        <td>
+                                            <div class="row-actions">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-default"
+                                                    aria-label="Bearbeiten"
+                                                    title="Bearbeiten"
+                                                    @click="editPage(page)"
+                                                >
+                                                    <i class="fa fa-edit"></i>
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-danger"
+                                                    aria-label="Löschen"
+                                                    title="Löschen"
+                                                    @click="deletePage(page)"
+                                                >
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -117,7 +119,6 @@
 
 <script lang="ts">
 import Vue from "vue";
-import moment from "moment";
 import Page from "../models/page";
 import PageEntryForm from "@/components/PageEntryForm.vue";
 import User from "../models/user";
@@ -146,14 +147,6 @@ export default Vue.extend({
         },
         isAdmin(): boolean {
             return this.currentUser && this.currentUser.role === Role.Admin;
-        },
-    },
-    filters: {
-        moment: function(date) {
-            if (!date) {
-                return "";
-            }
-            return moment(date).format("DD. MMMM YYYY");
         },
     },
     created() {
@@ -207,7 +200,7 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .pages-container {
     background: #fff;
     margin: 0;
@@ -245,7 +238,11 @@ export default Vue.extend({
 .no-break {
     white-space: nowrap;
 }
-.table-actions {
+.row-actions {
     text-align: right;
+
+    button + button {
+        margin-left: 5px;
+    }
 }
 </style>
