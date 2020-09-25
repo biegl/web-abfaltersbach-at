@@ -15,7 +15,7 @@
         "laravel/framework": "7.11.0",
         "laravel/tinker": "2.4.2",
         "laravel/ui": "^2.1",
-        "lorisleiva/laravel-deployer": "0.3.2",
+        "lorisleiva/laravel-deployer": "0.3.4",
         "sentry/sentry-laravel": "^1.8"
     },
     "require-dev": {

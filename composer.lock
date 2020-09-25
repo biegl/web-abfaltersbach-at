@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2dfd0fbb37c3e5c5fa629ae023e8da08",
+    "content-hash": "266f0cacc143106d230af3d77c215237",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1634,25 +1634,25 @@
         },
         {
             "name": "lorisleiva/laravel-deployer",
-            "version": "v0.3.2",
+            "version": "v0.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lorisleiva/laravel-deployer.git",
-                "reference": "615ef1b18845bee60a22118c16cf532c95b57cb2"
+                "reference": "a8feae35c3ccd46f2ac4b6f1065e81ba35fe0992"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lorisleiva/laravel-deployer/zipball/615ef1b18845bee60a22118c16cf532c95b57cb2",
-                "reference": "615ef1b18845bee60a22118c16cf532c95b57cb2",
+                "url": "https://api.github.com/repos/lorisleiva/laravel-deployer/zipball/a8feae35c3ccd46f2ac4b6f1065e81ba35fe0992",
+                "reference": "a8feae35c3ccd46f2ac4b6f1065e81ba35fe0992",
                 "shasum": ""
             },
             "require": {
                 "deployer/deployer": "^6.1",
                 "deployer/recipes": "^6.0",
-                "illuminate/support": "^5.8|^6.0|^7.0"
+                "illuminate/support": "^5.8|^6.0|^7.0|^8.0"
             },
             "require-dev": {
-                "orchestra/testbench": "~5.0"
+                "orchestra/testbench": "^3.8|^4.0|^5.0|^6.0"
             },
             "type": "library",
             "extra": {
@@ -1681,7 +1681,7 @@
                 }
             ],
             "description": "Laravel Deployer is a lightweight wrapper of Deployer giving Artisan the power of zero-downtime deployment.",
-            "time": "2020-04-07T13:22:32+00:00"
+            "time": "2020-09-17T12:35:20+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -5829,16 +5829,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v5.1.2",
+            "version": "v5.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "ea342353a3ef4f453809acc4ebc55382231d4d23"
+                "reference": "a44bd3a91bfbf8db12367fa6ffac9c3eb1a8804a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/ea342353a3ef4f453809acc4ebc55382231d4d23",
-                "reference": "ea342353a3ef4f453809acc4ebc55382231d4d23",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/a44bd3a91bfbf8db12367fa6ffac9c3eb1a8804a",
+                "reference": "a44bd3a91bfbf8db12367fa6ffac9c3eb1a8804a",
                 "shasum": ""
             },
             "require": {
@@ -5902,7 +5902,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-05-20T17:43:50+00:00"
+            "time": "2020-08-26T08:30:57+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
