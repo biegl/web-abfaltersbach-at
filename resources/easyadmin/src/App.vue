@@ -21,6 +21,11 @@
                         >Seiten</router-link
                     >
                 </li>
+                <li v-if="isLoggedIn" class="nav-item">
+                    <router-link to="/persons" class="nav-link"
+                        >Personen</router-link
+                    >
+                </li>
                 <li v-if="isAdmin" class="nav-item">
                     <router-link to="/users" class="nav-link">User</router-link>
                 </li>

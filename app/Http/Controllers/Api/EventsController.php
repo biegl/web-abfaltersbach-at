@@ -87,7 +87,7 @@ class EventsController extends Controller
 
     /**
      * Attaches a file to a specific event.
-     * @param  \App\News $news
+     * @param  \App\Event $event
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */

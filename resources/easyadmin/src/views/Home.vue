@@ -17,6 +17,9 @@
                     <li>
                         <router-link to="/pages">Seiten</router-link>
                     </li>
+                    <li>
+                        <router-link to="/persons">Personen</router-link>
+                    </li>
                     <li v-if="isAdmin">
                         <router-link to="/users">User</router-link>
                     </li>

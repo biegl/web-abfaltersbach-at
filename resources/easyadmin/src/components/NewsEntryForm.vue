@@ -97,7 +97,7 @@
                             <div v-else>
                                 <small
                                     >Dateien können erst hochgeladen werden,
-                                    nachdem die Veranstaltung gespeichert
+                                    nachdem die News gespeichert
                                     wurde.</small
                                 >
                             </div>
