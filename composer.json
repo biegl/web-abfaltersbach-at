@@ -19,7 +19,7 @@
         "sentry/sentry-laravel": "^1.8"
     },
     "require-dev": {
-        "facade/ignition": "2.0.2",
+        "facade/ignition": "2.3.7",
         "fzaninotto/faker": "1.9.1",
         "mockery/mockery": "1.4.2",
         "nunomaduro/collision": "5.0.2",
