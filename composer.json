@@ -16,7 +16,7 @@
         "laravel/tinker": "2.4.2",
         "laravel/ui": "^2.1",
         "lorisleiva/laravel-deployer": "0.3.4",
-        "sentry/sentry-laravel": "^1.8"
+        "sentry/sentry-laravel": "^2.0"
     },
     "require-dev": {
         "facade/ignition": "2.3.7",
