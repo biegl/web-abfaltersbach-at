@@ -112,10 +112,10 @@ export const pages = {
             });
             state.selectedPage = page;
         },
-        deleteFileSuccess(state: PageState, { news, file }) {
+        deleteFileSuccess(state: PageState, { page, file }) {
             state.all = state.all.map(obj => {
-                if (obj.id == news.id) {
-                    obj.attachments = news.attachments.filter(
+                if (obj.id == page.id) {
+                    obj.attachments = page.attachments.filter(
                         attachment => attachment.id != file.id
                     );
                 }

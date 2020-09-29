@@ -46,6 +46,15 @@ class File extends Model
         }
     }
 
+    public function getDownloadPathAttribute()
+    {
+        if (str_starts_with($this->file, '/upload')) {
+            return $this->file;
+        }
+
+        return "/files/$this->file";
+    }
+
     /**
      * Convert bytes to be human readable.
      *

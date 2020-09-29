@@ -202,7 +202,7 @@ export default Vue.extend({
             }
 
             this.$store
-                .dispatch("pages/deleteFile", { news: this.pageEntry, file })
+                .dispatch("pages/deleteFile", { page: this.pageEntry, file })
                 .then(() => {
                     this.$snotify.success("Die Datei wurde gelöscht.");
                 })
