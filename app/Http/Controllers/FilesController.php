@@ -11,7 +11,9 @@ class FilesController extends Controller
     public function download(String $name, Request $request)
     {
         // Check if file exists
-        $file = File::where(['title' => $name])->firstOrFail();
+        $file = File::where(['title' => $name])
+            ->orWhere(['file' => $name])
+            ->firstOrFail();
         return Storage::download($file->file, $file->title);
     }
 }
