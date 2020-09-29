@@ -4,10 +4,17 @@ import Person from "@/models/person";
 
 interface PersonsState {
     all: Person[];
+    councilmen: Person[];
+    employees: Person[];
     selectedPerson: Person;
 }
 
-const initialState: PersonsState = { all: [], selectedPerson: null };
+const initialState: PersonsState = {
+    all: [],
+    councilmen: [],
+    employees: [],
+    selectedPerson: null,
+};
 
 export const persons = {
     namespaced: true,
@@ -78,6 +85,9 @@ export const persons = {
                 }
             );
         },
+        updateList({ commit }, { collection, dropResult }) {
+            commit("updatePersonList", { collection, dropResult });
+        },
     },
     mutations: {
         loadSuccess(state: PersonsState, persons: Person[]) {
@@ -91,6 +101,8 @@ export const persons = {
         },
         deleteSuccess(state: PersonsState, id: string) {
             state.all = state.all.filter((person: Person) => person.id !== id);
+            state.councilmen = state.councilmen.filter((person: Person) => person.id !== id);
+            state.employees = state.employees.filter((person: Person) => person.id !== id);
         },
         createSuccess(state: PersonsState, person: Person) {
             state.all = [person, ...state.all];
@@ -102,9 +114,33 @@ export const persons = {
                 }
                 return person;
             });
+            state.councilmen = state.councilmen.map(person => {
+                if (person.id === updatedperson.id) {
+                    return updatedperson;
+                }
+                return person;
+            });
+            state.employees = state.employees.map(person => {
+                if (person.id === updatedperson.id) {
+                    return updatedperson;
+                }
+                return person;
+            });
         },
         updatePerson(state: PersonsState, person: Person) {
             state.all = state.all.map(obj => {
+                if (obj.id == person.id) {
+                    return Person.init(person);
+                }
+                return obj;
+            });
+            state.councilmen = state.councilmen.map(obj => {
+                if (obj.id == person.id) {
+                    return Person.init(person);
+                }
+                return obj;
+            });
+            state.employees = state.employees.map(obj => {
                 if (obj.id == person.id) {
                     return Person.init(person);
                 }
@@ -119,8 +155,38 @@ export const persons = {
                 }
                 return obj;
             });
+            state.councilmen = state.councilmen.map(obj => {
+                if (obj.id == person.id) {
+                    return person;
+                }
+                return obj;
+            });
+            state.employees = state.employees.map(obj => {
+                if (obj.id == person.id) {
+                    return person;
+                }
+                return obj;
+            });
 
             state.selectedPerson = person;
+        },
+        updatePersonList(state: PersonsState, { collection, dropResult }) {
+            const { removedIndex, addedIndex, payload } = dropResult;
+            if (removedIndex === null && addedIndex === null) {
+                return state;
+            }
+
+            const result = [...state[collection]];
+            let itemToAdd = payload;
+
+            if (removedIndex !== null) {
+                itemToAdd = result.splice(removedIndex, 1)[0];
+            }
+            if (addedIndex !== null && !result.filter(person => person.id === itemToAdd.id).length) {
+                result.splice(addedIndex, 0, itemToAdd);
+            }
+
+            state[collection] = result;
         },
     },
 };

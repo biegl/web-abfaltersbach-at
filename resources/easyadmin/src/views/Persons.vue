@@ -14,6 +14,14 @@
                                     Erstellen
                                 </button>
                                 <h1>Personen</h1>
+                                <p>
+                                    Hier werden Personen verwaltet. Über den
+                                    Button "Erstellen" können neuen Personen
+                                    angelegt werden. Diese können dann in die
+                                    entsprechenden Spalten verschoben werden.
+                                    Dadurch werden sie auf der jeweiligen Seite
+                                    angezeigt.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -27,57 +35,115 @@
                                 Personen werden geladen
                             </div>
                             <div v-else-if="persons.length > 0">
-                                <ul class="list-unstyled">
-                                    <li
-                                        class="media person"
-                                        v-for="person in persons"
-                                        :key="person.id"
-                                    >
-                                        <img
-                                            class="mr-3 person-image"
-                                            :src="person.imagePath"
-                                        />
-                                        <div class="media-body">
-                                            <h2 class="person-name">
-                                                {{ person.name }}
-                                            </h2>
-                                            <h3 class="person-role">{{ person.role }}</h3>
-                                            <div class="person-phone">
-                                                <label>Telefon:</label
-                                                ><span>{{ person.phone }}</span>
-                                            </div>
-                                            <div class="person-email">
-                                                <label>Email:</label
-                                                ><span>{{ person.email }}</span>
-                                            </div>
-                                            <div class="actions">
-                                                <button
-                                                    type="button"
-                                                    class="btn btn-default"
-                                                    aria-label="Bearbeiten"
-                                                    title="Bearbeiten"
-                                                    @click="editPerson(person)"
-                                                >
-                                                    <i class="fa fa-edit"></i>
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    class="btn btn-danger"
-                                                    aria-label="Löschen"
-                                                    title="Löschen"
-                                                    @click="deletePerson(person)"
-                                                >
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
+                                <div
+                                    style="display: flex; justify-content: stretch; margin-top: 50px;"
+                                >
+                                    <div style="flex: 1">
+                                        <h2>Alle Personen</h2>
+                                        <small
+                                            >Hier befinden sich alle
+                                            Personen</small
+                                        >
+                                        <Container
+                                            class="person-container"
+                                            behaviour="copy"
+                                            group-name="1"
+                                            drag-handle-selector=".person-drag-handle"
+                                            :get-child-payload="
+                                                getPersonPayload
+                                            "
+                                        >
+                                            <Draggable
+                                                v-for="person in persons"
+                                                :key="person.id"
+                                            >
+                                                <div class="draggable-item">
+                                                    <person-card
+                                                        :person="person"
+                                                        @deletePerson="
+                                                            deletePerson
+                                                        "
+                                                        @editPerson="editPerson"
+                                                    ></person-card>
+                                                </div>
+                                            </Draggable>
+                                        </Container>
+                                    </div>
+                                    <div style="margin-left: 50px; flex: 1">
+                                        <h2>Gemeinderat</h2>
+                                        <small
+                                            >Diese Liste wird auf der
+                                            Gemeinderatsseite angezeigt</small
+                                        >
+                                        <Container
+                                            class="person-container"
+                                            group-name="1"
+                                            :remove-on-drop-out="true"
+                                            drag-handle-selector=".person-drag-handle"
+                                            :get-child-payload="
+                                                getCouncilmanPayload
+                                            "
+                                            @drop="onDrop('councilmen', $event)"
+                                        >
+                                            <Draggable
+                                                v-for="councilman in councilmen"
+                                                :key="councilman.id"
+                                            >
+                                                <div class="draggable-item">
+                                                    <person-card
+                                                        :person="councilman"
+                                                        @deletePerson="
+                                                            deletePerson
+                                                        "
+                                                        @editPerson="editPerson"
+                                                    ></person-card>
+                                                </div>
+                                            </Draggable>
+                                        </Container>
+                                    </div>
+                                    <div style="margin-left: 50px; flex: 1">
+                                        <h2>Angestellte</h2>
+                                        <small
+                                            >Diese Liste wird auf der
+                                            Angestelltenseite angezeigt</small
+                                        >
+                                        <Container
+                                            class="person-container"
+                                            group-name="1"
+                                            :remove-on-drop-out="true"
+                                            drag-handle-selector=".person-drag-handle"
+                                            :get-child-payload="
+                                                getEmployeePayload
+                                            "
+                                            @drop="onDrop('employees', $event)"
+                                        >
+                                            <Draggable
+                                                v-for="employee in employees"
+                                                :key="employee.id"
+                                            >
+                                                <div class="draggable-item">
+                                                    <person-card
+                                                        :person="employee"
+                                                        @deletePerson="
+                                                            deletePerson
+                                                        "
+                                                        @editPerson="editPerson"
+                                                    ></person-card>
+                                                </div>
+                                            </Draggable>
+                                        </Container>
+                                    </div>
+                                </div>
                             </div>
                             <div v-else>
                                 Es sind keine Personen vorhanden
                             </div>
                         </div>
+                    </div>
+                    <div class="sticky" v-if="!isLoading">
+                        <button class="btn btn-primary" :disabled="isSubmitting">
+                            Speichern
+                        </button>
                     </div>
                 </div>
 
@@ -98,10 +164,16 @@
 import Vue from "vue";
 import PersonEntryForm from "@/components/PersonEntryForm.vue";
 import Person from "../models/person";
+import PersonCard from "@/components/PersonCard.vue";
+import { Container, Draggable } from "vue-smooth-dnd";
+// import { applyDrag, generateItems } from '../utils/helpers';
 
 export default Vue.extend({
     components: {
         PersonEntryForm,
+        PersonCard,
+        Container,
+        Draggable,
     },
     name: "Persons",
     data() {
@@ -113,6 +185,12 @@ export default Vue.extend({
     computed: {
         persons() {
             return this.$store.state.persons.all;
+        },
+        councilmen() {
+            return this.$store.state.persons.councilmen;
+        },
+        employees() {
+            return this.$store.state.persons.employees;
         },
         selectedPerson() {
             return this.$store.state.persons.selectedPerson;
@@ -165,6 +243,21 @@ export default Vue.extend({
         onFormSubmissionError() {
             this.$snotify.error("Die Person konnte nicht gespeichert werden!");
         },
+        onDrop(collection, dropResult) {
+            this.$store.dispatch("persons/updateList", {
+                collection,
+                dropResult,
+            });
+        },
+        getPersonPayload(index) {
+            return this.persons[index];
+        },
+        getCouncilmanPayload(index) {
+            return this.councilmen[index];
+        },
+        getEmployeePayload(index) {
+            return this.employees[index];
+        },
     },
 });
 </script>
@@ -173,6 +266,11 @@ export default Vue.extend({
 .persons-container {
     background: #fff;
     margin: 0;
+}
+.person-container {
+    background: #efefef;
+    padding: 10px;
+    min-height: 165px;
 }
 .workspace {
     display: flex;
@@ -188,27 +286,9 @@ export default Vue.extend({
     padding: 20px;
     position: relative;
 }
-.person {
-    font-size: 1rem;
-}
-.person-image {
-    height: 50px;
-}
-.person-name,
-.person-role,
-.person-phone,
-.person-email {
-    font-size: 0.8rem;
-    line-height: 1.2rem;
-    margin: 0;
-    padding: 0;
-}
-.person-phone, .person-email {
-    label {
-        font-size: 0.8rem;
-        line-height: 1.2rem;
-        margin: 0;
-        padding: 0;
-    }
+.sticky {
+    position: sticky;
+    bottom: 0;
+    text-align: right;
 }
 </style>
