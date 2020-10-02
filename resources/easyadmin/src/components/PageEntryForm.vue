@@ -238,6 +238,8 @@ export default Vue.extend({
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
     padding: 25px 0;
     min-height: 300px;
+    max-height: 50%;
+    overflow: auto;
 }
 .file-list {
     list-style: none;
