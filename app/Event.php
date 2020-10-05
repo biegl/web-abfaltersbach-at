@@ -42,7 +42,7 @@ class Event extends Model
     public function scopeUpcoming($query)
     {
         $start = Carbon::tomorrow();
-        $end = Carbon::tomorrow()->addDays(30);
+        $end = Carbon::tomorrow()->addMonths(3);
 
         return $query
             ->whereBetween('date', [$start, $end])
