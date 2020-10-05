@@ -1,5 +1,5 @@
 # PHP Images can be found at https://hub.docker.com/_/php/
-FROM php:7.4.10-alpine
+FROM php:7.4.11-alpine
 
 # The application will be copied in /home/application and the original document root will be replaced in the apache configuration
 VOLUME /home/application/
