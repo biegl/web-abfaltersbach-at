@@ -3,7 +3,7 @@
     @php
         $list = $insert;
         $config = $list->configuration;
-        $items = App\Http\Controllers\ListController::getItems($config['model'], $config['ids']);
+        $items = App\Http\Controllers\ListController::getItems($insert->id, $config);
         $template = str_replace('app\\', '', strtolower($config['model']));
     @endphp
 

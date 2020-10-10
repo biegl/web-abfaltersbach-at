@@ -6,7 +6,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePerson;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Cache;
+
 use App\File;
+use App\Http\Controllers\ListController;
 use App\Person;
 use App\Module;
 
@@ -31,6 +34,10 @@ class PersonsController extends Controller
     public function store(StorePerson $request)
     {
         $person = Person::create($request->validated());
+
+        Cache::forget(ListController::$CACHE_KEY_LIST . "_1");
+        Cache::forget(ListController::$CACHE_KEY_LIST . "_2");
+
         return response()->json($person, 201);
     }
 
@@ -55,6 +62,10 @@ class PersonsController extends Controller
     public function update(StorePerson $request, Person $person)
     {
         $person->update($request->validated());
+
+        Cache::forget(ListController::$CACHE_KEY_LIST . "_1");
+        Cache::forget(ListController::$CACHE_KEY_LIST . "_2");
+
         return response()->json($person, 200);
     }
 
@@ -76,6 +87,9 @@ class PersonsController extends Controller
 
         // Delete person
         $person->delete();
+
+        Cache::forget(ListController::$CACHE_KEY_LIST . "_1");
+        Cache::forget(ListController::$CACHE_KEY_LIST . "_2");
 
         return response()->json(null, 204);
     }
@@ -138,6 +152,7 @@ class PersonsController extends Controller
 
         $module->update(['configuration' => $config]);
 
+        Cache::forget(ListController::$CACHE_KEY_LIST . "_" . $module->id);
         return $this->list($module->fresh());
     }
 }
