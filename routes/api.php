@@ -21,6 +21,11 @@ Route::middleware('auth:api', 'cors')->group(function () {
     Route::resource('events', 'Api\EventsController');
     Route::post('pages/{page}/attach', 'Api\PagesController@attachFile');
     Route::resource('pages', 'Api\PagesController');
+    Route::resource('persons', 'Api\PersonsController');
+    Route::get('persons/list/{module}', 'Api\PersonsController@list');
+    Route::post('persons/list/{module}', 'Api\PersonsController@saveList');
+    Route::post('persons/{person}/attach', 'Api\PersonsController@attachFile');
+    Route::post('persons/{person}/delete/{file}', 'Api\PersonsController@deleteFile');
 });
 
 Route::middleware('auth:api', 'cors', 'isAdmin')->group(function () {

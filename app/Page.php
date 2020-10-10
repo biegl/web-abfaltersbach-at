@@ -73,7 +73,8 @@ class Page extends Model
                 return compact('title', 'content', 'navigation', 'breadcrumbs', 'news', 'grouped_events', 'current_events');
             default:
                 $files = $this->files->merge($this->attachments);
-                return compact('title', 'content', 'navigation', 'breadcrumbs', 'subnavigation', 'files');
+                $inserts = $this->inserts;
+                return compact('title', 'content', 'navigation', 'breadcrumbs', 'subnavigation', 'files', 'inserts');
         }
     }
 
@@ -95,5 +96,13 @@ class Page extends Model
     public function attachments()
     {
         return $this->morphMany(File::class, 'attachable');
+    }
+
+    /**
+     * Get all of the page's attachments.
+     */
+    public function inserts()
+    {
+        return $this->morphMany(Module::class, 'insertable');
     }
 }

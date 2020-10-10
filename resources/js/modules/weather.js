@@ -12,7 +12,6 @@
 
     // Load weather information
     $.get(requestUrl).then(function (data) {
-        console.log(data)
         var weather = data.weather[0];
 
         $(".weather-widget__temperature-degrees").text(

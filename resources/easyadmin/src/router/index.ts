@@ -41,6 +41,13 @@ const routes: Array<RouteConfig> = [
         meta: { authorize: [Role.Admin, Role.User] },
     },
     {
+        path: "/persons",
+        name: "Persons",
+        component: () =>
+            import(/* webpackChunkName: "persons" */ "../views/Persons.vue"),
+        meta: { authorize: [Role.Admin, Role.User] },
+    },
+    {
         path: "/users",
         name: "User",
         component: () =>

@@ -4,12 +4,14 @@ import Config from "../config";
 
 const BASE_URL = Config.host + "/api";
 class AuthService {
+    apiClient = axios;
+
     get currentUser(): User {
         return JSON.parse(window.localStorage.getItem("user"));
     }
 
     login(user: User) {
-        return axios
+        return this.apiClient
             .post(`${BASE_URL}/login`, {
                 email: user.username,
                 password: user.password,
@@ -28,7 +30,7 @@ class AuthService {
 
     logout() {
         localStorage.removeItem("user");
-        return axios.post(`${BASE_URL}/logout`);
+        return this.apiClient.post(`${BASE_URL}/logout`);
     }
 }
 
