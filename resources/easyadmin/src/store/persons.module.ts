@@ -1,4 +1,3 @@
-import FileService from "@/services/file.service";
 import PersonsService from "@/services/persons.service";
 import Person from "@/models/person";
 
@@ -15,6 +14,9 @@ const initialState: PersonsState = {
     employees: [],
     selectedPerson: null,
 };
+
+const councilListId = 1;
+const employeesListId = 2;
 
 export const persons = {
     namespaced: true,
@@ -88,6 +90,56 @@ export const persons = {
         updateList({ commit }, { collection, dropResult }) {
             commit("updatePersonList", { collection, dropResult });
         },
+        loadCouncil({ commit }) {
+            return PersonsService.loadList(councilListId).then(
+                council => {
+                    const models = council.map(person => Person.init(person));
+                    commit("loadCouncilSuccess", models);
+                    return Promise.resolve(models);
+                },
+                error => {
+                    return Promise.reject(error);
+                }
+            );
+        },
+        loadEmployees({ commit }) {
+            return PersonsService.loadList(employeesListId).then(
+                employees => {
+                    const models = employees.map(person => Person.init(person));
+                    commit("loadEmployeesSuccess", models);
+                    return Promise.resolve(models);
+                },
+                error => {
+                    return Promise.reject(error);
+                }
+            );
+        },
+        saveListOrder({ commit }) {
+            const councilUpdate = PersonsService.saveList(
+                councilListId,
+                this.state.persons.councilmen.map(person => person.id)
+            );
+            const employeesUpdate = PersonsService.saveList(
+                employeesListId,
+                this.state.persons.employees.map(person => person.id)
+            );
+
+            return Promise.all([councilUpdate, employeesUpdate]).then(
+                persons => {
+                    const council = persons[0].map(person =>
+                        Person.init(person)
+                    );
+                    const employees = persons[1].map(person =>
+                        Person.init(person)
+                    );
+                    commit("saveListSuccess", { council, employees });
+                    return Promise.resolve({ council, employees });
+                },
+                error => {
+                    return Promise.reject(error);
+                }
+            );
+        },
     },
     mutations: {
         loadSuccess(state: PersonsState, persons: Person[]) {
@@ -101,8 +153,12 @@ export const persons = {
         },
         deleteSuccess(state: PersonsState, id: string) {
             state.all = state.all.filter((person: Person) => person.id !== id);
-            state.councilmen = state.councilmen.filter((person: Person) => person.id !== id);
-            state.employees = state.employees.filter((person: Person) => person.id !== id);
+            state.councilmen = state.councilmen.filter(
+                (person: Person) => person.id !== id
+            );
+            state.employees = state.employees.filter(
+                (person: Person) => person.id !== id
+            );
         },
         createSuccess(state: PersonsState, person: Person) {
             state.all = [person, ...state.all];
@@ -182,11 +238,25 @@ export const persons = {
             if (removedIndex !== null) {
                 itemToAdd = result.splice(removedIndex, 1)[0];
             }
-            if (addedIndex !== null && !result.filter(person => person.id === itemToAdd.id).length) {
+            if (
+                addedIndex !== null &&
+                !result.filter(person => person.id === itemToAdd.id).length
+            ) {
                 result.splice(addedIndex, 0, itemToAdd);
             }
 
             state[collection] = result;
+            console.log(state[collection]);
+        },
+        loadCouncilSuccess(state: PersonsState, council) {
+            state.councilmen = council;
+        },
+        loadEmployeesSuccess(state: PersonsState, employees) {
+            state.employees = employees;
+        },
+        saveListSuccess(state: PersonsState, { council, employees }) {
+            state.councilmen = council;
+            state.employees = employees;
         },
     },
 };

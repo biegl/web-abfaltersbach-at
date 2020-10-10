@@ -1,4 +1,4 @@
-import { DateTime } from 'luxon';
+import { DateTime } from "luxon";
 import BaseObject from "./base";
 import File from "./file";
 
@@ -8,7 +8,7 @@ export default class Event implements BaseObject {
     }
 
     ID = "";
-    date: string = DateTime.fromJSDate(new Date()).toFormat('y-MM-d');
+    date: string = DateTime.fromJSDate(new Date()).toFormat("y-MM-d");
     text?: string;
     filepath?: string;
     attachments?: File[];

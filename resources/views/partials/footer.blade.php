@@ -38,7 +38,7 @@
                     <br>
                     <i class="fa fa-phone mr-2" title="Telefon"></i> +43 (0) 4846 6210<br>
                     <i class="fa fa-fax mr-2" title="Fax"></i> +43 (0) 4846 6210-5<br>
-                    <i class="fas fa-envelope mr-2" title="Email"></i> <a href="mailto:@safemail(verwaltung@abfaltersbach.at)">@safemail(verwaltung@abfaltersbach.at)</a><br>
+                    <i class="fas fa-envelope mr-2" title="Email"></i> <a href="mailto:{!! safe_email('verwaltung@abfaltersbach.at') !!}">{!! safe_email('verwaltung@abfaltersbach.at') !!}</a><br>
                     <br><br>
                     <h4>Öffnungszeiten:</h4>
                     Montag - Freitag: 08:00 - 12:00

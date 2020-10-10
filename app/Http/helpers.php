@@ -32,4 +32,16 @@ if (!function_exists('create_fa_ext_icon')) {
             array("jpg", "jpeg", "gif", "png", "bmp", "webp", "svg")
         );
     }
+
+    function safe_email($str)
+    {
+        $email   = '';
+        for ($i = 0, $len = strlen($str); $i < $len; $i++) {
+            $j = random_int(0, 1);
+
+            $email .= $j === 0 ? '&#' . ord($str[$i]) . ';' : $str[$i];
+        }
+
+        return str_replace('@', '&#64;', $email);
+    }
 }

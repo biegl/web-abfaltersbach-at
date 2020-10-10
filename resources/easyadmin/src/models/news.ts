@@ -1,6 +1,6 @@
 import BaseObject from "./base";
 import File from "./file";
-import { DateTime } from 'luxon';
+import { DateTime } from "luxon";
 
 export default class News implements BaseObject {
     get id(): string {
@@ -10,7 +10,7 @@ export default class News implements BaseObject {
     ID = "";
     title = "";
     text?: string;
-    date: string = DateTime.fromJSDate(new Date()).toFormat('y-MM-d');
+    date: string = DateTime.fromJSDate(new Date()).toFormat("y-MM-d");
     expirationDate?: Date;
     attachments?: File[];
 

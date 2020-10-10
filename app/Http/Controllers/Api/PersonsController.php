@@ -8,6 +8,7 @@ use App\Http\Requests\StorePerson;
 use Illuminate\Support\Facades\Storage;
 use App\File;
 use App\Person;
+use App\Module;
 
 class PersonsController extends Controller
 {
@@ -104,5 +105,39 @@ class PersonsController extends Controller
         $person->image()->delete();
 
         return response()->json($person->fresh(), 200);
+    }
+
+    public function list(module $module)
+    {
+        // Get module
+        if (!$module) {
+            return response()->json('Not found', 404);
+        }
+
+        $ids = $module->configuration['ids'];
+        if (empty($ids)) {
+            return response()->json([], 200);
+        }
+
+        $ids_ordered = implode(',', $ids);
+        $persons = Person::whereIn('id', $ids)
+            ->orderByRaw("FIELD(id, $ids_ordered)")
+            ->get();
+        return response()->json($persons, 200);
+    }
+
+    public function saveList(Module $module, Request $request)
+    {
+        // Get module
+        if (!$module) {
+            return response()->json('Not found', 404);
+        }
+
+        $config = $module->configuration;
+        $config['ids'] = $request['order'];
+
+        $module->update(['configuration' => $config]);
+
+        return $this->list($module->fresh());
     }
 }

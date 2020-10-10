@@ -1,4 +1,4 @@
-import Config from '@/config';
+import Config from "@/config";
 import BaseObject from "./base";
 import File from "./file";
 
@@ -17,7 +17,6 @@ export default class Person implements BaseObject {
 
         return `${Config.host}/files/${this.image.title}`;
     }
-
 
     static init(obj: Partial<Person>): Person {
         const person = new Person();

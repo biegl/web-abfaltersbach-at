@@ -7,7 +7,7 @@ export default class BaseService<T extends BaseObject> {
     baseUrl = `${Config.host}/api`;
 
     apiClient = axios;
-    defaultOptions = { headers: authHeader() }
+    defaultOptions = { headers: authHeader() };
 
     create(object: T): Promise<T> {
         return this.apiClient
@@ -28,6 +28,9 @@ export default class BaseService<T extends BaseObject> {
     }
 
     delete(object: T): Promise<void> {
-        return this.apiClient.delete(`${this.baseUrl}/${object.id}`, this.defaultOptions);
+        return this.apiClient.delete(
+            `${this.baseUrl}/${object.id}`,
+            this.defaultOptions
+        );
     }
 }

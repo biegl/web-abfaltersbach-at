@@ -1,3 +1,13 @@
 .person {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
 }
+.person-placeholder {
+    font-size: 5rem;
+    width: 6rem;
+    text-align: center;
+    margin: 0 1rem;
+}
+
+.person-image {
+    max-width: 6rem;
+}

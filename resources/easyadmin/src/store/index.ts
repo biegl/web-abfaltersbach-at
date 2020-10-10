@@ -1,4 +1,4 @@
-import { persons } from './persons.module';
+import { persons } from "./persons.module";
 import Vue from "vue";
 import Vuex from "vuex";
 import { auth } from "./auth.module";

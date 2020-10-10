@@ -35,10 +35,8 @@
                                 Personen werden geladen
                             </div>
                             <div v-else-if="persons.length > 0">
-                                <div
-                                    style="display: flex; justify-content: stretch; margin-top: 50px;"
-                                >
-                                    <div style="flex: 1">
+                                <div class="row">
+                                    <div class="col-md-4">
                                         <h2>Alle Personen</h2>
                                         <small
                                             >Hier befinden sich alle
@@ -69,7 +67,7 @@
                                             </Draggable>
                                         </Container>
                                     </div>
-                                    <div style="margin-left: 50px; flex: 1">
+                                    <div class="col-md-4 drop-list">
                                         <h2>Gemeinderat</h2>
                                         <small
                                             >Diese Liste wird auf der
@@ -101,7 +99,7 @@
                                             </Draggable>
                                         </Container>
                                     </div>
-                                    <div style="margin-left: 50px; flex: 1">
+                                    <div class="col-md-4 drop-list">
                                         <h2>Angestellte</h2>
                                         <small
                                             >Diese Liste wird auf der
@@ -141,8 +139,16 @@
                         </div>
                     </div>
                     <div class="sticky" v-if="!isLoading">
-                        <button class="btn btn-primary" :disabled="isSubmitting">
-                            Speichern
+                        <button
+                            class="btn btn-primary"
+                            :disabled="isSubmitting"
+                            @click="saveListOrder"
+                        >
+                            <span v-if="!isSubmitting">Speichern</span>
+                            <span
+                                v-else
+                                class="spinner-border spinner-border-sm"
+                            ></span>
                         </button>
                     </div>
                 </div>
@@ -202,6 +208,7 @@ export default Vue.extend({
     methods: {
         loadPersons() {
             this.isLoading = true;
+
             this.$store
                 .dispatch("persons/load")
                 .catch(() => {
@@ -212,6 +219,8 @@ export default Vue.extend({
                 .finally(() => {
                     this.isLoading = false;
                 });
+
+            this.$store.dispatch("persons/loadCouncil");
         },
         createPerson() {
             this.$store.dispatch("persons/select", new Person());
@@ -258,6 +267,23 @@ export default Vue.extend({
         getEmployeePayload(index) {
             return this.employees[index];
         },
+        saveListOrder() {
+            this.isSubmitting = true;
+
+            this.$store
+                .dispatch("persons/saveListOrder")
+                .then(() => {
+                    this.$snotify.success("Die Änderung wurde gespeichert!");
+                })
+                .catch(() => {
+                    this.$snotify.error(
+                        "Die Änderung konnte nicht gespeichert werden!"
+                    );
+                })
+                .finally(() => {
+                    this.isSubmitting = false;
+                });
+        },
     },
 });
 </script>
@@ -271,6 +297,10 @@ export default Vue.extend({
     background: #efefef;
     padding: 10px;
     min-height: 165px;
+    height: 442px;
+    overflow: auto;
+    border: 1px solid #ddd;
+    position: relative;
 }
 .workspace {
     display: flex;
@@ -288,7 +318,15 @@ export default Vue.extend({
 }
 .sticky {
     position: sticky;
-    bottom: 0;
+    bottom: 10px;
+    margin-top: 10px;
     text-align: right;
+}
+</style>
+<style lang="scss">
+.drop-list {
+    .actions {
+        display: none;
+    }
 }
 </style>

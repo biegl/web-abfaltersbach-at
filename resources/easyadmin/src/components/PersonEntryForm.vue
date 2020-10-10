@@ -26,7 +26,8 @@
                                 v-model="personEntry.role"
                             />
                             <small id="roleHelp" class="form-text text-muted">
-                                Welche Rolle nimmt die Person in der Gemeinde ein
+                                Welche Rolle nimmt die Person in der Gemeinde
+                                ein
                             </small>
                         </div>
                         <div class="form-group">
@@ -52,7 +53,10 @@
                         <div class="form-group">
                             <label for="file">Bild</label>
                             <div v-if="personEntry.image">
-                                <img :src="personEntry.imagePath"  class="person-image" />
+                                <img
+                                    :src="personEntry.imagePath"
+                                    class="person-image"
+                                />
                                 <button
                                     type="button"
                                     class="btn"
@@ -70,8 +74,7 @@
                             <div v-else-if="!personEntry.image">
                                 <small
                                     >Dateien können erst hochgeladen werden,
-                                    nachdem die Person gespeichert
-                                    wurde.</small
+                                    nachdem die Person gespeichert wurde.</small
                                 >
                             </div>
                         </div>
@@ -175,16 +178,15 @@ export default Vue.extend({
             this.$snotify.error("Beim Upload ist ein Fehler aufgetreten!");
         },
         deleteFile(file) {
-            if (
-                !window.confirm(
-                    `Soll das Bild wirklich gelöscht werden?`
-                )
-            ) {
+            if (!window.confirm(`Soll das Bild wirklich gelöscht werden?`)) {
                 return;
             }
 
             this.$store
-                .dispatch("persons/deleteImage", { person: this.personEntry, file })
+                .dispatch("persons/deleteImage", {
+                    person: this.personEntry,
+                    file,
+                })
                 .then(() => {
                     this.$snotify.success("Das Bild wurde gelöscht.");
                 })

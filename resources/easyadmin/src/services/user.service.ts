@@ -7,11 +7,7 @@ class UserService extends BaseService<User> {
 
     revoke(user: User): Promise<void> {
         return this.apiClient
-            .post(
-                `${this.baseUrl}/${user.id}/revoke`,
-                {},
-                this.defaultOptions
-            )
+            .post(`${this.baseUrl}/${user.id}/revoke`, {}, this.defaultOptions)
             .then(response => response.data);
     }
 }

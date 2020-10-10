@@ -2,6 +2,11 @@
     <div v-if="person" class="media person-card">
         <img class="mr-3 person-card-image" :src="person.imagePath" />
         <div class="media-body">
+            <span
+                class="person-drag-handle"
+                title="Person durch ziehen verschieben"
+                >&#x2630;</span
+            >
             <h2 class="person-card-name">
                 {{ person.name }}
             </h2>
@@ -15,7 +20,6 @@
                 <label>Email:</label> <span>{{ person.email }}</span>
             </div>
             <div class="actions">
-                <span class="person-drag-handle" title="Person durch ziehen verschieben">&#x2630;</span>
                 <button
                     type="button"
                     class="btn btn-primary"
@@ -23,8 +27,8 @@
                     title="Bearbeiten"
                     @click="editPerson(person)"
                 >
-                    <i class="fa fa-edit"></i>
-                </button>&nbsp;
+                    <i class="fa fa-edit"></i></button
+                >&nbsp;
                 <button
                     type="button"
                     class="btn btn-danger"
@@ -48,11 +52,11 @@ export default Vue.extend({
 
     methods: {
         editPerson(person) {
-            this.$emit('editPerson', person);
+            this.$emit("editPerson", person);
         },
         deletePerson(person) {
-            this.$emit('deletePerson', person);
-        }
+            this.$emit("deletePerson", person);
+        },
     },
 });
 </script>
@@ -65,7 +69,11 @@ export default Vue.extend({
     border-radius: 10px;
     color: #fff;
     position: relative;
+    overflow: hidden;
 
+    .media-body {
+        overflow: hidden;
+    }
 }
 .person-card-image {
     height: 120px;
@@ -95,13 +103,16 @@ export default Vue.extend({
 .person-drag-handle {
     cursor: move;
     position: absolute;
-    top: 8px;
-    right: 10px;
+    top: 0.5rem;
+    right: 0.5rem;
     z-index: 1;
 }
 .actions {
     text-align: right;
     margin-top: 5px;
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.5rem;
 
     .btn {
         width: 38px;
@@ -110,7 +121,7 @@ export default Vue.extend({
 </style>
 <style>
 .smooth-dnd-ghost {
-    box-shadow: 0 0 10px rgba(0,0,0,0.25);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
 }
 </style>

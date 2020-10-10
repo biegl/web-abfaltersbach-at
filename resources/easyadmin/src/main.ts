@@ -26,12 +26,14 @@ const options = {
 
 Vue.use(Snotify, options);
 
-Sentry.init({
-    dsn:
-        "https://a9635e891e99429b93755c8b2822d9bd@o442304.ingest.sentry.io/5413876",
-    integrations: [new VueIntegration({ Vue, attachProps: true })],
-    attachStacktrace: true,
-});
+if (process.env.NODE_ENV === "production") {
+    Sentry.init({
+        dsn:
+            "https://a9635e891e99429b93755c8b2822d9bd@o442304.ingest.sentry.io/5413876",
+        integrations: [new VueIntegration({ Vue, attachProps: true })],
+        attachStacktrace: true,
+    });
+}
 
 new Vue({
     router,

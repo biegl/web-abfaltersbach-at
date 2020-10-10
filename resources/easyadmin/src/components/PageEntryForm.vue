@@ -70,8 +70,7 @@
                             <div v-else>
                                 <small
                                     >Dateien können erst hochgeladen werden,
-                                    nachdem die Seite gespeichert
-                                    wurde.</small
+                                    nachdem die Seite gespeichert wurde.</small
                                 >
                             </div>
                         </div>

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePersonsTable extends Migration
+class CreateModulesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreatePersonsTable extends Migration
      */
     public function up()
     {
-        Schema::create('persons', function (Blueprint $table) {
+        Schema::create('modules', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 255);
-            $table->string('role', 255)->nullable();
-            $table->string('phone', 255)->nullable();
-            $table->string('email', 255)->nullable();
+            $table->string('type');
+            $table->json('configuration')->nullable();
+            $table->integer('insertable_id')->nullable();
+            $table->string('insertable_type')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreatePersonsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('persons');
+        Schema::dropIfExists('modules');
     }
 }
