@@ -221,6 +221,7 @@ export default Vue.extend({
                 });
 
             this.$store.dispatch("persons/loadCouncil");
+            this.$store.dispatch("persons/loadEmployees");
         },
         createPerson() {
             this.$store.dispatch("persons/select", new Person());
