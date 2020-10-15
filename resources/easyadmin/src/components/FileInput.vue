@@ -50,6 +50,17 @@ export default {
                     maxNumberOfFiles: 1,
                     allowedFileTypes: ["image/*", "application/pdf"],
                 },
+                onBeforeFileAdded: (currentFile, files) => {
+                    if (currentFile.data.size > this.maxFileSizeInBytes) {
+                        this.$emit(
+                            "onUploadFailed",
+                            "Die Datei ist zu groß. Max. 10MB"
+                        );
+                        return Promise.reject("File too big");
+                    }
+
+                    return Promise.resolve();
+                },
             })
                 .use(FileInput, {
                     target: ".uppy-form",
