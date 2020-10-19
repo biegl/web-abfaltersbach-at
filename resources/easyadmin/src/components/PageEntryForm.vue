@@ -22,19 +22,37 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Inhalt</label>
-                            <textarea
+                            <label>Inhalt</label>
+                            <div
                                 v-if="adminMode && !!adminMode"
+                                class="custom-control custom-switch"
+                                style="float:right"
+                            >
+                                <input
+                                    type="checkbox"
+                                    class="custom-control-input"
+                                    id="customSwitch1"
+                                    v-model="sourceEditor"
+                                />
+                                <label
+                                    class="custom-control-label"
+                                    for="customSwitch1"
+                                    >Source Editor</label
+                                >
+                            </div>
+                            <textarea
+                                v-if="adminMode && !!adminMode && sourceEditor"
                                 v-model="pageEntry.inhalt"
                                 class="form-control"
                                 rows="20"
                             ></textarea>
-                            <ckeditor
+
+                            <editor
                                 v-else
-                                :editor="editor"
+                                :api-key="apiKey"
+                                :init="editorConfig"
                                 v-model="pageEntry.inhalt"
-                                :config="editorConfig"
-                            ></ckeditor>
+                            />
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -107,8 +125,7 @@
 </template>
 <script lang="ts">
 import { Vue } from "vue-property-decorator";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import "@ckeditor/ckeditor5-build-classic/build/translations/de";
+import Editor from "@tinymce/tinymce-vue";
 import Page from "../models/page";
 import Config from "../config";
 import FileInput from "@/components/FileInput.vue";
@@ -119,30 +136,39 @@ export default Vue.extend({
     props: ["adminMode"],
 
     components: {
+        editor: Editor,
         FileInput,
     },
 
     data() {
         return {
             isSubmitting: false,
-            editor: ClassicEditor,
+            sourceEditor: false,
             editorConfig: {
-                height: 400,
-                language: "de",
-                toolbar: [
-                    "bold",
-                    "italic",
-                    "|",
-                    "bulletedList",
-                    "numberedList",
-                    "|",
-                    "link",
+                height: 300,
+                menubar: false,
+                language: 'de',
+                /* eslint-disable @typescript-eslint/camelcase */
+                file_picker_types: 'image',
+                images_upload_url: '',
+                images_upload_handler: function(blob, success, failure) {
+                    console.log(blob, success,failure);
+                },
+                plugins: [
+                    "autolink lists link image",
+                    "media",
                 ],
+                toolbar:
+                    "undo | formatselect | bold italic | \
+                    bullist numlist | link image | removeformat",
             },
         };
     },
 
     computed: {
+        apiKey() {
+            return Config.editorApiKey;
+        },
         attachmentRoute() {
             if (!this.pageEntry.id) {
                 return "";
