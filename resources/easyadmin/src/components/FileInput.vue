@@ -56,10 +56,10 @@ export default {
                             "onUploadFailed",
                             "Die Datei ist zu groß. Max. 10MB"
                         );
-                        return Promise.reject("File too big");
+                        return false;
                     }
 
-                    return Promise.resolve();
+                    return true;
                 },
             })
                 .use(FileInput, {
