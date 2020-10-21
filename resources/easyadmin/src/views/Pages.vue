@@ -121,8 +121,6 @@
 import Vue from "vue";
 import Page from "../models/page";
 import PageEntryForm from "@/components/PageEntryForm.vue";
-import User from "../models/user";
-import { Role } from "../helpers/role";
 
 export default Vue.extend({
     components: {
@@ -142,11 +140,8 @@ export default Vue.extend({
         selectedPage() {
             return this.$store.state.pages.selectedPage;
         },
-        currentUser(): User {
-            return this.$store.state.auth.user;
-        },
         isAdmin(): boolean {
-            return this.currentUser && this.currentUser.role === Role.Admin;
+            return this.$store.state.auth.isAdmin();
         },
     },
     created() {

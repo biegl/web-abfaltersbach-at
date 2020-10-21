@@ -124,6 +124,7 @@
                     @onSubmissionEnd="isSubmitting = false"
                     @onSubmissionSuccess="onFormSubmissionSuccess"
                     @onSubmissionError="onFormSubmissionError"
+                    :adminMode="isAdmin"
                 ></news-entry-form>
             </div>
         </div>
@@ -153,6 +154,9 @@ export default Vue.extend({
         },
         selectedNews() {
             return this.$store.state.news.selectedNews;
+        },
+        isAdmin(): boolean {
+            return this.$store.state.auth.isAdmin();
         },
     },
     filters: {
