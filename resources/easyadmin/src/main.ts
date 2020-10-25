@@ -3,7 +3,6 @@ import Vue from "vue";
 import * as Sentry from "@sentry/browser";
 import { Vue as VueIntegration } from "@sentry/integrations";
 
-import CKEditor from "@ckeditor/ckeditor5-vue";
 import Snotify, { SnotifyPosition } from "vue-snotify";
 
 import App from "./App.vue";
@@ -13,7 +12,6 @@ import store from "./store";
 Vue.config.productionTip = false;
 
 // == PLUGINS ==
-Vue.use(CKEditor);
 Vue.use(VCalendar, {
     locale: "de",
 });

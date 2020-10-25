@@ -54,14 +54,11 @@
                         </div>
                     </div>
                     <div class="col-md-8">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Text</label>
-                            <ckeditor
-                                :editor="editor"
-                                v-model="eventEntry.text"
-                                :config="editorConfig"
-                            ></ckeditor>
-                        </div>
+                        <text-editor
+                            v-model="eventEntry.text"
+                            :enableSourceMode="adminMode && !!adminMode"
+                            :config="editorConfig"
+                        ></text-editor>
 
                         <div class="text-right">
                             <button
@@ -94,8 +91,7 @@
 </template>
 <script lang="ts">
 import { Vue } from "vue-property-decorator";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import "@ckeditor/ckeditor5-build-classic/build/translations/de";
+import TextEditor from "@/components/TextEditor.vue";
 import DatePicker from "@/components/DatePicker.vue";
 import Event from "../models/event";
 import FileInput from "@/components/FileInput.vue";
@@ -107,10 +103,16 @@ export default Vue.extend({
 
     components: {
         DatePicker,
+        TextEditor,
         FileInput,
     },
 
+    props: ["adminMode"],
+
     computed: {
+        apiKey() {
+            return Config.editorApiKey;
+        },
         attachmentRoute() {
             if (!this.eventEntry.id) {
                 return "";
@@ -138,20 +140,11 @@ export default Vue.extend({
     data() {
         return {
             isSubmitting: false,
-            editor: ClassicEditor,
-            editorConfig: {
-                height: 400,
-                language: "de",
-                toolbar: [
-                    "bold",
-                    "italic",
-                    "|",
-                    "bulletedList",
-                    "numberedList",
-                    "|",
-                    "link",
-                ],
-            },
+            editorConfig: Object.assign({}, Config.defaultEditorConfig, {
+                toolbar:
+                    "undo | bold italic | \
+                    bullist numlist | link | removeformat",
+            }),
         };
     },
 
@@ -251,7 +244,7 @@ export default Vue.extend({
 }
 </style>
 <style>
-.ck-editor__editable {
-    min-height: 150px;
+.tox-statusbar__branding {
+    display: none;
 }
 </style>

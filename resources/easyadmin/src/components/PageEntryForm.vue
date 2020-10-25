@@ -21,21 +21,10 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Inhalt</label>
-                            <textarea
-                                v-if="adminMode && !!adminMode"
-                                v-model="pageEntry.inhalt"
-                                class="form-control"
-                                rows="20"
-                            ></textarea>
-                            <ckeditor
-                                v-else
-                                :editor="editor"
-                                v-model="pageEntry.inhalt"
-                                :config="editorConfig"
-                            ></ckeditor>
-                        </div>
+                        <text-editor
+                            v-model="pageEntry.inhalt"
+                            :enableSourceMode="adminMode && !!adminMode"
+                        ></text-editor>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
@@ -107,11 +96,10 @@
 </template>
 <script lang="ts">
 import { Vue } from "vue-property-decorator";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import "@ckeditor/ckeditor5-build-classic/build/translations/de";
 import Page from "../models/page";
 import Config from "../config";
 import FileInput from "@/components/FileInput.vue";
+import TextEditor from "@/components/TextEditor.vue";
 
 export default Vue.extend({
     name: "PageEntryForm",
@@ -119,26 +107,13 @@ export default Vue.extend({
     props: ["adminMode"],
 
     components: {
+        TextEditor,
         FileInput,
     },
 
     data() {
         return {
             isSubmitting: false,
-            editor: ClassicEditor,
-            editorConfig: {
-                height: 400,
-                language: "de",
-                toolbar: [
-                    "bold",
-                    "italic",
-                    "|",
-                    "bulletedList",
-                    "numberedList",
-                    "|",
-                    "link",
-                ],
-            },
         };
     },
 
@@ -245,10 +220,5 @@ export default Vue.extend({
     list-style: none;
     margin: 0 0 1rem;
     padding: 0;
-}
-</style>
-<style>
-.ck-editor__editable {
-    min-height: 150px;
 }
 </style>

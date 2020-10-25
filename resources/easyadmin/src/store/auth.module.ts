@@ -1,3 +1,4 @@
+import { Role } from "./../helpers/role";
 import AuthService from "@/services/auth.service";
 import User from "@/models/user";
 
@@ -8,9 +9,15 @@ interface UserState {
     user: User | null;
 }
 
-const initialState: UserState = user
-    ? { status: { loggedIn: true }, user }
-    : { status: { loggedIn: false }, user: null };
+const initialState = {
+    status: {
+        loggedIn: user ? true : false,
+    },
+    user: user ? user : null,
+    isAdmin() {
+        return this.user && this.user.role === Role.Admin;
+    },
+};
 
 export const auth = {
     namespaced: true,

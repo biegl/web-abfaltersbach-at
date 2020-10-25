@@ -115,6 +115,7 @@
                     @onSubmissionEnd="isSubmitting = false"
                     @onSubmissionSuccess="onFormSubmissionSuccess"
                     @onSubmissionError="onFormSubmissionError"
+                    :adminMode="isAdmin"
                 ></event-entry-form>
             </div>
         </div>
@@ -144,6 +145,9 @@ export default Vue.extend({
         },
         selectedEvent() {
             return this.$store.state.events.selectedEvent;
+        },
+        isAdmin() {
+            return this.$store.state.auth.isAdmin();
         },
     },
     filters: {

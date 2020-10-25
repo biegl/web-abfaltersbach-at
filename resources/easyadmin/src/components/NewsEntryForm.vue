@@ -55,14 +55,10 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Text</label>
-                            <ckeditor
-                                :editor="editor"
-                                v-model="newsEntry.text"
-                                :config="editorConfig"
-                            ></ckeditor>
-                        </div>
+                        <text-editor
+                            v-model="newsEntry.text"
+                            :enableSourceMode="adminMode && !!adminMode"
+                        ></text-editor>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
@@ -136,9 +132,8 @@
 </template>
 <script lang="ts">
 import { Vue } from "vue-property-decorator";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import "@ckeditor/ckeditor5-build-classic/build/translations/de";
 import DatePicker from "@/components/DatePicker.vue";
+import TextEditor from "@/components/TextEditor.vue";
 import FileInput from "@/components/FileInput.vue";
 import News from "../models/news";
 import { DateTime } from "luxon";
@@ -147,28 +142,17 @@ import Config from "../config";
 export default Vue.extend({
     name: "NewsEntryForm",
 
+    props: ["adminMode"],
+
     components: {
         DatePicker,
         FileInput,
+        TextEditor,
     },
 
     data() {
         return {
             isSubmitting: false,
-            editor: ClassicEditor,
-            editorConfig: {
-                height: 400,
-                language: "de",
-                toolbar: [
-                    "bold",
-                    "italic",
-                    "|",
-                    "bulletedList",
-                    "numberedList",
-                    "|",
-                    "link",
-                ],
-            },
         };
     },
 
@@ -287,10 +271,5 @@ export default Vue.extend({
     list-style: none;
     margin: 0 0 1rem;
     padding: 0;
-}
-</style>
-<style>
-.ck-editor__editable {
-    min-height: 150px;
 }
 </style>

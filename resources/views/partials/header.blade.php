@@ -10,7 +10,7 @@
             <h2 class="header-titlebar__title">
                 <a href="/" class="header-titlebar__title-link">Gemeinde Abfaltersbach</a>
             </h2>
-            <p class="header-titlebar__description">Herzlich Willkommen im wunderschönen Pustertal</p>
+            <p class="header-titlebar__description">Herzlich willkommen im wunderschönen Pustertal</p>
         </div>
         </div>
     </div>

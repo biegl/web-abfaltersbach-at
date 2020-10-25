@@ -50,7 +50,7 @@ export default {
                     maxNumberOfFiles: 1,
                     allowedFileTypes: ["image/*", "application/pdf"],
                 },
-                onBeforeFileAdded: (currentFile, files) => {
+                onBeforeFileAdded: currentFile => {
                     if (currentFile.data.size > this.maxFileSizeInBytes) {
                         this.$emit(
                             "onUploadFailed",
