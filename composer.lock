@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "637240e2c918bf6ef57a2235f2ec29fd",
+    "content-hash": "cf23b58f1391a0c4267bdcd4e9dbed86",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -6124,16 +6124,16 @@
         },
         {
             "name": "facade/ignition",
-            "version": "2.5.1",
+            "version": "2.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/facade/ignition.git",
-                "reference": "3b3403f18bbdc0aeadf1ffaddf11a1588b12ec7a"
+                "reference": "08668034beb185fa2ac6f09b1034eaa440952ace"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/facade/ignition/zipball/3b3403f18bbdc0aeadf1ffaddf11a1588b12ec7a",
-                "reference": "3b3403f18bbdc0aeadf1ffaddf11a1588b12ec7a",
+                "url": "https://api.github.com/repos/facade/ignition/zipball/08668034beb185fa2ac6f09b1034eaa440952ace",
+                "reference": "08668034beb185fa2ac6f09b1034eaa440952ace",
                 "shasum": ""
             },
             "require": {
@@ -6191,7 +6191,7 @@
                 "laravel",
                 "page"
             ],
-            "time": "2020-11-13T13:36:24+00:00"
+            "time": "2020-11-17T09:18:51+00:00"
         },
         {
             "name": "facade/ignition-contracts",
