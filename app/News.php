@@ -49,8 +49,7 @@ class News extends Model
     {
         return $query
             ->notExpired()
-            ->orderBy('date', 'desc')
-            ->limit(20);
+            ->orderBy('date', 'desc');
     }
 
     /**
