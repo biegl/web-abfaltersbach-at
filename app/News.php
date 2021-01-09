@@ -14,6 +14,8 @@ class News extends Model
 
     public $with = ['attachments'];
 
+    public $appends = ['isExpired'];
+
     /**
      * @var string The name of the cache bucket.
      */
@@ -31,6 +33,15 @@ class News extends Model
         'date' => 'datetime:Y-m-d',
         'expirationDate' => 'datetime:Y-m-d',
     ];
+
+    public function getIsExpiredAttribute()
+    {
+        if (is_null($this->expirationDate)) {
+            return false;
+        }
+
+        return $this->expirationDate < date('Y-m-d');
+    }
 
     /**
      * Scope a query to only include not expired news.

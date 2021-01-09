@@ -13,6 +13,13 @@
                                 >
                                     Erstellen
                                 </button>
+                                <button
+                                    class="btn float-right"
+                                    @click="showAll = !showAll"
+                                >
+                                    <span v-if="!showAll">Alle anzeigen</span>
+                                    <span v-else>Nur aktive anzeigen</span>
+                                </button>
                                 <h1>News</h1>
                             </div>
                             <table class="table table-bordered table-sm">
@@ -46,7 +53,7 @@
                                     </tr>
                                 </tbody>
                                 <tbody v-else>
-                                    <tr v-for="news in news" :key="news.ID">
+                                    <tr v-for="news in news" v-bind:class="{active: showAll && !news.isExpired}" :key="news.ID">
                                         <td>
                                             <span class="no-break">
                                                 {{ news.date | date }}
@@ -146,11 +153,14 @@ export default Vue.extend({
         return {
             isLoading: false,
             isSubmitting: false,
+            showAll: false,
         };
     },
     computed: {
         news() {
-            return this.$store.state.news.all;
+            return this.$store.state.news.all.filter(newsEntry => { 
+                return this.showAll || !newsEntry.isExpired
+            });
         },
         selectedNews() {
             return this.$store.state.news.selectedNews;
@@ -262,6 +272,9 @@ export default Vue.extend({
     border-left: 1px solid #ddd;
     background: #fff;
     z-index: 1;
+}
+tr.active {
+    background:#ebb60a;
 }
 .news-file-list {
     margin: 0;
