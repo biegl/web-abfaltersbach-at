@@ -10,7 +10,7 @@ use App\News;
 
 class NewsTest extends TestCase
 {
-    public function testsNewsAreCreatedCorrectly()
+    public function testNewsAreCreatedCorrectly()
     {
         $user = factory(User::class)->create();
         $token = $user->generateToken();
@@ -26,7 +26,7 @@ class NewsTest extends TestCase
             ->assertJson(['title' => 'Lorem', 'text' => 'Ipsum']);
     }
 
-    public function testsNewsAreUpdatedCorrectly()
+    public function testNewsAreUpdatedCorrectly()
     {
         $user = factory(User::class)->create();
         $token = $user->generateToken();
@@ -52,7 +52,7 @@ class NewsTest extends TestCase
             ]);
     }
 
-    public function testsNewsAreDeletedCorrectly()
+    public function testNewsAreDeletedCorrectly()
     {
         $user = factory(User::class)->create();
         $token = $user->generateToken();
