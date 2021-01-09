@@ -15,7 +15,7 @@
         </div>
     </div>
     <div class="header-titlebar__background header-titlebar__background--align-center header-titlebar__background--single" data-slideshow-speed="5">
-        <div class="header-titlebar__background-image header-titlebar__background-image--default" style="background-image: url({{ asset('images/header/abfaltersbach.jpg') }}); "></div>
+        <div class="header-titlebar__background-image header-titlebar__background-image--default" style="background-image: url({{ asset('images/header/einoed.jpg') }}); "></div>
     </div>
     <span class="header-titlebar__overlay"></span>
 </div>
