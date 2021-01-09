@@ -49,10 +49,10 @@
                 </div>
                 <div class="form-group">
                     <div v-if="message" class="alert alert-danger" role="alert">
-                        <span v-if="message.errors.email[0] == 'auth.failed'"
+                        <span v-if="message.errors && message.errors.email[0] == 'auth.failed'"
                             >Benutzername und/oder Passwort falsch!</span
                         >
-                        <span v-else>{{ message.message }}</span>
+                        <span v-else>Es ist ein Fehler aufgetreten! Versuchen Sie es später noch einmal.</span>
                     </div>
                 </div>
             </form>
