@@ -56,7 +56,7 @@ jobs:
       - name: Test PHP
         run: |
           docker exec abf-app php artisan serve &
-          docker exec abf-app vendor/bin/phpunit
+          docker exec abf-app vendor/bin/pest
 
       - name: Test EasyAdmin
         working-directory: ./resources/easyadmin

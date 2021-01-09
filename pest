@@ -1,0 +1,6 @@
+#!/bin/bash
+
+args="$@"
+command="vendor/bin/pest $args"
+echo "$command"
+docker exec -it abf-app bash -c "$command"
