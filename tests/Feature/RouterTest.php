@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\Navigation;
-use App\Router;
+use App\Router\Router;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Cache;

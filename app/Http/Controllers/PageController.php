@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Navigation;
-use App\Router;
+use App\Router\Router;
 use Illuminate\Http\Request;
 
 class PageController extends Controller

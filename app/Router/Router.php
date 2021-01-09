@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Router;
 
 use App\Navigation;
 use Cache;
