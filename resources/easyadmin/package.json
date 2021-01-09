@@ -15,6 +15,7 @@
     "dependencies": {
         "@sentry/browser": "^5.24.2",
         "@sentry/integrations": "^5.24.2",
+        "@tinymce/tinymce-vue": "^3.2.7",
         "@uppy/core": "^1.13.1",
         "@uppy/dashboard": "^1.12.5",
         "@uppy/file-input": "^1.4.17",

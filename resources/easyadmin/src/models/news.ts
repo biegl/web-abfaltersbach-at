@@ -11,7 +11,8 @@ export default class News implements BaseObject {
     title = "";
     text?: string;
     date: string = DateTime.fromJSDate(new Date()).toFormat("y-MM-d");
-    expirationDate?: Date;
+    expirationDate?: string;
+    isExpired: boolean;
     attachments?: File[];
 
     static init(obj: Partial<News>): News {
@@ -21,6 +22,7 @@ export default class News implements BaseObject {
         news.text = obj.text;
         news.date = obj.date;
         news.expirationDate = obj.expirationDate;
+        news.isExpired = obj.isExpired;
         news.attachments = obj.attachments
             ? obj.attachments.map(fileObj => File.init(fileObj))
             : [];
