@@ -53,7 +53,13 @@
                                     </tr>
                                 </tbody>
                                 <tbody v-else>
-                                    <tr v-for="news in news" v-bind:class="{active: showAll && !news.isExpired}" :key="news.ID">
+                                    <tr
+                                        v-for="news in news"
+                                        v-bind:class="{
+                                            active: showAll && !news.isExpired,
+                                        }"
+                                        :key="news.ID"
+                                    >
                                         <td>
                                             <span class="no-break">
                                                 {{ news.date | date }}
@@ -158,8 +164,8 @@ export default Vue.extend({
     },
     computed: {
         news() {
-            return this.$store.state.news.all.filter(newsEntry => { 
-                return this.showAll || !newsEntry.isExpired
+            return this.$store.state.news.all.filter(newsEntry => {
+                return this.showAll || !newsEntry.isExpired;
             });
         },
         selectedNews() {
@@ -274,7 +280,7 @@ export default Vue.extend({
     z-index: 1;
 }
 tr.active {
-    background:#ebb60a;
+    background: #ebb60a;
 }
 .news-file-list {
     margin: 0;
