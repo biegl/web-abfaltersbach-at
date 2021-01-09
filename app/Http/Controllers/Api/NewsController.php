@@ -18,7 +18,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        return News::orderBy('date', 'desc')->limit(20)->get();
+        return News::orderBy('date', 'desc')->get();
     }
 
     /**
