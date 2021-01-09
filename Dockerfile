@@ -1,5 +1,5 @@
 # PHP Images can be found at https://hub.docker.com/_/php/
-FROM php:8.0.0-alpine
+FROM php:7.4.0-alpine
 
 # The application will be copied in /home/application and the original document root will be replaced in the apache configuration
 VOLUME /home/application/
@@ -24,9 +24,10 @@ RUN set -ex \
     && sed -i '/LoadModule session_module/s/^#//g' /etc/apache2/httpd.conf \
     && sed -ri -e 's!/var/www/localhost/htdocs!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/httpd.conf \
     && sed -i 's/AllowOverride\ None/AllowOverride\ All/g' /etc/apache2/httpd.conf \
+    && cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini \
+    && sed -i -e "s/^ *memory_limit.*/memory_limit = -1/g" /usr/local/etc/php/php.ini \
     && docker-php-ext-configure intl \
-    && docker-php-ext-configure zip --with-libzip=/usr/include \
-    && docker-php-ext-install intl mbstring opcache pdo_mysql zip gd fileinfo xml \
+    && docker-php-ext-install intl opcache pdo_mysql zip gd fileinfo xml \
     && rm  -rf /tmp/* /var/cache/apk/*
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
