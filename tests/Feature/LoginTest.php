@@ -2,14 +2,12 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\User;
+use App\Models\User;
 
 class LoginTest extends TestCase
 {
-    public function testRequiresEmailAndLogin()
+    public function testRequiresEmailAndPassword()
     {
         $this->json('POST', 'api/login')
             ->assertStatus(422)
@@ -23,9 +21,9 @@ class LoginTest extends TestCase
     }
 
 
-    public function testUserLoginsSuccessfully()
+    public function testUserLogsInSuccessfully()
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'email' => 'testlogin@user.com',
             'password' => bcrypt('toptal123'),
         ]);

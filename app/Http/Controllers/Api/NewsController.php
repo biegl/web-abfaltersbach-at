@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreNews;
-use App\News;
+use App\Models\News;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
@@ -37,7 +37,7 @@ class NewsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\News  $news
+     * @param  \App\Models\News  $news
      * @return \Illuminate\Http\Response
      */
     public function show(News $news)
@@ -49,7 +49,7 @@ class NewsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\News  $news
+     * @param  \App\Models\News  $news
      * @return \Illuminate\Http\Response
      */
     public function update(StoreNews $request, News $news)
@@ -62,13 +62,13 @@ class NewsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\News  $news
+     * @param  \App\Models\News  $news
      * @return \Illuminate\Http\Response
      */
     public function destroy(News $news)
     {
         // Delete attachments
-        foreach($news->attachments as $file) {
+        foreach ($news->attachments as $file) {
             Storage::delete([$file->file]);
             $file->delete();
         }
@@ -83,7 +83,7 @@ class NewsController extends Controller
 
     /**
      * Attaches a file to a specific news.
-     * @param  \App\News $news
+     * @param  \App\Models\News $news
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */

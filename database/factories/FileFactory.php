@@ -1,18 +1,34 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
-use App\File;
-use Faker\Generator as Faker;
+use App\Models\File;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Http\UploadedFile;
 
-$factory->define(File::class, function (Faker $faker) {
-    $fakeFile = UploadedFile::fake()->create($faker->word() . '.pdf', 1000);
+class FileFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = File::class;
 
-    return [
-        'navID' => $faker->numberBetween(0, 255),
-        'position' => $faker->numberBetween(0, 10),
-        'title' => $faker->sentence(4),
-        'file' => '/uploads/test-files/' . $fakeFile->name,
-    ];
-});
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        $fakeFile = UploadedFile::fake()->create($this->faker->word() . '.pdf', 1000);
+
+        return [
+            'navID' => $this->faker->numberBetween(0, 255),
+            'position' => $this->faker->numberBetween(0, 10),
+            'title' => $this->faker->sentence(4),
+            'file' => '/uploads/test-files/' . $fakeFile->name,
+        ];
+    }
+}

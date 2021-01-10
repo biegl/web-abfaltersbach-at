@@ -1,13 +1,16 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Exception;
 
 class File extends Model
 {
+    use HasFactory;
+
     const BYTE_UNITS = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
     const BYTE_PRECISION = [0, 0, 1, 2, 2, 3, 3, 4, 4];
     const BYTE_NEXT = 1024;

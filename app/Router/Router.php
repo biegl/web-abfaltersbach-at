@@ -2,9 +2,9 @@
 
 namespace App\Router;
 
-use App\Navigation;
+use App\Models\Navigation;
 use Cache;
-use App\Page;
+use App\Models\Page;
 use App\Support\Str;
 use App\Router\Helper as RouterHelper;
 
@@ -34,7 +34,7 @@ class Router
     /**
      * Finds a page by its URL.
      * @param string $url The requested URL string.
-     * @return \App\Page Returns \App\Page object or null if the page cannot be found.
+     * @return \App\Models\Page Returns \App\Models\Page object or null if the page cannot be found.
      */
     public function findByUrl($url)
     {

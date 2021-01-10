@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Navigation;
+use App\Models\Navigation;
 use App\Router\Router;
 use Illuminate\Http\Request;
 

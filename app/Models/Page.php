@@ -1,15 +1,18 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-use App\News;
-use App\Event;
+use App\Models\News;
+use App\Models\Event;
 use Illuminate\Support\Facades\Cache;
 
 class Page extends Model
 {
+    use HasFactory;
+
     protected $table = 'tbl_site';
 
     protected $primaryKey = 'ID';
@@ -81,8 +84,8 @@ class Page extends Model
     public function files()
     {
         return $this->hasManyThrough(
-            'App\File',
-            'App\Navigation',
+            'App\Models\File',
+            'App\Models\Navigation',
             'ID', // Foreign key on navigation table
             'navID', // Foreign key on files table
             'navigation_id', // Local key on pages table

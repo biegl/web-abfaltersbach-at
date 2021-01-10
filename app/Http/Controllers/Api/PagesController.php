@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use App\Page;
+use App\Models\Page;
 
 class PagesController extends Controller
 {
@@ -35,7 +35,7 @@ class PagesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Page  $page
+     * @param  \App\Models\Page  $page
      * @return \Illuminate\Http\Response
      */
     public function show(Page $page)
@@ -47,7 +47,7 @@ class PagesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Request\StorePage  $request
-     * @param  \App\Page                    $page
+     * @param  \App\Models\Page                    $page
      * @return \Illuminate\Http\Response
      */
     public function update(StorePage $request, Page $page)
@@ -59,13 +59,13 @@ class PagesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Page $page
+     * @param  \App\Models\Page $page
      * @return \Illuminate\Http\Response
      */
     public function destroy(Page $page)
     {
         // Delete attachments
-        foreach($page->attachments as $file) {
+        foreach ($page->attachments as $file) {
             Storage::delete([$file->file]);
             $file->delete();
         }
@@ -77,7 +77,7 @@ class PagesController extends Controller
 
     /**
      * Attaches a file to a specific page.
-     * @param  \App\Page $page
+     * @param  \App\Models\Page $page
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */

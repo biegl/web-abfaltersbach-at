@@ -1,15 +1,31 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
-use App\News;
-use Faker\Generator as Faker;
+use App\Models\News;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(News::class, function (Faker $faker) {
-    return [
-        'title' => $faker->sentence,
-        'text' => $faker->paragraph,
-        'date' => now(),
-        'expirationDate' => now()->addDays(rand(0, 365)),
-    ];
-});
+class NewsFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = News::class;
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'title' => $this->faker->sentence,
+            'text' => $this->faker->paragraph,
+            'date' => now(),
+            'expirationDate' => now()->addDays(rand(0, 365)),
+        ];
+    }
+}

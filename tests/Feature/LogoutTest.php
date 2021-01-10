@@ -5,13 +5,13 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\User;
+use App\Models\User;
 
 class LogoutTest extends TestCase
 {
     public function testUserIsLoggedOutProperly()
     {
-        $user = factory(User::class)->create(['email' => 'user@test.com']);
+        $user = User::factory()->create(['email' => 'user@test.com']);
         $token = $user->generateToken();
         $headers = ['Authorization' => "Bearer $token"];
 
@@ -26,7 +26,7 @@ class LogoutTest extends TestCase
     public function testUserWithNullToken()
     {
         // Simulating login
-        $user = factory(User::class)->create(['email' => 'user@test.com']);
+        $user = User::factory()->create(['email' => 'user@test.com']);
         $token = $user->generateToken();
         $headers = ['Authorization' => "Bearer $token"];
 

@@ -1,14 +1,17 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Request;
 use App\Router\Helper as RouterHelper;
 use Illuminate\Support\Str;
 
 class Navigation extends Model
 {
+    use HasFactory;
+
     protected $table = 'tbl_navigation';
 
     protected $primaryKey = 'ID';
@@ -49,20 +52,20 @@ class Navigation extends Model
 
     public function children()
     {
-        return $this->hasMany('App\Navigation', 'refID');
+        return $this->hasMany('App\Models\Navigation', 'refID');
     }
 
     public function parent()
     {
-        return $this->belongsTo('App\Navigation', 'refID')->first();
+        return $this->belongsTo('App\Models\Navigation', 'refID')->first();
     }
 
     public function files()
     {
-        return $this->hasMany('App\File', 'navID')->orderBy('position', 'asc');
+        return $this->hasMany('App\Models\File', 'navID')->orderBy('position', 'asc');
     }
 
-    public static function breadcrumbs(\App\Page $page)
+    public static function breadcrumbs(\App\Models\Page $page)
     {
         $nav_item = Navigation::where('ID', $page->navigation_id)->first();
 
@@ -73,7 +76,7 @@ class Navigation extends Model
         ]));
     }
 
-    public static function subnavigation(\App\Page $page)
+    public static function subnavigation(\App\Models\Page $page)
     {
         $nav_item = Navigation::where('ID', $page->navigation_id)->first();
 

@@ -5,14 +5,14 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\User;
-use App\News;
+use App\Models\User;
+use App\Models\News;
 
 class NewsTest extends TestCase
 {
     public function testNewsAreCreatedCorrectly()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $token = $user->generateToken();
         $headers = ['Authorization' => "Bearer $token"];
         $payload = [
@@ -28,10 +28,10 @@ class NewsTest extends TestCase
 
     public function testNewsAreUpdatedCorrectly()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $token = $user->generateToken();
         $headers = ['Authorization' => "Bearer $token"];
-        $news = factory(News::class)->create([
+        $news = News::factory()->create([
             'title' => 'First News',
             'text' => 'First Body',
             'date' => '2020-08-04',
@@ -54,10 +54,10 @@ class NewsTest extends TestCase
 
     public function testNewsAreDeletedCorrectly()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $token = $user->generateToken();
         $headers = ['Authorization' => "Bearer $token"];
-        $news = factory(News::class)->create([
+        $news = News::factory()->create([
             'title' => 'First News',
             'text' => 'First Body',
             'date' => '2020-08-04',
@@ -69,17 +69,17 @@ class NewsTest extends TestCase
 
     public function testNewsAreListedCorrectly()
     {
-        factory(News::class)->create([
+        News::factory()->create([
             'title' => 'First News',
             'text' => 'First Body'
         ]);
 
-        factory(News::class)->create([
+        News::factory()->create([
             'title' => 'Second News',
             'text' => 'Second Body'
         ]);
 
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $token = $user->generateToken();
         $headers = ['Authorization' => "Bearer $token"];
 
