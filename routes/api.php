@@ -36,3 +36,7 @@ Route::middleware('auth:api', 'isAdmin')->group(function () {
 Route::post('register', 'App\Http\Controllers\Auth\RegisterController@register');
 Route::post('login', 'App\Http\Controllers\Auth\LoginController@login');
 Route::post('logout', 'App\Http\Controllers\Auth\LoginController@logout');
+
+Route::fallback(function () {
+    return response('Endpoint does not exist!', 404);
+});
