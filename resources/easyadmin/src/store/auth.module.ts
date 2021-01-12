@@ -1,3 +1,4 @@
+import { users } from "./users.module";
 import { Role } from "./../helpers/role";
 import AuthService from "@/services/auth.service";
 import User from "@/models/user";
@@ -23,6 +24,16 @@ export const auth = {
     namespaced: true,
     state: initialState,
     actions: {
+        refreshCookie({ commit }) {
+            return AuthService.refreshCookie().then(
+                () => {
+                    return Promise.resolve();
+                },
+                error => {
+                    return Promise.reject(error);
+                }
+            );
+        },
         login({ commit }, user: User) {
             return AuthService.login(user).then(
                 user => {

@@ -10,6 +10,14 @@ class AuthService {
         return JSON.parse(window.localStorage.getItem("user"));
     }
 
+    constructor() {
+        this.apiClient.defaults.withCredentials = true;
+    }
+
+    refreshCookie() {
+        return this.apiClient.get(`${Config.host}/sanctum/csrf-cookie`);
+    }
+
     login(user: User) {
         return this.apiClient
             .post(`${BASE_URL}/login`, {
@@ -17,7 +25,7 @@ class AuthService {
                 password: user.password,
             })
             .then(response => {
-                if (response.data.user.api_token) {
+                if (response.data.user) {
                     localStorage.setItem(
                         "user",
                         JSON.stringify(response.data.user)
