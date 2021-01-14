@@ -1,26 +1,18 @@
-import axios from "axios";
+import { apiClient } from "./apiClient";
 import User from "@/models/user";
-import Config from "../config";
 
-const BASE_URL = Config.host + "/api";
 class AuthService {
-    apiClient = axios;
-
     get currentUser(): User {
         return JSON.parse(window.localStorage.getItem("user"));
     }
 
-    constructor() {
-        this.apiClient.defaults.withCredentials = true;
-    }
-
     refreshCookie() {
-        return this.apiClient.get(`${Config.host}/sanctum/csrf-cookie`);
+        return apiClient.get("/sanctum/csrf-cookie");
     }
 
     login(user: User) {
-        return this.apiClient
-            .post(`${BASE_URL}/login`, {
+        return apiClient
+            .post("/api/login", {
                 email: user.username,
                 password: user.password,
             })
@@ -38,7 +30,7 @@ class AuthService {
 
     logout() {
         localStorage.removeItem("user");
-        return this.apiClient.post(`${BASE_URL}/logout`);
+        return apiClient.post("/api/logout");
     }
 }
 

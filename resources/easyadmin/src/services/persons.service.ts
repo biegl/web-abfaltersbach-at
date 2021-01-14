@@ -1,10 +1,9 @@
-import Config from "../config";
 import Person from "../models/person";
 import BaseService from "./base.service";
 import File from "../models/file";
 
 class PersonService extends BaseService<Person> {
-    baseUrl = `${Config.host}/api/persons`;
+    baseUrl = "/api/persons";
 
     deleteImage(person: Person, file: File): Promise<Person> {
         return this.apiClient

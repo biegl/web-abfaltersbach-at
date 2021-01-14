@@ -74,7 +74,8 @@ router.beforeEach((to, from, next) => {
     if (authorize) {
         if (!currentUser) {
             // not logged in so redirect to login page with the return url
-            return next({ path: "/login", query: { returnUrl: to.path } });
+            const query = to.path == "/" ? {} : { returnUrl: to.path };
+            return next({ path: "/login", query: query });
         }
 
         // check if route is restricted by role

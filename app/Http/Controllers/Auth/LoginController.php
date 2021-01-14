@@ -27,7 +27,9 @@ class LoginController extends Controller
         }
 
         return response()->json([
-            'email' => 'The provided credentials do not match our records.',
+            'errors' => [
+                'email' => ['auth.failed']
+            ]
         ], 401);
     }
 
