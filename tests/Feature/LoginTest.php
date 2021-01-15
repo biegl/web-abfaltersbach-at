@@ -14,10 +14,6 @@ class LoginTest extends TestCase
         parent::setUp();
 
         $this->user = User::factory()->create();
-
-        // Session needs to be started before login works.
-        $kernel = app('Illuminate\Contracts\Http\Kernel');
-        $kernel->pushMiddleware('Illuminate\Session\Middleware\StartSession');
     }
 
     public function testRequiresEmailAndPassword()
