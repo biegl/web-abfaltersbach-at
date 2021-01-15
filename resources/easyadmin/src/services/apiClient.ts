@@ -1,3 +1,4 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 import axios from "axios";
 import Config from "../config";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
@@ -57,7 +58,7 @@ class ApiClient {
         return this.client.get(url, config);
     }
 
-    delete<T = any, R = AxiosResponse<T>>(
+    delete<T = void, R = AxiosResponse<T>>(
         url: string,
         config?: AxiosRequestConfig
     ): Promise<R> {
@@ -80,7 +81,7 @@ class ApiClient {
         return this.client.put(url, data, config);
     }
 
-    refreshToken(): Promise<AxiosResponse<any>> {
+    refreshToken<T = void, R = AxiosResponse<T>>(): Promise<R> {
         return this.client.get(`${Config.host}/sanctum/csrf-cookie`);
     }
 }

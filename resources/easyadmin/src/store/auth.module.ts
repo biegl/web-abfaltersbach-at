@@ -1,4 +1,3 @@
-import { users } from "./users.module";
 import { Role } from "./../helpers/role";
 import AuthService from "@/services/auth.service";
 import User from "@/models/user";
@@ -24,7 +23,7 @@ export const auth = {
     namespaced: true,
     state: initialState,
     actions: {
-        refreshCookie({ commit }) {
+        refreshCookie() {
             return AuthService.refreshCookie().then(
                 () => {
                     return Promise.resolve();

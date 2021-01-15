@@ -10,27 +10,21 @@ class AuthService {
         return apiClient.refreshToken();
     }
 
-    login(user: User) {
+    login(user: User): Promise<User> {
         return apiClient
-            .post("/api/login", {
+            .post<User>("/api/login", {
                 email: user.username,
                 password: user.password,
             })
             .then(response => {
-                if (response.data.user) {
-                    localStorage.setItem(
-                        "user",
-                        JSON.stringify(response.data.user)
-                    );
-                }
-
-                return response.data.user;
+                localStorage.setItem("user", JSON.stringify(response.data));
+                return response.data;
             });
     }
 
     logout() {
         localStorage.removeItem("user");
-        return apiClient.post("/api/logout");
+        return apiClient.post<void>("/api/logout");
     }
 }
 

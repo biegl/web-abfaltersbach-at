@@ -86,7 +86,7 @@ export default Vue.extend({
         },
     },
     mounted() {
-        this.$store.dispatch("auth/refreshCookie")
+        this.$store.dispatch("auth/refreshCookie");
     },
     created() {
         if (this.loggedIn) {

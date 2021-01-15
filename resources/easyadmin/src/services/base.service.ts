@@ -7,17 +7,17 @@ export default class BaseService<T extends BaseObject> {
 
     create(object: T): Promise<T> {
         return apiClient
-            .post(this.baseUrl, object)
+            .post<T>(this.baseUrl, object)
             .then(response => response.data);
     }
 
     getAll(): Promise<T[]> {
-        return apiClient.get(this.baseUrl).then(response => response.data);
+        return apiClient.get<T[]>(this.baseUrl).then(response => response.data);
     }
 
     update(object: T): Promise<T> {
         return apiClient
-            .put(`${this.baseUrl}/${object.id}`, object)
+            .put<T>(`${this.baseUrl}/${object.id}`, object)
             .then(response => response.data);
     }
 
