@@ -49,11 +49,11 @@ export const auth = {
         logout({ commit }) {
             return AuthService.logout().then(
                 () => {
-                    commit("logout");
+                    commit("logoutSuccess");
                     return Promise.resolve();
                 },
                 error => {
-                    commit("logoutError");
+                    commit("logoutSuccess");
                     return Promise.reject(error);
                 }
             );
@@ -68,7 +68,7 @@ export const auth = {
             state.status.loggedIn = false;
             state.user = null;
         },
-        logout(state: UserState) {
+        logoutSuccess(state: UserState) {
             state.status.loggedIn = false;
             state.user = null;
         },
