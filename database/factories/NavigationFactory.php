@@ -1,17 +1,33 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
-use App\Navigation;
-use Faker\Generator as Faker;
+use App\Models\Navigation;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Navigation::class, function (Faker $faker) {
-    return [
-        'refID' => $faker->numberBetween(0, 10),
-        'position' => $faker->numberBetween(0, 10),
-        'level' => $faker->numberBetween(0, 1),
-        'name' => $faker->text(10),
-        'linkname' => $faker->slug(),
-        'navianzeigen' => 'Ja',
-    ];
-});
+class NavigationFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Navigation::class;
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'refID' => $this->faker->numberBetween(0, 10),
+            'position' => $this->faker->numberBetween(0, 10),
+            'level' => $this->faker->numberBetween(0, 1),
+            'name' => $this->faker->text(10),
+            'linkname' => $this->faker->slug(),
+            'navianzeigen' => 'Ja',
+        ];
+    }
+}

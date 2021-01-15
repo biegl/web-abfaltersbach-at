@@ -23,6 +23,16 @@ export const auth = {
     namespaced: true,
     state: initialState,
     actions: {
+        refreshCookie() {
+            return AuthService.refreshCookie().then(
+                () => {
+                    return Promise.resolve();
+                },
+                error => {
+                    return Promise.reject(error);
+                }
+            );
+        },
         login({ commit }, user: User) {
             return AuthService.login(user).then(
                 user => {
@@ -38,11 +48,11 @@ export const auth = {
         logout({ commit }) {
             return AuthService.logout().then(
                 () => {
-                    commit("logout");
+                    commit("logoutSuccess");
                     return Promise.resolve();
                 },
                 error => {
-                    commit("logoutError");
+                    commit("logoutSuccess");
                     return Promise.reject(error);
                 }
             );
@@ -57,7 +67,7 @@ export const auth = {
             state.status.loggedIn = false;
             state.user = null;
         },
-        logout(state: UserState) {
+        logoutSuccess(state: UserState) {
             state.status.loggedIn = false;
             state.user = null;
         },

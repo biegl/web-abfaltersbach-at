@@ -4,6 +4,7 @@ The project uses Docker for local development. The following will build the app 
 
 ```
 $ docker-compose build && docker-compose up -d && docker-compose logs -f
+$ cp .env.testing .env
 $ ./composer install
 $ ./php-artisan key:generate
 ```
@@ -30,7 +31,9 @@ $ ./php-artisan key:generate
 ```
 
 ### Backend - EasyAdmin
+
 The self-contained application is located in "resources/easyadmin"
+
 ```
 npm run serve
 ```

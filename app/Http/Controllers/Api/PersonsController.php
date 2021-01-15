@@ -8,10 +8,10 @@ use App\Http\Requests\StorePerson;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Cache;
 
-use App\File;
+use App\Models\File;
 use App\Http\Controllers\ListController;
-use App\Person;
-use App\Module;
+use App\Models\Person;
+use App\Models\Module;
 
 class PersonsController extends Controller
 {
@@ -44,7 +44,7 @@ class PersonsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Person  $person
+     * @param  \App\Models\Person  $person
      * @return \Illuminate\Http\Response
      */
     public function show(Person $person)
@@ -56,7 +56,7 @@ class PersonsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Person  $person
+     * @param  \App\Models\Person  $person
      * @return \Illuminate\Http\Response
      */
     public function update(StorePerson $request, Person $person)
@@ -72,7 +72,7 @@ class PersonsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Person $person
+     * @param  \App\Models\Person $person
      * @return \Illuminate\Http\Response
      */
     public function destroy(Person $person)
@@ -96,7 +96,7 @@ class PersonsController extends Controller
 
     /**
      * Attaches a file to a specific event.
-     * @param  \App\Person $person
+     * @param  \App\Models\Person $person
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
@@ -110,7 +110,7 @@ class PersonsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Person $person
+     * @param  \App\Models\Person $person
      * @return \Illuminate\Http\Response
      */
     public function deleteFile(Person $person, File $file)

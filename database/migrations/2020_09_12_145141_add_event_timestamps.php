@@ -26,8 +26,8 @@ class AddEventTimestamps extends Migration
     public function down()
     {
         Schema::table('tbl_events', function (Blueprint $table) {
-            $table->dropColumn('created_at');
-            $table->dropColumn('updated_at');
+            // $table->dropColumn('created_at');
+            // $table->dropColumn('updated_at');
         });
     }
 }

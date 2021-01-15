@@ -85,6 +85,9 @@ export default Vue.extend({
             return this.$store.state.auth.status.loggedIn;
         },
     },
+    mounted() {
+        this.$store.dispatch("auth/refreshCookie");
+    },
     created() {
         if (this.loggedIn) {
             this.$router.push("/");

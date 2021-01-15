@@ -13,28 +13,30 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api', 'cors')->group(function () {
-    Route::resource('news', 'Api\NewsController');
-    Route::post('news/{news}/attach', 'Api\NewsController@attachFile');
-    Route::resource('files', 'Api\FilesController');
-    Route::post('events/{event}/attach', 'Api\EventsController@attachFile');
-    Route::resource('events', 'Api\EventsController');
-    Route::post('pages/{page}/attach', 'Api\PagesController@attachFile');
-    Route::resource('pages', 'Api\PagesController');
-    Route::resource('persons', 'Api\PersonsController');
-    Route::get('persons/list/{module}', 'Api\PersonsController@list');
-    Route::post('persons/list/{module}', 'Api\PersonsController@saveList');
-    Route::post('persons/{person}/attach', 'Api\PersonsController@attachFile');
-    Route::post('persons/{person}/delete/{file}', 'Api\PersonsController@deleteFile');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::resource('news', 'App\Http\Controllers\Api\NewsController');
+    Route::post('news/{news}/attach', 'App\Http\Controllers\Api\NewsController@attachFile');
+    Route::resource('files', 'App\Http\Controllers\Api\FilesController');
+    Route::post('events/{event}/attach', 'App\Http\Controllers\Api\EventsController@attachFile');
+    Route::resource('events', 'App\Http\Controllers\Api\EventsController');
+    Route::post('pages/{page}/attach', 'App\Http\Controllers\Api\PagesController@attachFile');
+    Route::resource('pages', 'App\Http\Controllers\Api\PagesController');
+    Route::resource('persons', 'App\Http\Controllers\Api\PersonsController');
+    Route::get('persons/list/{module}', 'App\Http\Controllers\Api\PersonsController@list');
+    Route::post('persons/list/{module}', 'App\Http\Controllers\Api\PersonsController@saveList');
+    Route::post('persons/{person}/attach', 'App\Http\Controllers\Api\PersonsController@attachFile');
+    Route::post('persons/{person}/delete/{file}', 'App\Http\Controllers\Api\PersonsController@deleteFile');
 });
 
-Route::middleware('auth:api', 'cors', 'isAdmin')->group(function () {
-    Route::post('users/{user}/revoke', 'Api\UsersController@revoke');
-    Route::resource('users', 'Api\UsersController');
+Route::middleware('auth:sanctum', 'isAdmin')->group(function () {
+    Route::post('users/{user}/revoke', 'App\Http\Controllers\Api\UsersController@revoke');
+    Route::resource('users', 'App\Http\Controllers\Api\UsersController');
 });
 
-Route::middleware('cors')->group(function () {
-    Route::post('register', 'Auth\RegisterController@register');
-    Route::post('login', 'Auth\LoginController@login');
-    Route::post('logout', 'Auth\LoginController@logout');
+Route::post('register', 'App\Http\Controllers\Auth\RegisterController@register');
+Route::post('login', 'App\Http\Controllers\Auth\LoginController@authenticate');
+Route::post('logout', 'App\Http\Controllers\Auth\LoginController@logout');
+
+Route::fallback(function () {
+    return response('Endpoint does not exist!', 404);
 });

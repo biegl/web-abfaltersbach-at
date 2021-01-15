@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Event;
+use App\Models\Event;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEvent;
 use Illuminate\Support\Facades\Cache;
@@ -70,7 +70,7 @@ class EventsController extends Controller
     public function destroy(Event $event)
     {
         // Delete attachments
-        foreach($event->attachments as $file) {
+        foreach ($event->attachments as $file) {
             Storage::delete([$file->file]);
             $file->delete();
         }
@@ -87,7 +87,7 @@ class EventsController extends Controller
 
     /**
      * Attaches a file to a specific event.
-     * @param  \App\Event $event
+     * @param  \App\Models\Event $event
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
