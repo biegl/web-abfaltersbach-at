@@ -39,15 +39,13 @@ class LoginTest extends TestCase
         $this->actingAs($this->user)->postJson('api/login', ['email' => $this->user->email, 'password' => 'password'])
             ->assertStatus(200)
             ->assertJsonStructure([
-                'user' => [
-                    'id',
-                    'name',
-                    'email',
-                    'email_verified_at',
-                    'created_at',
-                    'updated_at',
-                    'api_token',
-                ],
+                'id',
+                'name',
+                'email',
+                'email_verified_at',
+                'created_at',
+                'updated_at',
+                'api_token',
             ]);
     }
 }
