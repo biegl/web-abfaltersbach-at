@@ -7,7 +7,7 @@ class AuthService {
     }
 
     refreshCookie() {
-        return apiClient.get("/sanctum/csrf-cookie");
+        return apiClient.refreshToken();
     }
 
     login(user: User) {
