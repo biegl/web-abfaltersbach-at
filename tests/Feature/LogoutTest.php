@@ -2,38 +2,24 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class LogoutTest extends TestCase
 {
-    public function testUserIsLoggedOutProperly()
+    private $user;
+
+    protected function setUp(): void
     {
-        $user = User::factory()->create(['email' => 'user@test.com']);
-        $token = $user->generateToken();
-        $headers = ['Authorization' => "Bearer $token"];
+        parent::setUp();
 
-        $this->json('get', '/api/news', [], $headers)->assertStatus(200);
-        $this->json('post', '/api/logout', [], $headers)->assertStatus(200);
-
-        $user = User::find($user->id);
-
-        $this->assertEquals(null, $user->api_token);
+        $this->user = User::factory()->create();
     }
 
-    public function testUserWithNullToken()
+    public function testUserIsLoggedOutProperly()
     {
-        // Simulating login
-        $user = User::factory()->create(['email' => 'user@test.com']);
-        $token = $user->generateToken();
-        $headers = ['Authorization' => "Bearer $token"];
-
-        // Simulating logout
-        $user->api_token = null;
-        $user->save();
-
-        $this->json('get', '/api/news', [], $headers)->assertStatus(401);
+        $response = $this->actingAs($this->user)->postJson('/api/logout');
+        $this->assertFalse(Auth::check());
     }
 }

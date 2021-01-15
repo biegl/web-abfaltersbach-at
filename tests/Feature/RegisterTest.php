@@ -17,7 +17,7 @@ class RegisterTest extends TestCase
             'password_confirmation' => 'toptal123',
         ];
 
-        $this->json('post', '/api/register', $payload)
+        $this->postJson('/api/register', $payload)
             ->assertStatus(201)
             ->assertJsonStructure([
                 'data' => [
@@ -33,7 +33,7 @@ class RegisterTest extends TestCase
 
     public function testRequiresPasswordEmailAndName()
     {
-        $this->json('post', '/api/register')
+        $this->postJson('/api/register')
             ->assertStatus(422)
             ->assertJson([
                 'message' => 'The given data was invalid.',
@@ -53,7 +53,7 @@ class RegisterTest extends TestCase
             'password' => 'toptal123',
         ];
 
-        $this->json('post', '/api/register', $payload)
+        $this->postJson('/api/register', $payload)
             ->assertStatus(422)
             ->assertJson([
                 'message' => 'The given data was invalid.',

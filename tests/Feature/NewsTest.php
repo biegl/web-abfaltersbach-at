@@ -2,35 +2,35 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\News;
 
 class NewsTest extends TestCase
 {
+    private $user;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->user = User::factory()->create();
+    }
+
     public function testNewsAreCreatedCorrectly()
     {
-        $user = User::factory()->create();
-        $token = $user->generateToken();
-        $headers = ['Authorization' => "Bearer $token"];
         $payload = [
             'title' => 'Lorem',
             'text' => 'Ipsum',
             'date' => '2020-08-04',
         ];
 
-        $this->json('POST', '/api/news', $payload, $headers)
+        $this->actingAs($this->user)->postJson('/api/news', $payload)
             ->assertStatus(201)
             ->assertJson(['title' => 'Lorem', 'text' => 'Ipsum']);
     }
 
     public function testNewsAreUpdatedCorrectly()
     {
-        $user = User::factory()->create();
-        $token = $user->generateToken();
-        $headers = ['Authorization' => "Bearer $token"];
         $news = News::factory()->create([
             'title' => 'First News',
             'text' => 'First Body',
@@ -43,7 +43,7 @@ class NewsTest extends TestCase
             'date' => '2020-08-04',
         ];
 
-        $response = $this->json('PUT', '/api/news/' . $news->ID, $payload, $headers)
+        $this->actingAs($this->user)->putJson('/api/news/' . $news->ID, $payload)
             ->assertStatus(200)
             ->assertJson([
                 'ID' => $news->ID,
@@ -54,16 +54,13 @@ class NewsTest extends TestCase
 
     public function testNewsAreDeletedCorrectly()
     {
-        $user = User::factory()->create();
-        $token = $user->generateToken();
-        $headers = ['Authorization' => "Bearer $token"];
         $news = News::factory()->create([
             'title' => 'First News',
             'text' => 'First Body',
             'date' => '2020-08-04',
         ]);
 
-        $this->json('DELETE', '/api/news/' . $news->ID, [], $headers)
+        $this->actingAs($this->user)->deleteJson('/api/news/' . $news->ID, [])
             ->assertStatus(204);
     }
 
@@ -79,11 +76,7 @@ class NewsTest extends TestCase
             'text' => 'Second Body'
         ]);
 
-        $user = User::factory()->create();
-        $token = $user->generateToken();
-        $headers = ['Authorization' => "Bearer $token"];
-
-        $response = $this->json('GET', '/api/news', [], $headers)
+        $this->actingAs($this->user)->getJson('/api/news', [])
             ->assertStatus(200)
             ->assertJsonStructure([
                 '*' => ['ID', 'title', 'text', 'date', 'expirationDate'],

@@ -7,9 +7,22 @@ use App\Models\User;
 
 class LoginTest extends TestCase
 {
+    private $user;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = User::factory()->create();
+
+        // Session needs to be started before login works.
+        $kernel = app('Illuminate\Contracts\Http\Kernel');
+        $kernel->pushMiddleware('Illuminate\Session\Middleware\StartSession');
+    }
+
     public function testRequiresEmailAndPassword()
     {
-        $this->json('POST', 'api/login')
+        $this->postJson('api/login')
             ->assertStatus(422)
             ->assertJson([
                 'message' => 'The given data was invalid.',
@@ -23,14 +36,7 @@ class LoginTest extends TestCase
 
     public function testUserLogsInSuccessfully()
     {
-        $user = User::factory()->create([
-            'email' => 'testlogin@user.com',
-            'password' => bcrypt('toptal123'),
-        ]);
-
-        $payload = ['email' => 'testlogin@user.com', 'password' => 'toptal123'];
-
-        $this->json('POST', 'api/login', $payload)
+        $this->actingAs($this->user)->postJson('api/login', ['email' => $this->user->email, 'password' => 'password'])
             ->assertStatus(200)
             ->assertJsonStructure([
                 'user' => [
