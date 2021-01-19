@@ -9,20 +9,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Login Dockerhub
-        run: |
-          echo '${{ secrets.REGISTRY_PASSWORD }}' | docker login --username ${{ secrets.REGISTRY_USERNAME }} --password-stdin
-
-      - name: Create .env file
-        run: |
-          cp .env.testing .env
-
-      - name: Docker Compose
-        env:
-          LOCAL_PORT: 8080
-          UID: 1000
-        run: docker-compose up -d
-
       - name: Get Composer Cache Directory
         id: composer-cache
         run: |
@@ -42,21 +28,28 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: Install composer dependencies
+      - name: Docker Compose
         run: |
-          docker exec abf-app composer update --no-interaction --no-progress  --prefer-dist --optimize-autoloader --ignore-platform-reqs
-          docker exec abf-app php artisan key:generate
-          docker exec abf-app php artisan config:cache
-          docker exec abf-app php artisan route:cache
-          docker exec abf-app npm install
-          docker exec abf-app npm run prod
-          docker exec abf-app php artisan migrate --seed
-          docker exec abf-app php artisan storage:link
+          docker run --rm \
+          -v $(pwd):/opt \
+          -w /opt \
+          laravelsail/php80-composer:latest \
+          composer update --no-interaction --no-progress  --prefer-dist --optimize-autoloader --ignore-platform-reqs
+
+      - name: Setup app
+        run: |
+          ./vendor/bin/sail artisan key:generate
+          ./vendor/bin/sail artisan config:cache
+          ./vendor/bin/sail artisan route:cache
+          ./vendor/bin/sail npm install
+          ./vendor/bin/sail npm run prod
+          ./vendor/bin/sail artisan migrate --seed
+          ./vendor/bin/sail artisan storage:link
 
       - name: Test PHP
         run: |
-          docker exec abf-app php artisan serve &
-          docker exec abf-app vendor/bin/pest
+          ./vendor/bin/sail artisan serve &
+          ./vendor/bin/sail vendor/bin/pest
 
       - name: Test EasyAdmin
         working-directory: ./resources/easyadmin
