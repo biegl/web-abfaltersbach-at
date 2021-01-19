@@ -163,7 +163,7 @@ export default Vue.extend({
             this.$store.dispatch("pages/updatePage", Page.init(obj[0]));
             this.$snotify.success("Upload erfolgreich");
         },
-        onUploadFailed(error) {
+        onUploadFailed() {
             this.$snotify.error("Beim Upload ist ein Fehler aufgetreten!");
         },
         deleteFile(file) {

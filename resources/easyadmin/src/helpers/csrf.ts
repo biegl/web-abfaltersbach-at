@@ -1,4 +1,4 @@
-import AuthService from "@/services/auth.service";
+import authService from "@/services/auth.service";
 import { Plugin } from "@uppy/core";
 
 class CsrfToken extends Plugin {
@@ -10,9 +10,10 @@ class CsrfToken extends Plugin {
         this.prepareUpload = this.prepareUpload.bind(this);
     }
 
-    prepareUpload(fileIDs) {
+    prepareUpload() {
         return new Promise<void>((resolve, reject) => {
-            AuthService.refreshCookie()
+            authService
+                .refreshCookie()
                 .then(resp => {
                     const uploader = this.uppy.getPlugin("XHRUpload");
                     const token = resp.config.headers["X-XSRF-TOKEN"];

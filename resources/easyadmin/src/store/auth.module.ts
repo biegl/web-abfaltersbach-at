@@ -2,7 +2,7 @@ import { Role } from "./../helpers/role";
 import AuthService from "@/services/auth.service";
 import User from "@/models/user";
 
-const user = JSON.parse(window.localStorage.getItem("user"));
+const user = JSON.parse(sessionStorage.getItem("user"));
 
 interface UserState {
     status: { loggedIn: boolean };

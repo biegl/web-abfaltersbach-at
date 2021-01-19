@@ -186,7 +186,7 @@ export default Vue.extend({
             this.$store.dispatch("events/updateEvent", Event.init(obj[0]));
             this.$snotify.success("Upload erfolgreich");
         },
-        onUploadFailed(msg) {
+        onUploadFailed() {
             this.$snotify.error("Beim Upload ist ein Fehler aufgetreten!");
         },
         deleteFile(file) {
