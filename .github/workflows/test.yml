@@ -40,6 +40,8 @@ jobs:
         run: ./vendor/bin/sail up -d
 
       - name: Setup app
+        env:
+          COMPOSE_INTERACTIVE_NO_CLI: 0
         run: |
           ./vendor/bin/sail artisan key:generate
           ./vendor/bin/sail artisan config:cache
@@ -50,6 +52,8 @@ jobs:
           ./vendor/bin/sail artisan storage:link
 
       - name: Test PHP
+        env:
+          COMPOSE_INTERACTIVE_NO_CLI: 0
         run: |
           ./vendor/bin/sail artisan serve &
           ./vendor/bin/sail vendor/bin/pest
