@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::resource('news', 'App\Http\Controllers\Api\NewsController');
     Route::post('news/{news}/attach', 'App\Http\Controllers\Api\NewsController@attachFile');
     Route::resource('files', 'App\Http\Controllers\Api\FilesController');
@@ -26,11 +26,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('persons/list/{module}', 'App\Http\Controllers\Api\PersonsController@saveList');
     Route::post('persons/{person}/attach', 'App\Http\Controllers\Api\PersonsController@attachFile');
     Route::post('persons/{person}/delete/{file}', 'App\Http\Controllers\Api\PersonsController@deleteFile');
-});
 
-Route::middleware('auth:sanctum', 'isAdmin')->group(function () {
-    Route::post('users/{user}/revoke', 'App\Http\Controllers\Api\UsersController@revoke');
-    Route::resource('users', 'App\Http\Controllers\Api\UsersController');
+    Route::group(['middleware' => 'isAdmin'], function () {
+        Route::post('users/{user}/revoke', 'App\Http\Controllers\Api\UsersController@revoke');
+        Route::resource('users', 'App\Http\Controllers\Api\UsersController');
+    });
 });
 
 Route::post('register', 'App\Http\Controllers\Auth\RegisterController@register');

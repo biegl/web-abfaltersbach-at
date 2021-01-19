@@ -1,4 +1,5 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
+import authService from "@/services/auth.service";
 import axios from "axios";
 import Config from "../config";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
@@ -19,32 +20,22 @@ class ApiClient {
 
     errorInterceptor = async error => {
         switch (error.response.status) {
-            case 401: {
-                // Logout
-                localStorage.removeItem("user");
+            case 401:
+            case 419:
+                return new Promise((_, reject) => {
+                    // Logout
+                    authService.logout().finally(() => {
+                        // Redirect to login page if necessary
+                        if (!window.location.pathname.includes("/login")) {
+                            window.location.pathname = "/";
+                        }
 
-                // Redirect to login page if necessary
-                if (!window.location.pathname.includes("/login")) {
-                    window.location.pathname = "/";
-                }
-
-                break;
-            }
-            case 419: {
-                const originalRequest = error.config;
-
-                // Only retry ones
-                if (!originalRequest._retry) {
-                    // Refresh session cookies
-                    await this.refreshToken();
-
-                    // Retry request
-                    return this.client(originalRequest);
-                }
-            }
+                        reject(error);
+                    });
+                });
+            default:
+                return Promise.reject(error);
         }
-
-        return Promise.reject(error);
     };
 
     responseInterceptor = response => response;

@@ -11,7 +11,6 @@ import German from "@uppy/locales/lib/de_DE";
 import XHRUpload from "@uppy/xhr-upload";
 import FileInput from "@uppy/file-input";
 import ProgressBar from "@uppy/progress-bar";
-import authService from "../services/auth.service";
 import CsrfToken from "../helpers/csrf";
 
 import "@uppy/core/dist/style.css";

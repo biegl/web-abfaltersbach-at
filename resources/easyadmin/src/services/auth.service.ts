@@ -3,7 +3,7 @@ import User from "@/models/user";
 
 class AuthService {
     get currentUser(): User {
-        return JSON.parse(window.localStorage.getItem("user"));
+        return JSON.parse(sessionStorage.getItem("user"));
     }
 
     refreshCookie() {
@@ -17,14 +17,14 @@ class AuthService {
                 password: user.password,
             })
             .then(response => {
-                localStorage.setItem("user", JSON.stringify(response.data));
+                sessionStorage.setItem("user", JSON.stringify(response.data));
                 return response.data;
             });
     }
 
-    logout() {
-        localStorage.removeItem("user");
-        return apiClient.post<void>("/api/logout");
+    logout(): Promise<void> {
+        sessionStorage.removeItem("user");
+        return apiClient.post("/api/logout");
     }
 }
 
