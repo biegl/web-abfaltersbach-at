@@ -1,6 +1,0 @@
-#!/bin/bash
-
-args="$@"
-command="vendor/bin/phpunit $args"
-echo "$command"
-docker exec -it abf-app bash -c "$command"
