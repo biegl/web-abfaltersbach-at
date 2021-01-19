@@ -28,13 +28,16 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: Docker Compose
+      - name: Install dependencies
         run: |
           docker run --rm \
           -v $(pwd):/opt \
           -w /opt \
           laravelsail/php80-composer:latest \
           composer update --no-interaction --no-progress  --prefer-dist --optimize-autoloader --ignore-platform-reqs
+
+      - name: Start container
+        run: ./vendor/bin/sail up -d
 
       - name: Setup app
         run: |
