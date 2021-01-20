@@ -1,9 +1,9 @@
 name: Test App
 
-on: 
-  pull_request
+on:
+  pull_request:
   schedule:
-    - cron: '0 2 * * *'
+    - cron: "0 2 * * *"
 
 jobs:
   test-app:
