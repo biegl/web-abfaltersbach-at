@@ -38,5 +38,5 @@ jobs:
 
       - name: Deploy
         run: |
-          apt-get install expect
+          sudo apt-get install expect
           /usr/bin/expect -c "set timeout -1; spawn php artisan deploy; expect -re \"password\"; send \"${{ secrets.SSH_PASSWORD }}\n\"; expect -re \"Successfully deployed\";"
