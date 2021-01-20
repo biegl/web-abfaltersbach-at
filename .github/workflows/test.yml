@@ -43,20 +43,20 @@ jobs:
         env:
           COMPOSE_INTERACTIVE_NO_CLI: 0
         run: |
-          ./vendor/bin/sail artisan key:generate
-          ./vendor/bin/sail artisan config:cache
-          ./vendor/bin/sail artisan route:cache
-          ./vendor/bin/sail npm install
-          ./vendor/bin/sail npm run prod
-          ./vendor/bin/sail artisan migrate --seed
-          ./vendor/bin/sail artisan storage:link
+          docker-compose exec -T laravel.test php artisan key:generate
+          docker-compose exec -T laravel.test php artisan config:cache
+          docker-compose exec -T laravel.test php artisan route:cache
+          docker-compose exec -T laravel.test npm install
+          docker-compose exec -T laravel.test npm run prod
+          docker-compose exec -T laravel.test php artisan migrate --seed
+          docker-compose exec -T laravel.test php artisan storage:link
 
       - name: Test PHP
         env:
           COMPOSE_INTERACTIVE_NO_CLI: 0
         run: |
-          ./vendor/bin/sail artisan serve &
-          ./vendor/bin/sail vendor/bin/pest
+          docker-compose exec -T laravel.test php artisan serve &
+          docker-compose exec -T laravel.test php vendor/bin/pest
 
       - name: Test EasyAdmin
         working-directory: ./resources/easyadmin
