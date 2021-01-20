@@ -13,7 +13,7 @@ jobs:
         run: php -r "file_exists('.env') || copy('.env.testing', '.env');"
 
       - name: Cache dependencies
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ~/.composer/cache/files
           key: dependencies-composer-${{ hashFiles('composer.json') }}
@@ -40,7 +40,7 @@ jobs:
         run: vendor/bin/pest
 
   test-easyadmin:
-    name: Test easyadmin
+    name: Test Easyadmin
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
