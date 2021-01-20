@@ -1,12 +1,20 @@
+# abfaltersbach.at
+
+![Deploy website](https://github.com/biegl/web-abfaltersbach-at/workflows/Deploy%20website/badge.svg)
+
 ## Setup
 
 The project uses Docker for local development. The following will build the app container based on the Dockerfile and spin up the app and mysql container. `composer install` install the project dependencies and creates the autoloader. `artisan key:generate` will create a local key.
 
 ```
-$ docker-compose build && docker-compose up -d && docker-compose logs -f
-$ cp .env.testing .env
-$ ./composer install
-$ ./php-artisan key:generate
+$ docker run --rm \
+    -v $(pwd):/opt \
+    -w /opt \
+    laravelsail/php80-composer:latest \
+    composer install
+$ sail up -d
+$ sail artisan key:generate
+$ sail artisan migrate
 ```
 
 ## Development
@@ -14,20 +22,31 @@ $ ./php-artisan key:generate
 ### Helper Commands for CLI
 
 ```
-# Run composer inside the app container
-./composer
+# Start container
+sail up -d
+sail down -v
 
-# Run bash inside the app container
-./container
+# php
+sail php --version
 
-# Run mysql inside the database container
-./db
+# artisan
+sail artisan queue:work
 
-# Run php unit tests
-./phpunit
+# composer
+sail composer require laravel/sanctum
 
-# Run artisan command inside the app container
-./php-artisan
+# npm
+sail npm run serve
+sail npm run prod
+
+# run tests
+sail test
+
+# shell
+sail shell
+
+# tinker
+sail tinker
 ```
 
 ### Backend - EasyAdmin
@@ -45,20 +64,7 @@ npm run serve
 Build assets for production
 
 ```
-./npm run prod
-```
-
-Create new docker image
-
-```
-docker build -t buerma/web-abfaltersbach-at:latest .
-```
-
-Push new docker image to registry
-
-```
-docker login
-docker push buerma/web-abfaltersbach-at:latest
+npm run prod
 ```
 
 ### Upload
@@ -67,7 +73,7 @@ The following command uses Deployer (https://deployer.org/) to upload the latest
 All optimizations (e.g. composer) will be performed during deployment. Check `config/deploy.php` for further details.
 
 ```
-./php-artisan deploy
+sail artisan deploy
 ```
 
 The upload uses the basic strategy and follows following process:
