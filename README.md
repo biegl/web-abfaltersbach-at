@@ -1,3 +1,7 @@
+# abfaltersbach.at
+
+![Deploy website](https://github.com/biegl/web-abfaltersbach-at/workflows/Deploy%20website/badge.svg)
+
 ## Setup
 
 The project uses Docker for local development. The following will build the app container based on the Dockerfile and spin up the app and mysql container. `composer install` install the project dependencies and creates the autoloader. `artisan key:generate` will create a local key.
