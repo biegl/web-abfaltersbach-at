@@ -1,10 +1,10 @@
-name: Test Suite
+name: Test App
 
 on: pull_request
 
 jobs:
-  build:
-    name: Build and Test App
+  test-app:
+    name: Test App
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -12,14 +12,21 @@ jobs:
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.testing', '.env');"
 
-      - name: Install Dependencies
-        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-composer-${{ hashFiles('composer.json') }}
 
-      - name: Generate key
-        run: php artisan key:generate
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
+          coverage: none
 
-      - name: Directory Permissions
-        run: chmod -R 777 storage bootstrap/cache
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-interaction --no-suggest
 
       - name: Create Database
         run: |
@@ -31,6 +38,22 @@ jobs:
           DB_CONNECTION: sqlite
           DB_DATABASE: database/database.sqlite
         run: vendor/bin/pest
+
+  test-easyadmin:
+    name: Test easyadmin
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
       - name: Test EasyAdmin
         working-directory: ./resources/easyadmin
@@ -44,7 +67,7 @@ jobs:
   automerge:
     name: Automerge Dependabot Pull Request
     runs-on: ubuntu-latest
-    needs: build
+    needs: [test-app, test-easyadmin]
     if: github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]'
     steps:
       - name: automerge
