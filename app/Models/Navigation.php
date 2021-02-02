@@ -85,6 +85,7 @@ class Navigation extends Model
                 ->parent()
                 ->children()
                 ->visible()
+                ->orderBy('position')
                 ->get();
         }
 
