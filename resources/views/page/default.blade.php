@@ -2,8 +2,8 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-3">@include('partials.subnavigation')</div>
-        <div class="col-md-9">
+        <div class="d-none d-md-block col-md-3">@include('partials.subnavigation')</div>
+        <div class="col-xs-12 col-md-9">
             {!! $content !!}
 
             @if($inserts && count($inserts) > 0)
