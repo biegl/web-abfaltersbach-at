@@ -21,6 +21,12 @@ export default class BaseService<T extends BaseObject> {
             .then(response => response.data);
     }
 
+    partialUpdate(object: Partial<T>): Promise<T> {
+        return apiClient
+            .patch<T>(`${this.baseUrl}/${object.id}`, object)
+            .then(response => response.data);
+    }
+
     delete(object: T): Promise<void> {
         return apiClient.delete(`${this.baseUrl}/${object.id}`);
     }

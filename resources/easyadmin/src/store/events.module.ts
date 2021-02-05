@@ -82,6 +82,12 @@ export const events = {
     mutations: {
         loadSuccess(state: EventState, events: Event[]) {
             state.all = events;
+
+            if (state.selectedEvent) {
+                state.selectedEvent = state.all.find(
+                    el => el.id == state.selectedEvent.id
+                );
+            }
         },
         loadFailure(state: EventState) {
             state.all = [];

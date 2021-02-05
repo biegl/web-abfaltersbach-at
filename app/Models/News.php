@@ -29,7 +29,7 @@ class News extends Model
         'text',
         'date',
         'expirationDate',
-        'galleryId'
+        'galleryId',
     ];
 
     protected $casts = [
