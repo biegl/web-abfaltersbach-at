@@ -82,6 +82,12 @@ export const pages = {
     mutations: {
         loadSuccess(state: PageState, pages: Page[]) {
             state.all = pages;
+
+            if (state.selectedPage) {
+                state.selectedPage = state.all.find(
+                    el => el.id == state.selectedPage.id
+                );
+            }
         },
         loadFailure(state: PageState) {
             state.all = [];

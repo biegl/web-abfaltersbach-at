@@ -40,14 +40,14 @@
                                     v-for="file in pageEntry.attachments"
                                     :key="file.ID"
                                 >
-                                    {{ file.title }}
-                                    <button
-                                        type="button"
-                                        class="btn"
-                                        @click="deleteFile(file)"
-                                    >
-                                        <i class="fa fa-trash"></i>
-                                    </button>
+                                    <attachment
+                                        :file="file"
+                                        :editMode="isFileBeingEdited(file)"
+                                        @onEditFile="onEditFile"
+                                        @onAttachmentsUpdated="
+                                            onAttachmentsUpdated
+                                        "
+                                    ></attachment>
                                 </li>
                             </ul>
                             <file-input
@@ -99,6 +99,7 @@ import { Vue } from "vue-property-decorator";
 import Page from "../models/page";
 import Config from "../config";
 import FileInput from "@/components/FileInput.vue";
+import Attachment from "@/components/Attachment.vue";
 import TextEditor from "@/components/TextEditor.vue";
 
 export default Vue.extend({
@@ -109,11 +110,13 @@ export default Vue.extend({
     components: {
         TextEditor,
         FileInput,
+        Attachment,
     },
 
     data() {
         return {
             isSubmitting: false,
+            editedFile: null,
         };
     },
 
@@ -166,25 +169,14 @@ export default Vue.extend({
         onUploadFailed() {
             this.$snotify.error("Beim Upload ist ein Fehler aufgetreten!");
         },
-        deleteFile(file) {
-            if (
-                !window.confirm(
-                    `Soll die Datei "${file.title}" wirklich gelöscht werden?`
-                )
-            ) {
-                return;
-            }
-
-            this.$store
-                .dispatch("pages/deleteFile", { page: this.pageEntry, file })
-                .then(() => {
-                    this.$snotify.success("Die Datei wurde gelöscht.");
-                })
-                .catch(() => {
-                    this.$snotify.error(
-                        "Die Datei konnte nicht gelöscht werden!"
-                    );
-                });
+        onEditFile(file) {
+            this.editedFile = file;
+        },
+        isFileBeingEdited(file) {
+            return this.editedFile && this.editedFile.id == file.id;
+        },
+        onAttachmentsUpdated() {
+            this.$store.dispatch("pages/load");
         },
     },
 });

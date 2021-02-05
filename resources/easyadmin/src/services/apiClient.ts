@@ -72,6 +72,14 @@ class ApiClient {
         return this.client.put(url, data, config);
     }
 
+    patch<T = any, R = AxiosResponse<T>>(
+        url: string,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): Promise<R> {
+        return this.client.patch(url, data, config);
+    }
+
     refreshToken<T = void, R = AxiosResponse<T>>(): Promise<R> {
         return this.client.get(`${Config.host}/sanctum/csrf-cookie`);
     }

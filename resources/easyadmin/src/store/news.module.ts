@@ -82,6 +82,12 @@ export const news = {
     mutations: {
         loadSuccess(state: NewsState, news: News[]) {
             state.all = news;
+
+            if (state.selectedNews) {
+                state.selectedNews = state.all.find(
+                    el => el.id == state.selectedNews.id
+                );
+            }
         },
         selectNews(state: NewsState, news: News) {
             state.selectedNews = news;
