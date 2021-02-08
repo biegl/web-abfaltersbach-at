@@ -10,7 +10,7 @@ export default class News implements BaseObject {
     ID = "";
     title = "";
     text?: string;
-    date: string = DateTime.fromJSDate(new Date()).toFormat("y-MM-d");
+    date: string = DateTime.fromJSDate(new Date()).toFormat("y-MM-dd");
     expirationDate?: string;
     isExpired: boolean;
     attachments?: File[];
