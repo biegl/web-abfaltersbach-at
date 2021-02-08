@@ -1,7 +1,12 @@
 <template>
     <div>
         <input v-if="editMode" v-model="file.title" />
-        <span v-else>{{ file.title }}</span>
+        <span
+            v-else
+            @click="this.copyLink"
+            title="Dateipfad in die Zwischenablage kopieren"
+            >{{ file.title }}</span
+        >
 
         <button
             v-if="!editMode"
@@ -11,16 +16,6 @@
             @click="this.edit"
         >
             <i class="fa fa-edit"></i>
-        </button>
-
-        <button
-            v-if="!editMode"
-            type="button"
-            class="btn btn-sm"
-            title="Dateipfad in die Zwischenablage kopieren"
-            @click="this.copyLink"
-        >
-            <i class="fa fa-link"></i>
         </button>
 
         <button
