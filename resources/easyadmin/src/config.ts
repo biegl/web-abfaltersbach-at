@@ -14,47 +14,58 @@ export default class Config {
         file_picker_types: "image",
         images_reuse_filename: true,
         images_upload_handler: (blobInfo, success, failure, progress) => {
-            const xhr = new XMLHttpRequest();
-            xhr.withCredentials = false;
-            xhr.open("POST", `${Config.host}/api/files`);
-            xhr.setRequestHeader(
-                "authorization",
-                `Bearer ${authService.currentUser.api_token}`
-            );
+            authService
+                .refreshCookie()
+                .then(resp => {
+                    const token = resp.config.headers["X-XSRF-TOKEN"];
 
-            xhr.upload.onprogress = event => {
-                progress((event.loaded / event.total) * 100);
-            };
+                    const xhr = new XMLHttpRequest();
+                    xhr.withCredentials = true;
 
-            xhr.onload = () => {
-                if (xhr.status < 200 || xhr.status >= 300) {
-                    failure("HTTP Error: " + xhr.status);
-                    return;
-                }
+                    xhr.open("POST", `${Config.host}/api/files`);
+                    xhr.setRequestHeader("X-XSRF-TOKEN", token);
 
-                const json = JSON.parse(xhr.responseText);
+                    xhr.upload.onprogress = event => {
+                        progress((event.loaded / event.total) * 100);
+                    };
 
-                if (!json) {
-                    failure("Invalid JSON: " + xhr.responseText);
-                    return;
-                }
+                    xhr.onload = () => {
+                        if (xhr.status < 200 || xhr.status >= 300) {
+                            failure("HTTP Error: " + xhr.status);
+                            return;
+                        }
 
-                // Set location based on environment
-                json.location = `${Config.host}/files/${json.title}`;
-                success(json.location);
-            };
+                        const json = JSON.parse(xhr.responseText);
 
-            xhr.onerror = () => {
-                failure(
-                    "Das Bild konnte nicht hochgeladen werden. Code: " +
-                        xhr.status
-                );
-            };
+                        if (!json) {
+                            failure("Invalid JSON: " + xhr.responseText);
+                            return;
+                        }
 
-            const formData = new FormData();
-            formData.append("file", blobInfo.blob(), blobInfo.filename());
+                        // Set location based on environment
+                        json.location = `${Config.host}/files/${json.title}`;
+                        success(json.location);
+                    };
 
-            xhr.send(formData);
+                    xhr.onerror = () => {
+                        failure(
+                            "Das Bild konnte nicht hochgeladen werden. Code: " +
+                                xhr.status
+                        );
+                    };
+
+                    const formData = new FormData();
+                    formData.append(
+                        "file",
+                        blobInfo.blob(),
+                        blobInfo.filename()
+                    );
+
+                    xhr.send(formData);
+                })
+                .catch(error => {
+                    failure(error);
+                });
         },
         plugins: ["autolink lists link image", "media"],
         toolbar:

@@ -12,6 +12,17 @@
         >
             <i class="fa fa-edit"></i>
         </button>
+
+        <button
+            v-if="!editMode"
+            type="button"
+            class="btn btn-sm"
+            title="Dateipfad in die Zwischenablage kopieren"
+            @click="this.copyLink"
+        >
+            <i class="fa fa-link"></i>
+        </button>
+
         <button
             v-if="editMode"
             type="button"
@@ -107,6 +118,14 @@ export default Vue.extend({
                         "Die Datei konnte nicht gelöscht werden!"
                     );
                 });
+        },
+        copyLink() {
+            const elem = document.createElement("textarea");
+            elem.value = `/files/${this.file.file}`;
+            document.body.appendChild(elem);
+            elem.select();
+            document.execCommand("copy");
+            document.body.removeChild(elem);
         },
     },
 });
