@@ -4,7 +4,8 @@
         $list = $insert;
         $config = $list->configuration;
         $items = App\Http\Controllers\ListController::getItems($insert->id, $config);
-        $template = str_replace('app\\', '', strtolower($config['model']));
+        $partialName = explode('\\', strtolower($config['model']));
+        $template = end($partialName);
     @endphp
 
     @foreach($items as $listitem)

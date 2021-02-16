@@ -102,7 +102,7 @@ class Page extends Model
     }
 
     /**
-     * Get all of the page's attachments.
+     * Get all of the page's modules.
      */
     public function inserts()
     {
