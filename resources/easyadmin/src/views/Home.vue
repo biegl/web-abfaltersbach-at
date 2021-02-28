@@ -23,6 +23,11 @@
                     <li v-if="isAdmin">
                         <router-link to="/users">User</router-link>
                     </li>
+                    <li v-if="isAdmin">
+                        <router-link to="/activities"
+                            >Activity Logs</router-link
+                        >
+                    </li>
                 </ul>
             </div>
         </div>

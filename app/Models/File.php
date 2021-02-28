@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Exception;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class File extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
 
     const BYTE_UNITS = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
     const BYTE_PRECISION = [0, 0, 1, 2, 2, 3, 3, 4, 4];
@@ -18,6 +19,8 @@ class File extends Model
     protected $table = 'tbl_downloads';
 
     protected $primaryKey = 'ID';
+
+    protected static $logFillable = true;
 
     protected $fillable = [
         'navID',

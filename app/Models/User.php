@@ -8,10 +8,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Str;
 use App\Notifications\ResetPassword;
 use App\Models\Role;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, LogsActivity;
+
+    protected static $logFillable = true;
 
     /**
      * The attributes that are mass assignable.

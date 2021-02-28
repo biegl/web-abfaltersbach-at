@@ -7,6 +7,7 @@ import { news } from "./news.module";
 import { files } from "./files.module";
 import { users } from "./users.module";
 import { pages } from "./pages.module";
+import { activities } from "./activities.module";
 
 Vue.use(Vuex);
 
@@ -22,5 +23,6 @@ export default new Vuex.Store({
         users,
         pages,
         persons,
+        activities,
     },
 });

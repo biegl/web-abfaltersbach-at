@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\News;
 use App\Models\Event;
 use Illuminate\Support\Facades\Cache;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Page extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
 
     protected $table = 'tbl_site';
 
@@ -20,6 +21,8 @@ class Page extends Model
     public $timestamps = false;
 
     public $with = ['attachments'];
+
+    protected static $logFillable = true;
 
     protected $fillable = [
         'seitentitel',

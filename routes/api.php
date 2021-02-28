@@ -30,6 +30,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::group(['middleware' => 'isAdmin'], function () {
         Route::post('users/{user}/revoke', 'App\Http\Controllers\Api\UsersController@revoke');
         Route::resource('users', 'App\Http\Controllers\Api\UsersController');
+        Route::get('activities', 'App\Http\Controllers\Api\ActivityLogsController@index');
     });
 });
 

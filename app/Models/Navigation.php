@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Request;
 use App\Router\Helper as RouterHelper;
 use Illuminate\Support\Str;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Navigation extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
 
     protected $table = 'tbl_navigation';
 
@@ -19,6 +20,8 @@ class Navigation extends Model
     protected $with = ['children'];
 
     public $timestamps = false;
+
+    protected static $logAttributes = ['*'];
 
     public function getHasChildrenAttribute()
     {

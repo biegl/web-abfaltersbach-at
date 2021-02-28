@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class News extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
 
     protected $table = 'tbl_news';
 
@@ -23,6 +24,8 @@ class News extends Model
      * @var string The name of the cache bucket.
      */
     public static $CACHE_KEY_TOP_NEWS = 'news.top';
+
+    protected static $logFillable = true;
 
     protected $fillable = [
         'title',
