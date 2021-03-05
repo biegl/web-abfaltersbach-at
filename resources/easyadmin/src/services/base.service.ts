@@ -1,36 +1,33 @@
-import axios from "axios";
-import authHeader from "./auth-header";
-import Config from "../config";
+import { apiClient } from "./apiClient";
 import BaseObject from "@/models/base";
 
 export default class BaseService<T extends BaseObject> {
-    baseUrl = `${Config.host}/api`;
-
-    apiClient = axios;
-    defaultOptions = { headers: authHeader() };
+    baseUrl = "/api";
+    apiClient = apiClient;
 
     create(object: T): Promise<T> {
-        return this.apiClient
-            .post(this.baseUrl, object, this.defaultOptions)
+        return apiClient
+            .post<T>(this.baseUrl, object)
             .then(response => response.data);
     }
 
     getAll(): Promise<T[]> {
-        return this.apiClient
-            .get(this.baseUrl, this.defaultOptions)
-            .then(response => response.data);
+        return apiClient.get<T[]>(this.baseUrl).then(response => response.data);
     }
 
     update(object: T): Promise<T> {
-        return this.apiClient
-            .put(`${this.baseUrl}/${object.id}`, object, this.defaultOptions)
+        return apiClient
+            .put<T>(`${this.baseUrl}/${object.id}`, object)
+            .then(response => response.data);
+    }
+
+    partialUpdate(object: Partial<T>): Promise<T> {
+        return apiClient
+            .patch<T>(`${this.baseUrl}/${object.id}`, object)
             .then(response => response.data);
     }
 
     delete(object: T): Promise<void> {
-        return this.apiClient.delete(
-            `${this.baseUrl}/${object.id}`,
-            this.defaultOptions
-        );
+        return apiClient.delete(`${this.baseUrl}/${object.id}`);
     }
 }

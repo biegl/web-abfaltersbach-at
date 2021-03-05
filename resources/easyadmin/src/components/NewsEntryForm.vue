@@ -74,14 +74,14 @@
                                     v-for="file in newsEntry.attachments"
                                     :key="file.ID"
                                 >
-                                    {{ file.title }}
-                                    <button
-                                        type="button"
-                                        class="btn"
-                                        @click="deleteFile(file)"
-                                    >
-                                        <i class="fa fa-trash"></i>
-                                    </button>
+                                    <attachment
+                                        :file="file"
+                                        :editMode="isFileBeingEdited(file)"
+                                        @onEditFile="onEditFile"
+                                        @onAttachmentsUpdated="
+                                            onAttachmentsUpdated
+                                        "
+                                    ></attachment>
                                 </li>
                             </ul>
                             <file-input
@@ -132,6 +132,7 @@
 </template>
 <script lang="ts">
 import { Vue } from "vue-property-decorator";
+import Attachment from "@/components/Attachment.vue";
 import DatePicker from "@/components/DatePicker.vue";
 import TextEditor from "@/components/TextEditor.vue";
 import FileInput from "@/components/FileInput.vue";
@@ -148,10 +149,12 @@ export default Vue.extend({
         DatePicker,
         FileInput,
         TextEditor,
+        Attachment,
     },
 
     data() {
         return {
+            editedFile: null,
             isSubmitting: false,
         };
     },
@@ -216,29 +219,17 @@ export default Vue.extend({
             this.$store.dispatch("news/updateNews", News.init(obj[0]));
             this.$snotify.success("Upload erfolgreich");
         },
-        onUploadFailed(msg) {
-            const message = msg || "Beim Upload ist ein Fehler aufgetreten!";
-            this.$snotify.error(message);
+        onUploadFailed() {
+            this.$snotify.error("Beim Upload ist ein Fehler aufgetreten!");
         },
-        deleteFile(file) {
-            if (
-                !window.confirm(
-                    `Soll die Datei "${file.title}" wirklich gelöscht werden?`
-                )
-            ) {
-                return;
-            }
-
-            this.$store
-                .dispatch("news/deleteFile", { news: this.newsEntry, file })
-                .then(() => {
-                    this.$snotify.success("Die Datei wurde gelöscht.");
-                })
-                .catch(() => {
-                    this.$snotify.error(
-                        "Die Datei konnte nicht gelöscht werden!"
-                    );
-                });
+        onEditFile(file) {
+            this.editedFile = file;
+        },
+        isFileBeingEdited(file) {
+            return this.editedFile && this.editedFile.id == file.id;
+        },
+        onAttachmentsUpdated() {
+            this.$store.dispatch("news/load");
         },
     },
 });

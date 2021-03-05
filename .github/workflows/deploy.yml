@@ -11,9 +11,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Login Dockerhub
-        run: |
-          echo '${{ secrets.REGISTRY_PASSWORD }}' | docker login --username ${{ secrets.REGISTRY_USERNAME }} --password-stdin
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.testing', '.env');"
 
       - name: Create .env file
         run: |
@@ -21,16 +20,23 @@ jobs:
           echo "SSH_USER=${{ secrets.SSH_USER }}" >> .env
           echo "SSH_PORT=${{ secrets.SSH_PORT }}" >> .env
 
-      - name: Docker Compose
-        env:
-          LOCAL_PORT: 8080
-          UID: 1000
-        run: docker-compose up -d
+      - name: Cache dependencies
+        uses: actions/cache@v2.1.4
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-composer-${{ hashFiles('composer.json') }}
 
-      - name: Install composer dependencies
-        run: |
-          docker exec abf-app composer install
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-interaction --no-suggest
 
       - name: Deploy
         run: |
-          docker exec abf-app /usr/bin/expect -c "set timeout -1; spawn php artisan deploy; expect -re \"password\"; send \"${{ secrets.SSH_PASSWORD }}\n\"; expect -re \"Successfully deployed\";"
+          sudo apt-get install expect
+          /usr/bin/expect -c "set timeout -1; spawn php artisan deploy; expect -re \"password\"; send \"${{ secrets.SSH_PASSWORD }}\n\"; expect -re \"Successfully deployed\";"

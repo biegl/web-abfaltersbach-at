@@ -174,9 +174,8 @@ export default Vue.extend({
             this.$store.dispatch("persons/updatePerson", Person.init(obj[0]));
             this.$snotify.success("Upload erfolgreich");
         },
-        onUploadFailed(msg) {
-            const message = msg || "Beim Upload ist ein Fehler aufgetreten!";
-            this.$snotify.error(message);
+        onUploadFailed() {
+            this.$snotify.error("Beim Upload ist ein Fehler aufgetreten!");
         },
         deleteFile(file) {
             if (!window.confirm(`Soll das Bild wirklich gelöscht werden?`)) {

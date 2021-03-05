@@ -29,6 +29,11 @@
                 <li v-if="isAdmin" class="nav-item">
                     <router-link to="/users" class="nav-link">User</router-link>
                 </li>
+                <li v-if="isAdmin" class="nav-item">
+                    <router-link to="/activities" class="nav-link"
+                        >Activity Logs</router-link
+                    >
+                </li>
             </div>
 
             <div v-if="isLoggedIn" class="navbar-nav ml-auto">

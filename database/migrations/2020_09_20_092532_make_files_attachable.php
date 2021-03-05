@@ -27,8 +27,8 @@ class MakeFilesAttachable extends Migration
     public function down()
     {
         Schema::table('tbl_downloads', function (Blueprint $table) {
-            $table->dropColumn('attachable_id');
-            $table->dropColumn('attachable_type');
+            // $table->dropColumn('attachable_id');
+            // $table->dropColumn('attachable_type');
         });
     }
 }

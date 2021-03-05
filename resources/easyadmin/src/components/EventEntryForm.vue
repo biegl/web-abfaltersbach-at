@@ -28,14 +28,14 @@
                                     v-for="file in eventEntry.attachments"
                                     :key="file.ID"
                                 >
-                                    {{ file.title }}
-                                    <button
-                                        type="button"
-                                        class="btn"
-                                        @click="deleteFile(file)"
-                                    >
-                                        <i class="fa fa-trash"></i>
-                                    </button>
+                                    <attachment
+                                        :file="file"
+                                        :editMode="isFileBeingEdited(file)"
+                                        @onEditFile="onEditFile"
+                                        @onAttachmentsUpdated="
+                                            onAttachmentsUpdated
+                                        "
+                                    ></attachment>
                                 </li>
                             </ul>
                             <file-input
@@ -95,6 +95,7 @@ import TextEditor from "@/components/TextEditor.vue";
 import DatePicker from "@/components/DatePicker.vue";
 import Event from "../models/event";
 import FileInput from "@/components/FileInput.vue";
+import Attachment from "@/components/Attachment.vue";
 import { DateTime } from "luxon";
 import Config from "../config";
 
@@ -105,6 +106,7 @@ export default Vue.extend({
         DatePicker,
         TextEditor,
         FileInput,
+        Attachment,
     },
 
     props: ["adminMode"],
@@ -140,6 +142,7 @@ export default Vue.extend({
     data() {
         return {
             isSubmitting: false,
+            editedFile: null,
             editorConfig: Object.assign({}, Config.defaultEditorConfig, {
                 toolbar:
                     "undo | bold italic | \
@@ -186,29 +189,17 @@ export default Vue.extend({
             this.$store.dispatch("events/updateEvent", Event.init(obj[0]));
             this.$snotify.success("Upload erfolgreich");
         },
-        onUploadFailed(msg) {
-            const message = msg || "Beim Upload ist ein Fehler aufgetreten!";
-            this.$snotify.error(message);
+        onUploadFailed() {
+            this.$snotify.error("Beim Upload ist ein Fehler aufgetreten!");
         },
-        deleteFile(file) {
-            if (
-                !window.confirm(
-                    `Soll die Datei "${file.title}" wirklich gelöscht werden?`
-                )
-            ) {
-                return;
-            }
-
-            this.$store
-                .dispatch("events/deleteFile", { event: this.eventEntry, file })
-                .then(() => {
-                    this.$snotify.success("Die Datei wurde gelöscht.");
-                })
-                .catch(() => {
-                    this.$snotify.error(
-                        "Die Datei konnte nicht gelöscht werden!"
-                    );
-                });
+        onEditFile(file) {
+            this.editedFile = file;
+        },
+        isFileBeingEdited(file) {
+            return this.editedFile && this.editedFile.id == file.id;
+        },
+        onAttachmentsUpdated() {
+            this.$store.dispatch("events/load");
         },
     },
 });

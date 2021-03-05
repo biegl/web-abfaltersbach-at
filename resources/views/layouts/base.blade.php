@@ -44,10 +44,10 @@
         <section id="main-content" class="content" tabindex="-1">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-9 text-content">
+                    <div class="col-lg-9 text-content">
                         @yield('content')
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-lg-3">
                         <aside class="sidebar">
                             @yield('sidebar')
                         </aside>

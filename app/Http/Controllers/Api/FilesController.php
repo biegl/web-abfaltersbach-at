@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Event;
-use App\File;
-use App\News;
+use App\Models\Event;
+use App\Models\File;
+use App\Models\News;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreFile;
+use App\Http\Requests\UpdateFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
@@ -56,10 +56,10 @@ class FilesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreFile $request, File $file)
+    public function update(UpdateFile $request, File $file)
     {
-        $file->update($request->validated());
-        return response()->json($file, 200);
+        $file->update(['title' => $request->title]);
+        return response()->json($file->fresh(), 200);
     }
 
     /**
@@ -74,12 +74,12 @@ class FilesController extends Controller
         $file->delete();
 
         // Delete cache if necessary
-        if (isset($file->attachable) && get_class($file->attachable) == 'App\Event') {
+        if (isset($file->attachable) && get_class($file->attachable) == 'App\Models\Event') {
             Cache::forget(Event::$CACHE_KEY_CURRENT_EVENTS);
             Cache::forget(Event::$CACHE_KEY_GROUPED_EVENTS);
         }
 
-        if (isset($file->attachable) && get_class($file->attachable) == 'App\News') {
+        if (isset($file->attachable) && get_class($file->attachable) == 'App\Models\News') {
             Cache::forget(News::$CACHE_KEY_TOP_NEWS);
         }
 

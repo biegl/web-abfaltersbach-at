@@ -2,7 +2,7 @@
     <div class="container mt-3 p-3">
         <div class="row">
             <div class="col">
-                <h1>Willkommen, {{ user.name }}</h1>
+                <h1>Willkommen, {{ user ? user.name : "" }}</h1>
                 <p>
                     Wählen Sie einen Menüpunkt aus um den jeweiligen Bereich zu
                     bearbeiten
@@ -22,6 +22,11 @@
                     </li>
                     <li v-if="isAdmin">
                         <router-link to="/users">User</router-link>
+                    </li>
+                    <li v-if="isAdmin">
+                        <router-link to="/activities"
+                            >Activity Logs</router-link
+                        >
                     </li>
                 </ul>
             </div>

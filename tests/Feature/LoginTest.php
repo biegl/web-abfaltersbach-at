@@ -2,16 +2,27 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\User;
+use App\Models\User;
 
 class LoginTest extends TestCase
 {
-    public function testRequiresEmailAndLogin()
+    private $user;
+
+    protected function setUp(): void
     {
-        $this->json('POST', 'api/login')
+        parent::setUp();
+
+        $this->user = User::factory()->create();
+
+        // Session needs to be started before login works.
+        $kernel = app('Illuminate\Contracts\Http\Kernel');
+        $kernel->pushMiddleware('Illuminate\Session\Middleware\StartSession');
+    }
+
+    public function testRequiresEmailAndPassword()
+    {
+        $this->postJson('api/login')
             ->assertStatus(422)
             ->assertJson([
                 'message' => 'The given data was invalid.',
@@ -23,27 +34,18 @@ class LoginTest extends TestCase
     }
 
 
-    public function testUserLoginsSuccessfully()
+    public function testUserLogsInSuccessfully()
     {
-        $user = factory(User::class)->create([
-            'email' => 'testlogin@user.com',
-            'password' => bcrypt('toptal123'),
-        ]);
-
-        $payload = ['email' => 'testlogin@user.com', 'password' => 'toptal123'];
-
-        $this->json('POST', 'api/login', $payload)
+        $this->actingAs($this->user)->postJson('api/login', ['email' => $this->user->email, 'password' => 'password'])
             ->assertStatus(200)
             ->assertJsonStructure([
-                'user' => [
-                    'id',
-                    'name',
-                    'email',
-                    'email_verified_at',
-                    'created_at',
-                    'updated_at',
-                    'api_token',
-                ],
+                'id',
+                'name',
+                'email',
+                'email_verified_at',
+                'created_at',
+                'updated_at',
+                'api_token',
             ]);
     }
 }

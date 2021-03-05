@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\File;
+use App\Models\File;
+use App\Models\Page;
+use App\Models\Navigation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -13,7 +15,7 @@ class FileTest extends TestCase
     /** @test */
     public function it_should_create_a_table()
     {
-        factory(\App\File::class)->create(['title' => 'Testfile']);
+        File::factory()->create(['title' => 'Testfile']);
         $this->assertDatabaseHas('tbl_downloads', ['title' => 'Testfile']);
     }
 
@@ -21,14 +23,14 @@ class FileTest extends TestCase
     public function it_should_list_all_attached_files_for_a_specific_page()
     {
         // GIVEN
-        $page = factory(\App\Page::class)->create(['navigation_id' => 1]);
-        $navItem = factory(\App\Navigation::class)->create([ 'ID' => $page->ID ]);
+        $page = Page::factory()->create(['navigation_id' => 1]);
+        $navItem = Navigation::factory()->create(['ID' => $page->ID]);
 
-        $files = factory(\App\File::class, 5)->create([
+        $files = File::factory(5)->create([
             'navID' => $navItem->ID,
         ]);
 
-        $otherFile = factory(\App\File::class, 1)->create([
+        $otherFile = File::factory()->create([
             'navID' => $navItem->ID + 1,
         ]);
 

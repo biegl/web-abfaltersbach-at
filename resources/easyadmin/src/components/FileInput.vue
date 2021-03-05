@@ -11,11 +11,12 @@ import German from "@uppy/locales/lib/de_DE";
 import XHRUpload from "@uppy/xhr-upload";
 import FileInput from "@uppy/file-input";
 import ProgressBar from "@uppy/progress-bar";
-import authService from "../services/auth.service";
+import CsrfToken from "../helpers/csrf";
 
 import "@uppy/core/dist/style.css";
 import "@uppy/file-input/dist/style.css";
 import "@uppy/progress-bar/dist/style.css";
+import Config from "../config";
 
 export default {
     name: "FileInput",
@@ -33,15 +34,19 @@ export default {
         return {
             previewPath: null,
             disabled: true,
+            retryCount: 0,
         };
     },
     mounted() {
         this.instantiateUppy();
     },
+    beforeDestroy() {
+        this.uppy.close();
+    },
     methods: {
         instantiateUppy() {
             this.uppy = Uppy({
-                debug: true,
+                debug: !Config.isProduction,
                 locale: German,
                 autoProceed: true,
                 restrictions: {
@@ -72,30 +77,54 @@ export default {
                     target: ".uppy-progress-bar",
                     hideAfterFinish: false,
                 })
+                .use(CsrfToken)
                 .use(XHRUpload, {
                     limit: 10,
                     endpoint: this.route,
                     formData: true,
                     fieldName: "file",
-                    headers: {
-                        authorization: `Bearer ${authService.currentUser.api_token}`,
-                    },
+                    withCredentials: true,
                 })
                 .on("complete", event => {
                     this.disabled = false;
-                    this.uppy.reset();
 
                     const { failed, successful } = event;
 
+                    // Handle success
                     if (successful && successful.length > 0) {
                         const files = successful.map(
                             data => data.response.body
                         );
                         this.$emit("onUploadSuccessful", files);
+                        this.uppy.reset();
+                        return;
                     }
 
+                    // Handle errors
                     if (failed && failed.length > 0) {
-                        this.$emit("onUploadFailed", failed);
+                        if (this.retryCount < 2) {
+                            // Try reloading
+                            this.uppy.retryAll();
+                            this.retryCount++;
+                        } else if (
+                            failed[0].response &&
+                            failed[0].response.status &&
+                            failed[0].response.status == 401
+                        ) {
+                            // Check if error is caused by authentication
+                            this.uppy.reset();
+                            this.retryCount = 0;
+
+                            this.$store.dispatch("auth/logout");
+                            this.$router.push("/login");
+
+                            this.$emit("onUploadFailed", failed);
+                        } else {
+                            // Default handling
+                            this.$emit("onUploadFailed", failed);
+                            this.retryCount = 0;
+                            this.uppy.reset();
+                        }
                     }
                 });
         },

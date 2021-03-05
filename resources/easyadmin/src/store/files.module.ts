@@ -60,6 +60,19 @@ export const files = {
                 }
             );
         },
+        partialUpdate({ commit }, file: Partial<File>) {
+            const data = { id: file.id, title: file.title };
+            return FileService.partialUpdate(data).then(
+                updatedFile => {
+                    const model = File.init(updatedFile);
+                    commit("updateSuccess", model);
+                    return Promise.resolve(model);
+                },
+                error => {
+                    return Promise.reject(error);
+                }
+            );
+        },
     },
     mutations: {
         loadSuccess(state: FileState, files: File[]) {

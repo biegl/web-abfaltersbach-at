@@ -1,36 +1,30 @@
-import axios from "axios";
+import { apiClient } from "./apiClient";
 import User from "@/models/user";
-import Config from "../config";
 
-const BASE_URL = Config.host + "/api";
 class AuthService {
-    apiClient = axios;
-
     get currentUser(): User {
-        return JSON.parse(window.localStorage.getItem("user"));
+        return JSON.parse(sessionStorage.getItem("user"));
     }
 
-    login(user: User) {
-        return this.apiClient
-            .post(`${BASE_URL}/login`, {
+    refreshCookie() {
+        return apiClient.refreshToken();
+    }
+
+    login(user: User): Promise<User> {
+        return apiClient
+            .post<User>("/api/login", {
                 email: user.username,
                 password: user.password,
             })
             .then(response => {
-                if (response.data.user.api_token) {
-                    localStorage.setItem(
-                        "user",
-                        JSON.stringify(response.data.user)
-                    );
-                }
-
-                return response.data.user;
+                sessionStorage.setItem("user", JSON.stringify(response.data));
+                return response.data;
             });
     }
 
-    logout() {
-        localStorage.removeItem("user");
-        return this.apiClient.post(`${BASE_URL}/logout`);
+    logout(): Promise<void> {
+        sessionStorage.removeItem("user");
+        return apiClient.post("/api/logout");
     }
 }
 
