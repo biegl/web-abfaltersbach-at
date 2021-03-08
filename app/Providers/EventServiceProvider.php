@@ -6,7 +6,14 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Notifications\Events\NotificationSending;
+
 use App\Listeners\SetEmailVerificationDate;
+use App\Listeners\NotificationSendingListener;
+use App\Models\Event;
+use App\Models\News;
+use App\Observers\EventObserver;
+use App\Observers\NewsObserver;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -21,7 +28,10 @@ class EventServiceProvider extends ServiceProvider
         ],
         PasswordReset::class => [
             SetEmailVerificationDate::class,
-        ]
+        ],
+        NotificationSending::class => [
+            NotificationSendingListener::class,
+        ],
     ];
 
     /**
@@ -31,6 +41,9 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        parent::boot();
+
+        News::observe(NewsObserver::class);
+        Event::observe(EventObserver::class);
     }
 }

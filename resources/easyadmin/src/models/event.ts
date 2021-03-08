@@ -8,7 +8,7 @@ export default class Event implements BaseObject {
     }
 
     ID = "";
-    date: string = DateTime.fromJSDate(new Date()).toFormat("y-MM-d");
+    date: string = DateTime.fromJSDate(new Date()).toFormat("y-MM-dd");
     text?: string;
     filepath?: string;
     attachments?: File[];
