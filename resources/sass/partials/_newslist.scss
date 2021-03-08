@@ -6,6 +6,17 @@
     border-bottom: 2px solid $highlightColor;
 }
 
+.telegram_channel {
+    text-decoration: none !important;
+    font-size: 0.9rem;
+    line-height: 36px;
+
+    svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
 .newslist_item_title {
     border-bottom: 1px solid #ccc;
 }
