@@ -43,7 +43,9 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        News::observe(NewsObserver::class);
-        Event::observe(EventObserver::class);
+        if (config('app.env') == "production") {
+            News::observe(NewsObserver::class);
+            Event::observe(EventObserver::class);
+        }
     }
 }
