@@ -71,12 +71,12 @@ class EventCreated extends Notification implements ShouldQueue
                 ->to(env('TELEGRAM_CHANNEL_NAME', '@abfaltersbach'))
                 ->content(join("\n", [$title, $content]))
                 ->photo($src)
-                ->button('Online ansehen', url('/'));
+                ->button('Online ansehen', 'https://abfaltersbach.at');
         } else {
             return TelegramMessage::create()
                 ->to(env('TELEGRAM_CHANNEL_NAME', '@abfaltersbach'))
                 ->content(join("\n", [$title, $content]))
-                ->button('Online ansehen', url('/'));
+                ->button('Online ansehen', 'https://abfaltersbach.at');
         }
     }
 }
