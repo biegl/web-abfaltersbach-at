@@ -12,6 +12,7 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
+
       - name: Compress Images
         id: calibre
         uses: calibreapp/image-actions@main
@@ -23,11 +24,13 @@ jobs:
           pngQuality: "80"
           webpQuality: "80"
           ignorePaths: "node_modules/**,build"
+
       - name: Create New Pull Request If Needed
         if: steps.calibre.outputs.markdown != ''
         uses: peter-evans/create-pull-request@v3
         with:
           title: Compressed Images Nightly
+          labels: automerge
           branch-suffix: timestamp
           commit-message: Compressed Images
           body: ${{ steps.calibre.outputs.markdown }}
