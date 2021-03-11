@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\News;
+use App\Models\User;
+use Tests\TestCase;
 
 class NewsTest extends TestCase
 {
@@ -43,7 +43,7 @@ class NewsTest extends TestCase
             'date' => '2020-08-04',
         ];
 
-        $this->actingAs($this->user)->putJson('/api/news/' . $news->ID, $payload)
+        $this->actingAs($this->user)->putJson('/api/news/'.$news->ID, $payload)
             ->assertStatus(200)
             ->assertJson([
                 'ID' => $news->ID,
@@ -60,7 +60,7 @@ class NewsTest extends TestCase
             'date' => '2020-08-04',
         ]);
 
-        $this->actingAs($this->user)->deleteJson('/api/news/' . $news->ID, [])
+        $this->actingAs($this->user)->deleteJson('/api/news/'.$news->ID, [])
             ->assertStatus(204);
     }
 
@@ -68,12 +68,12 @@ class NewsTest extends TestCase
     {
         News::factory()->create([
             'title' => 'First News',
-            'text' => 'First Body'
+            'text' => 'First Body',
         ]);
 
         News::factory()->create([
             'title' => 'Second News',
-            'text' => 'Second Body'
+            'text' => 'Second Body',
         ]);
 
         $this->actingAs($this->user)->getJson('/api/news', [])

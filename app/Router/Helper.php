@@ -3,9 +3,8 @@
 namespace App\Router;
 
 /**
- * Methods that may be useful for processing routing activity
+ * Methods that may be useful for processing routing activity.
  *
- * @package october\router
  * @author Alexey Bobkov, Samuel Georges
  */
 class Helper
@@ -19,14 +18,14 @@ class Helper
     public static function normalizeUrl($url)
     {
         if (substr($url, 0, 1) != '/') {
-            $url = '/' . $url;
+            $url = '/'.$url;
         }
 
         if (substr($url, -1) == '/') {
             $url = substr($url, 0, -1);
         }
 
-        if (!strlen($url)) {
+        if (! strlen($url)) {
             $url = '/';
         }
 
@@ -65,7 +64,7 @@ class Helper
         $url = '';
         foreach ($urlArray as $segment) {
             if (strlen($segment)) {
-                $url .= '/' . trim($segment);
+                $url .= '/'.trim($segment);
             }
         }
 
@@ -73,7 +72,7 @@ class Helper
     }
 
     /**
-     * Replaces :column_name with it's object value. Example: /some/link/:id/:name -> /some/link/1/Joe
+     * Replaces :column_name with it's object value. Example: /some/link/:id/:name -> /some/link/1/Joe.
      *
      * @param stdObject $object Object containing the data
      * @param array $columns Expected key names to parse
@@ -89,21 +88,21 @@ class Helper
         $defaultColumns = ['id'];
         foreach ($columns as $column) {
             if (
-                !isset($object->{$column}) ||
+                ! isset($object->{$column}) ||
                 is_array($object->{$column}) ||
-                (is_object($object->{$column}) && !method_exists($object->{$column}, '__toString'))
+                (is_object($object->{$column}) && ! method_exists($object->{$column}, '__toString'))
             ) {
                 continue;
             }
 
-            $string = str_replace(':' . $column, urlencode((string) $object->{$column}), $string);
+            $string = str_replace(':'.$column, urlencode((string) $object->{$column}), $string);
         }
 
         return $string;
     }
 
     /**
-     * Replaces :column_name with object value without requiring a list of names. Example: /some/link/:id/:name -> /some/link/1/Joe
+     * Replaces :column_name with object value without requiring a list of names. Example: /some/link/:id/:name -> /some/link/1/Joe.
      *
      * @param stdObject $object Object containing the data
      * @param string $string URL template
@@ -121,7 +120,7 @@ class Helper
     /**
      * Checks whether an URL pattern segment is a wildcard.
      * @param string $segment The segment definition.
-     * @return boolean Returns boolean true if the segment is a wildcard. Returns false otherwise.
+     * @return bool Returns boolean true if the segment is a wildcard. Returns false otherwise.
      */
     public static function segmentIsWildcard($segment)
     {
@@ -131,7 +130,7 @@ class Helper
     /**
      * Checks whether an URL pattern segment is optional.
      * @param string $segment The segment definition.
-     * @return boolean Returns boolean true if the segment is optional. Returns false otherwise.
+     * @return bool Returns boolean true if the segment is optional. Returns false otherwise.
      */
     public static function segmentIsOptional($segment)
     {
@@ -203,11 +202,11 @@ class Helper
     {
         if (($pos = mb_strpos($segment, '|')) !== false) {
             $regexp = mb_substr($segment, $pos + 1);
-            if (!mb_strlen($regexp)) {
+            if (! mb_strlen($regexp)) {
                 return false;
             }
 
-            return '/' . $regexp . '/';
+            return '/'.$regexp.'/';
         }
 
         return false;

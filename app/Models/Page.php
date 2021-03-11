@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-
-use App\Models\News;
 use App\Models\Event;
+use App\Models\News;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -80,6 +79,7 @@ class Page extends Model
             default:
                 $files = $this->files->merge($this->attachments);
                 $inserts = $this->inserts;
+
                 return compact('title', 'content', 'navigation', 'breadcrumbs', 'subnavigation', 'files', 'inserts');
         }
     }

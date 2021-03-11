@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StorePerson;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Cache;
-
-use App\Models\File;
 use App\Http\Controllers\ListController;
-use App\Models\Person;
+use App\Http\Requests\StorePerson;
+use App\Models\File;
 use App\Models\Module;
+use App\Models\Person;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 class PersonsController extends Controller
 {
@@ -35,8 +34,8 @@ class PersonsController extends Controller
     {
         $person = Person::create($request->validated());
 
-        Cache::forget(ListController::$CACHE_KEY_LIST . "_1");
-        Cache::forget(ListController::$CACHE_KEY_LIST . "_2");
+        Cache::forget(ListController::$CACHE_KEY_LIST.'_1');
+        Cache::forget(ListController::$CACHE_KEY_LIST.'_2');
 
         return response()->json($person, 201);
     }
@@ -63,8 +62,8 @@ class PersonsController extends Controller
     {
         $person->update($request->validated());
 
-        Cache::forget(ListController::$CACHE_KEY_LIST . "_1");
-        Cache::forget(ListController::$CACHE_KEY_LIST . "_2");
+        Cache::forget(ListController::$CACHE_KEY_LIST.'_1');
+        Cache::forget(ListController::$CACHE_KEY_LIST.'_2');
 
         return response()->json($person, 200);
     }
@@ -88,8 +87,8 @@ class PersonsController extends Controller
         // Delete person
         $person->delete();
 
-        Cache::forget(ListController::$CACHE_KEY_LIST . "_1");
-        Cache::forget(ListController::$CACHE_KEY_LIST . "_2");
+        Cache::forget(ListController::$CACHE_KEY_LIST.'_1');
+        Cache::forget(ListController::$CACHE_KEY_LIST.'_2');
 
         return response()->json(null, 204);
     }
@@ -104,6 +103,7 @@ class PersonsController extends Controller
     {
         $file = FilesController::storeFile($request);
         $person->image()->save($file);
+
         return response()->json($person->fresh(), 200);
     }
 
@@ -124,7 +124,7 @@ class PersonsController extends Controller
     public function list(module $module)
     {
         // Get module
-        if (!$module) {
+        if (! $module) {
             return response()->json('Not found', 404);
         }
 
@@ -137,13 +137,14 @@ class PersonsController extends Controller
         $persons = Person::whereIn('id', $ids)
             ->orderByRaw("FIELD(id, $ids_ordered)")
             ->get();
+
         return response()->json($persons, 200);
     }
 
     public function saveList(Module $module, Request $request)
     {
         // Get module
-        if (!$module) {
+        if (! $module) {
             return response()->json('Not found', 404);
         }
 
@@ -152,7 +153,8 @@ class PersonsController extends Controller
 
         $module->update(['configuration' => $config]);
 
-        Cache::forget(ListController::$CACHE_KEY_LIST . "_" . $module->id);
+        Cache::forget(ListController::$CACHE_KEY_LIST.'_'.$module->id);
+
         return $this->list($module->fresh());
     }
 }

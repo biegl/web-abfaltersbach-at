@@ -3,8 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\File;
-use App\Models\Page;
 use App\Models\Navigation;
+use App\Models\Page;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

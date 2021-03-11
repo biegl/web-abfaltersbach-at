@@ -5,12 +5,12 @@ namespace App\Notifications;
 use App\Models\Event;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use NotificationChannels\Telegram\TelegramChannel;
-use NotificationChannels\Telegram\TelegramMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Queue\SerializesModels;
 use League\HTMLToMarkdown\HtmlConverter;
+use NotificationChannels\Telegram\TelegramChannel;
 use NotificationChannels\Telegram\TelegramFile;
+use NotificationChannels\Telegram\TelegramMessage;
 
 class EventCreated extends Notification implements ShouldQueue
 {
@@ -48,7 +48,6 @@ class EventCreated extends Notification implements ShouldQueue
     {
         return is_null($notifiable) || $notifiable->isExpired;
     }
-
 
     public function toTelegram($notifiable)
     {

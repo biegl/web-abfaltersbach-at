@@ -1,4 +1,5 @@
 <?php
+
     return [
         'hello' => 'Hallo!',
         'regards' => 'Grüße',

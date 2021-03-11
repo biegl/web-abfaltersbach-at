@@ -1,4 +1,5 @@
 <?php
+
     return [
         'confirmed' => 'Die Passwörter stimmen nicht überein',
         'min' => [

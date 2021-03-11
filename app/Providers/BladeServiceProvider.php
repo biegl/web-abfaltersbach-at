@@ -27,11 +27,11 @@ class BladeServiceProvider extends ServiceProvider
         // Add @safemail for obfuscating email addresses.
         // Example: @safemail('markus.buergler@me.com')
         Blade::directive('safemail', function ($expression) {
-            $email   = '';
+            $email = '';
             for ($i = 0, $len = strlen($expression); $i < $len; $i++) {
                 $j = random_int(0, 1);
 
-                $email .= $j === 0 ? '&#' . ord($expression[$i]) . ';' : $expression[$i];
+                $email .= $j === 0 ? '&#'.ord($expression[$i]).';' : $expression[$i];
             }
 
             return str_replace('@', '&#64;', $email);
