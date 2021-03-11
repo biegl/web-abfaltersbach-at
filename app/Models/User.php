@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Role;
+use App\Notifications\ResetPassword;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Str;
-use App\Notifications\ResetPassword;
-use App\Models\Role;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class User extends Authenticatable

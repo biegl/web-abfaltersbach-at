@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use App\Models\User;
+use Tests\TestCase;
 
 class LoginTest extends TestCase
 {
@@ -28,11 +28,10 @@ class LoginTest extends TestCase
                 'message' => 'The given data was invalid.',
                 'errors' => [
                     'email' => ['validation.required'],
-                    'password' => ['validation.required']
-                ]
+                    'password' => ['validation.required'],
+                ],
             ]);
     }
-
 
     public function testUserLogsInSuccessfully()
     {

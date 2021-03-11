@@ -28,7 +28,7 @@ class RegisterTest extends TestCase
                     'updated_at',
                     'api_token',
                 ],
-            ]);;
+            ]);
     }
 
     public function testRequiresPasswordEmailAndName()
@@ -40,8 +40,8 @@ class RegisterTest extends TestCase
                 'errors' => [
                     'name' => ['validation.required'],
                     'email' => ['validation.required'],
-                    'password' => ['validation.required']
-                ]
+                    'password' => ['validation.required'],
+                ],
             ]);
     }
 
@@ -58,8 +58,8 @@ class RegisterTest extends TestCase
             ->assertJson([
                 'message' => 'The given data was invalid.',
                 'errors' => [
-                    'password' => ['Die Passwörter stimmen nicht überein']
-                ]
+                    'password' => ['Die Passwörter stimmen nicht überein'],
+                ],
             ]);
     }
 }

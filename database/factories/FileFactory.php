@@ -22,13 +22,13 @@ class FileFactory extends Factory
      */
     public function definition()
     {
-        $fakeFile = UploadedFile::fake()->create($this->faker->word() . '.pdf', 1000);
+        $fakeFile = UploadedFile::fake()->create($this->faker->word().'.pdf', 1000);
 
         return [
             'navID' => $this->faker->numberBetween(0, 255),
             'position' => $this->faker->numberBetween(0, 10),
             'title' => $this->faker->sentence(4),
-            'file' => '/uploads/test-files/' . $fakeFile->name,
+            'file' => '/uploads/test-files/'.$fakeFile->name,
         ];
     }
 }

@@ -31,8 +31,8 @@ class LoginController extends Controller
 
         return response()->json([
             'errors' => [
-                'email' => ['auth.failed']
-            ]
+                'email' => ['auth.failed'],
+            ],
         ], 401);
     }
 

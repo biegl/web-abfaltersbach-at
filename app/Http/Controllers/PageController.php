@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
-
     /**
      * Redirects the user to the landing page.
      */
@@ -24,10 +23,10 @@ class PageController extends Controller
         // Find page by URL
         $page = $router->findByUrl($request->getPathInfo());
 
-        if (!$page) {
+        if (! $page) {
             $navigation = Navigation::topLevel()->get();
             $breadcrumbs = [];
-            $title = "Not Found";
+            $title = 'Not Found';
 
             return view('errors.404', compact('title', 'navigation', 'breadcrumbs'));
         }

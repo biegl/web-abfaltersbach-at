@@ -3,15 +3,14 @@
 namespace App\Router;
 
 use App\Models\Navigation;
-use Cache;
 use App\Models\Page;
-use App\Support\Str;
 use App\Router\Helper as RouterHelper;
+use App\Support\Str;
+use Cache;
 
 /**
  * A router for static pages.
  *
- * @package rainlab\pages
  * @author Alexey Bobkov, Samuel Georges
  */
 class Router
@@ -46,7 +45,7 @@ class Router
 
         $urlMap = $this->getUrlMap();
 
-        if (!array_key_exists($url, $urlMap)) {
+        if (! array_key_exists($url, $urlMap)) {
             return null;
         }
 
@@ -69,7 +68,7 @@ class Router
      */
     protected function getUrlMap()
     {
-        if (!count(self::$urlMap)) {
+        if (! count(self::$urlMap)) {
             $this->loadUrlMap();
         }
 

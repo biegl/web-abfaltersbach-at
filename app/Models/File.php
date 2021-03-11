@@ -2,17 +2,17 @@
 
 namespace App\Models;
 
+use Exception;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Exception;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class File extends Model
 {
     use HasFactory, LogsActivity;
 
-    const BYTE_UNITS = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+    const BYTE_UNITS = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
     const BYTE_PRECISION = [0, 0, 1, 2, 2, 3, 3, 4, 4];
     const BYTE_NEXT = 1024;
 
@@ -31,7 +31,7 @@ class File extends Model
 
     protected $appends = ['extension', 'fileSize'];
 
-    static $DISK_NAME = 'attachments';
+    public static $DISK_NAME = 'attachments';
 
     public function getExtensionAttribute()
     {
@@ -71,8 +71,11 @@ class File extends Model
      */
     public static function humanReadableFileSize($bytes, $precision = null)
     {
-        for ($i = 0; ($bytes / self::BYTE_NEXT) >= 0.9 && $i < count(self::BYTE_UNITS); $i++) $bytes /= self::BYTE_NEXT;
-        return round($bytes, is_null($precision) ? self::BYTE_PRECISION[$i] : $precision) . self::BYTE_UNITS[$i];
+        for ($i = 0; ($bytes / self::BYTE_NEXT) >= 0.9 && $i < count(self::BYTE_UNITS); $i++) {
+            $bytes /= self::BYTE_NEXT;
+        }
+
+        return round($bytes, is_null($precision) ? self::BYTE_PRECISION[$i] : $precision).self::BYTE_UNITS[$i];
     }
 
     /**

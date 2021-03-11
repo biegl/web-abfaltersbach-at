@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Event;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEvent;
+use App\Models\Event;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\Request;
 
 class EventsController extends Controller
 {
@@ -32,6 +32,7 @@ class EventsController extends Controller
         $event = Event::create($request->validated());
         Cache::forget(Event::$CACHE_KEY_CURRENT_EVENTS);
         Cache::forget(Event::$CACHE_KEY_GROUPED_EVENTS);
+
         return response()->json($event, 201);
     }
 
@@ -58,6 +59,7 @@ class EventsController extends Controller
         $event->update($request->validated());
         Cache::forget(Event::$CACHE_KEY_CURRENT_EVENTS);
         Cache::forget(Event::$CACHE_KEY_GROUPED_EVENTS);
+
         return response()->json($event, 200);
     }
 
@@ -97,6 +99,7 @@ class EventsController extends Controller
         $event->attachments()->save($file);
         Cache::forget(Event::$CACHE_KEY_CURRENT_EVENTS);
         Cache::forget(Event::$CACHE_KEY_GROUPED_EVENTS);
+
         return response()->json($event->fresh(), 200);
     }
 }

@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreNews;
 use App\Models\News;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
@@ -31,6 +31,7 @@ class NewsController extends Controller
     {
         $news = News::create($request->validated());
         Cache::forget(News::$CACHE_KEY_TOP_NEWS);
+
         return response()->json($news, 201);
     }
 
@@ -56,6 +57,7 @@ class NewsController extends Controller
     {
         $news->update($request->validated());
         Cache::forget(News::$CACHE_KEY_TOP_NEWS);
+
         return response()->json($news, 200);
     }
 
@@ -78,6 +80,7 @@ class NewsController extends Controller
 
         // Clear cache
         Cache::forget(News::$CACHE_KEY_TOP_NEWS);
+
         return response()->json(null, 204);
     }
 
@@ -92,6 +95,7 @@ class NewsController extends Controller
         $file = FilesController::storeFile($request);
         $news->attachments()->save($file);
         Cache::forget(News::$CACHE_KEY_TOP_NEWS);
+
         return response()->json($news->fresh(), 200);
     }
 }
