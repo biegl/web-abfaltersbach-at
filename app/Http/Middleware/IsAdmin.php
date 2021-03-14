@@ -17,7 +17,7 @@ class IsAdmin
      */
     public function handle($request, Closure $next)
     {
-        if (!Auth::user()->hasRole(Role::ADMIN)) {
+        if (! Auth::user()->hasRole(Role::ADMIN)) {
             return response()->json(['error' => 'Unauthorised'], 401);
         }
 

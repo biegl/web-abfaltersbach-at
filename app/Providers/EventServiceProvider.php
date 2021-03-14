@@ -2,18 +2,17 @@
 
 namespace App\Providers;
 
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Auth\Events\PasswordReset;
-use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
-use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Notifications\Events\NotificationSending;
-
-use App\Listeners\SetEmailVerificationDate;
 use App\Listeners\NotificationSendingListener;
+use App\Listeners\SetEmailVerificationDate;
 use App\Models\Event;
 use App\Models\News;
 use App\Observers\EventObserver;
 use App\Observers\NewsObserver;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
+use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Notifications\Events\NotificationSending;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -43,7 +42,7 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        if (config('app.env') == "production") {
+        if (config('app.env') == 'production') {
             News::observe(NewsObserver::class);
             Event::observe(EventObserver::class);
         }

@@ -10,7 +10,7 @@ return [
     'email' => [
         'header' => 'Passwort zurücksetzen',
         'label' => 'E-Mail Adresse',
-        'link' => 'Link zum Zurücksetzen erstellen'
+        'link' => 'Link zum Zurücksetzen erstellen',
     ],
     'reset' => [
         'header' => 'Passwort zurücksetzen',
@@ -21,7 +21,7 @@ return [
         ],
         'button' => [
             'submit' => 'Passwort zurücksetzen',
-        ]
+        ],
     ],
     'request' => 'Passwort vergessen?',
     'user' => 'Kein Benutzer mit dieser Email vorhanden',

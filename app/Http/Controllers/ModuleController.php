@@ -16,6 +16,7 @@ class ModuleController extends Controller
     public function store(Request $request)
     {
         $config = json_encode($request['configuration']);
+
         return Module::create([
             'type' => 'list',
             'configuration' => $config,
@@ -25,7 +26,7 @@ class ModuleController extends Controller
     public function saveList(Module $module, Request $request)
     {
         // Get module
-        if (!$module) {
+        if (! $module) {
             return response()->json('Not found', 404);
         }
 

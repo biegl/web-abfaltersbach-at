@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateFile;
 use App\Models\Event;
 use App\Models\File;
 use App\Models\News;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\UpdateFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
@@ -35,6 +35,7 @@ class FilesController extends Controller
     public function store(Request $request)
     {
         $file = self::storeFile($request);
+
         return response()->json($file, 201);
     }
 
@@ -59,6 +60,7 @@ class FilesController extends Controller
     public function update(UpdateFile $request, File $file)
     {
         $file->update(['title' => $request->title]);
+
         return response()->json($file->fresh(), 200);
     }
 
@@ -86,9 +88,9 @@ class FilesController extends Controller
         return response()->json(null, 204);
     }
 
-    static function storeFile(Request $request)
+    public static function storeFile(Request $request)
     {
-        if (!$request->hasFile('file')) {
+        if (! $request->hasFile('file')) {
             return;
         }
 
@@ -97,7 +99,7 @@ class FilesController extends Controller
         $extension = $request->file->getClientOriginalExtension();
 
         // Create name for storage
-        $fileName = Str::random(40) . '.' . $extension;
+        $fileName = Str::random(40).'.'.$extension;
 
         // Store file
         $filePath = $request->file('file')->storeAs('', $fileName, File::$DISK_NAME);

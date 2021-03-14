@@ -106,8 +106,8 @@ return [
         'nova_username' => env('NOVA_USERNAME'),
         'nova_password' => env('NOVA_PASSWORD'),
         'shared_files' => [
-            ".env",
-            "auth.json",
+            '.env',
+            'auth.json',
         ],
     ],
 

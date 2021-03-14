@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePage;
+use App\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Page;
 
 class PagesController extends Controller
 {
@@ -29,6 +29,7 @@ class PagesController extends Controller
     public function store(StorePage $request)
     {
         $news = Page::create($request->validated());
+
         return response()->json($news, 201);
     }
 
@@ -53,6 +54,7 @@ class PagesController extends Controller
     public function update(StorePage $request, Page $page)
     {
         $page->update($request->validated());
+
         return response()->json($page, 200);
     }
 
@@ -72,6 +74,7 @@ class PagesController extends Controller
 
         // Delete page
         $page->delete();
+
         return response()->json(null, 204);
     }
 
@@ -85,6 +88,7 @@ class PagesController extends Controller
     {
         $file = FilesController::storeFile($request);
         $page->attachments()->save($file);
+
         return response()->json($page->fresh(), 200);
     }
 }

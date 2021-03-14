@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Request;
 use App\Router\Helper as RouterHelper;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Request;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Navigation extends Model
@@ -30,12 +30,13 @@ class Navigation extends Model
 
     public function getHasParentAttribute()
     {
-        return !is_null($this->parent());
+        return ! is_null($this->parent());
     }
 
     public function getIsActiveAttribute()
     {
         $path = RouterHelper::normalizeUrl(Request::path());
+
         return Str::contains($path, $this->url);
     }
 
@@ -46,11 +47,11 @@ class Navigation extends Model
 
     public function getUrlAttribute()
     {
-        if (!$this->hasParent) {
+        if (! $this->hasParent) {
             return RouterHelper::normalizeUrl($this->slug);
         }
 
-        return RouterHelper::normalizeUrl($this->parent()->slug . "/" . $this->slug);
+        return RouterHelper::normalizeUrl($this->parent()->slug.'/'.$this->slug);
     }
 
     public function children()
@@ -104,7 +105,7 @@ class Navigation extends Model
         foreach ($pages as $page) {
             $url = $page->url;
 
-            if (!$url) {
+            if (! $url) {
                 continue;
             }
 

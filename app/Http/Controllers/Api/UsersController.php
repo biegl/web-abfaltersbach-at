@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use App\Http\Requests\StoreUser;
 use App\Http\Requests\UpdateUser;
+use App\Models\User;
 use Illuminate\Support\Facades\Password;
 
 class UsersController extends Controller
 {
-
     /**
      * Display a listing of the resource.
      *
@@ -32,6 +31,7 @@ class UsersController extends Controller
         $user = User::create($request->validated());
         $token = Password::createToken($user);
         $user->sendPasswordResetNotification($token);
+
         return response()->json($user, 201);
     }
 
@@ -56,6 +56,7 @@ class UsersController extends Controller
     public function update(UpdateUser $request, User $user)
     {
         $user->update($request->validated());
+
         return response()->json($user, 200);
     }
 
@@ -68,6 +69,7 @@ class UsersController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
+
         return response()->json(null, 204);
     }
 
@@ -79,7 +81,6 @@ class UsersController extends Controller
      */
     public function revoke(User $user)
     {
-
         $user->password = null;
         $user->api_token = null;
         $user->save();
