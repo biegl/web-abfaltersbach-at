@@ -56,10 +56,9 @@ export const users = {
                 }
             );
         },
-        revoke({ commit }, user: User) {
+        revoke(_, user: User) {
             return UserService.revoke(user).then(
                 () => {
-                    commit("revokeSuccess", user.id);
                     return Promise.resolve();
                 },
                 error => {
@@ -85,9 +84,6 @@ export const users = {
         },
         addSuccess(state: UserState, addedUser: User) {
             state.all = [...state.all, addedUser];
-        },
-        revokeSuccess() {
-            console.log("Password has been revoked");
         },
     },
 };

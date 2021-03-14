@@ -246,7 +246,6 @@ export const persons = {
             }
 
             state[collection] = result;
-            console.log(state[collection]);
         },
         loadCouncilSuccess(state: PersonsState, council) {
             state.councilmen = council;
