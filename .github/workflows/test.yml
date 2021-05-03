@@ -42,6 +42,28 @@ jobs:
           DB_DATABASE: database/database.sqlite
         run: vendor/bin/pest
 
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          browser: chrome
+          headless: true
+          record: true
+          wait-on: "http://localhost"
+          wait-on-timeout: 120
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/upload-artifact@master
+        if: failure()
+        with:
+          name: screenshots
+          path: cypress/screenshots
+      - uses: actions/upload-artifact@master
+        with:
+          name: videos
+          path: cypress/videos
+
   test-easyadmin:
     name: Test Easyadmin
     runs-on: ubuntu-latest
