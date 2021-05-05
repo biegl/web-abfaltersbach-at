@@ -48,7 +48,6 @@ jobs:
         run: |
           composer install --no-interaction --no-suggest --prefer-dist --optimize-autoloader
           chmod -R 777 storage bootstrap/cache
-          php artisan migrate
           npm install
           npm run production
 
@@ -68,7 +67,9 @@ jobs:
         run: vendor/bin/pest
 
       - name: Run Laravel Server
-        run: php artisan serve &
+        run: |
+          php artisan migrate
+          php artisan serve &
         env:
           APP_ENV: local
           DB_CONNECTION: mysql
