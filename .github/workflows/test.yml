@@ -44,10 +44,11 @@ jobs:
         with:
           node-version: '12.x'
 
-      - name: Install Composer dependencies
+      - name: Setup laravel
         run: |
           composer install --no-interaction --no-suggest --prefer-dist --optimize-autoloader
           chmod -R 777 storage bootstrap/cache
+          php artisan migrate
           npm install
           npm run production
 
