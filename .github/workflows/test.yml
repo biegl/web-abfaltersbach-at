@@ -72,15 +72,17 @@ jobs:
       - name: Execute tests (Unit and Feature tests) via PHPUnit
         run: vendor/bin/pest
         env: 
-          MYSQL_DATABASE: test
+          DB_DATABASE: test
           DB_USERNAME: root
           DB_PASSWORD: test
+          DB_HOST: mysql
           DB_PORT: 3306
 
       - name: Migrate MySQL DB
         env: 
           DB_CONNECTION: mysql
           DB_DATABASE: test
+          DB_HOST: mysql
           DB_PORT: 3306
           DB_USER: root
           DB_PASSWORD: test
@@ -91,6 +93,7 @@ jobs:
           APP_ENV: local
           DB_CONNECTION: mysql
           DB_DATABASE: test
+          DB_HOST: mysql
           DB_PORT: 3306
           DB_USER: root
           DB_PASSWORD: test
