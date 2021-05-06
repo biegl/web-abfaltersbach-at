@@ -14,11 +14,12 @@ jobs:
       mysql:
         image: mysql:5.7
         env:
-          MYSQL_ROOT_PASSWORD: test
           MYSQL_DATABASE: test
-          DB_HOST: 127.0.0.1
+          MYSQL_USER: test
+          MYSQL_PASSWORD: test
+          MYSQL_ROOT_PASSWORD: test
         ports:
-          - 3306:3306
+          - 33306:3306
         options: >-
           --health-cmd="mysqladmin ping" 
           --health-interval=10s 
@@ -28,6 +29,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Verify MySQL connection
+        run: |
+          mysql --version
+          sudo apt-get install -y mysql-client
+          mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -utest -ptest -e "SHOW DATABASES"
 
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.testing', '.env');"
