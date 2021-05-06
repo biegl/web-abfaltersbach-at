@@ -75,7 +75,7 @@ jobs:
           MYSQL_DATABASE: test
           DB_USERNAME: root
           DB_PASSWORD: test
-          DB_PORT: ${{ job.services.mysql.ports[3306] }}
+          DB_PORT: 3306
 
       - name: Migrate MySQL DB
         env: 
@@ -91,7 +91,7 @@ jobs:
           APP_ENV: local
           DB_CONNECTION: mysql
           DB_DATABASE: test
-          DB_PORT: ${{ job.services.mysql.ports[3306] }}
+          DB_PORT: 3306
           DB_USER: root
           DB_PASSWORD: test
         run: php artisan serve &
