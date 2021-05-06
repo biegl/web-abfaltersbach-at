@@ -97,8 +97,10 @@ jobs:
           headless: true
           wait-on: "http://127.0.0.1:8000"
           wait-on-timeout: 60
+          command-prefix: "percy exec -- npx"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
 
       - name: Upload artifacts
         uses: actions/upload-artifact@master

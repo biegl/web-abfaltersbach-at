@@ -4,10 +4,13 @@
         "development": "mix",
         "watch": "mix watch",
         "watch-poll": "mix watch -- --watch-options-poll=1000",
+        "test": "cypress run",
         "hot": "mix watch --hot",
         "production": "mix --production"
     },
     "devDependencies": {
+        "@percy/cli": "*",
+        "@percy/cypress": "^3.1.0",
         "axios": "0.21.1",
         "bootstrap": "4.6.0",
         "cross-env": "7.0.3",
