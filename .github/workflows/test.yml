@@ -10,6 +10,14 @@ jobs:
     name: Test App
     runs-on: ubuntu-latest
 
+    env:
+      DB_CONNECTION: mysql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 33306
+      DB_DATABASE: test
+      DB_USERNAME: test
+      DB_PASSWORD: test
+
     services:
       mysql:
         image: mysql:5.7
@@ -71,39 +79,15 @@ jobs:
           npm install
           npm run production
 
-      - name: Create Database
-        run: |
-          mkdir -p run/database
-          touch run/database/database.sqlite
-
       - name: Execute tests (Unit and Feature tests) via PHPUnit
         run: vendor/bin/pest
-        env: 
-          DB_DATABASE: test
-          DB_USERNAME: root
-          DB_PASSWORD: test
-          DB_HOST: mysql
-          DB_PORT: 3306
 
       - name: Migrate MySQL DB
-        env: 
-          DB_CONNECTION: mysql
-          DB_DATABASE: test
-          DB_HOST: mysql
-          DB_PORT: 3306
-          DB_USER: root
-          DB_PASSWORD: test
         run: php artisan migrate:fresh --seed
 
       - name: Run Laravel Server
         env:
           APP_ENV: local
-          DB_CONNECTION: mysql
-          DB_DATABASE: test
-          DB_HOST: mysql
-          DB_PORT: 3306
-          DB_USER: root
-          DB_PASSWORD: test
         run: php artisan serve &
 
       - name: Cypress run
