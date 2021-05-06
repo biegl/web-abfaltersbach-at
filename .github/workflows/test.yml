@@ -100,15 +100,19 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: actions/upload-artifact@master
+      - name: Upload artifacts
+        uses: actions/upload-artifact@master
         if: failure()
         with:
           name: screenshots
           path: cypress/screenshots
-      - uses: actions/upload-artifact@master
+      
+      - name: Upload artifacts
+        uses: actions/upload-artifact@master
+        if: failure()
         with:
-          name: videos
-          path: cypress/videos
+          name: Logs
+          path: ./storage/logs
 
   test-easyadmin:
     name: Test Easyadmin
