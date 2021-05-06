@@ -9,8 +9,40 @@ jobs:
   test-app:
     name: Test App
     runs-on: ubuntu-latest
+
+    env:
+      DB_CONNECTION: mysql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 33306
+      DB_DATABASE: test
+      DB_USERNAME: test
+      DB_PASSWORD: test
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_DATABASE: test
+          MYSQL_USER: test
+          MYSQL_PASSWORD: test
+          MYSQL_ROOT_PASSWORD: test
+        ports:
+          - 33306:3306
+        options: >-
+          --health-cmd="mysqladmin ping" 
+          --health-interval=10s 
+          --health-timeout=5s 
+          --health-retries=3
+
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Verify MySQL connection
+        run: |
+          mysql --version
+          sudo apt-get install -y mysql-client
+          mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -utest -ptest -e "SHOW DATABASES"
 
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.testing', '.env');"
@@ -28,19 +60,61 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
           coverage: none
 
-      - name: Install Composer dependencies
-        run: composer install --prefer-dist --no-interaction --no-suggest
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
 
-      - name: Create Database
+      - name: Install Dependencies (PHP vendors)
         run: |
-          mkdir -p run/database
-          touch run/database/database.sqlite
+          composer install --no-interaction --no-suggest --prefer-dist --optimize-autoloader
+          chmod -R 777 storage bootstrap/cache
+
+      - name: Generate Application Key
+        run: |
+          php artisan key:generate
+
+      - name: Build site
+        run: |
+          npm install
+          npm run production
 
       - name: Execute tests (Unit and Feature tests) via PHPUnit
-        env:
-          DB_CONNECTION: sqlite
-          DB_DATABASE: database/database.sqlite
         run: vendor/bin/pest
+
+      - name: Migrate MySQL DB
+        run: php artisan migrate:fresh --seed
+
+      - name: Run Laravel Server
+        env:
+          APP_ENV: local
+        run: php artisan serve &
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          browser: chrome
+          headless: true
+          wait-on: "http://127.0.0.1:8000"
+          wait-on-timeout: 60
+          command-prefix: "percy exec -- npx"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@master
+        if: failure()
+        with:
+          name: screenshots
+          path: cypress/screenshots
+      
+      - name: Upload artifacts
+        uses: actions/upload-artifact@master
+        if: failure()
+        with:
+          name: Logs
+          path: ./storage/logs
 
   test-easyadmin:
     name: Test Easyadmin

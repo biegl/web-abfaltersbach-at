@@ -1,6 +1,7 @@
 # abfaltersbach.at
 
 ![Deploy website](https://github.com/biegl/web-abfaltersbach-at/workflows/Deploy%20website/badge.svg)
+[![This project is using Percy.io for visual regression testing.](https://percy.io/static/images/percy-badge.svg)](https://percy.io/eda35841/Gemeinde-Abfaltersbach)
 
 ## Setup
 
