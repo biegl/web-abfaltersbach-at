@@ -1,136 +1,128 @@
 <template>
-    <div class="events-container">
-        <div class="workspace">
-            <div class="main-content">
-                <div class="container">
-                    <div class="row">
-                        <div class="col">
-                            <div class="mt-3">
-                                <button
-                                    class="btn btn-primary float-right"
-                                    v-bind:disabled="!!selectedEvent"
-                                    @click="createEvent"
-                                >
-                                    Erstellen
-                                </button>
-                                <h1>Veranstaltungen</h1>
-                            </div>
-                            <table class="table table-bordered table-sm">
-                                <thead>
-                                    <tr>
-                                        <th scope="col" class="date">Datum</th>
-                                        <th scope="col">Beschreibung</th>
-                                        <th scope="col">Dateien</th>
-                                        <th scope="col" width="108"></th>
-                                    </tr>
-                                </thead>
-                                <tbody v-if="isLoading">
-                                    <tr>
-                                        <td colspan="4">
-                                            <span
-                                                v-show="isLoading"
-                                                class="spinner-border spinner-border-sm"
-                                            ></span>
-                                            Veranstaltungen werden geladen
-                                        </td>
-                                    </tr>
-                                </tbody>
-                                <tbody v-else-if="events.length == 0">
-                                    <tr>
-                                        <td colspan="4">
-                                            Im Moment sind keine Veranstaltungen
-                                            geplant.
-                                        </td>
-                                    </tr>
-                                </tbody>
-                                <tbody v-else>
-                                    <tr v-for="event in events" :key="event.ID">
-                                        <td>
-                                            <span class="no-break">
-                                                {{ event.date | date }}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <div v-html="event.text"></div>
-                                        </td>
-                                        <td>
-                                            <span
-                                                v-if="
-                                                    !event.attachments ||
-                                                        event.attachments
-                                                            .length == 0
-                                                "
-                                                >-</span
-                                            >
-                                            <ul class="events-file-list" v-else>
-                                                <li
-                                                    v-for="file in event.attachments"
-                                                    :key="file.ID"
-                                                >
-                                                    <a
-                                                        :href="
-                                                            file.frontendPath
-                                                        "
-                                                        >{{ file.title }}</a
-                                                    >
-                                                    <br /><small>{{
-                                                        file.readableFileSize
-                                                    }}</small>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                        <td>
-                                            <div class="row-actions">
-                                                <button
-                                                    type="button"
-                                                    class="btn btn-default"
-                                                    aria-label="Bearbeiten"
-                                                    title="Bearbeiten"
-                                                    @click="editEvent(event)"
-                                                >
-                                                    <i class="fa fa-edit"></i>
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    class="btn btn-danger"
-                                                    aria-label="Löschen"
-                                                    title="Löschen"
-                                                    @click="deleteEvent(event)"
-                                                >
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+    <CCard>
+        <CCardHeader>
+            <div class="d-flex justify-content-between align-items-center">
+                <h4>Veranstaltungen</h4>
+                <div class="card-header-actions">
+                    <button
+                        class="btn btn-primary"
+                        rel="noreferrer noopener"
+                        v-bind:disabled="!!selectedNews"
+                        @click="createEvent"
+                    >
+                        Erstellen
+                    </button>
                 </div>
-
-                <event-entry-form
-                    v-show="!!selectedEvent"
-                    @cancelForm="cancelEventForm"
-                    @onSubmissionStart="isSubmitting = true"
-                    @onSubmissionEnd="isSubmitting = false"
-                    @onSubmissionSuccess="onFormSubmissionSuccess"
-                    @onSubmissionError="onFormSubmissionError"
-                    :adminMode="isAdmin"
-                ></event-entry-form>
             </div>
-        </div>
-    </div>
+        </CCardHeader>
+        <CCardBody>
+            <table class="table table-bordered table-sm">
+                <thead>
+                    <tr>
+                        <th scope="col" class="date">Datum</th>
+                        <th scope="col">Beschreibung</th>
+                        <th scope="col">Dateien</th>
+                        <th scope="col" width="108"></th>
+                    </tr>
+                </thead>
+                <tbody v-if="isLoading">
+                    <tr>
+                        <td colspan="4">
+                            <span
+                                v-show="isLoading"
+                                class="spinner-border spinner-border-sm"
+                            ></span>
+                            Veranstaltungen werden geladen
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody v-else-if="events.length == 0">
+                    <tr>
+                        <td colspan="4">
+                            Im Moment sind keine Veranstaltungen geplant.
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody v-else>
+                    <tr v-for="event in events" :key="event.ID">
+                        <td>
+                            <span class="no-break">
+                                {{ event.date | date }}
+                            </span>
+                        </td>
+                        <td>
+                            <div v-html="event.text"></div>
+                        </td>
+                        <td>
+                            <span
+                                v-if="
+                                    !event.attachments ||
+                                        event.attachments.length == 0
+                                "
+                                >-</span
+                            >
+                            <ul class="events-file-list" v-else>
+                                <li
+                                    v-for="file in event.attachments"
+                                    :key="file.ID"
+                                >
+                                    <a :href="file.frontendPath">{{
+                                        file.title
+                                    }}</a>
+                                    <br /><small>{{
+                                        file.readableFileSize
+                                    }}</small>
+                                </li>
+                            </ul>
+                        </td>
+                        <td>
+                            <div class="row-actions">
+                                <button
+                                    type="button"
+                                    class="btn btn-default"
+                                    aria-label="Bearbeiten"
+                                    title="Bearbeiten"
+                                    @click="editEvent(event)"
+                                >
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <button
+                                    type="button"
+                                    class="btn btn-danger"
+                                    aria-label="Löschen"
+                                    title="Löschen"
+                                    @click="deleteEvent(event)"
+                                >
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </CCardBody>
+    </CCard>
+
+    <!-- <event-entry-form
+        v-show="!!selectedEvent"
+        @cancelForm="cancelEventForm"
+        @onSubmissionStart="isSubmitting = true"
+        @onSubmissionEnd="isSubmitting = false"
+        @onSubmissionSuccess="onFormSubmissionSuccess"
+        @onSubmissionError="onFormSubmissionError"
+        :adminMode="isAdmin"
+    ></event-entry-form> -->
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import { DateTime } from "luxon";
 import Event from "../models/event";
-import EventEntryForm from "@/components/EventEntryForm.vue";
+// import EventEntryForm from "@/components/EventEntryForm.vue";
 
 export default Vue.extend({
     components: {
-        EventEntryForm,
+        // EventEntryForm,
     },
     name: "Events",
     data() {
@@ -214,59 +206,3 @@ export default Vue.extend({
     },
 });
 </script>
-
-<style scoped lang="scss">
-.events-container {
-    background: #fff;
-    margin: 0;
-}
-.workspace {
-    display: flex;
-    height: 100%;
-}
-.events-container > .row > div {
-    background: #fff;
-}
-.main-content {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    padding: 20px;
-    position: relative;
-}
-.events-table-container {
-    height: 100%;
-    overflow: auto;
-    margin-top: 20px;
-    border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-}
-.table {
-    margin: -1px 0;
-}
-.table td {
-    vertical-align: middle;
-}
-.date {
-    width: 165px;
-}
-.no-break {
-    white-space: nowrap;
-}
-.events-file-list {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-
-    li {
-        white-space: nowrap;
-    }
-}
-.row-actions {
-    text-align: right;
-
-    button + button {
-        margin-left: 5px;
-    }
-}
-</style>

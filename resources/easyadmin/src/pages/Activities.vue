@@ -1,105 +1,80 @@
 <template>
-    <div class="activities-container">
-        <div class="workspace">
-            <div class="main-content">
-                <div class="container">
-                    <div class="container mt-3">
-                        <div class="row">
-                            <div class="col">
-                                <h2>Activity Log</h2>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <table
-                                    class="table table-bordered table-sm mt-5"
-                                >
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">User</th>
-                                            <th scope="col">Activität</th>
-                                            <th scope="col">Subject</th>
-                                            <th scope="col">Datum</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr
-                                            v-for="activity in activities"
-                                            v-bind:key="activity.id"
-                                        >
-                                            <td>
-                                                {{
-                                                    getUserName(
-                                                        activity.causer_id
-                                                    )
-                                                }}
-                                            </td>
-                                            <td>{{ activity.description }}</td>
-                                            <td>
-                                                {{ activity.subject_type }}
-                                                {{ activity.subject_id }}
-                                            </td>
-                                            <td>
-                                                {{ activity.created_at | date }}
-                                            </td>
-                                            <td>
-                                                <button
-                                                    type="button"
-                                                    class="btn btn-default"
-                                                    aria-label="Änderungen anzeigen"
-                                                    title="Änderungen anzeigen"
-                                                    :disabled="isLoading"
-                                                    @click="
-                                                        showChanges(activity)
-                                                    "
-                                                >
-                                                    <i class="fa fa-search"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div v-if="selectedActivity" class="overlay">
-                        <div class="clearfix">
+    <CCard>
+        <CCardHeader>
+            <div class="d-flex justify-content-between align-items-center">
+                <h4>Activity Log</h4>
+            </div>
+        </CCardHeader>
+        <CCardBody>
+            <table class="table table-bordered table-sm">
+                <thead>
+                    <tr>
+                        <th scope="col">User</th>
+                        <th scope="col">Activität</th>
+                        <th scope="col">Subject</th>
+                        <th scope="col">Datum</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="activity in activities" v-bind:key="activity.id">
+                        <td>
+                            {{ getUserName(activity.causer_id) }}
+                        </td>
+                        <td>{{ activity.description }}</td>
+                        <td>
+                            {{ activity.subject_type }}
+                            {{ activity.subject_id }}
+                        </td>
+                        <td>
+                            {{ activity.created_at | date }}
+                        </td>
+                        <td>
                             <button
                                 type="button"
-                                class="btn btn-default float-right"
-                                aria-label="Schließen"
-                                title="Schließen"
+                                class="btn btn-default"
+                                aria-label="Änderungen anzeigen"
+                                title="Änderungen anzeigen"
                                 :disabled="isLoading"
-                                @click="selectedActivity = null"
+                                @click="showChanges(activity)"
                             >
-                                <i class="fa fa-times"></i>
+                                <i class="fa fa-search"></i>
                             </button>
-                        </div>
-                        <code-diff
-                            class="clearfix"
-                            outputFormat="side-by-side"
-                            :old-string="
-                                JSON.stringify(
-                                    selectedActivity.properties.old,
-                                    null,
-                                    4
-                                )
-                            "
-                            :new-string="
-                                JSON.stringify(
-                                    selectedActivity.properties.attributes,
-                                    null,
-                                    4
-                                )
-                            "
-                            :context="10"
-                        />
-                    </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div v-if="selectedActivity" class="overlay">
+                <div class="clearfix">
+                    <button
+                        type="button"
+                        class="btn btn-default float-right"
+                        aria-label="Schließen"
+                        title="Schließen"
+                        :disabled="isLoading"
+                        @click="selectedActivity = null"
+                    >
+                        <i class="fa fa-times"></i>
+                    </button>
                 </div>
+                <code-diff
+                    class="clearfix"
+                    outputFormat="side-by-side"
+                    :old-string="
+                        JSON.stringify(selectedActivity.properties.old, null, 4)
+                    "
+                    :new-string="
+                        JSON.stringify(
+                            selectedActivity.properties.attributes,
+                            null,
+                            4
+                        )
+                    "
+                    :context="10"
+                />
             </div>
-        </div>
-    </div>
+        </CCardBody>
+    </CCard>
 </template>
 
 <script lang="ts">

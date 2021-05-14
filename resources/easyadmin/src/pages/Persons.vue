@@ -1,169 +1,149 @@
 <template>
-    <div class="persons-container">
-        <div class="workspace">
-            <div class="main-content">
-                <div class="container">
-                    <div class="row">
-                        <div class="col">
-                            <div class="mt-3">
-                                <button
-                                    class="btn btn-primary float-right"
-                                    v-bind:disabled="selectedPerson"
-                                    @click="createPerson"
+    <CCard>
+        <CCardHeader>
+            <div class="d-flex justify-content-between align-items-center">
+                <h4>Personen</h4>
+                <div class="card-header-actions">
+                    <button
+                        class="btn btn-primary"
+                        rel="noreferrer noopener"
+                        v-bind:disabled="selectedPerson"
+                        @click="createPerson"
+                    >
+                        Erstellen
+                    </button>
+                </div>
+            </div>
+        </CCardHeader>
+        <CCardBody>
+            <p>
+                Hier werden Personen verwaltet. Über den Button "Erstellen"
+                können neuen Personen angelegt werden. Diese können dann in die
+                entsprechenden Spalten verschoben werden. Dadurch werden sie auf
+                der jeweiligen Seite angezeigt.
+            </p>
+            <div class="row">
+                <div class="col">
+                    <div v-if="isLoading">
+                        <span
+                            v-show="isLoading"
+                            class="spinner-border spinner-border-sm"
+                        ></span>
+                        Personen werden geladen
+                    </div>
+                    <div v-else-if="persons.length > 0">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h2>Alle Personen</h2>
+                                <small>Hier befinden sich alle Personen</small>
+                                <Container
+                                    class="person-container"
+                                    behaviour="copy"
+                                    group-name="1"
+                                    drag-handle-selector=".person-drag-handle"
+                                    :get-child-payload="getPersonPayload"
                                 >
-                                    Erstellen
-                                </button>
-                                <h1>Personen</h1>
-                                <p>
-                                    Hier werden Personen verwaltet. Über den
-                                    Button "Erstellen" können neuen Personen
-                                    angelegt werden. Diese können dann in die
-                                    entsprechenden Spalten verschoben werden.
-                                    Dadurch werden sie auf der jeweiligen Seite
-                                    angezeigt.
-                                </p>
+                                    <Draggable
+                                        v-for="person in persons"
+                                        :key="person.id"
+                                    >
+                                        <div class="draggable-item">
+                                            <person-card
+                                                :person="person"
+                                                @deletePerson="deletePerson"
+                                                @editPerson="editPerson"
+                                            ></person-card>
+                                        </div>
+                                    </Draggable>
+                                </Container>
+                            </div>
+                            <div class="col-md-4 drop-list">
+                                <h2>Gemeinderat</h2>
+                                <small
+                                    >Diese Liste wird auf der Gemeinderatsseite
+                                    angezeigt</small
+                                >
+                                <Container
+                                    class="person-container"
+                                    group-name="1"
+                                    :remove-on-drop-out="true"
+                                    drag-handle-selector=".person-drag-handle"
+                                    :get-child-payload="getCouncilmanPayload"
+                                    @drop="onDrop('councilmen', $event)"
+                                >
+                                    <Draggable
+                                        v-for="councilman in councilmen"
+                                        :key="councilman.id"
+                                    >
+                                        <div class="draggable-item">
+                                            <person-card
+                                                :person="councilman"
+                                                @deletePerson="deletePerson"
+                                                @editPerson="editPerson"
+                                            ></person-card>
+                                        </div>
+                                    </Draggable>
+                                </Container>
+                            </div>
+                            <div class="col-md-4 drop-list">
+                                <h2>Angestellte</h2>
+                                <small
+                                    >Diese Liste wird auf der Angestelltenseite
+                                    angezeigt</small
+                                >
+                                <Container
+                                    class="person-container"
+                                    group-name="1"
+                                    :remove-on-drop-out="true"
+                                    drag-handle-selector=".person-drag-handle"
+                                    :get-child-payload="getEmployeePayload"
+                                    @drop="onDrop('employees', $event)"
+                                >
+                                    <Draggable
+                                        v-for="employee in employees"
+                                        :key="employee.id"
+                                    >
+                                        <div class="draggable-item">
+                                            <person-card
+                                                :person="employee"
+                                                @deletePerson="deletePerson"
+                                                @editPerson="editPerson"
+                                            ></person-card>
+                                        </div>
+                                    </Draggable>
+                                </Container>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <div v-if="isLoading">
-                                <span
-                                    v-show="isLoading"
-                                    class="spinner-border spinner-border-sm"
-                                ></span>
-                                Personen werden geladen
-                            </div>
-                            <div v-else-if="persons.length > 0">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <h2>Alle Personen</h2>
-                                        <small
-                                            >Hier befinden sich alle
-                                            Personen</small
-                                        >
-                                        <Container
-                                            class="person-container"
-                                            behaviour="copy"
-                                            group-name="1"
-                                            drag-handle-selector=".person-drag-handle"
-                                            :get-child-payload="
-                                                getPersonPayload
-                                            "
-                                        >
-                                            <Draggable
-                                                v-for="person in persons"
-                                                :key="person.id"
-                                            >
-                                                <div class="draggable-item">
-                                                    <person-card
-                                                        :person="person"
-                                                        @deletePerson="
-                                                            deletePerson
-                                                        "
-                                                        @editPerson="editPerson"
-                                                    ></person-card>
-                                                </div>
-                                            </Draggable>
-                                        </Container>
-                                    </div>
-                                    <div class="col-md-4 drop-list">
-                                        <h2>Gemeinderat</h2>
-                                        <small
-                                            >Diese Liste wird auf der
-                                            Gemeinderatsseite angezeigt</small
-                                        >
-                                        <Container
-                                            class="person-container"
-                                            group-name="1"
-                                            :remove-on-drop-out="true"
-                                            drag-handle-selector=".person-drag-handle"
-                                            :get-child-payload="
-                                                getCouncilmanPayload
-                                            "
-                                            @drop="onDrop('councilmen', $event)"
-                                        >
-                                            <Draggable
-                                                v-for="councilman in councilmen"
-                                                :key="councilman.id"
-                                            >
-                                                <div class="draggable-item">
-                                                    <person-card
-                                                        :person="councilman"
-                                                        @deletePerson="
-                                                            deletePerson
-                                                        "
-                                                        @editPerson="editPerson"
-                                                    ></person-card>
-                                                </div>
-                                            </Draggable>
-                                        </Container>
-                                    </div>
-                                    <div class="col-md-4 drop-list">
-                                        <h2>Angestellte</h2>
-                                        <small
-                                            >Diese Liste wird auf der
-                                            Angestelltenseite angezeigt</small
-                                        >
-                                        <Container
-                                            class="person-container"
-                                            group-name="1"
-                                            :remove-on-drop-out="true"
-                                            drag-handle-selector=".person-drag-handle"
-                                            :get-child-payload="
-                                                getEmployeePayload
-                                            "
-                                            @drop="onDrop('employees', $event)"
-                                        >
-                                            <Draggable
-                                                v-for="employee in employees"
-                                                :key="employee.id"
-                                            >
-                                                <div class="draggable-item">
-                                                    <person-card
-                                                        :person="employee"
-                                                        @deletePerson="
-                                                            deletePerson
-                                                        "
-                                                        @editPerson="editPerson"
-                                                    ></person-card>
-                                                </div>
-                                            </Draggable>
-                                        </Container>
-                                    </div>
-                                </div>
-                            </div>
-                            <div v-else>
-                                Es sind keine Personen vorhanden
-                            </div>
-                        </div>
-                    </div>
-                    <div class="sticky" v-if="!isLoading">
-                        <button
-                            class="btn btn-primary"
-                            :disabled="isSubmitting"
-                            @click="saveListOrder"
-                        >
-                            <span v-if="!isSubmitting">Speichern</span>
-                            <span
-                                v-else
-                                class="spinner-border spinner-border-sm"
-                            ></span>
-                        </button>
+                    <div v-else>
+                        Es sind keine Personen vorhanden
                     </div>
                 </div>
+            </div>
+            <div class="sticky" v-if="!isLoading">
+                <button
+                    class="btn btn-primary"
+                    :disabled="isSubmitting"
+                    @click="saveListOrder"
+                >
+                    <span v-if="!isSubmitting">Speichern</span>
+                    <span
+                        v-else
+                        class="spinner-border spinner-border-sm"
+                    ></span>
+                </button>
+            </div>
+        </CCardBody>
+    </CCard>
 
-                <person-entry-form
+    <!-- <person-entry-form
                     v-show="selectedPerson"
                     @cancelForm="cancelPersonForm"
                     @onSubmissionStart="isSubmitting = true"
                     @onSubmissionEnd="isSubmitting = false"
                     @onSubmissionSuccess="onFormSubmissionSuccess"
                     @onSubmissionError="onFormSubmissionError"
-                ></person-entry-form>
-            </div>
-        </div>
-    </div>
+                ></person-entry-form> -->
 </template>
 
 <script lang="ts">
@@ -176,7 +156,7 @@ import { Container, Draggable } from "vue-smooth-dnd";
 
 export default Vue.extend({
     components: {
-        PersonEntryForm,
+        // PersonEntryForm,
         PersonCard,
         Container,
         Draggable,
