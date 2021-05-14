@@ -1,18 +1,86 @@
 import { Role } from "./../helpers/role";
-import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
-import Home from "../views/Home.vue";
-import Login from "@/views/Login.vue";
+import Vue from "vue";
+import Login from "../pages/Login.vue";
 import authService from "@/services/auth.service";
-
-Vue.use(VueRouter);
+import TheContainer from "../containers/TheContainer.vue";
+import Dashboard from "../views/Dashboard.vue";
+import store from "../store";
 
 const routes: Array<RouteConfig> = [
     {
         path: "/",
-        name: "Home",
-        component: Home,
-        meta: { authorize: [] },
+        redirect: "/dashboard",
+        name: "",
+        component: TheContainer,
+        meta: { auth: [Role.Admin, Role.User] },
+        children: [
+            {
+                path: "dashboard",
+                name: "Dashboard",
+                component: Dashboard,
+            },
+            {
+                path: "content",
+                redirect: "/content/news",
+                name: "Content",
+                component: {
+                    render(c) {
+                        return c("router-view");
+                    },
+                },
+                children: [
+                    {
+                        path: "news",
+                        name: "News",
+                        component: () =>
+                            import(
+                                /* webpackChunkName: "news" */ "../pages/News.vue"
+                            ),
+                    },
+                    {
+                        path: "events",
+                        name: "Events",
+                        component: () =>
+                            import(
+                                /* webpackChunkName: "events" */ "../pages/Events.vue"
+                            ),
+                    },
+                    {
+                        path: "pages",
+                        name: "Seiten",
+                        component: () =>
+                            import(
+                                /* webpackChunkName: "pages" */ "../pages/Pages.vue"
+                            ),
+                    },
+                    {
+                        path: "persons",
+                        name: "Personen",
+                        component: () =>
+                            import(
+                                /* webpackChunkName: "persons" */ "../pages/Persons.vue"
+                            ),
+                    },
+                ],
+            },
+            {
+                path: "users",
+                name: "User",
+                component: () =>
+                    import(/* webpackChunkName: "user" */ "../pages/User.vue"),
+                meta: { auth: [Role.Admin] },
+            },
+            {
+                path: "activities",
+                name: "Log",
+                component: () =>
+                    import(
+                        /* webpackChunkName: "activities" */ "../pages/Activities.vue"
+                    ),
+                meta: { auth: [Role.Admin] },
+            },
+        ],
     },
     {
         path: "/login",
@@ -20,48 +88,12 @@ const routes: Array<RouteConfig> = [
         component: Login,
     },
     {
-        path: "/news",
-        name: "News",
-        component: () =>
-            import(/* webpackChunkName: "news" */ "../views/News.vue"),
-        meta: { authorize: [Role.Admin, Role.User] },
-    },
-    {
-        path: "/events",
-        name: "Events",
-        component: () =>
-            import(/* webpackChunkName: "events" */ "../views/Events.vue"),
-        meta: { authorize: [Role.Admin, Role.User] },
-    },
-    {
-        path: "/pages",
-        name: "Pages",
-        component: () =>
-            import(/* webpackChunkName: "pages" */ "../views/Pages.vue"),
-        meta: { authorize: [Role.Admin, Role.User] },
-    },
-    {
-        path: "/persons",
-        name: "Persons",
-        component: () =>
-            import(/* webpackChunkName: "persons" */ "../views/Persons.vue"),
-        meta: { authorize: [Role.Admin, Role.User] },
-    },
-    {
-        path: "/users",
-        name: "User",
-        component: () =>
-            import(/* webpackChunkName: "user" */ "../views/User.vue"),
-        meta: { authorize: [Role.Admin] },
-    },
-    {
-        path: "/activities",
-        name: "Activities",
-        component: () =>
-            import(
-                /* webpackChunkName: "activities" */ "../views/Activities.vue"
-            ),
-        meta: { authorize: [Role.Admin] },
+        path: "/logout",
+        beforeEnter: (to, from, next) => {
+            store.dispatch("auth/logout").then(() => {
+                next("/login");
+            });
+        },
     },
     {
         path: "*",
@@ -75,12 +107,15 @@ const router = new VueRouter({
     routes,
 });
 
+Vue.use(VueRouter);
+
 router.beforeEach((to, from, next) => {
-    // redirect to login page if not logged in and trying to access a restricted page
-    const { authorize } = to.meta;
+    // Check if current route of ancestors require authentication
+    const authMeta = to.matched.find(obj => obj.meta && obj.meta.auth);
     const currentUser = authService.currentUser;
 
-    if (authorize) {
+    // redirect to login page if not logged in and trying to access a restricted page
+    if (authMeta) {
         if (!currentUser) {
             // not logged in so redirect to login page with the return url
             const query = to.path == "/" ? {} : { returnUrl: to.path };
@@ -88,7 +123,7 @@ router.beforeEach((to, from, next) => {
         }
 
         // check if route is restricted by role
-        if (authorize.length && !authorize.includes(currentUser.role)) {
+        if (!authMeta.meta.auth.includes(currentUser.role)) {
             // role not authorised so redirect to home page
             return next({ path: "/" });
         }

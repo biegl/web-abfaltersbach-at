@@ -1,3 +1,4 @@
+import { sidebar } from "./sidebar.module";
 import { persons } from "./persons.module";
 import Vue from "vue";
 import Vuex from "vuex";
@@ -17,6 +18,7 @@ export default new Vuex.Store({
     actions: {},
     modules: {
         auth,
+        sidebar,
         news,
         events,
         files,
