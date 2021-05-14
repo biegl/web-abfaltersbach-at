@@ -1,3 +1,4 @@
+import { auth } from "./../store/auth.module";
 import { Role } from "./../helpers/role";
 import VueRouter, { RouteConfig } from "vue-router";
 import Vue from "vue";
@@ -111,11 +112,13 @@ Vue.use(VueRouter);
 
 router.beforeEach((to, from, next) => {
     // Check if current route of ancestors require authentication
-    const authMeta = to.matched.find(obj => obj.meta && obj.meta.auth);
+    const metaObjects = to.matched.map(el => el.meta).reverse();
+    const meta = metaObjects.find(obj => obj.auth);
+    const auth = meta ? meta.auth : null;
     const currentUser = authService.currentUser;
 
     // redirect to login page if not logged in and trying to access a restricted page
-    if (authMeta) {
+    if (auth) {
         if (!currentUser) {
             // not logged in so redirect to login page with the return url
             const query = to.path == "/" ? {} : { returnUrl: to.path };
@@ -123,7 +126,7 @@ router.beforeEach((to, from, next) => {
         }
 
         // check if route is restricted by role
-        if (!authMeta.meta.auth.includes(currentUser.role)) {
+        if (!auth.includes(currentUser.role)) {
             // role not authorised so redirect to home page
             return next({ path: "/" });
         }
