@@ -13,7 +13,23 @@ export const news = {
     namespaced: true,
     state: initialState,
     actions: {
-        load({ commit }) {
+        load({ commit }, newsId) {
+            // Load specific news entry
+            if (newsId) {
+                return NewsService.get(newsId).then(
+                    news => {
+                        const model = News.init(news);
+                        commit("selectNews", model);
+                        return Promise.resolve(model);
+                    },
+                    error => {
+                        commit("selectNews", new News());
+                        return Promise.reject(error);
+                    }
+                );
+            }
+
+            // Load all news
             return NewsService.getAll().then(
                 news => {
                     const models = news.map(obj => News.init(obj));

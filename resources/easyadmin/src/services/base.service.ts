@@ -11,6 +11,12 @@ export default class BaseService<T extends BaseObject> {
             .then(response => response.data);
     }
 
+    get(id): Promise<T> {
+        return apiClient
+            .get<T>(`${this.baseUrl}/${id}`)
+            .then(response => response.data);
+    }
+
     getAll(): Promise<T[]> {
         return apiClient.get<T[]>(this.baseUrl).then(response => response.data);
     }
