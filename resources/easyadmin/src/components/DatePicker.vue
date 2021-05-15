@@ -24,7 +24,7 @@
                 <div class="input-group-append">
                     <button
                         v-if="clearButton"
-                        class="btn btn-outline-secondary btn-sm"
+                        class="btn btn-outline-secondary btn-sm text-danger"
                         type="button"
                         v-c-tooltip="{
                             content: 'Datum löschen',
@@ -35,7 +35,7 @@
                         <i class="fa fa-ban"></i>
                     </button>
                     <button
-                        class="btn btn-outline-secondary btn-sm"
+                        class="btn btn-outline-secondary btn-sm text-primary"
                         type="button"
                         v-c-tooltip="{
                             content: 'Kalender öffnen',
