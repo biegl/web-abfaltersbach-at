@@ -96,6 +96,7 @@
                         <td>
                             <div class="row-actions">
                                 <router-link
+                                    class="btn"
                                     :to="{
                                         name: 'news-edit',
                                         params: { newsId: news.id },
@@ -119,15 +120,6 @@
             </table>
         </CCardBody>
     </CCard>
-    <!-- <news-entry-form
-        v-show="selectedNews"
-        @cancelForm="cancelNewsForm"
-        @onSubmissionStart="isSubmitting = true"
-        @onSubmissionEnd="isSubmitting = false"
-        @onSubmissionSuccess="onFormSubmissionSuccess"
-        @onSubmissionError="onFormSubmissionError"
-        :adminMode="isAdmin"
-    ></news-entry-form> -->
 </template>
 
 <script lang="ts">
