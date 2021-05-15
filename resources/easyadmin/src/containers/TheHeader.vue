@@ -29,18 +29,20 @@
             <TheHeaderDropdownAccnt />
         </CHeaderNav>
         <CSubheader class="px-3">
-            <CBreadcrumbRouter class="border-0 mb-0" />
+            <BreadCrumbs class="border-0 mb-0" />
         </CSubheader>
     </CHeader>
 </template>
 
 <script lang="ts">
 import TheHeaderDropdownAccnt from "./TheHeaderDropdownAccnt.vue";
+import BreadCrumbs from "../components/Breadcrumbs.vue";
 
 export default {
     name: "TheHeader",
     components: {
         TheHeaderDropdownAccnt,
+        BreadCrumbs,
     },
 };
 </script>
