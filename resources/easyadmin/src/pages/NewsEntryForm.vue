@@ -1,68 +1,57 @@
 <template>
-    <div class="form-container" v-if="newsEntry">
-        <div class="form-background"></div>
-        <div class="news-create">
-            <form @submit="submitForm" class="container form">
-                <div class="row">
-                    <div class="col-md-4">
+    <CRow>
+        <CCol md="8">
+            <CCard>
+                <CCardHeader>
+                    News bearbeiten
+                </CCardHeader>
+                <CCardBody>
+                    <CForm>
+                        <CInput
+                            description="Die Überschrift für den Newseintrag"
+                            label="Titel"
+                        />
+                        <TextEditor :enableSourceMode="!!adminMode" />
+                    </CForm>
+                </CCardBody>
+                <CCardFooter>
+                    <CButton type="submit" size="sm" color="primary"
+                        ><CIcon name="cil-check-circle" /> Submit</CButton
+                    >
+                    <CButton type="reset" size="sm" color="danger"
+                        ><CIcon name="cil-ban" /> Reset</CButton
+                    >
+                </CCardFooter>
+            </CCard>
+        </CCol>
+        <CCol md="4">
+            <CCard>
+                <CCardHeader>
+                    Einstellungen
+                </CCardHeader>
+                <CCardBody>
+                    <CForm>
+                        <DatePicker
+                            label="Start Datum"
+                            @change="checkExpirationDate"
+                            description="Der Eintrag wird ab diesem Datum angezeigt"
+                        />
+                        <DatePicker
+                            label="Anzeige bis"
+                            :minDate="Date()"
+                            clearButton="true"
+                            description="Der Eintrag wird bis zu diesem Datum angezeigt."
+                        />
+                    </CForm>
+                </CCardBody>
+            </CCard>
+            <CCard>
+                <CCardHeader>
+                    Anhang
+                </CCardHeader>
+                <CCardBody>
+                    <CForm>
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Titel</label>
-                            <input
-                                type="text"
-                                class="form-control form-control-sm"
-                                aria-describedby="titelHelp"
-                                required
-                                autofocus
-                                v-model="newsEntry.title"
-                            />
-                            <small id="titelHelp" class="form-text text-muted">
-                                Die Überschrift für den Newseintrag
-                            </small>
-                        </div>
-
-                        <div class="form-group form-row">
-                            <div class="col">
-                                <label for="date">Datum</label>
-                                <date-picker
-                                    v-model="newsEntry.date"
-                                    help-id="dateHelp"
-                                    @change="checkExpirationDate"
-                                />
-                                <small
-                                    id="dateHelp"
-                                    class="form-text text-muted"
-                                >
-                                    Der News Eintrag wird ab diesem Datum
-                                    angezeigt
-                                </small>
-                            </div>
-                            <div class="col">
-                                <label for="date">Anzeigen bis</label>
-                                <date-picker
-                                    v-model="newsEntry.expirationDate"
-                                    :minDate="newsEntry.date"
-                                    help-id="expirationDateHelp"
-                                    clearButton="true"
-                                />
-                                <small
-                                    id="expirationDateHelp"
-                                    class="form-text text-muted"
-                                >
-                                    Der News Eintrag wird ab diesem Datum
-                                    angezeigt
-                                </small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <text-editor
-                            v-model="newsEntry.text"
-                            :enableSourceMode="adminMode && !!adminMode"
-                        ></text-editor>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="file">Dateien</label>
                             <ul
                                 class="file-list"
                                 v-if="
@@ -84,7 +73,7 @@
                                     ></attachment>
                                 </li>
                             </ul>
-                            <file-input
+                            <FileInput
                                 @onUploadSuccessful="onUploadSuccessful"
                                 @onUploadFailed="onUploadFailed"
                                 :route="attachmentRoute"
@@ -97,6 +86,17 @@
                                 >
                             </div>
                         </div>
+                    </CForm>
+                </CCardBody>
+            </CCard>
+        </CCol>
+    </CRow>
+    <!-- <div class="form-container">
+        <div class="news-create">
+            <form @submit="submitForm" class="container form">
+                <div class="row">
+                    <div class="col-md-4">
+                        
                     </div>
                 </div>
                 <div class="row">
@@ -128,7 +128,7 @@
                 </div>
             </form>
         </div>
-    </div>
+    </div> -->
 </template>
 <script lang="ts">
 import { Vue } from "vue-property-decorator";
@@ -168,7 +168,8 @@ export default Vue.extend({
             return `${Config.host}/api/news/${this.newsEntry.id}/attach`;
         },
         newsEntry() {
-            return this.$store.state.news.selectedNews;
+            return new News();
+            // return this.$store.state.news.selectedNews;
         },
     },
 

@@ -95,15 +95,14 @@
                         </td>
                         <td>
                             <div class="row-actions">
-                                <button
-                                    type="button"
-                                    class="btn btn-default"
-                                    aria-label="Bearbeiten"
-                                    title="Bearbeiten"
-                                    @click="editNews(news)"
+                                <router-link
+                                    :to="{
+                                        name: 'news-edit',
+                                        params: { newsId: news.id },
+                                    }"
                                 >
                                     <i class="fa fa-edit"></i>
-                                </button>
+                                </router-link>
                                 <button
                                     type="button"
                                     class="btn btn-danger"
@@ -135,12 +134,8 @@
 import Vue from "vue";
 import { DateTime } from "luxon";
 import News from "../models/news";
-// import NewsEntryForm from "@/components/NewsEntryForm.vue";
 
 export default Vue.extend({
-    components: {
-        // NewsEntryForm,
-    },
     name: "News",
     data() {
         return {

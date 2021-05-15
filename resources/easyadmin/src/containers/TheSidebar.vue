@@ -15,7 +15,9 @@
                 :height="35"
                 viewBox="0 0 556 134"
             />
-            <span class="logo-name">Gemeinde Abfaltersbach</span>
+            <span class="c-sidebar-brand-full logo-name"
+                >Gemeinde Abfaltersbach</span
+            >
             <CIcon
                 class="c-sidebar-brand-minimized"
                 src="/images/wappen_abfaltersbach.png"
@@ -54,7 +56,6 @@ export default {
 
 <style scoped>
 .logo-name {
-    display: inline-block;
     margin-left: 5px;
 }
 </style>

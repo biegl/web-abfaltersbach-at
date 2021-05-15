@@ -18,13 +18,14 @@ const routes: Array<RouteConfig> = [
         children: [
             {
                 path: "dashboard",
-                name: "Dashboard",
+                name: "dashboard",
                 component: Dashboard,
             },
             {
                 path: "content",
                 redirect: "/content/news",
-                name: "Content",
+                name: "content",
+                meta: { label: "Content" },
                 component: {
                     render(c) {
                         return c("router-view");
@@ -33,11 +34,34 @@ const routes: Array<RouteConfig> = [
                 children: [
                     {
                         path: "news",
-                        name: "News",
-                        component: () =>
-                            import(
-                                /* webpackChunkName: "news" */ "../pages/News.vue"
-                            ),
+                        redirect: "/content/news/overview",
+                        name: "news",
+                        meta: { label: "News" },
+                        component: {
+                            render(c) {
+                                return c("router-view");
+                            },
+                        },
+                        children: [
+                            {
+                                path: "overview",
+                                name: "news-overview",
+                                meta: { label: "Overview" },
+                                component: () =>
+                                    import(
+                                        /* webpackChunkName: "news" */ "../pages/News.vue"
+                                    ),
+                            },
+                            {
+                                path: ":newsId",
+                                name: "news-edit",
+                                meta: { label: "Bearbeiten" },
+                                component: () =>
+                                    import(
+                                        /* webpackChunkName: "news" */ "../pages/NewsEntryForm.vue"
+                                    ),
+                            },
+                        ],
                     },
                     {
                         path: "events",
