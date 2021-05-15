@@ -23,18 +23,26 @@
                 />
                 <div class="input-group-append">
                     <button
-                        class="btn btn-outline-secondary btn-sm"
-                        type="button"
-                    >
-                        <i class="fa fa-calendar"></i>
-                    </button>
-                    <button
                         v-if="clearButton"
                         class="btn btn-outline-secondary btn-sm"
                         type="button"
+                        v-c-tooltip="{
+                            content: 'Datum löschen',
+                            placement: 'top-end',
+                        }"
                         @click="clearDate"
                     >
                         <i class="fa fa-ban"></i>
+                    </button>
+                    <button
+                        class="btn btn-outline-secondary btn-sm"
+                        type="button"
+                        v-c-tooltip="{
+                            content: 'Kalender öffnen',
+                            placement: 'top-end',
+                        }"
+                    >
+                        <i class="fa fa-calendar"></i>
                     </button>
                 </div>
             </div>

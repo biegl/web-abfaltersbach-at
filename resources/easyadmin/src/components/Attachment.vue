@@ -1,51 +1,47 @@
 <template>
-    <div>
-        <input v-if="editMode" v-model="file.title" />
-        <span
-            v-else
-            @click="this.copyLink"
-            title="Dateipfad in die Zwischenablage kopieren"
-            >{{ file.title }}</span
-        >
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="text-black-50" style="min-width:0">
+            <div>
+                <a
+                    class="d-block text-truncate"
+                    target="_blank"
+                    :href="filePath"
+                    >{{ file.title }}</a
+                >
+            </div>
+            <small
+                class="d-block"
+                @click="this.copyLink"
+                title="Dateipfad in die Zwischenablage kopieren"
+                >{{ file.readableFileSize }}</small
+            >
+        </div>
 
-        <button
-            v-if="!editMode"
-            type="button"
-            class="btn btn-sm"
-            title="Bearbeiten"
-            @click="this.edit"
-        >
-            <i class="fa fa-edit"></i>
-        </button>
+        <div style="min-width:70px;">
+            <button
+                type="button"
+                class="btn btn-sm"
+                v-c-tooltip="{
+                    content: 'Bearbeiten',
+                    placement: 'top-end',
+                }"
+                @click="this.edit"
+            >
+                <CIcon name="cil-pencil" />
+            </button>
 
-        <button
-            v-if="editMode"
-            type="button"
-            class="btn btn-sm"
-            title="Speichern"
-            @click="this.save"
-            :disabled="!this.isDirty"
-        >
-            <i class="fa fa-check"></i>
-        </button>
-        <button
-            v-if="editMode"
-            type="button"
-            class="btn btn-sm"
-            title="Abbrechen"
-            @click="this.cancel"
-        >
-            <i class="fa fa-times"></i>
-        </button>
-        <button
-            v-if="!editMode"
-            type="button"
-            class="btn btn-sm"
-            title="Löschen"
-            @click="this.delete"
-        >
-            <i class="fa fa-trash"></i>
-        </button>
+            <button
+                type="button"
+                class="btn btn-sm"
+                v-c-tooltip="{
+                    content: 'Löschen',
+                    placement: 'top-end',
+                }"
+                @click="this.delete"
+            >
+                <CIcon name="cil-trash" />
+            </button>
+        </div>
     </div>
 </template>
 <script lang="ts">
@@ -54,7 +50,7 @@ import { Vue } from "vue-property-decorator";
 export default Vue.extend({
     name: "Attachment",
 
-    props: ["file", "editMode"],
+    props: ["file"],
 
     data() {
         return {
@@ -65,6 +61,9 @@ export default Vue.extend({
     computed: {
         isDirty() {
             return this.file.title != "" && this.file.title != this.title;
+        },
+        filePath() {
+            return `/files/${this.file.file}`;
         },
     },
 
@@ -116,7 +115,7 @@ export default Vue.extend({
         },
         copyLink() {
             const elem = document.createElement("textarea");
-            elem.value = `/files/${this.file.file}`;
+            elem.value = this.filePath;
             document.body.appendChild(elem);
             elem.select();
             document.execCommand("copy");
