@@ -70,10 +70,10 @@
 import { Vue } from "vue-property-decorator";
 import DatePicker from "@/components/DatePicker.vue";
 import TextEditor from "@/components/TextEditor.vue";
+import AttachmentsCard from "@/modules/AttachmentsCard.vue";
 import News from "../models/news";
 import { DateTime } from "luxon";
 import Config from "../config";
-import AttachmentsCard from "@/components/AttachmentsCard.vue";
 
 export default Vue.extend({
     name: "NewsEntryForm",
