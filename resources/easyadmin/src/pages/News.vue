@@ -4,18 +4,16 @@
             <div class="d-flex justify-content-between align-items-center">
                 <h4>News</h4>
                 <div class="card-header-actions">
-                    <button class="btn" @click="showAll = !showAll">
+                    <button class="btn" v-on:click="showAll = !showAll">
                         <span v-if="!showAll">Alle anzeigen</span>
                         <span v-else>Nur aktive anzeigen</span>
                     </button>
-                    <button
+                    <RouterLink
+                        :to="{ name: 'news-add' }"
                         class="btn btn-primary"
-                        rel="noreferrer noopener"
                         v-bind:disabled="selectedNews"
-                        @click="createNews"
+                        >Erstellen</RouterLink
                     >
-                        Erstellen
-                    </button>
                 </div>
             </div>
         </CCardHeader>
@@ -109,7 +107,7 @@
                                     class="btn btn-danger"
                                     aria-label="Löschen"
                                     title="Löschen"
-                                    @click="deleteNews(news)"
+                                    v-on:click="deleteNews(news)"
                                 >
                                     <i class="fa fa-trash"></i>
                                 </button>
@@ -173,9 +171,6 @@ export default Vue.extend({
                 .finally(() => {
                     this.isLoading = false;
                 });
-        },
-        createNews() {
-            this.$store.dispatch("news/select", new News());
         },
         editNews(news) {
             this.$store.dispatch("news/select", News.init(news));

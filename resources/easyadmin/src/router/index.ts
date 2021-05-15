@@ -53,6 +53,15 @@ const routes: Array<RouteConfig> = [
                                     ),
                             },
                             {
+                                path: "add",
+                                name: "news-add",
+                                meta: { label: "Hinzufügen" },
+                                component: () =>
+                                    import(
+                                        /* webpackChunkName: "news" */ "../pages/NewsEntryForm.vue"
+                                    ),
+                            },
+                            {
                                 path: ":newsId",
                                 name: "news-edit",
                                 meta: { label: "Bearbeiten" },

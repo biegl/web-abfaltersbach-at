@@ -98,6 +98,8 @@ export default Vue.extend({
 
         if (newsId) {
             this.loadNews(newsId);
+        } else {
+            this.$store.dispatch("news/select", new News());
         }
     },
 
@@ -126,13 +128,12 @@ export default Vue.extend({
             }
 
             this.isSubmitting = true;
-            const action = this.newsEntry.ID ? "update" : "create";
+            const action = this.newsEntry.id ? "update" : "create";
 
             this.$store
                 .dispatch(`news/${action}`, this.newsEntry)
                 .then(() => {
-                    this.isCreating = false;
-                    this.$emit("onSubmissionSuccess");
+                    this.$router.push({ path: "/content/news/overview" });
                 })
                 .catch(error => {
                     this.$emit("onSubmissionError", error);
