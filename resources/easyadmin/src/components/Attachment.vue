@@ -11,13 +11,13 @@
             </div>
             <small
                 class="d-block"
-                @click="this.copyLink"
+                v-on:click="onCopyLink"
                 title="Dateipfad in die Zwischenablage kopieren"
                 >{{ file.readableFileSize }}</small
             >
         </div>
 
-        <div style="min-width:70px;">
+        <div style="min-width:70px; margin-right: -10px;">
             <button
                 type="button"
                 class="btn btn-sm"
@@ -25,7 +25,7 @@
                     content: 'Bearbeiten',
                     placement: 'top-end',
                 }"
-                @click="this.edit"
+                v-on:click="onEdit"
             >
                 <CIcon name="cil-pencil" />
             </button>
@@ -37,7 +37,7 @@
                     content: 'Löschen',
                     placement: 'top-end',
                 }"
-                @click="this.delete"
+                v-on:click="onDelete"
             >
                 <CIcon name="cil-trash" />
             </button>
@@ -68,52 +68,13 @@ export default Vue.extend({
     },
 
     methods: {
-        edit() {
-            this.title = this.file.title;
-            this.$emit("onEditFile", this.file);
+        onEdit() {
+            this.$emit("onEdit", this.file);
         },
-        cancel() {
-            this.file.title = this.title;
-            this.$emit("onEditFile", null);
+        onDelete() {
+            this.$emit("onDelete", this.file);
         },
-        save() {
-            this.$store
-                .dispatch("files/partialUpdate", this.file)
-                .then(() => {
-                    this.$emit("onAttachmentsUpdated", this.file);
-                    this.$snotify.success("Der Dateiname wurde geändert.");
-                })
-                .catch(() => {
-                    this.$snotify.error(
-                        "Die Datei konnte nicht umbenannt werden!"
-                    );
-                })
-                .finally(() => {
-                    this.$emit("onEditFile", null);
-                });
-        },
-        delete() {
-            if (
-                !window.confirm(
-                    `Soll die Datei "${this.file.title}" wirklich gelöscht werden?`
-                )
-            ) {
-                return;
-            }
-
-            this.$store
-                .dispatch("files/delete", this.file)
-                .then(() => {
-                    this.$emit("onAttachmentsUpdated", this.file);
-                    this.$snotify.success("Die Datei wurde gelöscht.");
-                })
-                .catch(() => {
-                    this.$snotify.error(
-                        "Die Datei konnte nicht gelöscht werden!"
-                    );
-                });
-        },
-        copyLink() {
+        onCopyLink() {
             const elem = document.createElement("textarea");
             elem.value = this.filePath;
             document.body.appendChild(elem);
@@ -124,15 +85,3 @@ export default Vue.extend({
     },
 });
 </script>
-<style lang="scss" scoped>
-.fa-check {
-    color: green;
-
-    :disabled & {
-        color: lightgray;
-    }
-}
-.fa-times {
-    color: red;
-}
-</style>
