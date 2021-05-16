@@ -138,9 +138,6 @@ export default Vue.extend({
                 return this.showAll || !newsEntry.isExpired;
             });
         },
-        isAdmin(): boolean {
-            return this.$store.state.auth.isAdmin();
-        },
     },
     filters: {
         date: function(dateString) {

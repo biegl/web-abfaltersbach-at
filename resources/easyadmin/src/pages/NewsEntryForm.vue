@@ -13,7 +13,7 @@
                             v-model="newsEntry.title"
                         />
                         <TextEditor
-                            :enableSourceMode="!!adminMode"
+                            :enableSourceMode="!!isAdmin"
                             v-model="newsEntry.text"
                         />
                     </CCardBody>
@@ -78,8 +78,6 @@ import Config from "../config";
 export default Vue.extend({
     name: "NewsEntryForm",
 
-    props: ["adminMode"],
-
     components: {
         AttachmentsCard,
         DatePicker,
@@ -102,6 +100,9 @@ export default Vue.extend({
         },
         newsEntry() {
             return this.$store.state.news.selectedNews || new News();
+        },
+        isAdmin() {
+            return this.$store.state.auth.isAdmin();
         },
     },
 
@@ -141,9 +142,6 @@ export default Vue.extend({
                     this.isSubmitting = false;
                     this.$emit("onSubmissionEnd", false);
                 });
-        },
-        cancelForm() {
-            this.$emit("cancelForm");
         },
         checkExpirationDate() {
             const { date, expirationDate } = this.newsEntry;

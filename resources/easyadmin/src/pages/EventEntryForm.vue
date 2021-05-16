@@ -14,7 +14,7 @@
                         <TextEditor
                             label="Beschreibung"
                             v-model="eventEntry.text"
-                            :enableSourceMode="!!adminMode"
+                            :enableSourceMode="!!isAdmin"
                             :config="editorConfig"
                         />
                     </CCardBody>
@@ -56,8 +56,6 @@ import Config from "../config";
 export default Vue.extend({
     name: "EventEntryForm",
 
-    props: ["adminMode"],
-
     components: {
         AttachmentsCard,
         DatePicker,
@@ -85,6 +83,9 @@ export default Vue.extend({
         },
         eventEntry() {
             return this.$store.state.events.selectedEvent || new Event();
+        },
+        isAdmin() {
+            return this.$store.state.auth.isAdmin();
         },
     },
 
