@@ -11,7 +11,6 @@
                     <RouterLink
                         :to="{ name: 'news-add' }"
                         class="btn btn-primary"
-                        v-bind:disabled="selectedNews"
                         >Erstellen</RouterLink
                     >
                 </div>
@@ -130,7 +129,6 @@ export default Vue.extend({
     data() {
         return {
             isLoading: false,
-            isSubmitting: false,
             showAll: false,
         };
     },
@@ -139,9 +137,6 @@ export default Vue.extend({
             return this.$store.state.news.all.filter(newsEntry => {
                 return this.showAll || !newsEntry.isExpired;
             });
-        },
-        selectedNews() {
-            return this.$store.state.news.selectedNews;
         },
         isAdmin(): boolean {
             return this.$store.state.auth.isAdmin();
@@ -172,12 +167,6 @@ export default Vue.extend({
                     this.isLoading = false;
                 });
         },
-        editNews(news) {
-            this.$store.dispatch("news/select", News.init(news));
-        },
-        cancelNewsForm() {
-            this.$store.dispatch("news/select", null);
-        },
         deleteNews(news: News) {
             if (window.confirm("Soll der Eintrag wirklich gelöscht werden?")) {
                 this.$store
@@ -191,13 +180,6 @@ export default Vue.extend({
                         );
                     });
             }
-        },
-        onFormSubmissionSuccess() {
-            this.$snotify.success("News wurde gespeichert!");
-            this.$store.dispatch("news/select", null);
-        },
-        onFormSubmissionError() {
-            this.$snotify.error("News konnte nicht gespeichert werden!");
         },
     },
 });

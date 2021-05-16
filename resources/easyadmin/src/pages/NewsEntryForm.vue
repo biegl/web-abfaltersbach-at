@@ -88,19 +88,8 @@ export default Vue.extend({
 
     data() {
         return {
-            editedFile: null,
             isSubmitting: false,
         };
-    },
-
-    mounted() {
-        const newsId = this.$route.params.newsId;
-
-        if (newsId) {
-            this.loadNews(newsId);
-        } else {
-            this.$store.dispatch("news/select", new News());
-        }
     },
 
     computed: {
@@ -116,9 +105,19 @@ export default Vue.extend({
         },
     },
 
+    mounted() {
+        const newsId = this.$route.params.newsId;
+
+        if (newsId) {
+            this.loadNews(newsId);
+        } else {
+            this.$store.dispatch("news/select", new News());
+        }
+    },
+
     methods: {
-        loadNews(newsId) {
-            this.$store.dispatch("news/load", newsId);
+        loadNews(id) {
+            this.$store.dispatch("news/load", id);
         },
         submitForm(event) {
             event.preventDefault();
