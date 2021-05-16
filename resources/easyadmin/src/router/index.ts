@@ -74,11 +74,43 @@ const routes: Array<RouteConfig> = [
                     },
                     {
                         path: "events",
-                        name: "Events",
-                        component: () =>
-                            import(
-                                /* webpackChunkName: "events" */ "../pages/Events.vue"
-                            ),
+                        redirect: "/content/events/overview",
+                        name: "events",
+                        meta: { label: "Veranstaltungen" },
+                        component: {
+                            render(c) {
+                                return c("router-view");
+                            },
+                        },
+                        children: [
+                            {
+                                path: "overview",
+                                name: "events-overview",
+                                meta: { label: "Overview" },
+                                component: () =>
+                                    import(
+                                        /* webpackChunkName: "events" */ "../pages/Events.vue"
+                                    ),
+                            },
+                            {
+                                path: "add",
+                                name: "events-add",
+                                meta: { label: "Hinzufügen" },
+                                component: () =>
+                                    import(
+                                        /* webpackChunkName: "events" */ "../pages/EventEntryForm.vue"
+                                    ),
+                            },
+                            {
+                                path: ":eventId",
+                                name: "events-edit",
+                                meta: { label: "Bearbeiten" },
+                                component: () =>
+                                    import(
+                                        /* webpackChunkName: "events" */ "../pages/EventEntryForm.vue"
+                                    ),
+                            },
+                        ],
                     },
                     {
                         path: "pages",

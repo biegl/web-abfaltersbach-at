@@ -13,7 +13,21 @@ export const events = {
     namespaced: true,
     state: initialState,
     actions: {
-        load({ commit }) {
+        load({ commit }, eventId) {
+            if (eventId) {
+                return EventService.get(eventId).then(
+                    data => {
+                        const model = Event.init(data);
+                        commit("selectEvent", model);
+                        return Promise.resolve(model);
+                    },
+                    error => {
+                        commit("selectEvent", new Event());
+                        return Promise.reject(error);
+                    }
+                );
+            }
+
             return EventService.getAll().then(
                 events => {
                     const models = events.map(event => Event.init(event));

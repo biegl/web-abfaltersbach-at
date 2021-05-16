@@ -26,7 +26,7 @@ import {
 import { cifUs, cifBr, cifIn, cifFr, cifEs, cifPl } from "@coreui/icons";
 import {
     // cilArrowRight,
-    // cilBan,
+    cilBan,
     // cilBasket,
     // cilBell,
     // cilCalculator,
@@ -45,9 +45,10 @@ import {
     // cilEnvelopeClosed,
     // cilEnvelopeOpen,
     // cilEuro,
+    cilFile,
+    cilFilter,
     // cilGlobeAlt,
     // cilGrid,
-    cilFile,
     // cilJustifyCenter,
     // cilLaptop,
     // cilLayers,
@@ -82,7 +83,7 @@ export const iconsSet = Object.assign(
     { logo },
     {
         // cilArrowRight,
-        // cilBan,
+        cilBan,
         // cilBasket,
         // cilBell,
         // cilCalculator,
@@ -102,6 +103,7 @@ export const iconsSet = Object.assign(
         // cilEnvelopeOpen,
         // cilEuro,
         cilFile,
+        cilFilter,
         // cilGlobeAlt,
         // cilGrid,
         // cilFile,

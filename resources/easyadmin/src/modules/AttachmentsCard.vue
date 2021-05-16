@@ -10,7 +10,6 @@
 
             <div class="card-header-actions" v-if="value != null">
                 <div
-                    href=""
                     class="card-header-action"
                     v-c-tooltip="{
                         content: 'Dateien hochladen',
