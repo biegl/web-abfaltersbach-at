@@ -13,7 +13,23 @@ export const pages = {
     namespaced: true,
     state: initialState,
     actions: {
-        load({ commit }) {
+        load({ commit }, pageId) {
+            // Load specific page
+            if (pageId) {
+                return PageService.get(pageId).then(
+                    data => {
+                        const model = Page.init(data);
+                        commit("selectPage", model);
+                        return Promise.resolve(model);
+                    },
+                    error => {
+                        commit("selectPage", new Page());
+                        return Promise.reject(error);
+                    }
+                );
+            }
+
+            // Load all pages
             return PageService.getAll().then(
                 pages => {
                     const models = pages.map(obj => Page.init(obj));

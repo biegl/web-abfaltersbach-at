@@ -114,11 +114,43 @@ const routes: Array<RouteConfig> = [
                     },
                     {
                         path: "pages",
-                        name: "Seiten",
-                        component: () =>
-                            import(
-                                /* webpackChunkName: "pages" */ "../pages/Pages.vue"
-                            ),
+                        redirect: "/content/pages/overview",
+                        name: "pages",
+                        meta: { label: "Seiten" },
+                        component: {
+                            render(c) {
+                                return c("router-view");
+                            },
+                        },
+                        children: [
+                            {
+                                path: "overview",
+                                name: "pages-overview",
+                                meta: { label: "Overview" },
+                                component: () =>
+                                    import(
+                                        /* webpackChunkName: "pages" */ "../pages/Pages.vue"
+                                    ),
+                            },
+                            {
+                                path: "add",
+                                name: "pages-add",
+                                meta: { label: "Hinzufügen" },
+                                component: () =>
+                                    import(
+                                        /* webpackChunkName: "pages" */ "../pages/PageEntryForm.vue"
+                                    ),
+                            },
+                            {
+                                path: ":pageId",
+                                name: "pages-edit",
+                                meta: { label: "Bearbeiten" },
+                                component: () =>
+                                    import(
+                                        /* webpackChunkName: "pages" */ "../pages/PageEntryForm.vue"
+                                    ),
+                            },
+                        ],
                     },
                     {
                         path: "persons",
