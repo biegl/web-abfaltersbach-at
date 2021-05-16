@@ -61,7 +61,7 @@
                             </div>
                         </div>
                         <div style="width:80px" class="text-nowrap">
-                            <router-link
+                            <RouterLink
                                 class="btn"
                                 :to="{
                                     name: 'events-edit',
@@ -73,7 +73,7 @@
                                 }"
                             >
                                 <i class="fa fa-edit"></i>
-                            </router-link>
+                            </RouterLink>
                             <CLink
                                 class="btn"
                                 aria-label="Löschen"

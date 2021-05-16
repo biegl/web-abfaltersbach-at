@@ -21,9 +21,9 @@
         <CDropdownItem> <CIcon name="cil-user" /> Profile </CDropdownItem>
         <CDropdownDivider />
         <CDropdownItem>
-            <router-link to="/logout">
+            <RouterLink to="/logout">
                 <CIcon name="cil-lock-locked" /> Logout
-            </router-link>
+            </RouterLink>
         </CDropdownItem>
     </CDropdown>
 </template>

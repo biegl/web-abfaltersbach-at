@@ -3,45 +3,43 @@
         <nav class="navbar navbar-expand navbar-dark fixed-top bg-dark">
             <div class="navbar-nav mr-auto">
                 <li v-if="isLoggedIn" class="nav-item">
-                    <router-link to="/" class="nav-link">
+                    <RouterLink to="/" class="nav-link">
                         <i class="fa fa-home"></i>
                         Startseite
-                    </router-link>
+                    </RouterLink>
                 </li>
                 <li v-if="isLoggedIn" class="nav-item">
-                    <router-link to="/news" class="nav-link">News</router-link>
+                    <RouterLink to="/news" class="nav-link">News</RouterLink>
                 </li>
                 <li v-if="isLoggedIn" class="nav-item">
-                    <router-link to="/events" class="nav-link"
-                        >Veranstaltungen</router-link
+                    <RouterLink to="/events" class="nav-link"
+                        >Veranstaltungen</RouterLink
                     >
                 </li>
                 <li v-if="isLoggedIn" class="nav-item">
-                    <router-link to="/pages" class="nav-link"
-                        >Seiten</router-link
-                    >
+                    <RouterLink to="/pages" class="nav-link">Seiten</RouterLink>
                 </li>
                 <li v-if="isLoggedIn" class="nav-item">
-                    <router-link to="/persons" class="nav-link"
-                        >Personen</router-link
+                    <RouterLink to="/persons" class="nav-link"
+                        >Personen</RouterLink
                     >
                 </li>
                 <li v-if="isAdmin" class="nav-item">
-                    <router-link to="/users" class="nav-link">User</router-link>
+                    <RouterLink to="/users" class="nav-link">User</RouterLink>
                 </li>
                 <li v-if="isAdmin" class="nav-item">
-                    <router-link to="/activities" class="nav-link"
-                        >Activity Logs</router-link
+                    <RouterLink to="/activities" class="nav-link"
+                        >Activity Logs</RouterLink
                     >
                 </li>
             </div>
 
             <div v-if="isLoggedIn" class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <router-link to="/profile" class="nav-link">
+                    <RouterLink to="/profile" class="nav-link">
                         <i class="fa fa-user"></i>
                         {{ currentUser.username }}
-                    </router-link>
+                    </RouterLink>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href @click.prevent="logOut">

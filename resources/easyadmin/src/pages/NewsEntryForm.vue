@@ -20,12 +20,12 @@
                     <CCardFooter
                         class="d-flex justify-content-end align-items-center"
                     >
-                        <router-link
+                        <RouterLink
                             :to="{ name: 'news-overview' }"
                             class="mr-3 text-secondary"
                         >
                             Abbrechen
-                        </router-link>
+                        </RouterLink>
                         <CButton type="submit" color="primary"
                             ><CIcon name="cil-check-circle" />
                             Speichern</CButton

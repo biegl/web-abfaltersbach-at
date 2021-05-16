@@ -92,7 +92,7 @@
                         </td>
                         <td>
                             <div class="row-actions">
-                                <router-link
+                                <RouterLink
                                     class="btn"
                                     :to="{
                                         name: 'news-edit',
@@ -100,7 +100,7 @@
                                     }"
                                 >
                                     <i class="fa fa-edit"></i>
-                                </router-link>
+                                </RouterLink>
                                 <button
                                     type="button"
                                     class="btn btn-danger"
