@@ -19,6 +19,7 @@ const routes: Array<RouteConfig> = [
             {
                 path: "dashboard",
                 name: "dashboard",
+                meta: { label: "Dashboard" },
                 component: Dashboard,
             },
             {
