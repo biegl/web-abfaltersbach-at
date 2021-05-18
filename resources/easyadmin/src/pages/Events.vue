@@ -1,7 +1,7 @@
 <template>
     <CRow>
         <CCol md="8">
-            <CCard>
+            <CCard class="sticky-header">
                 <CCardHeader>
                     <div
                         class="d-flex justify-content-between align-items-center"
@@ -18,80 +18,23 @@
                     </div>
                 </CCardHeader>
             </CCard>
-            <CCard v-for="event in filteredEvents" :key="event.ID">
-                <CCardBody class="position-relative">
-                    <div class="d-flex justify-content-between">
-                        <div class="style-border"></div>
-                        <div class="d-flex">
-                            <div class="pl-3 pr-3" style="width:70px">
-                                <div class="event-day h3 mb-0">
-                                    {{ event.date | day }}
-                                </div>
-                                <div class="event-month text-black-50">
-                                    {{ event.date | month }}
-                                </div>
-                            </div>
-                            <div class="ml-3 mr-3">
-                                <div class="h5" v-html="event.text"></div>
-                                <ul
-                                    class="list-unstyled"
-                                    v-if="
-                                        event.attachments &&
-                                            event.attachments.length
-                                    "
-                                >
-                                    <li
-                                        v-for="file in event.attachments"
-                                        :key="file.id"
-                                        class="text-black-50"
-                                    >
-                                        <CIcon
-                                            name="cil-file"
-                                            size="sm"
-                                            class="mr-1"
-                                        />
-                                        <a
-                                            :href="file.frontendPath"
-                                            target="_blank"
-                                            class="text-black-50"
-                                            ><small>{{ file.title }}</small></a
-                                        >
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div style="width:80px" class="text-nowrap">
-                            <RouterLink
-                                class="btn"
-                                :to="{
-                                    name: 'events-edit',
-                                    params: { eventId: event.id },
-                                }"
-                                v-c-tooltip="{
-                                    content: 'Bearbeiten',
-                                    placement: 'top-end',
-                                }"
-                            >
-                                <i class="fa fa-edit"></i>
-                            </RouterLink>
-                            <CLink
-                                class="btn"
-                                aria-label="Löschen"
-                                v-c-tooltip="{
-                                    content: 'Löschen',
-                                    placement: 'top-end',
-                                }"
-                                v-on:click="deleteEvent(event)"
-                            >
-                                <i class="fa fa-trash"></i>
-                            </CLink>
-                        </div>
-                    </div>
-                </CCardBody>
-            </CCard>
+            <ListEntryItem
+                v-for="event in filteredEvents"
+                :key="event.id"
+                :startDate="event.date"
+                :title="event.text"
+                :attachments="event.attachments"
+                v-on:onDeleteItem="deleteEvent(event)"
+                v-on:onEditItem="
+                    $router.push({
+                        name: 'events-edit',
+                        params: { eventId: event.id },
+                    })
+                "
+            />
         </CCol>
         <CCol md="4">
-            <CCard>
+            <CCard class="sticky-header">
                 <CCardHeader>
                     <CIcon name="cil-filter" class="text-secondary" />
                     Veranstaltungen Filter
@@ -130,11 +73,16 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { DateTime } from "luxon";
 import Event from "../models/event";
+import ListEntryItem from "@/components/ListEntryItem.vue";
 
 export default Vue.extend({
     name: "Events",
+
+    components: {
+        ListEntryItem,
+    },
+
     data() {
         return {
             isLoading: false,
@@ -142,6 +90,7 @@ export default Vue.extend({
             filteredEvents: [],
         };
     },
+
     computed: {
         events() {
             return this.$store.state.events.all;
@@ -168,27 +117,11 @@ export default Vue.extend({
             ];
         },
     },
-    filters: {
-        day: function(dateString) {
-            if (!dateString) {
-                return "";
-            }
 
-            return DateTime.fromISO(dateString)
-                .setLocale("de")
-                .toFormat("dd");
-        },
-        month: function(dateString) {
-            if (!dateString) {
-                return "";
-            }
-
-            return DateTime.fromISO(dateString).setLocale("de").monthShort;
-        },
-    },
     created() {
         this.loadEvents();
     },
+
     methods: {
         loadEvents() {
             this.isLoading = true;
@@ -211,6 +144,7 @@ export default Vue.extend({
                 this.$store
                     .dispatch("events/delete", event)
                     .then(() => {
+                        this.loadEvents();
                         this.$snotify.success(
                             "Die Veranstaltung wurde gelöscht!"
                         );
@@ -245,15 +179,3 @@ export default Vue.extend({
     },
 });
 </script>
-<style>
-.style-border {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 10px;
-    background: #ebb60a;
-    border-top-left-radius: 0.25rem;
-    border-bottom-left-radius: 0.25rem;
-}
-</style>
