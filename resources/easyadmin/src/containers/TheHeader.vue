@@ -19,7 +19,7 @@
                     Dashboard
                 </CHeaderNavLink>
             </CHeaderNavItem>
-            <CHeaderNavItem class="px-3">
+            <CHeaderNavItem class="px-3" v-if="isAdmin">
                 <CHeaderNavLink to="/users" exact>
                     Users
                 </CHeaderNavLink>
@@ -40,9 +40,16 @@ import BreadCrumbs from "../components/Breadcrumbs.vue";
 
 export default {
     name: "TheHeader",
+
     components: {
         TheHeaderDropdownAccnt,
         BreadCrumbs,
+    },
+
+    computed: {
+        isAdmin() {
+            return this.$store.state.auth.isAdmin;
+        },
     },
 };
 </script>

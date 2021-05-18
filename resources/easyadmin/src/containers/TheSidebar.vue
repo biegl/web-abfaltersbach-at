@@ -1,9 +1,9 @@
 <template>
     <CSidebar
         fixed
-        :minimize="minimize"
-        :show="show"
-        @update:show="
+        v-bind:minimize="minimize"
+        v-bind:show="show"
+        v-on:update:show="
             value => $store.commit('sidebar/set', ['sidebarShow', value])
         "
     >
@@ -27,7 +27,7 @@
             />
         </CSidebarBrand>
 
-        <CRenderFunction flat :content-to-render="$options.nav" />
+        <CRenderFunction :contentToRender="computedSidebar" flat />
         <CSidebarMinimizer
             class="d-md-down-none"
             @click.native="
@@ -38,17 +38,36 @@
 </template>
 
 <script lang="ts">
-import nav from "./_nav";
+import allNavItems from "./_nav";
 
 export default {
     name: "TheSidebar",
-    nav,
     computed: {
+        role() {
+            return this.$store.state.auth.user.role;
+        },
         show() {
             return this.$store.state.sidebar.sidebarShow;
         },
         minimize() {
             return this.$store.state.sidebar.sidebarMinimize;
+        },
+        currentItems() {
+            //sidebar items are not shown until role is known
+            if (this.role === "unknown") {
+                return [];
+            }
+            return allNavItems.filter(item => {
+                return item.roles.includes(this.role);
+            });
+        },
+        computedSidebar() {
+            return [
+                {
+                    _name: "CSidebarNav",
+                    _children: this.currentItems,
+                },
+            ];
         },
     },
 };
