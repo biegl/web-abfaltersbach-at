@@ -5,7 +5,7 @@
             :attributes="attrs"
             v-bind:value="selectedDate"
             v-on:input="selectDate($event)"
-            :min-date="this.minDate"
+            :min-date="minDate"
             locale="de"
             is-dark
             :popover="{
@@ -13,39 +13,44 @@
                 visibility: 'click',
             }"
         >
-            <div class="input-group">
-                <input
-                    type="text"
-                    class="form-control form-control-sm"
-                    readonly
-                    v-bind:id="id"
-                    v-bind:value="selectedDate | date"
-                />
-                <div class="input-group-append">
-                    <button
-                        v-if="clearButton"
-                        class="btn btn-outline-secondary btn-sm text-danger"
-                        type="button"
-                        v-c-tooltip="{
-                            content: 'Datum löschen',
-                            placement: 'top-end',
-                        }"
-                        @click="clearDate"
-                    >
-                        <i class="fa fa-ban"></i>
-                    </button>
-                    <button
-                        class="btn btn-outline-secondary btn-sm text-primary"
-                        type="button"
-                        v-c-tooltip="{
-                            content: 'Kalender öffnen',
-                            placement: 'top-end',
-                        }"
-                    >
-                        <i class="fa fa-calendar"></i>
-                    </button>
+            <template v-slot="{ inputValue, inputEvents, togglePopover }">
+                <div class="input-group">
+                    <input
+                        type="text"
+                        class="form-control form-control-sm"
+                        readonly
+                        v-bind:id="id"
+                        v-on="inputEvents"
+                        v-bind:value="inputValue"
+                    />
+
+                    <div class="input-group-append">
+                        <button
+                            v-if="clearButton"
+                            class="btn btn-outline-secondary btn-sm text-danger"
+                            type="button"
+                            v-c-tooltip="{
+                                content: 'Datum löschen',
+                                placement: 'top-end',
+                            }"
+                            @click="clearDate"
+                        >
+                            <i class="fa fa-ban"></i>
+                        </button>
+                        <button
+                            class="btn btn-outline-secondary btn-sm text-primary"
+                            type="button"
+                            v-on:click="togglePopover"
+                            v-c-tooltip="{
+                                content: 'Kalender öffnen',
+                                placement: 'top-end',
+                            }"
+                        >
+                            <i class="fa fa-calendar"></i>
+                        </button>
+                    </div>
                 </div>
-            </div>
+            </template>
         </v-date-picker>
         <small
             class="form-text text-muted w-100"
