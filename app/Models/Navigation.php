@@ -19,7 +19,9 @@ class Navigation extends Model
 
     protected $with = ['children'];
 
-    protected $appends = ['pageId'];
+    protected $hidden = ['navianzeigen'];
+
+    protected $appends = ['pageId', 'isVisible'];
 
     public $timestamps = false;
 
@@ -59,6 +61,11 @@ class Navigation extends Model
     public function getPageIdAttribute()
     {
         return \App\Models\Page::where('navigation_id', $this->ID)->first()->ID;
+    }
+
+    public function getIsVisibleAttribute()
+    {
+        return $this->navianzeigen == "Ja";
     }
 
     public function children()

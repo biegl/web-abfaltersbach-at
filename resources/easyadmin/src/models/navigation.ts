@@ -26,7 +26,6 @@ export default class Navigation implements BaseObject {
 
     static init(obj): Navigation {
         const navigation = new Navigation();
-
         navigation.ID = obj.ID;
         navigation.parentId = obj.refID;
         navigation.pageId = obj.pageId;
@@ -35,8 +34,7 @@ export default class Navigation implements BaseObject {
         navigation.name = obj.name;
         navigation.linkname = obj.linkname;
         navigation.children = obj.children.map(el => Navigation.init(el));
-        navigation.isVisible = obj.navianzeigen;
-
+        navigation.isVisible = obj.isVisible;
         return navigation;
     }
 }

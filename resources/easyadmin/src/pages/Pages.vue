@@ -26,99 +26,90 @@
                         (navigation.hasParent || navigation.hasChildren),
                     'mb-4': navigation.isLastInGroup,
                 }"
+            <div
+                v-for="parentPage in navigation"
+                v-bind:key="parentPage.id"
+                class="mb-4"
             >
-                <CCardBody v-bind:class="{ 'pt-0 pb-0': navigation.hasParent }">
-                    <div
-                        class="d-flex justify-content-between align-items-center"
-                    >
-                        <div class="d-flex align-items-center">
-                            <em
-                                v-bind:class="{
-                                    'circle mr-2': true,
-                                    'bg-warning': !navigation.hasParent,
-                                    'bg-info': navigation.hasParent,
-                                }"
-                            ></em>
-                            <h6 v-if="navigation.hasParent" class="mb-0">
-                                {{ navigation.name }}
-                            </h6>
-                            <h5 v-else class="mb-0">
-                                {{ navigation.name }}
-                            </h5>
-                        </div>
-                        <div>
-                            <RouterLink
-                                class="btn"
-                                v-bind:to="{
-                                    name: 'pages-edit',
-                                    params: { pageId: navigation.pageId },
-                                }"
-                                v-c-tooltip="{
-                                    content: 'Seite bearbeiten',
-                                    placement: 'top-end',
-                                }"
-                            >
-                                <CIcon name="cil-pencil" />
-                            </RouterLink>
-                            <button
-                                type="button"
-                                class="btn"
-                                v-on:click="deletePage(navigation.pageId)"
-                                v-c-tooltip="{
-                                    content: 'Seite löschen',
-                                    placement: 'top-end',
-                                }"
-                            >
-                                <CIcon name="cil-trash" />
-                            </button>
-                        </div>
-                    </div>
-                </CCardBody>
-            </CCard>
+                <PageNavigationItem
+                    v-bind:name="parentPage.name"
+                    v-bind:visible="parentPage.isVisible"
+                    v-bind:class="{
+                        'd-none': !showAll && !parentPage.isVisible,
+                    }"
+                    v-on:editPage="editPage(parentPage)"
+                    v-on:deletePage="deletePage(parentPage)"
+                    type="parent"
+                />
+                <PageNavigationItem
+                    v-for="childPage in parentPage.children"
+                    v-bind:key="childPage.id"
+                    v-bind:name="childPage.name"
+                    v-bind:visible="childPage.isVisible"
+                    v-bind:class="{
+                        'd-none': !showAll && !childPage.isVisible,
+                    }"
+                    v-on:editPage="editPage(childPage)"
+                    v-on:deletePage="deletePage(childPage)"
+                    type="child"
+                />
+            </div>
         </CCol>
         <CCol md="4">
             <CCard class="sticky-header">
                 <CCardHeader>Filter</CCardHeader>
-                <CCardBody> </CCardBody>
+                <CCardBody
+                    ><CForm>
+                        <div class="d-flex align-items-center">
+                            <CSwitch
+                                id="switch"
+                                color="warning"
+                                shape="pill"
+                                size="sm"
+                                checked.sync="showAll"
+                                label-on="on"
+                                label-off="off"
+                                v-on:update:checked="updateShowAll"
+                            />
+                            <label class="mb-0 ml-2" for="switch"
+                                >Alle anzeigen</label
+                            >
+                        </div>
+                    </CForm>
+                </CCardBody>
             </CCard>
         </CCol>
     </CRow>
 </template>
 
 <script lang="ts">
-import Navigation from "@/models/navigation";
 import Vue from "vue";
 import Page from "../models/page";
+import PageNavigationItem from "@/components/PageNavigationItem.vue";
 
 export default Vue.extend({
     name: "Pages",
+    components: {
+        PageNavigationItem,
+    },
+
     data() {
         return {
             isLoading: false,
+            showAll: false,
         };
     },
+
     computed: {
-        pages() {
-            return this.$store.state.pages.all;
-        },
         navigation() {
             return this.$store.state.navigation.all;
         },
-        flatNavigation() {
-            return this.navigation.flatMap(item => {
-                if (item.children && item.children.length) {
-                    const children = item.children;
-                    children[children.length - 1].isLastInGroup = true;
-                    return [item, ...children];
-                }
-
-                return item;
-            });
-        },
     },
+
     created() {
         this.loadNavigation();
     },
+
     methods: {
         loadNavigation() {
             this.isLoading = true;
@@ -146,6 +137,12 @@ export default Vue.extend({
                     this.isLoading = false;
                 });
         },
+        editPage(page: Page) {
+            this.$router.push({
+                name: "pages-edit",
+                params: { pageId: page.id },
+            });
+        },
         deletePage(page: Page) {
             if (window.confirm("Soll die Seite wirklich gelöscht werden?")) {
                 this.$store
@@ -160,14 +157,16 @@ export default Vue.extend({
                     });
             }
         },
+        updateShowAll(showAll) {
+            this.showAll = showAll;
+        },
     },
 });
 </script>
-<style scoped>
->>> .circle {
-    display: inline-block;
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 50%;
+<style>
+.sticky-header {
+    position: sticky;
+    top: 136px;
+    z-index: 1;
 }
 </style>
