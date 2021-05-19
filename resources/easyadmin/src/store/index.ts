@@ -9,6 +9,7 @@ import { files } from "./files.module";
 import { users } from "./users.module";
 import { pages } from "./pages.module";
 import { activities } from "./activities.module";
+import { navigation } from "./navigation.module";
 
 Vue.use(Vuex);
 
@@ -26,5 +27,6 @@ export default new Vuex.Store({
         pages,
         persons,
         activities,
+        navigation,
     },
 });

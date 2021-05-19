@@ -19,6 +19,8 @@ class Navigation extends Model
 
     protected $with = ['children'];
 
+    protected $appends = ['pageId'];
+
     public $timestamps = false;
 
     protected static $logAttributes = ['*'];
@@ -30,7 +32,7 @@ class Navigation extends Model
 
     public function getHasParentAttribute()
     {
-        return ! is_null($this->parent());
+        return !is_null($this->parent());
     }
 
     public function getIsActiveAttribute()
@@ -47,16 +49,21 @@ class Navigation extends Model
 
     public function getUrlAttribute()
     {
-        if (! $this->hasParent) {
+        if (!$this->hasParent) {
             return RouterHelper::normalizeUrl($this->slug);
         }
 
-        return RouterHelper::normalizeUrl($this->parent()->slug.'/'.$this->slug);
+        return RouterHelper::normalizeUrl($this->parent()->slug . '/' . $this->slug);
+    }
+
+    public function getPageIdAttribute()
+    {
+        return \App\Models\Page::where('navigation_id', $this->ID)->first()->ID;
     }
 
     public function children()
     {
-        return $this->hasMany('App\Models\Navigation', 'refID');
+        return $this->hasMany('App\Models\Navigation', 'refID')->orderBy('position');
     }
 
     public function parent()
@@ -105,7 +112,7 @@ class Navigation extends Model
         foreach ($pages as $page) {
             $url = $page->url;
 
-            if (! $url) {
+            if (!$url) {
                 continue;
             }
 
@@ -132,6 +139,13 @@ class Navigation extends Model
     {
         return $query
             ->visible()
+            ->where('refID', null)
+            ->orderBy('position');
+    }
+
+    public function scopeAllTopLevel($query)
+    {
+        return $query
             ->where('refID', null)
             ->orderBy('position');
     }

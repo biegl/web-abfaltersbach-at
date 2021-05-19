@@ -1,4 +1,3 @@
-import { auth } from "./../store/auth.module";
 import { Role } from "./../helpers/role";
 import VueRouter, { RouteConfig } from "vue-router";
 import Vue from "vue";

@@ -21,6 +21,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::resource('events', 'App\Http\Controllers\Api\EventsController');
     Route::post('pages/{page}/attach', 'App\Http\Controllers\Api\PagesController@attachFile');
     Route::resource('pages', 'App\Http\Controllers\Api\PagesController');
+    Route::get('navigation', 'App\Http\Controllers\Api\NavigationController@index');
     Route::resource('persons', 'App\Http\Controllers\Api\PersonsController');
     Route::get('persons/list/{module}', 'App\Http\Controllers\Api\PersonsController@list');
     Route::post('persons/list/{module}', 'App\Http\Controllers\Api\PersonsController@saveList');
