@@ -14,15 +14,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
-    Route::resource('news', 'App\Http\Controllers\Api\NewsController');
+    Route::apiResource('news', 'App\Http\Controllers\Api\NewsController');
     Route::post('news/{news}/attach', 'App\Http\Controllers\Api\NewsController@attachFile');
-    Route::resource('files', 'App\Http\Controllers\Api\FilesController');
+    Route::apiResource('files', 'App\Http\Controllers\Api\FilesController');
     Route::post('events/{event}/attach', 'App\Http\Controllers\Api\EventsController@attachFile');
-    Route::resource('events', 'App\Http\Controllers\Api\EventsController');
+    Route::apiResource('events', 'App\Http\Controllers\Api\EventsController');
     Route::post('pages/{page}/attach', 'App\Http\Controllers\Api\PagesController@attachFile');
-    Route::resource('pages', 'App\Http\Controllers\Api\PagesController');
+    Route::apiResource('pages', 'App\Http\Controllers\Api\PagesController');
     Route::get('navigation', 'App\Http\Controllers\Api\NavigationController@index');
-    Route::resource('persons', 'App\Http\Controllers\Api\PersonsController');
+    Route::apiResource('persons', 'App\Http\Controllers\Api\PersonsController');
     Route::get('persons/list/{module}', 'App\Http\Controllers\Api\PersonsController@list');
     Route::post('persons/list/{module}', 'App\Http\Controllers\Api\PersonsController@saveList');
     Route::post('persons/{person}/attach', 'App\Http\Controllers\Api\PersonsController@attachFile');
@@ -30,7 +30,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::group(['middleware' => 'isAdmin'], function () {
         Route::post('users/{user}/revoke', 'App\Http\Controllers\Api\UsersController@revoke');
-        Route::resource('users', 'App\Http\Controllers\Api\UsersController');
+        Route::apiResource('users', 'App\Http\Controllers\Api\UsersController');
         Route::get('activities', 'App\Http\Controllers\Api\ActivityLogsController@index');
     });
 });
