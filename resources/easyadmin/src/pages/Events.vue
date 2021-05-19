@@ -1,23 +1,11 @@
 <template>
     <CRow>
         <CCol md="8">
-            <CCard class="sticky-header">
-                <CCardHeader>
-                    <div
-                        class="d-flex justify-content-between align-items-center"
-                    >
-                        <h4 class="mb-0">Veranstaltungen</h4>
-                        <div class="card-header-actions">
-                            <button
-                                class="btn btn-primary"
-                                rel="noreferrer noopener"
-                            >
-                                Erstellen
-                            </button>
-                        </div>
-                    </div>
-                </CCardHeader>
-            </CCard>
+            <PageHeader
+                title="Veranstaltungen"
+                icon="cil-calendar"
+                :route="{ name: 'events-add' }"
+            />
             <ListEntryItem
                 v-for="event in filteredEvents"
                 :key="event.id"
@@ -75,12 +63,14 @@
 import Vue from "vue";
 import Event from "../models/event";
 import ListEntryItem from "@/components/ListEntryItem.vue";
+import PageHeader from "@/components/PageHeader.vue";
 
 export default Vue.extend({
     name: "Events",
 
     components: {
         ListEntryItem,
+        PageHeader,
     },
 
     data() {

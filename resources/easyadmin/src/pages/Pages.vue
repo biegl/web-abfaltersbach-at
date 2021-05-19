@@ -1,31 +1,11 @@
 <template>
     <CRow>
         <CCol md="8">
-            <CCard class="sticky-header">
-                <CCardHeader>
-                    <div
-                        class="d-flex justify-content-between align-items-center"
-                    >
-                        <h4 class="mb-0">Seiten</h4>
-                        <div class="card-header-actions">
-                            <RouterLink
-                                :to="{ name: 'pages-add' }"
-                                class="btn btn-primary"
-                                >Erstellen</RouterLink
-                            >
-                        </div>
-                    </div>
-                </CCardHeader>
-            </CCard>
-            <CCard
-                v-for="navigation in flatNavigation"
-                v-bind:key="navigation.id"
-                v-bind:class="{
-                    'mb-1':
-                        !navigation.isLastInGroup &&
-                        (navigation.hasParent || navigation.hasChildren),
-                    'mb-4': navigation.isLastInGroup,
-                }"
+            <PageHeader
+                title="Seiten"
+                icon="cil-notes"
+                :route="{ name: 'pages-add' }"
+            />
             <div
                 v-for="parentPage in navigation"
                 v-bind:key="parentPage.id"
@@ -86,11 +66,14 @@
 import Vue from "vue";
 import Page from "../models/page";
 import PageNavigationItem from "@/components/PageNavigationItem.vue";
+import PageHeader from "@/components/PageHeader.vue";
 
 export default Vue.extend({
     name: "Pages",
+
     components: {
         PageNavigationItem,
+        PageHeader,
     },
 
     data() {

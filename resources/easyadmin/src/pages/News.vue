@@ -1,27 +1,15 @@
 <template>
     <CRow>
         <CCol md="8">
-            <CCard class="sticky-header">
-                <CCardHeader>
-                    <div
-                        class="d-flex justify-content-between align-items-center"
-                    >
-                        <h4 class="mb-0">News</h4>
-                        <div class="card-header-actions">
-                            <RouterLink
-                                :to="{ name: 'news-add' }"
-                                class="btn btn-primary"
-                                >Erstellen</RouterLink
-                            >
-                        </div>
-                    </div>
-                </CCardHeader>
-            </CCard>
+            <PageHeader
+                title="News"
+                icon="cil-newspaper"
+                :route="{ name: 'news-add' }"
+            />
 
             <ListEntryItem
                 v-for="news in filteredNews"
                 :key="news.id"
-                :class="{ active: showAll && !news.isExpired }"
                 :startDate="news.date"
                 :endDate="news.expirationDate"
                 :withEndDate="true"
@@ -59,18 +47,19 @@
 import Vue from "vue";
 import News from "../models/news";
 import ListEntryItem from "@/components/ListEntryItem.vue";
+import PageHeader from "@/components/PageHeader.vue";
 
 export default Vue.extend({
     name: "News",
 
     components: {
         ListEntryItem,
+        PageHeader,
     },
 
     data() {
         return {
             isLoading: false,
-            showAll: false,
             filterOptions: [
                 {
                     value: "active",
