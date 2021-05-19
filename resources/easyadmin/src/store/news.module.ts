@@ -1,43 +1,43 @@
+import { Paginator } from "./../models/paginator";
 import FileService from "@/services/file.service";
 import NewsService from "@/services/news.service";
 import News from "@/models/news";
 
 interface NewsState {
-    all: News[];
-    selectedNews: News;
+    all: Paginator<News> | null;
+    selectedNews: News | null;
 }
 
-const initialState: NewsState = { all: [], selectedNews: null };
+const initialState: NewsState = { all: null, selectedNews: null };
 
 export const news = {
     namespaced: true,
     state: initialState,
     actions: {
-        load({ commit }, newsId) {
-            // Load specific news entry
-            if (newsId) {
-                return NewsService.get(newsId).then(
-                    news => {
-                        const model = News.init(news);
-                        commit("selectNews", model);
-                        return Promise.resolve(model);
-                    },
-                    error => {
-                        commit("selectNews", new News());
-                        return Promise.reject(error);
-                    }
-                );
-            }
-
+        loadAll({ commit }, filter) {
             // Load all news
-            return NewsService.getAll().then(
-                news => {
-                    const models = news.map(obj => News.init(obj));
-                    commit("loadSuccess", models);
-                    return Promise.resolve(models);
+            return NewsService.getAll(filter).then(
+                paginator => {
+                    paginator.data = paginator.data.map(News.init);
+                    commit("loadSuccess", paginator);
+                    return Promise.resolve(paginator);
                 },
                 error => {
                     commit("loadFailure");
+                    return Promise.reject(error);
+                }
+            );
+        },
+        loadOne({ commit }, newsId) {
+            // Load specific news entry
+            return NewsService.get(newsId).then(
+                news => {
+                    const model = News.init(news);
+                    commit("selectNews", model);
+                    return Promise.resolve(model);
+                },
+                error => {
+                    commit("selectNews", new News());
                     return Promise.reject(error);
                 }
             );
@@ -96,11 +96,11 @@ export const news = {
         },
     },
     mutations: {
-        loadSuccess(state: NewsState, news: News[]) {
+        loadSuccess(state: NewsState, news: Paginator<News>) {
             state.all = news;
 
             if (state.selectedNews) {
-                state.selectedNews = state.all.find(
+                state.selectedNews = state.all.data.find(
                     el => el.id == state.selectedNews.id
                 );
             }
@@ -109,7 +109,7 @@ export const news = {
             state.selectedNews = news;
         },
         loadFailure(state: NewsState) {
-            state.all = [];
+            state.all = null;
         },
         deleteSuccess(state: NewsState, id: string) {
             state.all = state.all.filter((news: News) => news.id !== id);

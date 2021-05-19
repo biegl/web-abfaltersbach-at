@@ -118,7 +118,7 @@ export default Vue.extend({
 
     methods: {
         loadNews(id) {
-            this.$store.dispatch("news/load", id);
+            this.$store.dispatch("news/loadOne", id);
         },
         submitForm(event) {
             event.preventDefault();

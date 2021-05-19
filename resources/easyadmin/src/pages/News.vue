@@ -7,27 +7,47 @@
                 :route="{ name: 'news-add' }"
             />
 
-            <ListEntryItem
-                v-for="news in filteredNews"
-                :key="news.id"
-                :startDate="news.date"
-                :endDate="news.expirationDate"
-                :withEndDate="true"
-                :title="news.title"
-                :content="news.text"
-                :attachments="news.attachments"
-                v-on:onDeleteItem="deleteNews(news)"
-                v-on:onEditItem="
-                    $router.push({
-                        name: 'news-edit',
-                        params: { newsId: news.id },
-                    })
-                "
-            />
+            <div v-if="allNews">
+                <ListEntryItem
+                    v-for="news in allNews.data"
+                    :key="news.id"
+                    :startDate="news.date"
+                    :endDate="news.expirationDate"
+                    :withEndDate="true"
+                    :title="news.title"
+                    :content="news.text"
+                    :attachments="news.attachments"
+                    v-on:onDeleteItem="deleteNews(news)"
+                    v-on:onEditItem="
+                        $router.push({
+                            name: 'news-edit',
+                            params: { newsId: news.id },
+                        })
+                    "
+                />
+
+                <CPagination
+                    :activePage.sync="activePage"
+                    :pages="allNews.last_page"
+                    class="sticky-bottom"
+                    align="center"
+                    v-on:update:activePage="updateActivePage"
+                />
+            </div>
         </CCol>
         <CCol md="4">
             <CCard class="sticky-header">
-                <CCardHeader>Filter</CCardHeader>
+                <CCardHeader>
+                    <div
+                        class="d-flex justify-content-between align-items-center"
+                    >
+                        Filter
+
+                        <CBadge color="secondary" shape="pill" v-if="allNews"
+                            >{{ allNews.total }} Einträge</CBadge
+                        >
+                    </div>
+                </CCardHeader>
                 <CCardBody>
                     <CForm>
                         <CInputRadioGroup
@@ -60,6 +80,7 @@ export default Vue.extend({
     data() {
         return {
             isLoading: false,
+            activePage: 1,
             filterOptions: [
                 {
                     value: "active",
@@ -78,9 +99,6 @@ export default Vue.extend({
         allNews() {
             return this.$store.state.news.all;
         },
-        activeNews() {
-            return this.allNews.filter(el => !el.isExpired);
-        },
         filteredNews() {
             const news =
                 this.selectedFilter == "active"
@@ -91,14 +109,17 @@ export default Vue.extend({
     },
 
     created() {
-        this.loadNews();
+        this.loadNews(this.activePage);
     },
 
     methods: {
         loadNews() {
             this.isLoading = true;
             this.$store
-                .dispatch("news/load")
+                .dispatch("news/loadAll", {
+                    page: this.activePage,
+                    showAll: this.selectedFilter,
+                })
                 .catch(() => {
                     this.$snotify.error("News konnten nicht geladen werden");
                 })
@@ -123,6 +144,11 @@ export default Vue.extend({
         },
         updateFilter(selected) {
             this.selectedFilter = selected;
+            this.loadNews();
+        },
+        updateActivePage(page) {
+            this.activePage = page;
+            this.loadNews();
         },
     },
 });
@@ -131,6 +157,11 @@ export default Vue.extend({
 .sticky-header {
     position: sticky;
     top: 136px;
+    z-index: 1;
+}
+.sticky-bottom {
+    position: sticky;
+    bottom: 10px;
     z-index: 1;
 }
 </style>

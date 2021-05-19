@@ -131,7 +131,7 @@ export default Vue.extend({
 
 >>> .end-date {
     opacity: 0.75;
-    transform: scale(0.75) translate(-10px, -8px);
+    transform: scale(0.75) translate(-10px, -13px);
     position: relative;
 }
 >>> .end-date:before {

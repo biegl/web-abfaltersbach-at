@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller
 {
+    private $itemsPerPage = 25;
+
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +20,16 @@ class NewsController extends Controller
      */
     public function index()
     {
-        return News::orderBy('date', 'desc')->get();
+        $showAll = request()->query('showAll');
+
+        if ($showAll == 'all') {
+            return News::orderBy('date', 'desc')
+                ->paginate($this->itemsPerPage);
+        }
+
+        return News::notExpired()
+            ->orderBy('date', 'desc')
+            ->paginate($this->itemsPerPage);
     }
 
     /**

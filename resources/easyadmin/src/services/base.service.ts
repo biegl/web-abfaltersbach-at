@@ -1,3 +1,4 @@
+import { Paginator } from "./../models/paginator";
 import { apiClient } from "./apiClient";
 import BaseObject from "@/models/base";
 
@@ -17,8 +18,17 @@ export default class BaseService<T extends BaseObject> {
             .then(response => response.data);
     }
 
-    getAll(): Promise<T[]> {
-        return apiClient.get<T[]>(this.baseUrl).then(response => response.data);
+    getAll(filter): Promise<Paginator<T>> {
+        let url = this.baseUrl;
+
+        if (filter) {
+            const queryString = Object.keys(filter)
+                .map(key => `${key}=${filter[key]}`)
+                .join("&");
+            url += `?${queryString}`;
+        }
+
+        return apiClient.get<Paginator<T>>(url).then(response => response.data);
     }
 
     update(object: T): Promise<T> {
