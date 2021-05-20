@@ -6,78 +6,87 @@
                 icon="cil-calendar"
                 :route="{ name: 'events-add' }"
             />
-            <ListEntryItem
-                v-for="event in filteredEvents"
-                :key="event.id"
-                :startDate="event.date"
-                :title="event.text"
-                :attachments="event.attachments"
-                v-on:onDeleteItem="deleteEvent(event)"
-                v-on:onEditItem="
-                    $router.push({
-                        name: 'events-edit',
-                        params: { eventId: event.id },
-                    })
-                "
-            />
+
+            <LoadingIndicator v-if="isLoading" />
+
+            <div v-if="!isLoading && events">
+                <EmptyListInfo v-if="!events.data.length" />
+
+                <ListEntryItem
+                    v-for="event in events.data"
+                    :key="event.id"
+                    :startDate="event.date"
+                    :title="event.text"
+                    :attachments="event.attachments"
+                    v-on:onDeleteItem="deleteEvent(event)"
+                    v-on:onEditItem="
+                        $router.push({
+                            name: 'events-edit',
+                            params: { eventId: event.id },
+                        })
+                    "
+                />
+
+                <CPagination
+                    v-if="events.total > events.per_page"
+                    :activePage.sync="activePage"
+                    :pages="events.last_page"
+                    class="sticky-bottom"
+                    align="center"
+                    v-on:update:activePage="updateActivePage"
+                />
+            </div>
         </CCol>
         <CCol md="4">
-            <CCard class="sticky-header">
-                <CCardHeader>
-                    <CIcon name="cil-filter" class="text-secondary" />
-                    Veranstaltungen Filter
-                    <div class="card-header-actions" v-if="dateFilter">
-                        <CLink v-on:click="resetFilter">
-                            <CIcon
-                                name="cil-ban"
-                                class="text-danger"
-                                v-c-tooltip="{
-                                    content: 'Filter löschen',
-                                    placement: 'top-end',
-                                }"
-                            />
-                        </CLink>
-                    </div>
-                </CCardHeader>
-                <CCardBody>
-                    <v-date-picker
-                        v-model="dateFilter"
-                        is-range
-                        title-position="left"
-                        is-expanded
-                        locale="de"
-                        :attributes="calendarAttributes"
-                        v-on:dayclick="filterList"
-                    ></v-date-picker>
-                    <figcaption class="figure-caption mt-1">
-                        Durch das Auswählen eines Start- und Enddatums kann die
-                        Liste links gefiltert werden.
-                    </figcaption>
-                </CCardBody>
-            </CCard>
+            <FilterContainer
+                v-bind:resultsCount="resultsCount"
+                v-bind:isActive="dateFilter"
+                v-on:reset="resetFilter"
+            >
+                <v-date-picker
+                    v-model="dateFilter"
+                    is-range
+                    title-position="left"
+                    is-expanded
+                    locale="de"
+                    :attributes="calendarAttributes"
+                    v-on:dayclick="loadEvents"
+                ></v-date-picker>
+                <figcaption class="figure-caption mt-1">
+                    Durch das Auswählen eines Start- und Enddatums kann die
+                    Liste links gefiltert werden.
+                </figcaption>
+            </FilterContainer>
         </CCol></CRow
     >
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import Event from "../models/event";
+import Event from "@/models/event";
+import FilterContainer from "@/components/FilterContainer.vue";
 import ListEntryItem from "@/components/ListEntryItem.vue";
+import LoadingIndicator from "@/components/LoadingIndicator.vue";
 import PageHeader from "@/components/PageHeader.vue";
+import EmptyListInfo from "@/components/EmptyListInfo.vue";
+import { DateTime } from "luxon";
 
 export default Vue.extend({
     name: "Events",
 
     components: {
+        EmptyListInfo,
+        FilterContainer,
         ListEntryItem,
+        LoadingIndicator,
         PageHeader,
     },
 
     data() {
         return {
-            isLoading: false,
+            isLoading: true,
             dateFilter: null,
-            filteredEvents: [],
+            activePage: 1,
         };
     },
 
@@ -86,8 +95,12 @@ export default Vue.extend({
             return this.$store.state.events.all;
         },
         calendarAttributes() {
+            if (!this.events) {
+                return [];
+            }
+
             return [
-                ...this.events.map(event => ({
+                ...this.events.data.map(event => ({
                     dates: event.date,
                     dot: {
                         color: event.color,
@@ -106,6 +119,25 @@ export default Vue.extend({
                 },
             ];
         },
+        filter() {
+            const filter = {
+                page: this.activePage,
+            };
+
+            if (this.dateFilter) {
+                filter.startDate = DateTime.fromJSDate(
+                    this.dateFilter.start
+                ).toISODate();
+                filter.endDate = DateTime.fromJSDate(
+                    this.dateFilter.end
+                ).toISODate();
+            }
+
+            return filter;
+        },
+        resultsCount() {
+            return this.events ? this.events.total : 0;
+        },
     },
 
     created() {
@@ -116,10 +148,7 @@ export default Vue.extend({
         loadEvents() {
             this.isLoading = true;
             this.$store
-                .dispatch("events/load")
-                .then(() => {
-                    this.filterList();
-                })
+                .dispatch("events/loadAll", this.filter)
                 .catch(() => {
                     this.$snotify.error(
                         "Veranstaltungen konnten nicht geladen werden"
@@ -134,10 +163,10 @@ export default Vue.extend({
                 this.$store
                     .dispatch("events/delete", event)
                     .then(() => {
-                        this.loadEvents();
                         this.$snotify.success(
                             "Die Veranstaltung wurde gelöscht!"
                         );
+                        this.loadEvents();
                     })
                     .catch(() => {
                         this.$snotify.error(
@@ -146,25 +175,13 @@ export default Vue.extend({
                     });
             }
         },
-        filterList() {
-            if (this.dateFilter) {
-                const { start, end } = this.dateFilter;
-                start.setHours(0, 0, 0, 0); // Start of day
-                end.setHours(23, 59, 59, 999); // end of day
-                this.filterEvents(start, end);
-            } else {
-                this.resetFilter();
-            }
-        },
-        filterEvents(start, end) {
-            this.filteredEvents = this.events.filter(event => {
-                const date = new Date(event.date);
-                return date >= start && date <= end;
-            });
-        },
         resetFilter() {
             this.dateFilter = null;
-            this.filteredEvents = this.events;
+            this.loadEvents();
+        },
+        updateActivePage(page) {
+            this.activePage = page;
+            this.loadEvents();
         },
     },
 });

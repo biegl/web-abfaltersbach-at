@@ -1,6 +1,6 @@
 <template>
     <div class="c-app">
-        <TheSidebar />
+        <TheSidebar v-if="isLoggedIn" />
         <CWrapper>
             <TheHeader />
             <div class="c-body">
@@ -18,18 +18,26 @@
 </template>
 
 <script lang="ts">
+import Vue from "vue";
 import TheSidebar from "./TheSidebar.vue";
 import TheHeader from "./TheHeader.vue";
 import TheFooter from "./TheFooter.vue";
 
-export default {
+export default Vue.extend({
     name: "TheContainer",
+
     components: {
         TheSidebar,
         TheHeader,
         TheFooter,
     },
-};
+
+    computed: {
+        isLoggedIn() {
+            return this.$store.state.auth.status.loggedIn;
+        },
+    },
+});
 </script>
 
 <style scoped>

@@ -92,7 +92,7 @@ export default Vue.extend({
 
     methods: {
         loadPage(id) {
-            this.$store.dispatch("pages/load", id);
+            this.$store.dispatch("pages/loadOne", id);
         },
         submitForm(event) {
             event.preventDefault();
@@ -102,21 +102,20 @@ export default Vue.extend({
             }
 
             this.isSubmitting = true;
-            this.$emit("onSubmissionStart", true);
             const action = this.pageEntry.id ? "update" : "create";
 
             this.$store
                 .dispatch(`pages/${action}`, this.pageEntry)
                 .then(() => {
-                    this.isCreating = false;
-                    this.$emit("onSubmissionSuccess");
+                    this.$router.push({ path: "/content/pages/overview" });
                 })
-                .catch(error => {
-                    this.$emit("onSubmissionError", error);
+                .catch(() => {
+                    this.$snotify.error(
+                        "Seite konnte nicht gespeichert werden"
+                    );
                 })
                 .finally(() => {
                     this.isSubmitting = false;
-                    this.$emit("onSubmissionEnd", false);
                 });
         },
         modelFactory(obj) {

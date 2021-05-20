@@ -10,7 +10,7 @@
                             flex: withEndDate ? '0 0 140px' : '0 0 70px',
                         }"
                     >
-                        <div>
+                        <div class="start-date">
                             <div class="event-day h3 mb-0">
                                 {{ startDate | day }}
                             </div>
@@ -37,7 +37,7 @@
                             <li
                                 v-for="file in attachments"
                                 :key="file.id"
-                                class="text-black-50"
+                                class="text-black-50 text-nowrap"
                             >
                                 <CIcon name="cil-file" size="sm" class="mr-1" />
                                 <a
@@ -127,6 +127,10 @@ export default Vue.extend({
 >>> img {
     max-width: 100% !important;
     display: block !important;
+}
+
+>>> .start-date .event-day {
+    line-height: 1;
 }
 
 >>> .end-date {

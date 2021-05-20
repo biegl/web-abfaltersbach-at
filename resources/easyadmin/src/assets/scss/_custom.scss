@@ -1,0 +1,10 @@
+.sticky-header {
+    position: sticky;
+    top: 136px;
+    z-index: 1;
+}
+.sticky-bottom {
+    position: sticky;
+    bottom: 10px;
+    z-index: 1;
+}

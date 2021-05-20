@@ -101,7 +101,7 @@ export default Vue.extend({
 
     methods: {
         loadEvent(id) {
-            this.$store.dispatch("events/load", id);
+            this.$store.dispatch("events/loadOne", id);
         },
         submitForm(event) {
             event.preventDefault();
@@ -123,16 +123,14 @@ export default Vue.extend({
                 .then(() => {
                     this.$router.push({ path: "/content/events/overview" });
                 })
-                .catch(error => {
-                    this.$emit("onSubmissionError", error);
+                .catch(() => {
+                    this.$snotify.error(
+                        "Die Veranstaltung konnte nicht gespeichert werden"
+                    );
                 })
                 .finally(() => {
                     this.isSubmitting = false;
-                    this.$emit("onSubmissionEnd", false);
                 });
-        },
-        cancelForm() {
-            this.$emit("cancelForm");
         },
         modelFactory(obj) {
             return Event.init(obj);

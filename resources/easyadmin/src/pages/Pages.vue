@@ -6,58 +6,70 @@
                 icon="cil-notes"
                 :route="{ name: 'pages-add' }"
             />
-            <div
-                v-for="parentPage in navigation"
-                v-bind:key="parentPage.id"
-                class="mb-4"
-            >
-                <PageNavigationItem
-                    v-bind:name="parentPage.name"
-                    v-bind:visible="parentPage.isVisible"
-                    v-bind:class="{
-                        'd-none': !showAll && !parentPage.isVisible,
-                    }"
-                    v-on:editPage="editPage(parentPage)"
-                    v-on:deletePage="deletePage(parentPage)"
-                    type="parent"
-                />
-                <PageNavigationItem
-                    v-for="childPage in parentPage.children"
-                    v-bind:key="childPage.id"
-                    v-bind:name="childPage.name"
-                    v-bind:visible="childPage.isVisible"
-                    v-bind:class="{
-                        'd-none': !showAll && !childPage.isVisible,
-                    }"
-                    v-on:editPage="editPage(childPage)"
-                    v-on:deletePage="deletePage(childPage)"
-                    type="child"
+            <LoadingIndicator v-if="isLoading" />
+
+            <div v-if="!isLoading && navigation">
+                <EmptyListInfo v-if="!navigation.data.length" />
+
+                <div
+                    v-for="parentPage in navigation.data"
+                    v-bind:key="parentPage.id"
+                    class="mb-4"
+                >
+                    <PageNavigationItem
+                        v-bind:name="parentPage.name"
+                        v-bind:visible="parentPage.isVisible"
+                        v-bind:class="{
+                            'd-none': !showAll && !parentPage.isVisible,
+                        }"
+                        v-on:editPage="editPage(parentPage)"
+                        v-on:deletePage="deletePage(parentPage)"
+                        type="parent"
+                    />
+                    <PageNavigationItem
+                        v-for="childPage in parentPage.children"
+                        v-bind:key="childPage.id"
+                        v-bind:name="childPage.name"
+                        v-bind:visible="childPage.isVisible"
+                        v-bind:class="{
+                            'd-none': !showAll && !childPage.isVisible,
+                        }"
+                        v-on:editPage="editPage(childPage)"
+                        v-on:deletePage="deletePage(childPage)"
+                        type="child"
+                    />
+                </div>
+
+                <CPagination
+                    v-if="navigation.total > navigation.per_page"
+                    :activePage.sync="activePage"
+                    :pages="navigation.last_page"
+                    class="sticky-bottom"
+                    align="center"
+                    v-on:update:activePage="updateActivePage"
                 />
             </div>
         </CCol>
         <CCol md="4">
-            <CCard class="sticky-header">
-                <CCardHeader>Filter</CCardHeader>
-                <CCardBody
-                    ><CForm>
-                        <div class="d-flex align-items-center">
-                            <CSwitch
-                                id="switch"
-                                color="warning"
-                                shape="pill"
-                                size="sm"
-                                checked.sync="showAll"
-                                label-on="on"
-                                label-off="off"
-                                v-on:update:checked="updateShowAll"
-                            />
-                            <label class="mb-0 ml-2" for="switch"
-                                >Alle anzeigen</label
-                            >
-                        </div>
-                    </CForm>
-                </CCardBody>
-            </CCard>
+            <FilterContainer
+                v-bind:resultsCount="resultsCount"
+                v-bind:isActive="showAll"
+                v-on:reset="updateShowAll(false)"
+            >
+                <div class="d-flex align-items-center">
+                    <CSwitch
+                        id="switch"
+                        color="warning"
+                        shape="pill"
+                        size="sm"
+                        label-on="on"
+                        label-off="off"
+                        v-bind:checked.sync="showAll"
+                        v-on:update:checked="updateShowAll"
+                    />
+                    <label class="mb-0 ml-2" for="switch">Alle anzeigen</label>
+                </div>
+            </FilterContainer>
         </CCol>
     </CRow>
 </template>
@@ -67,25 +79,43 @@ import Vue from "vue";
 import Page from "../models/page";
 import PageNavigationItem from "@/components/PageNavigationItem.vue";
 import PageHeader from "@/components/PageHeader.vue";
+import FilterContainer from "@/components/FilterContainer.vue";
+import LoadingIndicator from "@/components/LoadingIndicator.vue";
+import EmptyListInfo from "@/components/EmptyListInfo.vue";
 
 export default Vue.extend({
     name: "Pages",
 
     components: {
+        EmptyListInfo,
+        FilterContainer,
+        LoadingIndicator,
         PageNavigationItem,
         PageHeader,
     },
 
     data() {
         return {
-            isLoading: false,
+            isLoading: true,
             showAll: false,
+            activePage: 1,
         };
     },
 
     computed: {
         navigation() {
             return this.$store.state.navigation.all;
+        },
+        filters() {
+            const filters = {
+                page: this.activePage,
+                showAll: this.showAll,
+            };
+
+            return filters;
+        },
+        resultsCount() {
+            return this.navigation ? this.navigation.total : 0;
         },
     },
 
@@ -97,23 +127,10 @@ export default Vue.extend({
         loadNavigation() {
             this.isLoading = true;
             this.$store
-                .dispatch("navigation/load")
+                .dispatch("navigation/loadAll", this.filters)
                 .catch(() => {
                     this.$snotify.error(
                         "Die Navigation konnten nicht geladen werden"
-                    );
-                })
-                .finally(() => {
-                    this.isLoading = false;
-                });
-        },
-        loadPages() {
-            this.isLoading = true;
-            this.$store
-                .dispatch("pages/load")
-                .catch(() => {
-                    this.$snotify.error(
-                        "Die Seiten konnten nicht geladen werden"
                     );
                 })
                 .finally(() => {
@@ -132,6 +149,7 @@ export default Vue.extend({
                     .dispatch("pages/delete", page)
                     .then(() => {
                         this.$snotify.success("Die Seite wurde gelöscht!");
+                        this.loadNavigation();
                     })
                     .catch(() => {
                         this.$snotify.error(
@@ -142,14 +160,12 @@ export default Vue.extend({
         },
         updateShowAll(showAll) {
             this.showAll = showAll;
+            this.loadNavigation();
+        },
+        updateActivePage(page) {
+            this.activePage = page;
+            this.loadNavigation();
         },
     },
 });
 </script>
-<style>
-.sticky-header {
-    position: sticky;
-    top: 136px;
-    z-index: 1;
-}
-</style>

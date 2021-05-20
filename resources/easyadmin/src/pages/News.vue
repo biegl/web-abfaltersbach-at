@@ -7,7 +7,11 @@
                 :route="{ name: 'news-add' }"
             />
 
-            <div v-if="allNews">
+            <LoadingIndicator v-if="isLoading" />
+
+            <div v-if="!isLoading && allNews">
+                <EmptyListInfo v-if="!allNews.data.length" />
+
                 <ListEntryItem
                     v-for="news in allNews.data"
                     :key="news.id"
@@ -27,6 +31,7 @@
                 />
 
                 <CPagination
+                    v-if="allNews.total > allNews.per_page"
                     :activePage.sync="activePage"
                     :pages="allNews.last_page"
                     class="sticky-bottom"
@@ -36,29 +41,18 @@
             </div>
         </CCol>
         <CCol md="4">
-            <CCard class="sticky-header">
-                <CCardHeader>
-                    <div
-                        class="d-flex justify-content-between align-items-center"
-                    >
-                        Filter
-
-                        <CBadge color="secondary" shape="pill" v-if="allNews"
-                            >{{ allNews.total }} Einträge</CBadge
-                        >
-                    </div>
-                </CCardHeader>
-                <CCardBody>
-                    <CForm>
-                        <CInputRadioGroup
-                            class="col-sm-9"
-                            v-bind:options="filterOptions"
-                            v-bind:checked="selectedFilter"
-                            v-on:update:checked="updateFilter"
-                        />
-                    </CForm>
-                </CCardBody>
-            </CCard>
+            <FilterContainer
+                v-bind:resultsCount="resultsCount"
+                v-bind:isActive="selectedFilter == 'all'"
+                v-on:reset="updateFilter('active')"
+            >
+                <CInputRadioGroup
+                    class="col-sm-9"
+                    v-bind:options="filterOptions"
+                    v-bind:checked="selectedFilter"
+                    v-on:update:checked="updateFilter"
+                />
+            </FilterContainer>
         </CCol>
     </CRow>
 </template>
@@ -68,18 +62,24 @@ import Vue from "vue";
 import News from "../models/news";
 import ListEntryItem from "@/components/ListEntryItem.vue";
 import PageHeader from "@/components/PageHeader.vue";
+import LoadingIndicator from "@/components/LoadingIndicator.vue";
+import FilterContainer from "@/components/FilterContainer.vue";
+import EmptyListInfo from "@/components/EmptyListInfo.vue";
 
 export default Vue.extend({
     name: "News",
 
     components: {
+        EmptyListInfo,
+        FilterContainer,
         ListEntryItem,
+        LoadingIndicator,
         PageHeader,
     },
 
     data() {
         return {
-            isLoading: false,
+            isLoading: true,
             activePage: 1,
             filterOptions: [
                 {
@@ -106,10 +106,13 @@ export default Vue.extend({
                     : this.allNews;
             return news;
         },
+        resultsCount() {
+            return this.allNews ? this.allNews.total : 0;
+        },
     },
 
     created() {
-        this.loadNews(this.activePage);
+        this.loadNews();
     },
 
     methods: {
@@ -132,8 +135,8 @@ export default Vue.extend({
                 this.$store
                     .dispatch("news/delete", news)
                     .then(() => {
-                        this.loadNews();
                         this.$snotify.success("News wurde gelöscht!");
+                        this.loadNews();
                     })
                     .catch(() => {
                         this.$snotify.error(
@@ -153,15 +156,3 @@ export default Vue.extend({
     },
 });
 </script>
-<style>
-.sticky-header {
-    position: sticky;
-    top: 136px;
-    z-index: 1;
-}
-.sticky-bottom {
-    position: sticky;
-    bottom: 10px;
-    z-index: 1;
-}
-</style>

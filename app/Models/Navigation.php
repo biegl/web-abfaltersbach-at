@@ -60,7 +60,12 @@ class Navigation extends Model
 
     public function getPageIdAttribute()
     {
-        return \App\Models\Page::where('navigation_id', $this->ID)->first()->ID;
+        $page = \App\Models\Page::where('navigation_id', $this->ID)->first();
+        if ($page) {
+            return \App\Models\Page::where('navigation_id', $this->ID)->first()->ID;
+        }
+
+        return null;
     }
 
     public function getIsVisibleAttribute()

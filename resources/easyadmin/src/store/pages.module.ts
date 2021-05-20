@@ -1,40 +1,25 @@
+import { Paginator } from "./../models/paginator";
 import FileService from "@/services/file.service";
 import PageService from "@/services/page.service";
 import Page from "@/models/page";
 
 interface PageState {
-    all: Page[];
-    selectedPage: Page;
+    all: Paginator<Page> | null;
+    selectedPage: Page | null;
 }
 
-const initialState: PageState = { all: [], selectedPage: null };
+const initialState: PageState = { all: null, selectedPage: null };
 
 export const pages = {
     namespaced: true,
     state: initialState,
     actions: {
-        load({ commit }, pageId) {
-            // Load specific page
-            if (pageId) {
-                return PageService.get(pageId).then(
-                    data => {
-                        const model = Page.init(data);
-                        commit("selectPage", model);
-                        return Promise.resolve(model);
-                    },
-                    error => {
-                        commit("selectPage", new Page());
-                        return Promise.reject(error);
-                    }
-                );
-            }
-
-            // Load all pages
-            return PageService.getAll().then(
-                pages => {
-                    const models = pages.map(obj => Page.init(obj));
-                    commit("loadSuccess", models);
-                    return Promise.resolve(models);
+        loadAll({ commit }, filters) {
+            return PageService.getAll(filters).then(
+                paginator => {
+                    paginator.data = paginator.data.map(Page.init);
+                    commit("loadSuccess", paginator);
+                    return Promise.resolve(paginator);
                 },
                 error => {
                     commit("loadFailure");
@@ -42,111 +27,56 @@ export const pages = {
                 }
             );
         },
-        select({ commit }, page: Page) {
-            commit("selectPage", page);
-        },
-        delete({ commit }, page: Page) {
-            return PageService.delete(page).then(
-                () => {
-                    commit("deleteSuccess", page.id);
-                    return Promise.resolve();
+        loadOne({ commit }, pageId) {
+            return PageService.get(pageId).then(
+                data => {
+                    const model = Page.init(data);
+                    commit("selectPage", model);
+                    return Promise.resolve(model);
                 },
                 error => {
+                    commit("selectPage", new Page());
                     return Promise.reject(error);
                 }
             );
         },
+        select({ commit }, page) {
+            commit("selectPage", page);
+        },
         create({ commit }, page: Page) {
             return PageService.create(page).then(
-                createdPage => {
-                    const model = Page.init(createdPage);
-                    commit("createSuccess", model);
-                    return Promise.resolve(model);
-                },
-                error => {
-                    return Promise.reject(error);
-                }
+                createdPage => Promise.resolve(Page.init(createdPage)),
+                error => Promise.reject(error)
             );
         },
         update({ commit }, page: Page) {
             return PageService.update(page).then(
-                updatedPage => {
-                    const model = Page.init(updatedPage);
-                    commit("updateSuccess", model);
-                    return Promise.resolve(model);
-                },
-                error => {
-                    return Promise.reject(error);
-                }
+                updatedPage => Promise.resolve(Page.init(updatedPage)),
+                error => Promise.reject(error)
             );
         },
-        updatePage({ commit }, page: Page) {
-            commit("updatePage", page);
-        },
-        deleteFile({ commit }, { page, file }) {
-            return FileService.delete(file).then(
-                () => {
-                    commit("deleteFileSuccess", { page, file });
-                    return Promise.resolve();
-                },
-                error => {
-                    return Promise.reject(error);
-                }
+        delete({ commit }, page: Page) {
+            return PageService.delete(page).then(
+                () => Promise.resolve(),
+                error => Promise.reject(error)
             );
         },
     },
     mutations: {
-        loadSuccess(state: PageState, pages: Page[]) {
+        loadSuccess(state: PageState, pages: Paginator<Page>) {
             state.all = pages;
 
             if (state.selectedPage) {
-                state.selectedPage = state.all.find(
+                state.selectedPage = state.all.data.find(
                     el => el.id == state.selectedPage.id
                 );
             }
         },
         loadFailure(state: PageState) {
-            state.all = [];
+            state.all = null;
         },
         selectPage(state: PageState, page: Page) {
             state.selectedPage = page;
-        },
-        deleteSuccess(state: PageState, id: string) {
-            state.all = state.all.filter((page: Page) => page.id !== id);
-        },
-        createSuccess(state: PageState, page: Page) {
-            state.all = [page, ...state.all];
-        },
-        updateSuccess(state: PageState, updatedPage: Page) {
-            state.all = state.all.map(page => {
-                if (page.id === updatedPage.id) {
-                    return updatedPage;
-                }
-                return page;
-            });
-        },
-        updatePage(state: PageState, page: Page) {
-            state.all = state.all.map(obj => {
-                if (obj.id == page.id) {
-                    return Page.init(page);
-                }
-                return obj;
-            });
-            state.selectedPage = page;
-        },
-        deleteFileSuccess(state: PageState, { page, file }) {
-            state.all = state.all.map(obj => {
-                if (obj.id == page.id) {
-                    obj.attachments = page.attachments.filter(
-                        attachment => attachment.id != file.id
-                    );
-                }
-                return obj;
-            });
-
-            state.selectedPage.attachments = state.selectedPage.attachments.filter(
-                attachment => attachment.id != file.id
-            );
         },
     },
 };

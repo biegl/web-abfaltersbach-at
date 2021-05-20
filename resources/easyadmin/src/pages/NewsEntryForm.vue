@@ -135,12 +135,11 @@ export default Vue.extend({
                 .then(() => {
                     this.$router.push({ path: "/content/news/overview" });
                 })
-                .catch(error => {
-                    this.$emit("onSubmissionError", error);
+                .catch(() => {
+                    this.$snotify.error("News konnte nicht gespeichert werden");
                 })
                 .finally(() => {
                     this.isSubmitting = false;
-                    this.$emit("onSubmissionEnd", false);
                 });
         },
         checkExpirationDate() {

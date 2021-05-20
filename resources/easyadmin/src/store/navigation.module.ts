@@ -1,23 +1,26 @@
+import { Paginator } from "./../models/paginator";
 import NavigationService from "@/services/navigation.service";
 import Navigation from "@/models/navigation";
 
 interface NavigationState {
-    all: Navigation[];
+    all: Paginator<Navigation> | null;
 }
 
-const initialState: NavigationState = { all: [] };
+const initialState: NavigationState = { all: null };
 
 export const navigation = {
     namespaced: true,
     state: initialState,
     actions: {
-        load({ commit }) {
+        loadAll({ commit }, filters) {
             // Load all navigation items
-            return NavigationService.getAll().then(
-                news => {
-                    const models = news.map(obj => Navigation.init(obj));
-                    commit("loadSuccess", models);
-                    return Promise.resolve(models);
+            return NavigationService.getAll(filters).then(
+                paginator => {
+                    paginator.data = paginator.data.map(obj =>
+                        Navigation.init(obj)
+                    );
+                    commit("loadSuccess", paginator);
+                    return Promise.resolve(paginator);
                 },
                 error => {
                     commit("loadFailure");
@@ -27,11 +30,11 @@ export const navigation = {
         },
     },
     mutations: {
-        loadSuccess(state: NavigationState, navigation: Navigation[]) {
+        loadSuccess(state: NavigationState, navigation: Paginator<Navigation>) {
             state.all = navigation;
         },
         loadFailure(state: NavigationState) {
-            state.all = [];
+            state.all = null;
         },
     },
 };

@@ -16,7 +16,8 @@
                         name="cil-low-vision"
                         v-if="!visible"
                         v-c-tooltip="{
-                            content: 'Seite is nicht in Navigation sichtbar',
+                            content:
+                                'Die Seite ist nicht in der Navigation sichtbar',
                             placement: 'top-end',
                         }"
                     />
