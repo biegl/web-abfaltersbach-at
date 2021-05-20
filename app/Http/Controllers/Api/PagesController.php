@@ -28,9 +28,8 @@ class PagesController extends Controller
      */
     public function store(StorePage $request)
     {
-        $news = Page::create($request->validated());
-
-        return response()->json($news, 201);
+        $page = Page::create($request->validated());
+        return response()->json($page, 201);
     }
 
     /**
