@@ -22,7 +22,8 @@
         "lorisleiva/laravel-deployer": "^0",
         "queueworker/sansdaemon": "^1.2",
         "sentry/sentry-laravel": "^2",
-        "spatie/laravel-activitylog": "^3.16"
+        "spatie/laravel-activitylog": "^3.16",
+        "spatie/laravel-analytics": "^3.11"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

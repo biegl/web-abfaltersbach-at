@@ -1,3 +1,5 @@
+import { dateFormatFilter } from "./filters/dateFormat";
+import { percentageFilter } from "./filters/percentage";
 import VCalendar from "v-calendar";
 import Vue from "vue";
 import * as Sentry from "@sentry/browser";
@@ -36,6 +38,9 @@ if (process.env.NODE_ENV === "production") {
         attachStacktrace: true,
     });
 }
+
+Vue.filter("percentage", percentageFilter);
+Vue.filter("date", dateFormatFilter);
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 const base: any = Vue;

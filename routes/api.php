@@ -28,6 +28,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('persons/{person}/attach', 'App\Http\Controllers\Api\PersonsController@attachFile');
     Route::post('persons/{person}/delete/{file}', 'App\Http\Controllers\Api\PersonsController@deleteFile');
 
+    Route::get('analytics', 'App\Http\Controllers\Api\AnalyticsController@index');
+
     Route::group(['middleware' => 'isAdmin'], function () {
         Route::post('users/{user}/revoke', 'App\Http\Controllers\Api\UsersController@revoke');
         Route::apiResource('users', 'App\Http\Controllers\Api\UsersController');

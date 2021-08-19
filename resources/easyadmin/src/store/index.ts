@@ -1,3 +1,4 @@
+import { analytics } from "./analytics.module";
 import { sidebar } from "./sidebar.module";
 import { persons } from "./persons.module";
 import Vue from "vue";
@@ -19,6 +20,7 @@ export default new Vuex.Store({
     actions: {},
     modules: {
         auth,
+        analytics,
         sidebar,
         news,
         events,

@@ -4,7 +4,7 @@ import Vue from "vue";
 import Login from "../pages/Login.vue";
 import authService from "@/services/auth.service";
 import TheContainer from "../containers/TheContainer.vue";
-import Dashboard from "../views/Dashboard.vue";
+import Dashboard from "../pages/Dashboard.vue";
 import store from "../store";
 
 const routes: Array<RouteConfig> = [
