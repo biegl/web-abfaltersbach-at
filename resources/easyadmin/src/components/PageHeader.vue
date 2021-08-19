@@ -6,7 +6,7 @@
                     <CIcon :name="icon" class="mr-2" />
                     <h4 class="mb-0">{{ title }}</h4>
                 </div>
-                <div class="card-header-actions">
+                <div class="card-header-actions" v-if="route">
                     <RouterLink :to="route" class="btn btn-primary"
                         >Erstellen</RouterLink
                     >

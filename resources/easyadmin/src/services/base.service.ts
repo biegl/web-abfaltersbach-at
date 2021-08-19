@@ -18,7 +18,7 @@ export default class BaseService<T extends BaseObject> {
             .then(response => response.data);
     }
 
-    getAll(filter): Promise<Paginator<T>> {
+    getAll(filter?): Promise<Paginator<T>> {
         let url = this.baseUrl;
 
         if (filter) {

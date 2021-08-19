@@ -10,9 +10,9 @@
             class="ml-3 d-md-down-none"
             @click="$store.commit('sidebar/toggleSidebarDesktop')"
         />
-        <CHeaderBrand class="mx-auto d-lg-none" to="/">
-            <CIcon name="logo" height="48" alt="Logo" />
-        </CHeaderBrand>
+        <CHeaderBrand class="mx-auto d-lg-none" to="/"
+            >Gemeinde Abfaltersbach</CHeaderBrand
+        >
         <CHeaderNav class="d-md-down-none mr-auto">
             <CHeaderNavItem class="px-3">
                 <CHeaderNavLink to="/dashboard">

@@ -37,6 +37,7 @@ if (process.env.NODE_ENV === "production") {
     });
 }
 
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 const base: any = Vue;
 
 new base({

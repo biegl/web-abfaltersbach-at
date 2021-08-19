@@ -10,6 +10,7 @@
                             <router-view :key="$route.path"></router-view>
                         </transition>
                     </CContainer>
+                    <vue-snotify></vue-snotify>
                 </main>
             </div>
             <TheFooter />

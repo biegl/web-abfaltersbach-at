@@ -18,4 +18,5 @@ export interface Paginator<T> {
     prev_page_url: string | null;
     to: number;
     total: number;
+    map: Function;
 }

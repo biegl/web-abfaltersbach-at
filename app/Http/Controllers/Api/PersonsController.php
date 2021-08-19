@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ListController;
 use App\Http\Requests\StorePerson;
+use App\Http\Requests\StorePersonListRequest;
 use App\Models\File;
 use App\Models\Module;
 use App\Models\Person;
@@ -141,19 +142,28 @@ class PersonsController extends Controller
         return response()->json($persons, 200);
     }
 
-    public function saveList(Module $module, Request $request)
+    public function saveList(Module $module, StorePersonListRequest $request)
     {
-        // Get module
         if (! $module) {
             return response()->json('Not found', 404);
         }
 
+        // validate
+
+        $order = $request->validated();
+
+        // store
+
         $config = $module->configuration;
-        $config['ids'] = $request['order'];
+        $config['ids'] = $order['order'];
 
         $module->update(['configuration' => $config]);
 
-        Cache::forget(ListController::$CACHE_KEY_LIST.'_'.$module->id);
+        // clear cache
+
+        Cache::forget(ListController::$CACHE_KEY_LIST . '_' . $module->id);
+
+        // response
 
         return $this->list($module->fresh());
     }

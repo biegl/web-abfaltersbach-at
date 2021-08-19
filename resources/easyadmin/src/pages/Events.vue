@@ -120,7 +120,8 @@ export default Vue.extend({
             ];
         },
         filter() {
-            const filter = {
+            /* eslint-disable  @typescript-eslint/no-explicit-any */
+            const filter: any = {
                 page: this.activePage,
             };
 

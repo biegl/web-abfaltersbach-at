@@ -1,6 +1,6 @@
 <template>
     <CCard class="mb-1" v-bind:class="{ 'not-visible': !visible }">
-        <CCardBody v-bind:class="contentClass">
+        <CCardBody v-bind:class="contentClass" class="pr-1">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
                     <em v-bind:class="circleClass"></em>

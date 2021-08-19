@@ -40,6 +40,7 @@ import {
     cilCheckCircle,
     // cilCommentSquare,
     // cilCursor,
+    cilCursorMove,
     // cilDrop,
     // cilDollar,
     // cilEnvelopeClosed,
@@ -74,7 +75,7 @@ import {
     cilTrash,
     cilUser,
     // cilUserFemale,
-    // cilUserFollow,
+    cilUserFollow,
     // cilXCircle,
 } from "@coreui/icons";
 import { logo } from "./logo";
@@ -96,6 +97,7 @@ export const iconsSet = Object.assign(
         // cilChevronBottom,
         // cilChevronTop,
         cilCheckCircle,
+        cilCursorMove,
         // cilCommentSquare,
         // cilCursor,
         // cilDrop,
@@ -133,7 +135,7 @@ export const iconsSet = Object.assign(
         cilTrash,
         cilUser,
         // cilUserFemale,
-        // cilUserFollow,
+        cilUserFollow,
         // cilXCircle,
     },
     {
