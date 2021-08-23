@@ -10,11 +10,14 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class File extends Model
 {
-    use HasFactory, LogsActivity;
+    use HasFactory;
+    use LogsActivity;
 
-    const BYTE_UNITS = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-    const BYTE_PRECISION = [0, 0, 1, 2, 2, 3, 3, 4, 4];
-    const BYTE_NEXT = 1024;
+    public const BYTE_UNITS = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+    public const BYTE_PRECISION = [0, 0, 1, 2, 2, 3, 3, 4, 4];
+
+    public const BYTE_NEXT = 1024;
 
     protected $table = 'tbl_downloads';
 

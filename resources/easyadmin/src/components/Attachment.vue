@@ -1,51 +1,47 @@
 <template>
-    <div>
-        <input v-if="editMode" v-model="file.title" />
-        <span
-            v-else
-            @click="this.copyLink"
-            title="Dateipfad in die Zwischenablage kopieren"
-            >{{ file.title }}</span
-        >
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="text-black-50" style="min-width:0">
+            <div>
+                <a
+                    class="d-block text-truncate"
+                    target="_blank"
+                    :href="filePath"
+                    >{{ file.title }}</a
+                >
+            </div>
+            <small
+                class="d-block"
+                v-on:click="onCopyLink"
+                title="Dateipfad in die Zwischenablage kopieren"
+                >{{ file.readableFileSize }}</small
+            >
+        </div>
 
-        <button
-            v-if="!editMode"
-            type="button"
-            class="btn btn-sm"
-            title="Bearbeiten"
-            @click="this.edit"
-        >
-            <i class="fa fa-edit"></i>
-        </button>
+        <div style="min-width:70px; margin-right: -10px;">
+            <button
+                type="button"
+                class="btn btn-sm"
+                v-c-tooltip="{
+                    content: 'Bearbeiten',
+                    placement: 'top-end',
+                }"
+                v-on:click="onEdit"
+            >
+                <CIcon name="cil-pencil" />
+            </button>
 
-        <button
-            v-if="editMode"
-            type="button"
-            class="btn btn-sm"
-            title="Speichern"
-            @click="this.save"
-            :disabled="!this.isDirty"
-        >
-            <i class="fa fa-check"></i>
-        </button>
-        <button
-            v-if="editMode"
-            type="button"
-            class="btn btn-sm"
-            title="Abbrechen"
-            @click="this.cancel"
-        >
-            <i class="fa fa-times"></i>
-        </button>
-        <button
-            v-if="!editMode"
-            type="button"
-            class="btn btn-sm"
-            title="Löschen"
-            @click="this.delete"
-        >
-            <i class="fa fa-trash"></i>
-        </button>
+            <button
+                type="button"
+                class="btn btn-sm"
+                v-c-tooltip="{
+                    content: 'Löschen',
+                    placement: 'top-end',
+                }"
+                v-on:click="onDelete"
+            >
+                <CIcon name="cil-trash" />
+            </button>
+        </div>
     </div>
 </template>
 <script lang="ts">
@@ -54,7 +50,7 @@ import { Vue } from "vue-property-decorator";
 export default Vue.extend({
     name: "Attachment",
 
-    props: ["file", "editMode"],
+    props: ["file"],
 
     data() {
         return {
@@ -66,57 +62,21 @@ export default Vue.extend({
         isDirty() {
             return this.file.title != "" && this.file.title != this.title;
         },
+        filePath() {
+            return `/files/${this.file.file}`;
+        },
     },
 
     methods: {
-        edit() {
-            this.title = this.file.title;
-            this.$emit("onEditFile", this.file);
+        onEdit() {
+            this.$emit("onEdit", this.file);
         },
-        cancel() {
-            this.file.title = this.title;
-            this.$emit("onEditFile", null);
+        onDelete() {
+            this.$emit("onDelete", this.file);
         },
-        save() {
-            this.$store
-                .dispatch("files/partialUpdate", this.file)
-                .then(() => {
-                    this.$emit("onAttachmentsUpdated", this.file);
-                    this.$snotify.success("Der Dateiname wurde geändert.");
-                })
-                .catch(() => {
-                    this.$snotify.error(
-                        "Die Datei konnte nicht umbenannt werden!"
-                    );
-                })
-                .finally(() => {
-                    this.$emit("onEditFile", null);
-                });
-        },
-        delete() {
-            if (
-                !window.confirm(
-                    `Soll die Datei "${this.file.title}" wirklich gelöscht werden?`
-                )
-            ) {
-                return;
-            }
-
-            this.$store
-                .dispatch("files/delete", this.file)
-                .then(() => {
-                    this.$emit("onAttachmentsUpdated", this.file);
-                    this.$snotify.success("Die Datei wurde gelöscht.");
-                })
-                .catch(() => {
-                    this.$snotify.error(
-                        "Die Datei konnte nicht gelöscht werden!"
-                    );
-                });
-        },
-        copyLink() {
+        onCopyLink() {
             const elem = document.createElement("textarea");
-            elem.value = `/files/${this.file.file}`;
+            elem.value = this.filePath;
             document.body.appendChild(elem);
             elem.select();
             document.execCommand("copy");
@@ -125,15 +85,3 @@ export default Vue.extend({
     },
 });
 </script>
-<style lang="scss" scoped>
-.fa-check {
-    color: green;
-
-    :disabled & {
-        color: lightgray;
-    }
-}
-.fa-times {
-    color: red;
-}
-</style>

@@ -80,7 +80,7 @@ jobs:
           npm run production
 
       - name: Execute tests (Unit and Feature tests) via PHPUnit
-        run: vendor/bin/pest
+        run: vendor/bin/pest tests
 
       - name: Migrate MySQL DB
         run: php artisan migrate:fresh --seed

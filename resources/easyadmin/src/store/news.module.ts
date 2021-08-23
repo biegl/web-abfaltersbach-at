@@ -1,24 +1,26 @@
+import { Paginator } from "./../models/paginator";
 import FileService from "@/services/file.service";
 import NewsService from "@/services/news.service";
 import News from "@/models/news";
 
 interface NewsState {
-    all: News[];
-    selectedNews: News;
+    all: Paginator<News> | null;
+    selectedNews: News | null;
 }
 
-const initialState: NewsState = { all: [], selectedNews: null };
+const initialState: NewsState = { all: null, selectedNews: null };
 
 export const news = {
     namespaced: true,
     state: initialState,
     actions: {
-        load({ commit }) {
-            return NewsService.getAll().then(
-                news => {
-                    const models = news.map(obj => News.init(obj));
-                    commit("loadSuccess", models);
-                    return Promise.resolve(models);
+        loadAll({ commit }, filter) {
+            // Load all news
+            return NewsService.getAll(filter).then(
+                paginator => {
+                    paginator.data = paginator.data.map(News.init);
+                    commit("loadSuccess", paginator);
+                    return Promise.resolve(paginator);
                 },
                 error => {
                     commit("loadFailure");
@@ -26,111 +28,56 @@ export const news = {
                 }
             );
         },
-        select({ commit }, news: News) {
-            commit("selectNews", news);
-        },
-        delete({ commit }, news: News) {
-            return NewsService.delete(news).then(
-                () => {
-                    commit("deleteSuccess", news.id);
-                    return Promise.resolve();
+        loadOne({ commit }, newsId) {
+            return NewsService.get(newsId).then(
+                news => {
+                    const model = News.init(news);
+                    commit("selectNews", model);
+                    return Promise.resolve(model);
                 },
                 error => {
+                    commit("selectNews", null);
                     return Promise.reject(error);
                 }
             );
         },
+        select({ commit }, news: News) {
+            commit("selectNews", news);
+        },
         create({ commit }, news: News) {
             return NewsService.create(news).then(
-                createdNews => {
-                    const model = News.init(createdNews);
-                    commit("createSuccess", model);
-                    return Promise.resolve(model);
-                },
-                error => {
-                    return Promise.reject(error);
-                }
+                createdNews => Promise.resolve(News.init(createdNews)),
+                error => Promise.reject(error)
             );
         },
         update({ commit }, news: News) {
             return NewsService.update(news).then(
-                updatedNews => {
-                    const model = News.init(updatedNews);
-                    commit("updateSuccess", model);
-                    return Promise.resolve(model);
-                },
-                error => {
-                    return Promise.reject(error);
-                }
+                updatedNews => Promise.resolve(News.init(updatedNews)),
+                error => Promise.reject(error)
             );
         },
-        updateNews({ commit }, news: News) {
-            commit("updateNews", news);
-        },
-        deleteFile({ commit }, { news, file }) {
-            return FileService.delete(file).then(
-                () => {
-                    commit("deleteFileSuccess", { news, file });
-                    return Promise.resolve();
-                },
-                error => {
-                    return Promise.reject(error);
-                }
+        delete({ commit }, news: News) {
+            return NewsService.delete(news).then(
+                () => Promise.resolve(),
+                error => Promise.reject(error)
             );
         },
     },
     mutations: {
-        loadSuccess(state: NewsState, news: News[]) {
+        loadSuccess(state: NewsState, news: Paginator<News>) {
             state.all = news;
 
             if (state.selectedNews) {
-                state.selectedNews = state.all.find(
+                state.selectedNews = state.all.data.find(
                     el => el.id == state.selectedNews.id
                 );
             }
         },
+        loadFailure(state: NewsState) {
+            state.all = null;
+        },
         selectNews(state: NewsState, news: News) {
             state.selectedNews = news;
-        },
-        loadFailure(state: NewsState) {
-            state.all = [];
-        },
-        deleteSuccess(state: NewsState, id: string) {
-            state.all = state.all.filter((news: News) => news.id !== id);
-        },
-        createSuccess(state: NewsState, news: News) {
-            state.all = [news, ...state.all];
-        },
-        updateSuccess(state: NewsState, createdNews: News) {
-            state.all = state.all.map(news => {
-                if (news.id === createdNews.id) {
-                    return createdNews;
-                }
-                return news;
-            });
-        },
-        updateNews(state: NewsState, news: News) {
-            state.all = state.all.map(obj => {
-                if (obj.id == news.id) {
-                    return News.init(news);
-                }
-                return obj;
-            });
-            state.selectedNews = news;
-        },
-        deleteFileSuccess(state: NewsState, { news, file }) {
-            state.all = state.all.map(obj => {
-                if (obj.id == news.id) {
-                    obj.attachments = news.attachments.filter(
-                        attachment => attachment.id != file.id
-                    );
-                }
-                return obj;
-            });
-
-            state.selectedNews.attachments = state.selectedNews.attachments.filter(
-                attachment => attachment.id != file.id
-            );
         },
     },
 };

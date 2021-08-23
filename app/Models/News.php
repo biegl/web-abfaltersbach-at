@@ -9,7 +9,9 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class News extends Model
 {
-    use HasFactory, LogsActivity, Notifiable;
+    use HasFactory;
+    use LogsActivity;
+    use Notifiable;
 
     protected $table = 'tbl_news';
 

@@ -1,3 +1,5 @@
+import { analytics } from "./analytics.module";
+import { sidebar } from "./sidebar.module";
 import { persons } from "./persons.module";
 import Vue from "vue";
 import Vuex from "vuex";
@@ -8,6 +10,7 @@ import { files } from "./files.module";
 import { users } from "./users.module";
 import { pages } from "./pages.module";
 import { activities } from "./activities.module";
+import { navigation } from "./navigation.module";
 
 Vue.use(Vuex);
 
@@ -17,6 +20,8 @@ export default new Vuex.Store({
     actions: {},
     modules: {
         auth,
+        analytics,
+        sidebar,
         news,
         events,
         files,
@@ -24,5 +29,6 @@ export default new Vuex.Store({
         pages,
         persons,
         activities,
+        navigation,
     },
 });

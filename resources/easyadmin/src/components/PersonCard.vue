@@ -1,46 +1,50 @@
 <template>
-    <div v-if="person" class="media person-card">
-        <img class="mr-3 person-card-image" :src="person.imagePath" />
-        <div class="media-body">
-            <span
-                class="person-drag-handle"
-                title="Person durch ziehen verschieben"
-                >&#x2630;</span
-            >
-            <h2 class="person-card-name">
-                {{ person.name }}
-            </h2>
-            <h3 class="person-card-role">
-                {{ person.role }}
-            </h3>
-            <div class="person-card-phone">
-                <label>Telefon:</label> <span>{{ person.phone }}</span>
+    <CCard class="mb-0">
+        <CCardBody class="py-1 pr-1">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center" style="min-width:0">
+                    <div class="c-avatar mr-3">
+                        <img class="c-avatar-img" :src="person.imagePath" />
+                    </div>
+                    <div style="min-width:0">
+                        <h6 class="mb-0">
+                            {{ person.name }}
+                        </h6>
+                        <small class="d-block text-muted text-truncate">{{
+                            person.role
+                        }}</small>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button class="btn person-drag-handle">
+                        <CIcon name="cil-cursor-move" />
+                    </button>
+                    <button
+                        type="button"
+                        class="btn"
+                        v-on:click="editPerson(person)"
+                        v-c-tooltip="{
+                            content: 'Person bearbeiten',
+                            placement: 'top-end',
+                        }"
+                    >
+                        <CIcon name="cil-pencil" />
+                    </button>
+                    <button
+                        type="button"
+                        class="btn"
+                        v-on:click="deletePerson(person)"
+                        v-c-tooltip="{
+                            content: 'Person löschen',
+                            placement: 'top-end',
+                        }"
+                    >
+                        <CIcon name="cil-trash" />
+                    </button>
+                </div>
             </div>
-            <div class="person-card-email">
-                <label>Email:</label> <span>{{ person.email }}</span>
-            </div>
-            <div class="actions">
-                <button
-                    type="button"
-                    class="btn btn-primary"
-                    aria-label="Bearbeiten"
-                    title="Bearbeiten"
-                    @click="editPerson(person)"
-                >
-                    <i class="fa fa-edit"></i></button
-                >&nbsp;
-                <button
-                    type="button"
-                    class="btn btn-danger"
-                    aria-label="Löschen"
-                    title="Löschen"
-                    @click="deletePerson(person)"
-                >
-                    <i class="fa fa-trash"></i>
-                </button>
-            </div>
-        </div>
-    </div>
+        </CCardBody>
+    </CCard>
 </template>
 <script lang="ts">
 import { Vue } from "vue-property-decorator";
@@ -60,68 +64,13 @@ export default Vue.extend({
     },
 });
 </script>
-<style scoped lang="scss">
-.person-card {
-    font-size: 1rem;
-    background: #333;
+<style scoped>
+.c-avatar-img {
+    height: 36px;
+    width: 36px;
     border: 1px solid #efefef;
-    padding: 10px;
-    border-radius: 10px;
-    color: #fff;
-    position: relative;
-    overflow: hidden;
-
-    .media-body {
-        overflow: hidden;
-    }
-}
-.person-card-image {
-    height: 120px;
-}
-.person-card-name,
-.person-card-role,
-.person-card-phone,
-.person-card-email {
-    font-size: 0.8rem;
-    line-height: 1.2rem;
-    margin: 0;
-    padding: 0;
-}
-.person-card-phone,
-.person-card-email {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-
-    label {
-        font-size: 0.8rem;
-        line-height: 1.2rem;
-        margin: 0;
-        padding: 0;
-    }
-}
-.person-drag-handle {
-    cursor: move;
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    z-index: 1;
 }
 .actions {
-    text-align: right;
-    margin-top: 5px;
-    position: absolute;
-    bottom: 0.5rem;
-    right: 0.5rem;
-
-    .btn {
-        width: 38px;
-    }
-}
-</style>
-<style>
-.smooth-dnd-ghost {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
-    border-radius: 10px;
+    white-space: nowrap;
 }
 </style>

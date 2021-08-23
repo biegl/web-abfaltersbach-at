@@ -1,15 +1,19 @@
+import { dateFormatFilter } from "./filters/dateFormat";
+import { percentageFilter } from "./filters/percentage";
 import VCalendar from "v-calendar";
 import Vue from "vue";
 import * as Sentry from "@sentry/browser";
 import { Vue as VueIntegration } from "@sentry/integrations";
-
+import CoreuiVue from "@coreui/vue";
 import Snotify, { SnotifyPosition } from "vue-snotify";
 
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
+import { iconsSet as icons } from "./assets/icons/icons";
 
 Vue.config.productionTip = false;
+Vue.config.performance = true;
 
 // == PLUGINS ==
 Vue.use(VCalendar, {
@@ -23,6 +27,8 @@ const options = {
 };
 
 Vue.use(Snotify, options);
+Vue.use(CoreuiVue);
+Vue.prototype.$log = console.log.bind(console);
 
 if (process.env.NODE_ENV === "production") {
     Sentry.init({
@@ -33,8 +39,19 @@ if (process.env.NODE_ENV === "production") {
     });
 }
 
-new Vue({
+Vue.filter("percentage", percentageFilter);
+Vue.filter("date", dateFormatFilter);
+
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+const base: any = Vue;
+
+new base({
+    el: "#app",
     router,
     store,
-    render: h => h(App),
-}).$mount("#app");
+    icons,
+    template: "<App/>",
+    components: {
+        App,
+    },
+});

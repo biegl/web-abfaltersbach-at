@@ -30,7 +30,7 @@
         />
     </div>
 </template>
-<script>
+<script lang="ts">
 import { Vue } from "vue-property-decorator";
 import Editor from "@tinymce/tinymce-vue";
 import Config from "../config";

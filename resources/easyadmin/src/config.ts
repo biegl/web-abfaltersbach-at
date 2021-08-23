@@ -11,6 +11,7 @@ export default class Config {
         menubar: false,
         language: "de",
         /* eslint-disable @typescript-eslint/camelcase */
+        content_css: "/content.css",
         file_picker_types: "image",
         images_reuse_filename: true,
         images_upload_handler: (blobInfo, success, failure, progress) => {

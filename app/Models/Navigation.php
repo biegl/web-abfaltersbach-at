@@ -11,13 +11,18 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Navigation extends Model
 {
-    use HasFactory, LogsActivity;
+    use HasFactory;
+    use LogsActivity;
 
     protected $table = 'tbl_navigation';
 
     protected $primaryKey = 'ID';
 
     protected $with = ['children'];
+
+    protected $hidden = ['navianzeigen'];
+
+    protected $appends = ['pageId', 'isVisible'];
 
     public $timestamps = false;
 
@@ -54,9 +59,24 @@ class Navigation extends Model
         return RouterHelper::normalizeUrl($this->parent()->slug.'/'.$this->slug);
     }
 
+    public function getPageIdAttribute()
+    {
+        $page = \App\Models\Page::where('navigation_id', $this->ID)->first();
+        if ($page) {
+            return \App\Models\Page::where('navigation_id', $this->ID)->first()->ID;
+        }
+
+        return null;
+    }
+
+    public function getIsVisibleAttribute()
+    {
+        return $this->navianzeigen == 'Ja';
+    }
+
     public function children()
     {
-        return $this->hasMany('App\Models\Navigation', 'refID');
+        return $this->hasMany('App\Models\Navigation', 'refID')->orderBy('position');
     }
 
     public function parent()
@@ -69,20 +89,20 @@ class Navigation extends Model
         return $this->hasMany('App\Models\File', 'navID')->orderBy('position', 'asc');
     }
 
-    public static function breadcrumbs(\App\Models\Page $page)
+    public static function breadcrumbs(Page $page)
     {
-        $nav_item = Navigation::where('ID', $page->navigation_id)->first();
+        $nav_item = self::where('ID', $page->navigation_id)->first();
 
         return array_filter(array_unique([
-            Navigation::landingPage(),
+            self::landingPage(),
             $nav_item->parent(),
             $nav_item,
         ]));
     }
 
-    public static function subnavigation(\App\Models\Page $page)
+    public static function subnavigation(Page $page)
     {
-        $nav_item = Navigation::where('ID', $page->navigation_id)->first();
+        $nav_item = self::where('ID', $page->navigation_id)->first();
 
         if ($nav_item->parent()) {
             return $nav_item
@@ -98,7 +118,7 @@ class Navigation extends Model
 
     public static function getUrlMap()
     {
-        $pages = Navigation::visible()->get();
+        $pages = self::visible()->get();
 
         $map = [];
 
@@ -132,6 +152,13 @@ class Navigation extends Model
     {
         return $query
             ->visible()
+            ->where('refID', null)
+            ->orderBy('position');
+    }
+
+    public function scopeAllTopLevel($query)
+    {
+        return $query
             ->where('refID', null)
             ->orderBy('position');
     }

@@ -14,7 +14,8 @@ use NotificationChannels\Telegram\TelegramMessage;
 
 class EventCreated extends Notification implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     public $event;
 
@@ -68,13 +69,13 @@ class EventCreated extends Notification implements ShouldQueue
         if ($src = array_pop($match)) {
             return TelegramFile::create()
                 ->to(env('TELEGRAM_CHANNEL_NAME', '@abfaltersbach'))
-                ->content(join("\n", [$title, $content]))
+                ->content(implode("\n", [$title, $content]))
                 ->photo($src)
                 ->button('Online ansehen', 'https://abfaltersbach.at');
         } else {
             return TelegramMessage::create()
                 ->to(env('TELEGRAM_CHANNEL_NAME', '@abfaltersbach'))
-                ->content(join("\n", [$title, $content]))
+                ->content(implode("\n", [$title, $content]))
                 ->button('Online ansehen', 'https://abfaltersbach.at');
         }
     }

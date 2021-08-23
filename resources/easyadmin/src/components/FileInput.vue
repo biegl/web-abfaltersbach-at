@@ -5,7 +5,7 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import Uppy from "@uppy/core";
 import German from "@uppy/locales/lib/de_DE";
 import XHRUpload from "@uppy/xhr-upload";
@@ -134,6 +134,12 @@ export default {
 
 <style scoped>
 .uppy-progress-bar {
-    margin-bottom: 1rem;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+.file-input >>> .uppy-FileInput-container {
+    margin: 0;
 }
 </style>

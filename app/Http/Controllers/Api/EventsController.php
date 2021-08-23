@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEvent;
 use App\Models\Event;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class EventsController extends Controller
 {
+    private $itemsPerPage = 25;
+
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +21,20 @@ class EventsController extends Controller
      */
     public function index()
     {
-        return Event::orderBy('date', 'desc')->limit(20)->get();
+        $startDateString = request()->query('startDate');
+        $endDateString = request()->query('endDate');
+
+        if ($startDateString && $endDateString) {
+            $startDate = Carbon::createFromFormat('Y-m-d', $startDateString)->startofDay();
+            $endDate = Carbon::createFromFormat('Y-m-d', $endDateString)->endOfDay();
+
+            return Event::whereBetween('date', [$startDate, $endDate])
+                ->orderBy('date', 'desc')
+                ->paginate($this->itemsPerPage);
+        }
+
+        return Event::orderBy('date', 'desc')
+            ->paginate($this->itemsPerPage);
     }
 
     /**

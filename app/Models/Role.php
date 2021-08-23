@@ -4,6 +4,7 @@ namespace App\Models;
 
 class Role
 {
-    const USER = 1;
-    const ADMIN = 2;
+    public const USER = 1;
+
+    public const ADMIN = 2;
 }
