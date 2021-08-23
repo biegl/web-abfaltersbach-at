@@ -5,7 +5,11 @@
                 ><h2>
                     Übersicht {{ selectedPeriod | date("MMMM") }}
                     {{ selectedPeriod | date("yyyy") }}
-                </h2></CCol
+                </h2>
+                <p class="text-muted">
+                    Die Google Analytics Daten stammen aus dem aktuellen Monat
+                    und werden 1x täglich aktualisiert.
+                </p></CCol
             >
         </CRow>
         <CRow>

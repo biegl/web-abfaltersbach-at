@@ -18,8 +18,6 @@
         <CDropdownHeader tag="div" class="text-center" color="light">
             <strong>Settings</strong>
         </CDropdownHeader>
-        <CDropdownItem> <CIcon name="cil-user" /> Profile </CDropdownItem>
-        <CDropdownDivider />
         <CDropdownItem>
             <RouterLink to="/logout">
                 <CIcon name="cil-lock-locked" /> Logout
