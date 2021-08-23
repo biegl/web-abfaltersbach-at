@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Storage;
 
 class EventsController extends Controller
 {
-
     private $itemsPerPage = 25;
 
     /**
@@ -22,7 +21,6 @@ class EventsController extends Controller
      */
     public function index()
     {
-
         $startDateString = request()->query('startDate');
         $endDateString = request()->query('endDate');
 

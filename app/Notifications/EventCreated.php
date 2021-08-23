@@ -14,7 +14,8 @@ use NotificationChannels\Telegram\TelegramMessage;
 
 class EventCreated extends Notification implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     public $event;
 

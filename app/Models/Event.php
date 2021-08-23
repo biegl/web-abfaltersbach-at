@@ -10,7 +10,9 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Event extends Model
 {
-    use HasFactory, LogsActivity, Notifiable;
+    use HasFactory;
+    use LogsActivity;
+    use Notifiable;
 
     protected $table = 'tbl_events';
 

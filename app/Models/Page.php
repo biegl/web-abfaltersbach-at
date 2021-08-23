@@ -11,7 +11,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Page extends Model
 {
-    use HasFactory, LogsActivity;
+    use HasFactory;
+    use LogsActivity;
 
     protected $table = 'tbl_site';
 

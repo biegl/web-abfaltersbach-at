@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller
 {
-
     private $itemsPerPage = 25;
 
     /**

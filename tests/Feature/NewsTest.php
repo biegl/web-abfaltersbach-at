@@ -79,7 +79,9 @@ class NewsTest extends TestCase
         $this->actingAs($this->user)->getJson('/api/news', [])
             ->assertStatus(200)
             ->assertJsonStructure([
-                '*' => ['ID', 'title', 'text', 'date', 'expirationDate'],
+                'data' => [
+                    '*' => ['ID', 'title', 'text', 'date', 'expirationDate'],
+                ],
             ]);
     }
 }
