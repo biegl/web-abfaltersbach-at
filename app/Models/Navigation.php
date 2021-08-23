@@ -35,7 +35,7 @@ class Navigation extends Model
 
     public function getHasParentAttribute()
     {
-        return !is_null($this->parent());
+        return ! is_null($this->parent());
     }
 
     public function getIsActiveAttribute()
@@ -52,11 +52,11 @@ class Navigation extends Model
 
     public function getUrlAttribute()
     {
-        if (!$this->hasParent) {
+        if (! $this->hasParent) {
             return RouterHelper::normalizeUrl($this->slug);
         }
 
-        return RouterHelper::normalizeUrl($this->parent()->slug . '/' . $this->slug);
+        return RouterHelper::normalizeUrl($this->parent()->slug.'/'.$this->slug);
     }
 
     public function getPageIdAttribute()
@@ -71,7 +71,7 @@ class Navigation extends Model
 
     public function getIsVisibleAttribute()
     {
-        return $this->navianzeigen == "Ja";
+        return $this->navianzeigen == 'Ja';
     }
 
     public function children()
@@ -89,20 +89,20 @@ class Navigation extends Model
         return $this->hasMany('App\Models\File', 'navID')->orderBy('position', 'asc');
     }
 
-    public static function breadcrumbs(\App\Models\Page $page)
+    public static function breadcrumbs(Page $page)
     {
-        $nav_item = Navigation::where('ID', $page->navigation_id)->first();
+        $nav_item = self::where('ID', $page->navigation_id)->first();
 
         return array_filter(array_unique([
-            Navigation::landingPage(),
+            self::landingPage(),
             $nav_item->parent(),
             $nav_item,
         ]));
     }
 
-    public static function subnavigation(\App\Models\Page $page)
+    public static function subnavigation(Page $page)
     {
-        $nav_item = Navigation::where('ID', $page->navigation_id)->first();
+        $nav_item = self::where('ID', $page->navigation_id)->first();
 
         if ($nav_item->parent()) {
             return $nav_item
@@ -118,14 +118,14 @@ class Navigation extends Model
 
     public static function getUrlMap()
     {
-        $pages = Navigation::visible()->get();
+        $pages = self::visible()->get();
 
         $map = [];
 
         foreach ($pages as $page) {
             $url = $page->url;
 
-            if (!$url) {
+            if (! $url) {
                 continue;
             }
 

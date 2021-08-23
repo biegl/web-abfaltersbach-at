@@ -24,7 +24,7 @@ class EventsController extends Controller
         $startDateString = request()->query('startDate');
         $endDateString = request()->query('endDate');
 
-        if ($startDateString  && $endDateString) {
+        if ($startDateString && $endDateString) {
             $startDate = Carbon::createFromFormat('Y-m-d', $startDateString)->startofDay();
             $endDate = Carbon::createFromFormat('Y-m-d', $endDateString)->endOfDay();
 
@@ -32,6 +32,7 @@ class EventsController extends Controller
                 ->orderBy('date', 'desc')
                 ->paginate($this->itemsPerPage);
         }
+
         return Event::orderBy('date', 'desc')
             ->paginate($this->itemsPerPage);
     }

@@ -161,7 +161,7 @@ class PersonsController extends Controller
 
         // clear cache
 
-        Cache::forget(ListController::$CACHE_KEY_LIST . '_' . $module->id);
+        Cache::forget(ListController::$CACHE_KEY_LIST.'_'.$module->id);
 
         // response
 

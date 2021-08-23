@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Analytics;
+use App\Http\Controllers\Controller;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Spatie\Analytics\Period;
 
@@ -47,6 +47,7 @@ class AnalyticsController extends Controller
                 'userTypes' => $userTypes,
             ];
         });
+
         return response()->json($analyticsData);
     }
 
@@ -65,10 +66,10 @@ class AnalyticsController extends Controller
         )->totalsForAllResults;
 
         return [
-            'visitors' => (int)$totals["ga:visitors"],
-            'sessions' => (int)$totals["ga:sessions"],
-            'bounceRate' => (float)$totals["ga:bounceRate"] / 100,
-            'avgSessionDurationInSeconds' => (int)$totals["ga:avgSessionDuration"],
+            'visitors' => (int) $totals['ga:visitors'],
+            'sessions' => (int) $totals['ga:sessions'],
+            'bounceRate' => (float) $totals['ga:bounceRate'] / 100,
+            'avgSessionDurationInSeconds' => (int) $totals['ga:avgSessionDuration'],
         ];
     }
 }
