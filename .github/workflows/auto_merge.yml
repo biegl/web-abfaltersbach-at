@@ -6,7 +6,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: "${{ github.head_ref }}-auto_merge"
+  group: "${{ github.base_ref }}-auto_merge"
   cancel-in-progress: true
 
 jobs:

@@ -5,7 +5,7 @@ permissions:
   pull-requests: write
 
 concurrency:
-  group: "${{ github.head_ref }}-auto_approve"
+  group: "${{ github.base_ref }}-auto_approve"
   cancel-in-progress: true
 
 jobs:
