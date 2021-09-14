@@ -97,8 +97,9 @@ class NewsController extends Controller
 
     /**
      * Attaches a file to a specific news.
-     * @param  \App\Models\News $news
-     * @param  \Illuminate\Http\Request $request
+     *
+     * @param  \App\Models\News  $news
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function attachFile(News $news, Request $request)

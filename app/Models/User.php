@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Role;
 use App\Notifications\ResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;

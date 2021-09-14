@@ -16,7 +16,7 @@ class Str extends StrHelper
      *
      * This method converts 13 to 13th, 2 to 2nd ...
      *
-     * @param int $number Number to get its ordinal value
+     * @param  int  $number  Number to get its ordinal value
      * @return string Ordinal representation of given string.
      */
     public static function ordinal($number)
@@ -88,8 +88,8 @@ class Str extends StrHelper
      * If $string begins with any number of consecutive symbols,
      * returns the number, otherwise returns 0.
      *
-     * @param string $string
-     * @param string $symbol
+     * @param  string  $string
+     * @param  string  $symbol
      * @return int
      */
     public static function getPrecedingSymbols($string, $symbol)

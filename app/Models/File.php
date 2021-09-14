@@ -67,9 +67,8 @@ class File extends Model
     /**
      * Convert bytes to be human readable.
      *
-     * @param int      $bytes     Bytes to make readable
-     * @param int|null $precision Precision of rounding
-     *
+     * @param  int  $bytes  Bytes to make readable
+     * @param  int|null  $precision  Precision of rounding
      * @return string Human readable bytes
      */
     public static function humanReadableFileSize($bytes, $precision = null)
