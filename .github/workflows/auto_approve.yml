@@ -4,6 +4,10 @@ on: pull_request_target
 permissions:
   pull-requests: write
 
+concurrency:
+  group: "${{ github.head_ref }}-auto_approve"
+  cancel-in-progress: true
+
 jobs:
   dependabot:
     runs-on: ubuntu-latest

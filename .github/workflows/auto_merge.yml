@@ -5,6 +5,10 @@ permissions:
   pull-requests: write
   contents: write
 
+concurrency:
+  group: "${{ github.head_ref }}-auto_merge"
+  cancel-in-progress: true
+
 jobs:
   dependabot:
     runs-on: ubuntu-latest
