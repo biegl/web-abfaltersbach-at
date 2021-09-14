@@ -105,8 +105,9 @@ class EventsController extends Controller
 
     /**
      * Attaches a file to a specific event.
-     * @param  \App\Models\Event $event
-     * @param  \Illuminate\Http\Request $request
+     *
+     * @param  \App\Models\Event  $event
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function attachFile(Event $event, Request $request)

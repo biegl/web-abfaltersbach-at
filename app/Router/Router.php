@@ -32,7 +32,8 @@ class Router
 
     /**
      * Finds a page by its URL.
-     * @param string $url The requested URL string.
+     *
+     * @param  string  $url  The requested URL string.
      * @return \App\Models\Page Returns \App\Models\Page object or null if the page cannot be found.
      */
     public function findByUrl($url)
@@ -64,6 +65,7 @@ class Router
 
     /**
      * Autoloads the URL map only allowing a single execution.
+     *
      * @return array Returns the URL map.
      */
     protected function getUrlMap()

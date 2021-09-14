@@ -12,7 +12,7 @@ class Helper
     /**
      * Adds leading slash and removes trailing slash from the URL.
      *
-     * @param string $url URL to normalize.
+     * @param  string  $url  URL to normalize.
      * @return string Returns normalized URL.
      */
     public static function normalizeUrl($url)
@@ -35,7 +35,7 @@ class Helper
     /**
      * Splits an URL by segments separated by the slash symbol.
      *
-     * @param string $url URL to segmentize.
+     * @param  string  $url  URL to segmentize.
      * @return array Returns the URL segments.
      */
     public static function segmentizeUrl($url)
@@ -56,7 +56,7 @@ class Helper
     /**
      * Rebuilds a URL from an array of segments.
      *
-     * @param array $urlArray Array the URL segments.
+     * @param  array  $urlArray  Array the URL segments.
      * @return string Returns rebuilt URL.
      */
     public static function rebuildUrl(array $urlArray)
@@ -74,9 +74,9 @@ class Helper
     /**
      * Replaces :column_name with it's object value. Example: /some/link/:id/:name -> /some/link/1/Joe.
      *
-     * @param stdObject $object Object containing the data
-     * @param array $columns Expected key names to parse
-     * @param string $string URL template
+     * @param  stdObject  $object  Object containing the data
+     * @param  array  $columns  Expected key names to parse
+     * @param  string  $string  URL template
      * @return string Built string
      */
     public static function parseValues($object, array $columns, $string)
@@ -104,8 +104,8 @@ class Helper
     /**
      * Replaces :column_name with object value without requiring a list of names. Example: /some/link/:id/:name -> /some/link/1/Joe.
      *
-     * @param stdObject $object Object containing the data
-     * @param string $string URL template
+     * @param  stdObject  $object  Object containing the data
+     * @param  string  $string  URL template
      * @return string Built string
      */
     public static function replaceParameters($object, $string)
@@ -119,7 +119,8 @@ class Helper
 
     /**
      * Checks whether an URL pattern segment is a wildcard.
-     * @param string $segment The segment definition.
+     *
+     * @param  string  $segment  The segment definition.
      * @return bool Returns boolean true if the segment is a wildcard. Returns false otherwise.
      */
     public static function segmentIsWildcard($segment)
@@ -129,7 +130,8 @@ class Helper
 
     /**
      * Checks whether an URL pattern segment is optional.
-     * @param string $segment The segment definition.
+     *
+     * @param  string  $segment  The segment definition.
      * @return bool Returns boolean true if the segment is optional. Returns false otherwise.
      */
     public static function segmentIsOptional($segment)
@@ -155,7 +157,8 @@ class Helper
 
     /**
      * Extracts the parameter name from a URL pattern segment definition.
-     * @param string $segment The segment definition.
+     *
+     * @param  string  $segment  The segment definition.
      * @return string Returns the segment name.
      */
     public static function getParameterName($segment)
@@ -195,7 +198,8 @@ class Helper
 
     /**
      * Extracts the regular expression from a URL pattern segment definition.
-     * @param string $segment The segment definition.
+     *
+     * @param  string  $segment  The segment definition.
      * @return string Returns the regular expression string or false if the expression is not defined.
      */
     public static function getSegmentRegExp($segment)
@@ -214,7 +218,8 @@ class Helper
 
     /**
      * Extracts the default parameter value from a URL pattern segment definition.
-     * @param string $segment The segment definition.
+     *
+     * @param  string  $segment  The segment definition.
      * @return string Returns the default value if it is provided. Returns false otherwise.
      */
     public static function getSegmentDefaultValue($segment)
