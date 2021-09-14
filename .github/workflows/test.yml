@@ -5,6 +5,10 @@ on:
   schedule:
     - cron: "0 2 * * *"
 
+concurrency:
+  group: ${{ github.head_ref }}
+  cancel-in-progress: true
+
 jobs:
   test-app:
     name: Test App
