@@ -49,6 +49,6 @@ class UpdateAnalyticsStatistics extends Command
 
         $this->service->retrieveAnalyticsData($year, $month);
 
-        $this->info('✅ Analytics data has been updated.')
+        $this->info('✅ Analytics data has been updated.');
     }
 }
