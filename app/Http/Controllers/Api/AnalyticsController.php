@@ -2,74 +2,27 @@
 
 namespace App\Http\Controllers\Api;
 
-use Analytics;
+use AnalyticsService;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
-use Spatie\Analytics\Period;
 
 class AnalyticsController extends Controller
 {
+    protected $service;
+
+    public function __construct()
+    {
+        $this->service = new AnalyticsService();
+    }
+
     public function index(Request $request)
     {
         $month = $request->query('month') ?? Carbon::today()->month;
         $year = $request->query('year') ?? Carbon::today()->year;
 
-        $cache_key = "analytics_${year}_${month}";
-        $cache_ttl = config('analytics.cache_lifetime_in_minutes') * 60;
+        $data = $this->service->retrieveAnalyticsData($year, $month);
 
-        $analyticsData = Cache::remember($cache_key, $cache_ttl, function () use ($year, $month) {
-            // Data for requested month
-            $startDate = Carbon::createFromDate($year, $month, 1);
-            $endDate = $startDate->copy()->lastOfMonth();
-            $period = Period::create($startDate, $endDate);
-
-            $requestedAnalyticsData = $this->getMetrics($period);
-            $mostVisitedPages = Analytics::fetchMostVisitedPages($period, 5)->toArray();
-            $topBrowsers = Analytics::fetchTopBrowsers($period, 5)->toArray();
-            $topReferrers = Analytics::fetchTopReferrers($period, 5)->toArray();
-            $userTypes = Analytics::fetchUserTypes($period)->toArray();
-
-            // Data for previous month
-            $startDate = $startDate->subMonth();
-            $endDate = $startDate->copy()->lastOfMonth();
-            $period = Period::create($startDate, $endDate);
-
-            $previousAnalyticsData = $this->getMetrics($period);
-
-            return [
-                'previousMonth' => $previousAnalyticsData,
-                'requestedMonth' => $requestedAnalyticsData,
-                'mostVisitedPages' => $mostVisitedPages,
-                'topBrowsers' => $topBrowsers,
-                'topReferrers' => $topReferrers,
-                'userTypes' => $userTypes,
-            ];
-        });
-
-        return response()->json($analyticsData);
-    }
-
-    private function getMetrics(Period $period)
-    {
-        $totals = Analytics::performQuery(
-            $period,
-            implode(',', [
-                'ga:visitors',
-                'ga:newUsers',
-                'ga:sessions',
-                'ga:bounceRate',
-                'ga:avgSessionDuration',
-                'ga:organicSearches',
-            ])
-        )->totalsForAllResults;
-
-        return [
-            'visitors' => (int) $totals['ga:visitors'],
-            'sessions' => (int) $totals['ga:sessions'],
-            'bounceRate' => (float) $totals['ga:bounceRate'] / 100,
-            'avgSessionDurationInSeconds' => (int) $totals['ga:avgSessionDuration'],
-        ];
+        return response()->json($data);
     }
 }
