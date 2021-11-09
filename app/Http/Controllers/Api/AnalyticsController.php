@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use AnalyticsService;
 use App\Http\Controllers\Controller;
+use App\Services\AnalyticsService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 

@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Services;
+
 use Analytics;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;

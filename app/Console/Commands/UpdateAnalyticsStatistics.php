@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use AnalyticsService;
+use App\Services\AnalyticsService;
 use Illuminate\Console\Command;
 
 class UpdateAnalyticsStatistics extends Command
