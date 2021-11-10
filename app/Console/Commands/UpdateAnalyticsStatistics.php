@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Services\AnalyticsService;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class UpdateAnalyticsStatistics extends Command
