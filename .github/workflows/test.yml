@@ -67,7 +67,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2.4.1
         with:
-          node-version: "12.x"
+          node-version: "16.x"
 
       - name: Install Dependencies (PHP vendors)
         run: |
@@ -104,7 +104,7 @@ jobs:
 
       - uses: actions/setup-node@v2.4.1
         with:
-          node-version: "14"
+          node-version: "16"
 
       - name: Cache dependencies
         uses: actions/cache@v2.1.5
