@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "378437ac0205de4ff518cdd795dfbe49",
+    "content-hash": "76121a456e2880912fb9349ae6cd99aa",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1955,16 +1955,16 @@
         },
         {
             "name": "laravel-notification-channels/telegram",
-            "version": "0.7.0",
+            "version": "0.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-notification-channels/telegram.git",
-                "reference": "b5c1f718987f7b1906d2396268b41cc65d90e686"
+                "reference": "dd7cee42b1da9a5528abd298a93c309e25a8306f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel-notification-channels/telegram/zipball/b5c1f718987f7b1906d2396268b41cc65d90e686",
-                "reference": "b5c1f718987f7b1906d2396268b41cc65d90e686",
+                "url": "https://api.github.com/repos/laravel-notification-channels/telegram/zipball/dd7cee42b1da9a5528abd298a93c309e25a8306f",
+                "reference": "dd7cee42b1da9a5528abd298a93c309e25a8306f",
                 "shasum": ""
             },
             "require": {
@@ -2015,9 +2015,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel-notification-channels/telegram/issues",
-                "source": "https://github.com/laravel-notification-channels/telegram/tree/0.7.0"
+                "source": "https://github.com/laravel-notification-channels/telegram/tree/0.8.0"
             },
-            "time": "2021-10-27T23:39:37+00:00"
+            "time": "2021-11-14T01:06:40+00:00"
         },
         {
             "name": "laravel/framework",
