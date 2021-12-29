@@ -64,18 +64,19 @@ class NewsCreated extends Notification implements ShouldQueue
 
         // Convert content to markdown and remove images
         $content = $converter->convert($notifiable->text);
+        $url = 'https://abfaltersbach.at?newsID='.$notifiable->ID;
 
         if ($src = array_pop($match)) {
             return TelegramFile::create()
                 ->to(env('TELEGRAM_CHANNEL_NAME', '@abfaltersbach'))
                 ->content(implode("\n", [$title, $content]))
                 ->photo($src)
-                ->button('Online ansehen', 'https://abfaltersbach.at');
+                ->button('Online ansehen', $url);
         } else {
             return TelegramMessage::create()
                 ->to(env('TELEGRAM_CHANNEL_NAME', '@abfaltersbach'))
                 ->content(implode("\n", [$title, $content]))
-                ->button('Online ansehen', 'https://abfaltersbach.at');
+                ->button('Online ansehen', $url);
         }
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Http\Filters\EventFilter;
+use App\Http\Filters\NewsFilter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
@@ -61,18 +63,30 @@ class Page extends Model
 
         switch ($this->templateName) {
             case 'page.home':
-                $news = Cache::remember(News::$CACHE_KEY_TOP_NEWS, config('cache.defaultTTL'), function () {
-                    return News::top()->get();
-                });
 
-                // Load grouped events from cache
-                $grouped_events = Cache::remember(Event::$CACHE_KEY_GROUPED_EVENTS, config('cache.defaultTTL'), function () {
-                    return Event::byMonth();
-                });
+                // Check if request has query params
+                if (request()->has('newsID')) {
+                    $news = News::filter(new NewsFilter(request()))->get();
+                } else {
+                    $news = Cache::remember(News::$CACHE_KEY_TOP_NEWS, config('cache.defaultTTL'), function () {
+                        return News::top()->get();
+                    });
+                }
 
-                $current_events = Cache::remember(Event::$CACHE_KEY_CURRENT_EVENTS, config('cache.defaultTTL'), function () {
-                    return Event::current()->get();
-                });
+                // Check if request has query params
+                if (request()->has('eventID')) {
+                    $current_events = Event::filter(new EventFilter(request()))->get();
+                    $grouped_events = [];
+                } else {
+                    // Load grouped events from cache
+                    $grouped_events = Cache::remember(Event::$CACHE_KEY_GROUPED_EVENTS, config('cache.defaultTTL'), function () {
+                        return Event::byMonth();
+                    });
+
+                    $current_events = Cache::remember(Event::$CACHE_KEY_CURRENT_EVENTS, config('cache.defaultTTL'), function () {
+                        return Event::current()->get();
+                    });
+                }
 
                 return compact('title', 'content', 'navigation', 'breadcrumbs', 'news', 'grouped_events', 'current_events');
             default:

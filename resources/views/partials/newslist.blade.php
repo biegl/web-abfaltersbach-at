@@ -52,8 +52,12 @@
 
     @empty
 
-        <li>No news entries available</li>
+        <li>Dieser Newseintrag existiert nicht</li>
 
     @endforelse
 
 </ol>
+
+@if (request()->has('newsID'))
+    <a href="/">Alle Einträge anzeigen</a>
+@endif
