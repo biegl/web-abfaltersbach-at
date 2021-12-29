@@ -14,7 +14,7 @@ abstract class QueryFilter
     /**
      * QueryFilter constructor.
      *
-     * @param Request $request
+     * @param  Request  $request
      */
     public function __construct(Request $request)
     {
