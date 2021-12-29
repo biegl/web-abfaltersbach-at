@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasFilters;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,6 +12,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class Event extends Model
 {
     use HasFactory;
+    use HasFilters;
     use LogsActivity;
     use Notifiable;
 

@@ -97,7 +97,11 @@
 
         @empty
 
-            <li>{{ __('events.no_events') }}</li>
+            @if(request()->has('eventID'))
+                <li><a href="/">Alle Veranstaltungen anzeigen</a></li>
+            @else
+                <li>{{ __('events.no_events') }}</li>
+            @endif
 
         @endforelse
 

@@ -54,6 +54,16 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | GKZ
+    |--------------------------------------------------------------------------
+    |
+    | This is the Gemeinde Kennzahl from https://www.wahlkartenantrag.at
+    |
+    */
+    'gkz' => env('GKZ'),
+
     'asset_url' => env('ASSET_URL', null),
 
     /*
