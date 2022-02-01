@@ -106,7 +106,7 @@ class Page extends Model
             'navID', // Foreign key on files table
             'navigation_id', // Local key on pages table
             'ID' // Local key on navigation table
-        );
+        )->orderBy('created_at', 'desc');
     }
 
     /**
@@ -114,7 +114,7 @@ class Page extends Model
      */
     public function attachments()
     {
-        return $this->morphMany(File::class, 'attachable');
+        return $this->morphMany(File::class, 'attachable')->orderBy('created_at', 'desc');
     }
 
     /**
