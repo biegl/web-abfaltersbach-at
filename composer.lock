@@ -4379,16 +4379,16 @@
         },
         {
             "name": "queueworker/sansdaemon",
-            "version": "v1.2.5",
+            "version": "v1.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/orobogenius/sansdaemon.git",
-                "reference": "f04e5929c82beef4b8e6bd1c55a1813efd87d679"
+                "reference": "65630b85afd276016c59578790ab6f110581234f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orobogenius/sansdaemon/zipball/f04e5929c82beef4b8e6bd1c55a1813efd87d679",
-                "reference": "f04e5929c82beef4b8e6bd1c55a1813efd87d679",
+                "url": "https://api.github.com/repos/orobogenius/sansdaemon/zipball/65630b85afd276016c59578790ab6f110581234f",
+                "reference": "65630b85afd276016c59578790ab6f110581234f",
                 "shasum": ""
             },
             "require": {
@@ -4430,9 +4430,9 @@
             ],
             "support": {
                 "issues": "https://github.com/orobogenius/sansdaemon/issues",
-                "source": "https://github.com/orobogenius/sansdaemon/tree/v1.2.5"
+                "source": "https://github.com/orobogenius/sansdaemon/tree/v1.2.6"
             },
-            "time": "2022-02-22T20:43:38+00:00"
+            "time": "2022-03-08T14:35:10+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
