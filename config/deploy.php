@@ -103,8 +103,6 @@ return [
         'bin/composer' => '/usr/bin/php-7.3 /var/www/web11265/htdocs/laravel/composer.phar',
         'http_user' => 'web11265',
         'writable_mode' => 'chmod',
-        'nova_username' => env('NOVA_USERNAME'),
-        'nova_password' => env('NOVA_PASSWORD'),
         'shared_files' => [
             '.env',
             'auth.json',
