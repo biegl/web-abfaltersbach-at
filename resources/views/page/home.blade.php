@@ -5,8 +5,6 @@
 @endsection
 
 @section('sidebar')
-    @if (true)
-        @include('partials.wahlkarten')
-    @endif
+    @include('partials.wahlkarten')
     @include('partials.eventlist')
 @endsection
