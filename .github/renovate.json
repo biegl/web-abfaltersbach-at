@@ -21,11 +21,5 @@
         "composerUsername": "Gj6/0Fi1qekFO20rFw80tyV0TtW1/u2OyxOvbGuOFP7eCJqBmbnNUr5Vwf6tiKngiIilyO1y13oXFA7ZOxfwuuvfiZTCCLtP/+tt5d3Awg7MDxupxx9Gt1glGb3thU8XG9cZ7pBfVQu3EPDrn2eX6k/FE+ZHgCIjsow3YWiHz5zOifTsuvJA2Letk4Ekr6Be2gFfGTqNSNvRFB5VKu3BcSHtHbZXgRBrAwGaTrmdPceXybd4ED8q7DraqIz1eHpj3Elt8umYL89I0Z2DxtBTOb6E/pHLSC3R+1EHz4PardlbYfKROTotar1F5/aHPNXGF9cbV0truTVbi5uWOsKRxA==",
         "composerPassword": "rqgB2USoVpEXUIVT3X3weT2/zBQua9OtDv05IHPX8iYnB8dy7sXf+awAwjauM1KKR3qUOK+O+xSnt0Kx+Ftu7VS19IJcNRQfXMSiHlVb9XeJvw42WlcySeay/GkYTHT0956BLJnAoqtVuHZoh1s850FodYA3yxSEoqDXuI5jrycy1HBRw8SsM6/QZ6DgOZ2b+H9feLOsvNE2N/TvB+bfpAK0bn5LDlyFgp/+npufeUirNxJgqZvKB58dwtaKMBnr7oauMZu7890Z2W21xCIV+e4/Nu16F8LWZAJ5dqyYaqQz4byUxjyBayj++RkPh2fIUG3i7aWbcylR/zqw+ODXPw=="
     },
-    "hostRules": [
-        {
-          "hostName": "nova.laravel.com",
-          "username": "${COMPOSER_USERNAME}",
-          "password": "${COMPOSER_PASSWORD}"
-        }
-    ]
+    "hostRules": []
 }
