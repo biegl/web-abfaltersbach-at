@@ -37,7 +37,7 @@ class GeneralSettingsRequest extends FormRequest
     public function rules()
     {
         return [
-            'is_proxy_card_feature_available' => ['boolean']
+            'is_proxy_card_feature_available' => ['boolean'],
         ];
     }
 }
