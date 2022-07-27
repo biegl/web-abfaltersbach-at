@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Support\Str;
 use Illuminate\Foundation\Http\FormRequest;
 
 class GeneralSettingsRequest extends FormRequest
