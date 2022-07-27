@@ -1,6 +1,8 @@
-import { Paginator } from "./../models/paginator";
-import { apiClient } from "./apiClient";
 import BaseObject from "@/models/base";
+
+import { Paginator } from "./../models/paginator";
+
+import { apiClient } from "./apiClient";
 
 export default class BaseService<T extends BaseObject> {
     baseUrl = "/api";
@@ -13,9 +15,8 @@ export default class BaseService<T extends BaseObject> {
     }
 
     get(id): Promise<T> {
-        return apiClient
-            .get<T>(`${this.baseUrl}/${id}`)
-            .then(response => response.data);
+        const url = id ? `${this.baseUrl}/${id}` : this.baseUrl;
+        return apiClient.get<T>(url).then(response => response.data);
     }
 
     getAll(filter?): Promise<Paginator<T>> {
@@ -32,9 +33,8 @@ export default class BaseService<T extends BaseObject> {
     }
 
     update(object: T): Promise<T> {
-        return apiClient
-            .put<T>(`${this.baseUrl}/${object.id}`, object)
-            .then(response => response.data);
+        const url = object.id ? `${this.baseUrl}/${object.id}` : this.baseUrl;
+        return apiClient.put<T>(url, object).then(response => response.data);
     }
 
     partialUpdate(object: Partial<T>): Promise<T> {

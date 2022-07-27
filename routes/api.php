@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\GeneralSettingsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,6 +36,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::apiResource('users', 'App\Http\Controllers\Api\UsersController');
         Route::get('activities', 'App\Http\Controllers\Api\ActivityLogsController@index');
     });
+
+    Route::get('settings', [GeneralSettingsController::class, 'show']);
+    Route::put('settings', [GeneralSettingsController::class, 'update']);
 });
 
 Route::post('register', 'App\Http\Controllers\Auth\RegisterController@register');
