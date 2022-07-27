@@ -1,7 +1,7 @@
-import { Paginator } from "./../models/paginator";
-import FileService from "@/services/file.service";
 import PageService from "@/services/page.service";
 import Page from "@/models/page";
+
+import { Paginator } from "./../models/paginator";
 
 interface PageState {
     all: Paginator<Page> | null;
@@ -43,19 +43,19 @@ export const pages = {
         select({ commit }, page) {
             commit("selectPage", page);
         },
-        create({ commit }, page: Page) {
+        create(_, page: Page) {
             return PageService.create(page).then(
                 createdPage => Promise.resolve(Page.init(createdPage)),
                 error => Promise.reject(error)
             );
         },
-        update({ commit }, page: Page) {
+        update(_, page: Page) {
             return PageService.update(page).then(
                 updatedPage => Promise.resolve(Page.init(updatedPage)),
                 error => Promise.reject(error)
             );
         },
-        delete({ commit }, page: Page) {
+        delete(_, page: Page) {
             return PageService.delete(page).then(
                 () => Promise.resolve(),
                 error => Promise.reject(error)
