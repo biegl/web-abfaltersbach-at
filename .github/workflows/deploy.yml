@@ -14,12 +14,6 @@ jobs:
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.testing', '.env');"
 
-      - name: Create .env file
-        run: |
-          echo "DEPLOY_PATH=${{ secrets.DEPLOY_PATH }}" >> .env
-          echo "SSH_USER=${{ secrets.SSH_USER }}" >> .env
-          echo "SSH_PORT=${{ secrets.SSH_PORT }}" >> .env
-
       - name: Cache dependencies
         uses: actions/cache@v3
         with:
@@ -29,7 +23,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 7.4
+          php-version: 8.0
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
           coverage: none
 
@@ -37,6 +31,13 @@ jobs:
         run: composer install --prefer-dist --no-interaction --no-suggest
 
       - name: Deploy
+        env: 
+          DEPLOYER_HOSTNAME=${{secrets.DEPLOYER_HOSTNAME}}
+          DEPLOYER_REMOTE_USER=${{secrets.DEPLOYER_REMOTE_USER}}
+          DEPLOYER_SSH_PORT=${{secrets.DEPLOYER_SSH_PORT}}
+          DEPLOYER_DEPLOY_PATH=${{secrets.DEPLOYER_DEPLOY_PATH}}
+          DEPLOYER_BIN_PHP=${{secrets.DEPLOYER_BIN_PHP}}
+          DEPLOYER_BIN_COMPOSER=${{secrets.DEPLOYER_BIN_COMPOSER}}
         run: |
           sudo apt-get install expect
-          /usr/bin/expect -c "set timeout -1; spawn php artisan deploy; expect -re \"password\"; send \"${{ secrets.SSH_PASSWORD }}\n\"; expect -re \"Successfully deployed\";"
+          /usr/bin/expect -c "set timeout -1; spawn vendor/bin/dep deploy; expect -re \"password\"; send \"${{ secrets.DEPLOYER_SSH_PASSWORD }}\n\"; expect -re \"successfully deployed!\";"

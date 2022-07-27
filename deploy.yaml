@@ -1,0 +1,33 @@
+import:
+  - recipe/laravel.php
+  - deploy_env.php
+
+config:
+  application: "{{deployer_application}}"
+  repository: git@github.com:biegl/web-abfaltersbach-at.git
+  bin/php: "{{deployer_bin_php}}"
+  bin/composer: "{{deployer_bin_composer}}"
+  http_user: "{{deployer_remote_user}}"
+  writable_mode: chmod
+
+hosts:
+  prod:
+    remote_user: "{{deployer_remote_user}}"
+    hostname: "{{deployer_hostname}}"
+    deploy_path: "{{deployer_deploy_path}}"
+    port: "{{deployer_ssh_port}}"
+    git_ssh_command: ssh -o StrictHostKeyChecking=NO
+
+tasks:
+  deploy:
+    - deploy:env
+    - deploy:prepare
+    - deploy:vendors
+    - artisan:storage:link
+    - artisan:view:cache
+    - artisan:config:cache
+    - artisan:migrate
+    - deploy:publish
+
+after:
+  deploy:failed: deploy:unlock
