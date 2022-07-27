@@ -25,7 +25,7 @@ class GeneralSettingsRequest extends FormRequest
     protected function prepareForValidation()
     {
         $this->merge([
-            'is_proxy_card_feature_available' => Str::snake($this->isProxyCardFeatureAvailable),
+            'is_proxy_card_feature_available' => $this->isProxyCardFeatureAvailable,
         ]);
     }
 
