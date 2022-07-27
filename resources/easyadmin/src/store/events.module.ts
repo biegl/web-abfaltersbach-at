@@ -1,7 +1,7 @@
-import { Paginator } from "./../models/paginator";
 import EventService from "@/services/event.service";
 import Event from "@/models/event";
-import FileService from "@/services/file.service";
+
+import { Paginator } from "./../models/paginator";
 
 interface EventState {
     all: Paginator<Event> | null;
@@ -43,19 +43,19 @@ export const events = {
         select({ commit }, event) {
             commit("selectEvent", event);
         },
-        delete({ commit }, event: Event) {
+        delete(_, event: Event) {
             return EventService.delete(event).then(
                 () => Promise.resolve(),
                 error => Promise.reject(error)
             );
         },
-        create({ commit }, event: Event) {
+        create(_, event: Event) {
             return EventService.create(event).then(
                 createdEvent => Promise.resolve(Event.init(createdEvent)),
                 error => Promise.reject(error)
             );
         },
-        update({ commit }, event: Event) {
+        update(_, event: Event) {
             return EventService.update(event).then(
                 updatedEvent => Promise.resolve(Event.init(updatedEvent)),
                 error => Promise.reject(error)

@@ -5,6 +5,8 @@
 @endsection
 
 @section('sidebar')
-    @include('partials.wahlkarten')
+    @if (app(App\Models\GeneralSettings::class)->is_proxy_card_feature_available)
+        @include('partials.wahlkarten')
+    @endif
     @include('partials.eventlist')
 @endsection

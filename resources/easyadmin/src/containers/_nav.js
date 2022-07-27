@@ -42,6 +42,13 @@ export default [
         roles: [Role.User, Role.Admin],
     },
     {
+        _name: "CSidebarNavItem",
+        name: "Settings",
+        to: "/system/settings",
+        icon: "cil-settings",
+        roles: [Role.User, Role.Admin],
+    },
+    {
         _name: "CSidebarNavTitle",
         _children: ["Admin"],
         roles: [Role.Admin],

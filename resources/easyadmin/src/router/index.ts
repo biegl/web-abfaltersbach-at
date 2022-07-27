@@ -1,11 +1,14 @@
-import { Role } from "./../helpers/role";
-import VueRouter, { RouteConfig } from "vue-router";
-import Vue from "vue";
-import Login from "../pages/Login.vue";
 import authService from "@/services/auth.service";
-import TheContainer from "../containers/TheContainer.vue";
-import Dashboard from "../pages/Dashboard.vue";
+
+import VueRouter, { RouteConfig } from "vue-router";
+
+import Vue from "vue";
+
 import store from "../store";
+import TheContainer from "../containers/TheContainer.vue";
+import { Role } from "./../helpers/role";
+import Dashboard from "../pages/Dashboard.vue";
+import Login from "../pages/Login.vue";
 
 const routes: Array<RouteConfig> = [
     {
@@ -177,6 +180,29 @@ const routes: Array<RouteConfig> = [
                         /* webpackChunkName: "activities" */ "../pages/Activities.vue"
                     ),
                 meta: { auth: [Role.Admin] },
+            },
+            {
+                path: "system",
+                redirect: "/system/settings",
+                name: "system",
+                meta: { label: "System" },
+                component: {
+                    render(c) {
+                        return c("router-view");
+                    },
+                },
+
+                children: [
+                    {
+                        path: "settings",
+                        name: "settings",
+                        meta: { label: "Settings" },
+                        component: () =>
+                            import(
+                                /* webpackChunkName: "news" */ "../pages/Settings.vue"
+                            ),
+                    },
+                ],
             },
         ],
     },

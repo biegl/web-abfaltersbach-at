@@ -1,7 +1,7 @@
-import { Paginator } from "./../models/paginator";
-import FileService from "@/services/file.service";
 import NewsService from "@/services/news.service";
 import News from "@/models/news";
+
+import { Paginator } from "./../models/paginator";
 
 interface NewsState {
     all: Paginator<News> | null;
@@ -44,19 +44,19 @@ export const news = {
         select({ commit }, news: News) {
             commit("selectNews", news);
         },
-        create({ commit }, news: News) {
+        create(_, news: News) {
             return NewsService.create(news).then(
                 createdNews => Promise.resolve(News.init(createdNews)),
                 error => Promise.reject(error)
             );
         },
-        update({ commit }, news: News) {
+        update(_, news: News) {
             return NewsService.update(news).then(
                 updatedNews => Promise.resolve(News.init(updatedNews)),
                 error => Promise.reject(error)
             );
         },
-        delete({ commit }, news: News) {
+        delete(_, news: News) {
             return NewsService.delete(news).then(
                 () => Promise.resolve(),
                 error => Promise.reject(error)
