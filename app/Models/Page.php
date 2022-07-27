@@ -7,8 +7,8 @@ use App\Http\Filters\NewsFilter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Page extends Model
 {
@@ -126,7 +126,8 @@ class Page extends Model
         return $this->morphMany(Module::class, 'insertable');
     }
 
-    public function getActivitylogOptions(): LogOptions {
+    public function getActivitylogOptions(): LogOptions
+    {
         return LogOptions::defaults();
     }
 }
