@@ -17,6 +17,9 @@ hosts:
     deploy_path: "{{deployer_deploy_path}}"
     port: "{{deployer_ssh_port}}"
     git_ssh_command: ssh -o StrictHostKeyChecking=NO
+    sshOptions:
+      UserKnownHostsFile: /dev/null
+      StrictHostKeyChecking: no
 
 tasks:
   deploy:
