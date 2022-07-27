@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f9e56e4aadcf30560b9ba2ed7c47709e",
+    "content-hash": "f2d4347301f98a5369d62e0966301358",
     "packages": [
         {
             "name": "brick/math",
@@ -5088,29 +5088,30 @@
         },
         {
             "name": "spatie/laravel-analytics",
-            "version": "3.11.0",
+            "version": "4.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-analytics.git",
-                "reference": "6ce4610eea86e59446866504f71dcb17ddc8c496"
+                "reference": "cd61d915a7d1c0b4c45ac459e2dec3349f7fa176"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-analytics/zipball/6ce4610eea86e59446866504f71dcb17ddc8c496",
-                "reference": "6ce4610eea86e59446866504f71dcb17ddc8c496",
+                "url": "https://api.github.com/repos/spatie/laravel-analytics/zipball/cd61d915a7d1c0b4c45ac459e2dec3349f7fa176",
+                "reference": "cd61d915a7d1c0b4c45ac459e2dec3349f7fa176",
                 "shasum": ""
             },
             "require": {
                 "google/apiclient": "^2.0|^2.7",
-                "laravel/framework": "^6.0|^7.0|^8.0",
+                "laravel/framework": "^7.0|^8.0",
                 "nesbot/carbon": "^2.0",
-                "php": "^7.3|^8.0",
+                "php": "^8.0",
+                "spatie/laravel-package-tools": "^1.6",
                 "symfony/cache": "^4.3|^5.0"
             },
             "require-dev": {
                 "league/flysystem": ">=1.0.8",
                 "mockery/mockery": "^1.4.2",
-                "orchestra/testbench": "^4.0|^5.0|^6.0",
+                "orchestra/testbench": "^5.0|^6.0",
                 "phpunit/phpunit": "^8.0|^9.0"
             },
             "type": "library",
@@ -5153,7 +5154,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-analytics/issues",
-                "source": "https://github.com/spatie/laravel-analytics/tree/3.11.0"
+                "source": "https://github.com/spatie/laravel-analytics/tree/4.0.1"
             },
             "funding": [
                 {
@@ -5161,7 +5162,66 @@
                     "type": "custom"
                 }
             ],
-            "time": "2021-03-04T07:31:26+00:00"
+            "time": "2021-06-10T09:23:04+00:00"
+        },
+        {
+            "name": "spatie/laravel-package-tools",
+            "version": "1.12.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-package-tools.git",
+                "reference": "09f80fa240d44fafb1c70657c74ee44ffa929357"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-package-tools/zipball/09f80fa240d44fafb1c70657c74ee44ffa929357",
+                "reference": "09f80fa240d44fafb1c70657c74ee44ffa929357",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^7.0|^8.0|^9.0",
+                "php": "^7.4|^8.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.4",
+                "orchestra/testbench": "^5.0|^6.23|^7.0",
+                "phpunit/phpunit": "^9.4",
+                "spatie/test-time": "^1.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\LaravelPackageTools\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Tools for creating Laravel packages",
+            "homepage": "https://github.com/spatie/laravel-package-tools",
+            "keywords": [
+                "laravel-package-tools",
+                "spatie"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-package-tools/issues",
+                "source": "https://github.com/spatie/laravel-package-tools/tree/1.12.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-06-28T14:29:26+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",

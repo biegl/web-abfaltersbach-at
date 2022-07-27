@@ -23,7 +23,7 @@
         "queueworker/sansdaemon": "^1.2",
         "sentry/sentry-laravel": "^2",
         "spatie/laravel-activitylog": "^3.16",
-        "spatie/laravel-analytics": "^3.11",
+        "spatie/laravel-analytics": "^4.0",
         "vlucas/phpdotenv": "^5.4"
     },
     "require-dev": {
