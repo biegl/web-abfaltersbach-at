@@ -34,7 +34,6 @@ class RegisterTest extends TestCase
         $this->postJson('/api/register')
             ->assertStatus(422)
             ->assertJson([
-                'message' => 'The given data was invalid.',
                 'errors' => [
                     'name' => ['validation.required'],
                     'email' => ['validation.required'],
@@ -54,7 +53,6 @@ class RegisterTest extends TestCase
         $this->postJson('/api/register', $payload)
             ->assertStatus(422)
             ->assertJson([
-                'message' => 'The given data was invalid.',
                 'errors' => [
                     'password' => ['Die Passwörter stimmen nicht überein'],
                 ],
