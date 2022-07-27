@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class Page extends Model
 {
@@ -123,5 +124,9 @@ class Page extends Model
     public function inserts()
     {
         return $this->morphMany(Module::class, 'insertable');
+    }
+
+    public function getActivitylogOptions(): LogOptions {
+        return LogOptions::defaults();
     }
 }

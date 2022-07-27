@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Request;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class Navigation extends Model
 {
@@ -180,5 +181,9 @@ class Navigation extends Model
     public function scopeVisible($query)
     {
         return $query->where('navianzeigen', 'Ja');
+    }
+
+    public function getActivitylogOptions(): LogOptions {
+        return LogOptions::defaults();
     }
 }

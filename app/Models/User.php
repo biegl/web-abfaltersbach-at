@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class User extends Authenticatable
 {
@@ -69,5 +70,9 @@ class User extends Authenticatable
     public function hasRole($role)
     {
         return $this->role == $role;
+    }
+
+    public function getActivitylogOptions(): LogOptions {
+        return LogOptions::defaults();
     }
 }

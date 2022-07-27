@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class File extends Model
 {
@@ -86,5 +87,9 @@ class File extends Model
     public function attachable()
     {
         return $this->morphTo();
+    }
+
+    public function getActivitylogOptions(): LogOptions {
+        return LogOptions::defaults();
     }
 }

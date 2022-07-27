@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class News extends Model
 {
@@ -80,5 +81,9 @@ class News extends Model
     public function attachments()
     {
         return $this->morphMany(File::class, 'attachable');
+    }
+
+    public function getActivitylogOptions(): LogOptions {
+        return LogOptions::defaults();
     }
 }
