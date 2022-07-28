@@ -25,7 +25,6 @@ class LoginTest extends TestCase
         $this->postJson('api/login')
             ->assertStatus(422)
             ->assertJson([
-                'message' => 'The given data was invalid.',
                 'errors' => [
                     'email' => ['validation.required'],
                     'password' => ['validation.required'],
