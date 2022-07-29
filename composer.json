@@ -15,7 +15,7 @@
         "guzzlehttp/guzzle": "^7",
         "laravel-notification-channels/telegram": "^2.1.0",
         "laravel/framework": "^9.0",
-        "laravel/sanctum": "^2",
+        "laravel/sanctum": "^3",
         "laravel/tinker": "^2",
         "laravel/ui": "^3.2",
         "league/html-to-markdown": "^5.0",
