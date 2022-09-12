@@ -54,9 +54,7 @@ class Str extends StrHelper
             $name = get_class($name);
         }
 
-        $name = '\\'.ltrim($name, '\\');
-
-        return $name;
+        return '\\'.ltrim($name, '\\');
     }
 
     /**

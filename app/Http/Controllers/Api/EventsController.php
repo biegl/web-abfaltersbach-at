@@ -45,7 +45,7 @@ class EventsController extends Controller
      */
     public function store(StoreEvent $request)
     {
-        $event = Event::create($request->validated());
+        $event = Event::create($request->validated(null, null));
         Cache::forget(Event::$CACHE_KEY_CURRENT_EVENTS);
         Cache::forget(Event::$CACHE_KEY_GROUPED_EVENTS);
 
@@ -72,7 +72,7 @@ class EventsController extends Controller
      */
     public function update(StoreEvent $request, Event $event)
     {
-        $event->update($request->validated());
+        $event->update($request->validated(null, null));
         Cache::forget(Event::$CACHE_KEY_CURRENT_EVENTS);
         Cache::forget(Event::$CACHE_KEY_GROUPED_EVENTS);
 

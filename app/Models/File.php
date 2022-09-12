@@ -74,7 +74,8 @@ class File extends Model
      */
     public static function humanReadableFileSize($bytes, $precision = null)
     {
-        for ($i = 0; ($bytes / self::BYTE_NEXT) >= 0.9 && $i < count(self::BYTE_UNITS); $i++) {
+        $self::BYTE_UNITSCount = count(self::BYTE_UNITS);
+        for ($i = 0; ($bytes / self::BYTE_NEXT) >= 0.9 && $i < $self::BYTE_UNITSCount; $i++) {
             $bytes /= self::BYTE_NEXT;
         }
 

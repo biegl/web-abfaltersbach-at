@@ -28,7 +28,7 @@ class PageController extends Controller
             $breadcrumbs = [];
             $title = 'Not Found';
 
-            return view('errors.404', compact('title', 'navigation', 'breadcrumbs'));
+            return view('errors.404', ['title' => $title, 'navigation' => $navigation, 'breadcrumbs' => $breadcrumbs]);
         }
 
         $modules = $page->modules;

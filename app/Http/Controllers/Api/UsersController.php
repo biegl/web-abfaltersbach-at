@@ -28,7 +28,7 @@ class UsersController extends Controller
      */
     public function store(StoreUser $request)
     {
-        $user = User::create($request->validated());
+        $user = User::create($request->validated(null, null));
         $token = Password::createToken($user);
         $user->sendPasswordResetNotification($token);
 
@@ -55,7 +55,7 @@ class UsersController extends Controller
      */
     public function update(UpdateUser $request, User $user)
     {
-        $user->update($request->validated());
+        $user->update($request->validated(null, null));
 
         return response()->json($user, 200);
     }

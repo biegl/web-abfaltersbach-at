@@ -70,7 +70,7 @@ class Router
      */
     protected function getUrlMap()
     {
-        if (! count(self::$urlMap)) {
+        if (self::$urlMap === []) {
             $this->loadUrlMap();
         }
 

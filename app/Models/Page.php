@@ -89,12 +89,12 @@ class Page extends Model
                     });
                 }
 
-                return compact('title', 'content', 'navigation', 'breadcrumbs', 'news', 'grouped_events', 'current_events');
+                return ['title' => $title, 'content' => $content, 'navigation' => $navigation, 'breadcrumbs' => $breadcrumbs, 'news' => $news, 'grouped_events' => $grouped_events, 'current_events' => $current_events];
             default:
                 $files = $this->files->merge($this->attachments);
                 $inserts = $this->inserts;
 
-                return compact('title', 'content', 'navigation', 'breadcrumbs', 'subnavigation', 'files', 'inserts');
+                return ['title' => $title, 'content' => $content, 'navigation' => $navigation, 'breadcrumbs' => $breadcrumbs, 'subnavigation' => $subnavigation, 'files' => $files, 'inserts' => $inserts];
         }
     }
 
