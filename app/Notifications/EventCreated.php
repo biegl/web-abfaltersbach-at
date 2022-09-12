@@ -69,13 +69,13 @@ class EventCreated extends Notification implements ShouldQueue
 
         if ($src = array_pop($match)) {
             return TelegramFile::create()
-                ->to(env('TELEGRAM_CHANNEL_NAME', '@abfaltersbach'))
+                ->to(config('services.telegram-bot-api.channel'))
                 ->content(implode("\n", [$title, $content]))
                 ->photo($src)
                 ->button('Online ansehen', $url);
         } else {
             return TelegramMessage::create()
-                ->to(env('TELEGRAM_CHANNEL_NAME', '@abfaltersbach'))
+                ->to(config('services.telegram-bot-api.channel'))
                 ->content(implode("\n", [$title, $content]))
                 ->button('Online ansehen', $url);
         }
