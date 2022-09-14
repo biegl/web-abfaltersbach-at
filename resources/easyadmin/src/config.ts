@@ -2,7 +2,7 @@ import authService from "@/services/auth.service";
 
 export default class Config {
     static isProduction = process.env.NODE_ENV === "production";
-    static host = import.meta.env.VITE_BASE_URL;
+    static host = Config.isProduction ? "//abfaltersbach.at" : "//localhost";
 
     static editorApiKey = "6jjm4jham8ufq2x8fg8ogve4cbyxshwh5d3ijcuplwk6a5dp";
 
