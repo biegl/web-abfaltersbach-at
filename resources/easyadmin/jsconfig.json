@@ -1,9 +1,0 @@
-{
-    "compilerOptions": {
-        "baseUrl": ".",
-        "paths": {
-            "@/*": ["easyadmin/src/*"]
-        }
-    },
-    "exclude": ["node_modules", "public"]
-}
