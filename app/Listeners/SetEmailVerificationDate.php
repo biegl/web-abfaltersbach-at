@@ -26,7 +26,7 @@ class SetEmailVerificationDate
     {
         $user = $event->user;
 
-        if (! isset($user->email_verified_at)) {
+        if (! (property_exists($user, 'email_verified_at') && $user->email_verified_at !== null)) {
             $user->email_verified_at = Carbon::now();
             $user->save();
         }

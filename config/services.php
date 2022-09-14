@@ -31,6 +31,7 @@ return [
     ],
 
     'telegram-bot-api' => [
+        'channel' => env('TELEGRAM_CHANNEL_NAME', '@abfaltersbach'),
         'token' => env('TELEGRAM_BOT_TOKEN'),
         'name' => env('TELEGRAM_BOT_NAME', 'abfaltersbach_news_bot'),
     ],

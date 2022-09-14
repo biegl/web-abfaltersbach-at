@@ -16,7 +16,7 @@ class GeneralSettingsController extends Controller
 
     public function update(GeneralSettingsRequest $request, GeneralSettings $settings)
     {
-        $validated = $request->validated();
+        $validated = $request->validated(null, null);
 
         $settings->fill($validated);
         $settings->save();

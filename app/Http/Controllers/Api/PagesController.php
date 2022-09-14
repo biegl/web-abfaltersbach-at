@@ -28,7 +28,7 @@ class PagesController extends Controller
      */
     public function store(StorePage $request)
     {
-        $page = Page::create($request->validated());
+        $page = Page::create($request->validated(null, null));
 
         return response()->json($page, 201);
     }
@@ -53,7 +53,7 @@ class PagesController extends Controller
      */
     public function update(StorePage $request, Page $page)
     {
-        $page->update($request->validated());
+        $page->update($request->validated(null, null));
 
         return response()->json($page, 200);
     }

@@ -40,7 +40,7 @@ class NewsController extends Controller
      */
     public function store(StoreNews $request)
     {
-        $news = News::create($request->validated());
+        $news = News::create($request->validated(null, null));
         Cache::forget(News::$CACHE_KEY_TOP_NEWS);
 
         return response()->json($news, 201);
@@ -66,7 +66,7 @@ class NewsController extends Controller
      */
     public function update(StoreNews $request, News $news)
     {
-        $news->update($request->validated());
+        $news->update($request->validated(null, null));
         Cache::forget(News::$CACHE_KEY_TOP_NEWS);
 
         return response()->json($news, 200);

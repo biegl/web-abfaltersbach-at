@@ -25,7 +25,7 @@ class Helper
             $url = substr($url, 0, -1);
         }
 
-        if (! strlen($url)) {
+        if ($url === '') {
             $url = '/';
         }
 
@@ -44,13 +44,8 @@ class Helper
         $segments = explode('/', $url);
 
         $result = [];
-        foreach ($segments as $segment) {
-            if (strlen($segment)) {
-                $result[] = $segment;
-            }
-        }
 
-        return $result;
+        return array_filter($segments, 'strlen');
     }
 
     /**
@@ -63,7 +58,7 @@ class Helper
     {
         $url = '';
         foreach ($urlArray as $segment) {
-            if (strlen($segment)) {
+            if (strlen($segment) !== 0) {
                 $url .= '/'.trim($segment);
             }
         }
@@ -206,7 +201,7 @@ class Helper
     {
         if (($pos = mb_strpos($segment, '|')) !== false) {
             $regexp = mb_substr($segment, $pos + 1);
-            if (! mb_strlen($regexp)) {
+            if (mb_strlen($regexp) === 0) {
                 return false;
             }
 
@@ -241,6 +236,6 @@ class Helper
             $value = mb_substr($segment, $optMarkerPos + 1);
         }
 
-        return strlen($value) ? $value : false;
+        return strlen($value) !== 0 ? $value : false;
     }
 }
