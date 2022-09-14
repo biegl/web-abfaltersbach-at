@@ -17,8 +17,9 @@ export default class Config {
         images_upload_handler: (blobInfo, success, failure, progress) => {
             authService
                 .refreshCookie()
-                .then(resp => {
-                    const token = resp.config.headers["X-XSRF-TOKEN"];
+                .then((resp) => {
+                    const token =
+                        resp.config.headers["X-XSRF-TOKEN"].toString();
 
                     const xhr = new XMLHttpRequest();
                     xhr.withCredentials = true;
@@ -26,7 +27,7 @@ export default class Config {
                     xhr.open("POST", `${Config.host}/api/files`);
                     xhr.setRequestHeader("X-XSRF-TOKEN", token);
 
-                    xhr.upload.onprogress = event => {
+                    xhr.upload.onprogress = (event) => {
                         progress((event.loaded / event.total) * 100);
                     };
 
@@ -64,7 +65,7 @@ export default class Config {
 
                     xhr.send(formData);
                 })
-                .catch(error => {
+                .catch((error) => {
                     failure(error);
                 });
         },
