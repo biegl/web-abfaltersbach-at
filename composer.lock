@@ -5091,16 +5091,16 @@
         },
         {
             "name": "spatie/laravel-activitylog",
-            "version": "4.5.3",
+            "version": "4.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-activitylog.git",
-                "reference": "feb1a37d649b03711e546807688fbea53469dfc3"
+                "reference": "7c08e6bd8fbd1cd2b57c0f6acf3708bcafc3f7e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-activitylog/zipball/feb1a37d649b03711e546807688fbea53469dfc3",
-                "reference": "feb1a37d649b03711e546807688fbea53469dfc3",
+                "url": "https://api.github.com/repos/spatie/laravel-activitylog/zipball/7c08e6bd8fbd1cd2b57c0f6acf3708bcafc3f7e1",
+                "reference": "7c08e6bd8fbd1cd2b57c0f6acf3708bcafc3f7e1",
                 "shasum": ""
             },
             "require": {
@@ -5166,7 +5166,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-activitylog/issues",
-                "source": "https://github.com/spatie/laravel-activitylog/tree/4.5.3"
+                "source": "https://github.com/spatie/laravel-activitylog/tree/4.6.0"
             },
             "funding": [
                 {
@@ -5178,7 +5178,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-05-31T10:01:05+00:00"
+            "time": "2022-09-22T09:31:29+00:00"
         },
         {
             "name": "spatie/laravel-analytics",
