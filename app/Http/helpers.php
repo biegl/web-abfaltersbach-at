@@ -25,7 +25,7 @@ if (! function_exists('create_fa_ext_icon')) {
         return 'fa-file-'.$extension;
     }
 
-    function isImageExtension($extension)
+    function isImageExtension($extension): bool
     {
         return in_array(
             strtolower($extension),
