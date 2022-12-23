@@ -8,7 +8,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^7.3|^8.0|^8.1",
         "deployer/deployer": "^7.0",
         "doctrine/dbal": "^3.1",
         "fruitcake/laravel-cors": "^3",
@@ -26,6 +26,7 @@
         "vlucas/phpdotenv": "^5.4"
     },
     "require-dev": {
+        "driftingly/rector-laravel": "^0.14.1",
         "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.1",
         "laravel/sail": "^1",
