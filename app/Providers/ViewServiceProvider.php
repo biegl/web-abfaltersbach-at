@@ -15,8 +15,8 @@ class ViewServiceProvider extends ServiceProvider
             $current_month = Carbon::today()->month;
 
             return in_array($current_month, [1, 2, 3, 12])
-                ? asset('images/header/abfaltersbach_winter.jpeg')
-                : asset('images/header/abfaltersbach.jpeg');
+                ? '/images/header/abfaltersbach_winter.jpeg'
+                : '/images/header/abfaltersbach.jpeg';
         });
 
         View::share('headerImagePath', $path);
