@@ -60,7 +60,7 @@ class Str extends StrHelper
     /**
      * Generates a class ID from either an object or a string of the class name.
      */
-    public static function getClassId($name)
+    public static function getClassId($name): string
     {
         if (is_object($name)) {
             $name = get_class($name);
@@ -75,7 +75,7 @@ class Str extends StrHelper
     /**
      * Returns a class namespace.
      */
-    public static function getClassNamespace($name)
+    public static function getClassNamespace($name): string
     {
         $name = static::normalizeClassName($name);
 

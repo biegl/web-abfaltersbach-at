@@ -46,7 +46,7 @@ class Navigation extends Model
         return Str::contains($path, $this->url);
     }
 
-    public function getSlugAttribute()
+    public function getSlugAttribute(): string
     {
         return trim($this->linkname);
     }
