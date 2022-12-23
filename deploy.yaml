@@ -17,7 +17,8 @@ hosts:
     deploy_path: "{{deployer_deploy_path}}"
     port: "{{deployer_ssh_port}}"
     git_ssh_command: ssh -o StrictHostKeyChecking=NO
-    ssh_arguments: ["-o UserKnownHostsFile=/dev/null", "-o StrictHostKeyChecking=no"]
+    ssh_arguments:
+      ["-o UserKnownHostsFile=/dev/null", "-o StrictHostKeyChecking=no"]
 
 tasks:
   deploy:
@@ -25,6 +26,7 @@ tasks:
     - deploy:prepare
     - deploy:vendors
     - artisan:storage:link
+    - artisan:cache:clear
     - artisan:view:cache
     - artisan:config:cache
     - artisan:migrate
