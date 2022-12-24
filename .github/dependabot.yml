@@ -7,6 +7,8 @@ updates:
     labels:
       - "dependabot 🤖"
       - "dependencies"
+      - "gh-actions"
+
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
@@ -14,6 +16,7 @@ updates:
     labels:
       - "dependabot 🤖"
       - "dependencies"
+      - "npm"
 
   - package-ecosystem: "composer"
     directory: "/"
@@ -22,6 +25,7 @@ updates:
     labels:
       - "dependabot 🤖"
       - "dependencies"
+      - "composer"
 
   - package-ecosystem: "docker"
     directory: "/"
@@ -30,3 +34,4 @@ updates:
     labels:
       - "dependabot 🤖"
       - "dependencies"
+      - "docker"

@@ -45,7 +45,7 @@ class Page extends Model
         return $this->template === 'template_home.php';
     }
 
-    public function getTemplateNameAttribute()
+    public function getTemplateNameAttribute(): string
     {
         if ($this->isLandingPage) {
             return 'page.home';
