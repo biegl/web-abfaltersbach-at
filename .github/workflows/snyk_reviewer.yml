@@ -14,6 +14,8 @@ jobs:
       - name: Pull request metadata
         id: pr-metadata
         uses: dependabot/fetch-metadata@v1.3.5
+        with:
+          skip-commit-verification: true
       - name: Enable auto-merge for Snyk PRs
         run: gh pr merge --auto --merge "$PR_URL"
         env:
