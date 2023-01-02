@@ -7,6 +7,7 @@ config:
   repository: git@github.com:biegl/web-abfaltersbach-at.git
   bin/php: "{{deployer_bin_php}}"
   bin/composer: "{{deployer_bin_composer}}"
+  composer_options: "{{deployer_composer_options}}"
   http_user: "{{deployer_remote_user}}"
   writable_mode: chmod
 

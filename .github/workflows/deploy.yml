@@ -50,6 +50,7 @@ jobs:
           DEPLOYER_DEPLOY_PATH: ${{ secrets.DEPLOYER_DEPLOY_PATH }}
           DEPLOYER_BIN_PHP: ${{ secrets.DEPLOYER_BIN_PHP }}
           DEPLOYER_BIN_COMPOSER: ${{ secrets.DEPLOYER_BIN_COMPOSER }}
+          DEPLOYER_COMPOSER_OPTIONS: ${{ secrets.DEPLOYER_COMPOSER_OPTIONS }}
         run: |
           sudo apt-get install expect
           /usr/bin/expect -c "set timeout -1; spawn vendor/bin/dep deploy; expect -re \"password\"; send \"${{ secrets.DEPLOYER_SSH_PASSWORD }}\n\"; expect -re \"successfully deployed!\"; catch wait result; exit [lindex \$result 3];"
