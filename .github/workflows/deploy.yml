@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
@@ -30,7 +30,7 @@ jobs:
       - name: Get Composer Cache Directory
         id: composer-cache
         run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
+          echo "{dir}={$(composer config cache-files-dir)}" >> $GITHUB_OUTPUT
 
       - uses: actions/cache@v3
         with:
@@ -51,6 +51,6 @@ jobs:
           DEPLOYER_BIN_PHP: ${{ secrets.DEPLOYER_BIN_PHP }}
           DEPLOYER_BIN_COMPOSER: ${{ secrets.DEPLOYER_BIN_COMPOSER }}
           DEPLOYER_COMPOSER_OPTIONS: ${{ secrets.DEPLOYER_COMPOSER_OPTIONS }}
+          SSHPASS: ${{ secrets.DEPLOYER_SSH_PASSWORD }}
         run: |
-          sudo apt-get install expect
-          /usr/bin/expect -c "set timeout -1; spawn vendor/bin/dep deploy; expect -re \"password\"; send \"${{ secrets.DEPLOYER_SSH_PASSWORD }}\n\"; expect -re \"successfully deployed!\"; catch wait result; exit [lindex \$result 3];"
+          sshpass -e vendor/bin/dep deploy

@@ -12,7 +12,7 @@ concurrency:
 jobs:
   test-app:
     name: Test App
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     env:
       DB_CONNECTION: mysql
@@ -54,7 +54,7 @@ jobs:
       - name: Get Composer Cache Directory
         id: composer-cache
         run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
+          echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - uses: actions/cache@v3
         with:
