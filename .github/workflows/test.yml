@@ -12,7 +12,7 @@ concurrency:
 jobs:
   test-app:
     name: Test App
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     env:
       DB_CONNECTION: mysql
