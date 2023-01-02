@@ -67,6 +67,9 @@ class NewsCreated extends Notification implements ShouldQueue
         $url = 'https://abfaltersbach.at?newsID='.$notifiable->ID;
 
         if ($src = array_pop($match)) {
+            // Ensure src starts with https
+            $src = preg_replace('@^\/\/@', 'https://', $src);
+
             return TelegramFile::create()
                 ->to(config('services.telegram-bot-api.channel'))
                 ->content(implode("\n", [$title, $content]))
