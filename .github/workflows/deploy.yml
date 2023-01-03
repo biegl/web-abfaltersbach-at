@@ -50,7 +50,6 @@ jobs:
           DEPLOYER_DEPLOY_PATH: ${{ secrets.DEPLOYER_DEPLOY_PATH }}
           DEPLOYER_BIN_PHP: ${{ secrets.DEPLOYER_BIN_PHP }}
           DEPLOYER_BIN_COMPOSER: ${{ secrets.DEPLOYER_BIN_COMPOSER }}
-          DEPLOYER_COMPOSER_OPTIONS: ${{ secrets.DEPLOYER_COMPOSER_OPTIONS }}
           SSHPASS: ${{ secrets.DEPLOYER_SSH_PASSWORD }}
         run: |
-          sshpass -e vendor/bin/dep deploy
+          sshpass -e vendor/bin/dep deploy prod

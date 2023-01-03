@@ -17,5 +17,5 @@ task('deploy:env', function () {
     set('deployer_deploy_path', env('DEPLOYER_DEPLOY_PATH'));
     set('deployer_bin_php', env('DEPLOYER_BIN_PHP'));
     set('deployer_bin_composer', env('DEPLOYER_BIN_COMPOSER'));
-    set('deployer_composer_options', env('DEPLOYER_COMPOSER_OPTIONS', '--verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader'));
+    set('deployer_keep_releases', env('DEPLOYER_KEEP_RELEASES'));
 });
