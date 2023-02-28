@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3c61467d45b954abe2a4b65f73ada5c3",
+    "content-hash": "0bb853753518ca806092b8b03c2039c6",
     "packages": [
         {
             "name": "amphp/amp",
@@ -9266,35 +9266,20 @@
         },
         {
             "name": "driftingly/rector-laravel",
-            "version": "0.15.0",
+            "version": "0.16.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/driftingly/rector-laravel.git",
-                "reference": "280fb5f13645ffc291f571b0144bcc0769d5e31e"
+                "reference": "5a87d4e8180b2d295aa6077580adf6ff4517e84e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/driftingly/rector-laravel/zipball/280fb5f13645ffc291f571b0144bcc0769d5e31e",
-                "reference": "280fb5f13645ffc291f571b0144bcc0769d5e31e",
+                "url": "https://api.github.com/repos/driftingly/rector-laravel/zipball/5a87d4e8180b2d295aa6077580adf6ff4517e84e",
+                "reference": "5a87d4e8180b2d295aa6077580adf6ff4517e84e",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.1"
-            },
-            "require-dev": {
-                "phpstan/extension-installer": "^1.1",
-                "phpstan/phpstan": "^1.8.2",
-                "phpstan/phpstan-strict-rules": "^1.2",
-                "phpstan/phpstan-webmozart-assert": "^1.1",
-                "phpunit/phpunit": "^9.5",
-                "rector/phpstan-rules": "^0.6",
-                "rector/rector": "^0.14.7",
-                "rector/rector-debugging": "dev-main",
-                "symplify/easy-coding-standard": "^11.0",
-                "symplify/phpstan-extensions": "^11.0",
-                "symplify/phpstan-rules": "^11.0",
-                "symplify/rule-doc-generator": "^11.0",
-                "symplify/vendor-patches": "^11.0"
+                "php": "^7.2 || ^8.0"
             },
             "type": "rector-extension",
             "autoload": {
@@ -9309,9 +9294,9 @@
             "description": "Rector upgrades rules for Laravel Framework",
             "support": {
                 "issues": "https://github.com/driftingly/rector-laravel/issues",
-                "source": "https://github.com/driftingly/rector-laravel/tree/0.15.0"
+                "source": "https://github.com/driftingly/rector-laravel/tree/0.16.1"
             },
-            "time": "2023-02-07T18:23:27+00:00"
+            "time": "2023-02-27T17:47:42+00:00"
         },
         {
             "name": "fakerphp/faker",
