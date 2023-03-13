@@ -53,7 +53,6 @@ class Router
         $pageId = $urlMap[$url];
 
         if (($page = Page::find($pageId)) === null) {
-
             // If the page was not found, clear the URL cache and try again.
             $this->clearCache();
 
