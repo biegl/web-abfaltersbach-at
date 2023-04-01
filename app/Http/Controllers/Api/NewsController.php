@@ -35,7 +35,6 @@ class NewsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreNews  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreNews $request)
@@ -49,7 +48,6 @@ class NewsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\News  $news
      * @return \Illuminate\Http\Response
      */
     public function show(News $news)
@@ -61,7 +59,6 @@ class NewsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\News  $news
      * @return \Illuminate\Http\Response
      */
     public function update(StoreNews $request, News $news)
@@ -75,7 +72,6 @@ class NewsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\News  $news
      * @return \Illuminate\Http\Response
      */
     public function destroy(News $news)
@@ -98,8 +94,6 @@ class NewsController extends Controller
     /**
      * Attaches a file to a specific news.
      *
-     * @param  \App\Models\News  $news
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function attachFile(News $news, Request $request)
