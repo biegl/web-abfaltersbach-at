@@ -48,7 +48,7 @@ class Str extends StrHelper
     /**
      * Removes the starting slash from a class namespace \.
      */
-    public static function normalizeClassName($name)
+    public static function normalizeClassName($name): string
     {
         if (is_object($name)) {
             $name = get_class($name);
