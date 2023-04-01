@@ -1,4 +1,3 @@
-# github action that checks code with Rector
 name: Rector
 
 on:
