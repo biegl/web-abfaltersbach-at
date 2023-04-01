@@ -32,6 +32,7 @@
         "laravel/sail": "^1",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^6.1",
+        "nunomaduro/larastan": "^2.0",
         "pestphp/pest": "^1",
         "pestphp/pest-plugin-laravel": "^1",
         "phpunit/phpunit": "^9",

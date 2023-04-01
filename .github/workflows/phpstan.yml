@@ -1,0 +1,24 @@
+name: PHPStan
+
+on:
+  pull_request: null
+
+jobs:
+  phpstan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+          coverage: none
+
+      - uses: "ramsey/composer-install@v2"
+
+      - name: PHPStan Static Analysis
+        uses: php-actions/phpstan@v3
+        with:
+          configuration: phpstan.neon
+          memory_limit: 256M
