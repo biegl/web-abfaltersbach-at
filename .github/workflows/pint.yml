@@ -7,11 +7,10 @@ jobs:
   pint:
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: write
-
     steps:
       - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.RECTOR }}
 
       - uses: shivammathur/setup-php@v2
         with:
