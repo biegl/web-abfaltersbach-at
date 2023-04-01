@@ -16,6 +16,6 @@ return static function (RectorConfig $rectorConfig): void {
 
     $rectorConfig->sets([
         SetList::CODE_QUALITY,
-        LaravelSetList::LARAVEL_100,
+        LaravelSetList::LARAVEL_90,
     ]);
 };
