@@ -38,7 +38,6 @@ class UsersController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  User  $user
      * @return \Illuminate\Http\Response
      */
     public function show(User $user)
@@ -50,7 +49,6 @@ class UsersController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  User  $user
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateUser $request, User $user)
@@ -63,7 +61,6 @@ class UsersController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  User  $user
      * @return \Illuminate\Http\Response
      */
     public function destroy(User $user)
@@ -76,7 +73,6 @@ class UsersController extends Controller
     /**
      * Revokes the users password and sends a notification.
      *
-     * @param  User  $user
      * @return \Illuminate\Http\Response
      */
     public function revoke(User $user)

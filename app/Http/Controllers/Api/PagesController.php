@@ -36,7 +36,6 @@ class PagesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Page  $page
      * @return \Illuminate\Http\Response
      */
     public function show(Page $page)
@@ -48,7 +47,6 @@ class PagesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Request\StorePage  $request
-     * @param  \App\Models\Page  $page
      * @return \Illuminate\Http\Response
      */
     public function update(StorePage $request, Page $page)
@@ -61,7 +59,6 @@ class PagesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Page  $page
      * @return \Illuminate\Http\Response
      */
     public function destroy(Page $page)
@@ -81,8 +78,6 @@ class PagesController extends Controller
     /**
      * Attaches a file to a specific page.
      *
-     * @param  \App\Models\Page  $page
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function attachFile(Page $page, Request $request)
