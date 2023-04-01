@@ -40,7 +40,6 @@ class EventsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreEvent  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreEvent $request)
@@ -55,7 +54,6 @@ class EventsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Event  $event
      * @return \Illuminate\Http\Response
      */
     public function show(Event $event)
@@ -106,8 +104,6 @@ class EventsController extends Controller
     /**
      * Attaches a file to a specific event.
      *
-     * @param  \App\Models\Event  $event
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function attachFile(Event $event, Request $request)

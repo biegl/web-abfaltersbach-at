@@ -42,7 +42,6 @@ class FilesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  File  $file
      * @return \Illuminate\Http\Response
      */
     public function show(File $file)
