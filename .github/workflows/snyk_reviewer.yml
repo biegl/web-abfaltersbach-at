@@ -1,0 +1,23 @@
+name: Snyk reviewer
+
+on: pull_request_target
+
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+  review-snyk-pr:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.pull_request.user.login == 'snyk-bot' }}
+    steps:
+      - name: Enable auto-merge for Snyk PRs
+        run: gh pr merge --auto --merge "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - name: Approve patch and minor updates
+        run: gh pr review $PR_URL --approve -b "I'm **approving** this pull request because **it includes a patch or minor update**"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
