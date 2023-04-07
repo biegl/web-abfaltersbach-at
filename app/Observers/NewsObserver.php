@@ -10,7 +10,6 @@ class NewsObserver
     /**
      * Handle the News "created" event.
      *
-     * @param  \App\Models\News  $news
      * @return void
      */
     public function created(News $news)
@@ -21,7 +20,6 @@ class NewsObserver
     /**
      * Handle the News "deleted" event.
      *
-     * @param  \App\Models\News  $news
      * @return void
      */
     public function deleted(News $news)

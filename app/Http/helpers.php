@@ -1,7 +1,7 @@
 <?php
 
 if (! function_exists('create_fa_ext_icon')) {
-    function create_fa_ext_icon(App\Models\File $file)
+    function create_fa_ext_icon(App\Models\File $file): string
     {
         $extension = strtolower($file->extension);
 

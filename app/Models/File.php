@@ -72,7 +72,7 @@ class File extends Model
      * @param  int|null  $precision  Precision of rounding
      * @return string Human readable bytes
      */
-    public static function humanReadableFileSize($bytes, $precision = null)
+    public static function humanReadableFileSize($bytes, $precision = null): string
     {
         $count = count(self::BYTE_UNITS);
         for ($i = 0; ($bytes / self::BYTE_NEXT) >= 0.9 && $i < $count; $i++) {
