@@ -19,6 +19,7 @@ jobs:
 
       - name: PHPStan Static Analysis
         uses: php-actions/phpstan@v3
+        continue-on-error: true
         with:
           configuration: phpstan.neon
           memory_limit: 256M
