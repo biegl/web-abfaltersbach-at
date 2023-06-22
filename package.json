@@ -14,7 +14,7 @@
         "axios": "1.4.0",
         "bootstrap": "5.3",
         "cross-env": "7.0.3",
-        "cypress": "^12.14.0",
+        "cypress": "^12.15.0",
         "jquery": "3.7.0",
         "laravel-mix": "6.0.49",
         "lodash": "4.17.21",
