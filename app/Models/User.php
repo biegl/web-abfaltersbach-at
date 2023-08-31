@@ -13,8 +13,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class User extends Authenticatable
 {
     use HasFactory;
-    use Notifiable;
     use LogsActivity;
+    use Notifiable;
 
     protected static $logFillable = true;
 
