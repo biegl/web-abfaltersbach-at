@@ -23,7 +23,7 @@
         "sass": "1.69.5",
         "sass-loader": "13.3.2",
         "vue": "^3.3.13",
-        "vue-template-compiler": "2.7.15"
+        "vue-template-compiler": "2.7.16"
     },
     "dependencies": {
         "@tinymce/tinymce-vue": "^5.1.1"
