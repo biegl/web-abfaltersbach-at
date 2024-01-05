@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "858b0e279dc0c237dff4219cece8fcff",
+    "content-hash": "15f7e65745018ad448daa93020336dff",
     "packages": [
         {
             "name": "brick/math",
@@ -8922,20 +8922,21 @@
         },
         {
             "name": "driftingly/rector-laravel",
-            "version": "0.27.0",
+            "version": "0.29.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/driftingly/rector-laravel.git",
-                "reference": "2a73790294cf302c2959bff16319e794280ddad0"
+                "reference": "524f7ae302aa52e343d10630969cb1e36774d6d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/driftingly/rector-laravel/zipball/2a73790294cf302c2959bff16319e794280ddad0",
-                "reference": "2a73790294cf302c2959bff16319e794280ddad0",
+                "url": "https://api.github.com/repos/driftingly/rector-laravel/zipball/524f7ae302aa52e343d10630969cb1e36774d6d2",
+                "reference": "524f7ae302aa52e343d10630969cb1e36774d6d2",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2 || ^8.0"
+                "php": "^7.2 || ^8.0",
+                "rector/rector": "^0.18.5"
             },
             "type": "rector-extension",
             "autoload": {
@@ -8950,9 +8951,9 @@
             "description": "Rector upgrades rules for Laravel Framework",
             "support": {
                 "issues": "https://github.com/driftingly/rector-laravel/issues",
-                "source": "https://github.com/driftingly/rector-laravel/tree/0.27.0"
+                "source": "https://github.com/driftingly/rector-laravel/tree/0.29.0"
             },
-            "time": "2024-01-03T23:40:50+00:00"
+            "time": "2024-01-04T21:45:25+00:00"
         },
         {
             "name": "fakerphp/faker",
@@ -10037,16 +10038,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.10.50",
+            "version": "1.10.51",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "06a98513ac72c03e8366b5a0cb00750b487032e4"
+                "reference": "5082fa72dc13944578806ca1196a385818d8b077"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/06a98513ac72c03e8366b5a0cb00750b487032e4",
-                "reference": "06a98513ac72c03e8366b5a0cb00750b487032e4",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/5082fa72dc13944578806ca1196a385818d8b077",
+                "reference": "5082fa72dc13944578806ca1196a385818d8b077",
                 "shasum": ""
             },
             "require": {
@@ -10095,7 +10096,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-12-13T10:59:42+00:00"
+            "time": "2024-01-04T21:16:30+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
