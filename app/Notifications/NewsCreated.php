@@ -9,7 +9,6 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Queue\SerializesModels;
 use League\HTMLToMarkdown\HtmlConverter;
 use NotificationChannels\Telegram\TelegramChannel;
-use NotificationChannels\Telegram\TelegramFile;
 use NotificationChannels\Telegram\TelegramMessage;
 
 class NewsCreated extends Notification implements ShouldQueue
@@ -45,7 +44,7 @@ class NewsCreated extends Notification implements ShouldQueue
         return [TelegramChannel::class];
     }
 
-    public function dontSend($notifiable)
+    public function dontSend($notifiable): bool
     {
         return is_null($notifiable) || $notifiable->isExpired;
     }
@@ -59,27 +58,14 @@ class NewsCreated extends Notification implements ShouldQueue
 
         $title = "*$notifiable->title*";
 
-        // Check if content contains image
-        preg_match('@src="([^"]+)"@', $notifiable->text, $match);
-
         // Convert content to markdown and remove images
         $content = $converter->convert($notifiable->text);
-        $url = 'https://abfaltersbach.at?newsID='.$notifiable->ID;
 
-        if ($src = array_pop($match)) {
-            // Ensure src starts with https
-            $src = preg_replace('@^\/\/@', 'https://', $src);
+        $url = "https://abfaltersbach.at?newsID={$notifiable->ID}";
 
-            return TelegramFile::create()
-                ->to(config('services.telegram-bot-api.channel'))
-                ->content(implode("\n", [$title, $content]))
-                ->photo($src)
-                ->button('Online ansehen', $url);
-        } else {
-            return TelegramMessage::create()
-                ->to(config('services.telegram-bot-api.channel'))
-                ->content(implode("\n", [$title, $content]))
-                ->button('Online ansehen', $url);
-        }
+        return TelegramMessage::create()
+            ->to(config('services.telegram-bot-api.channel'))
+            ->content(implode("\n", [$title, $content]))
+            ->button('Online ansehen', $url);
     }
 }

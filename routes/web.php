@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\FilesController;
+use App\Http\Controllers\PageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/startseite', 'App\Http\Controllers\PageController@landing');
-Route::get('/files/{name}', 'App\Http\Controllers\FilesController@download');
-Route::fallback('App\Http\Controllers\PageController@show');
+Route::get('/startseite', [PageController::class, 'landing']);
+Route::get('/files/{name}', [FilesController::class, 'download']);
+Route::fallback([PageController::class, 'show']);
