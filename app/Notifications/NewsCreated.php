@@ -61,7 +61,7 @@ class NewsCreated extends Notification implements ShouldQueue
         // Convert content to markdown and remove images
         $content = $converter->convert($notifiable->text);
 
-        $url = config('app.url')."?newsID={$notifiable->ID}";
+        $url = "https://abfaltersbach.at?newsID={$notifiable->ID}";
 
         return TelegramMessage::create()
             ->to(config('services.telegram-bot-api.channel'))
