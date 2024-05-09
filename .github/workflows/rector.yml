@@ -1,28 +1,30 @@
 name: Rector
 
 on:
-  pull_request: null
+  pull_request:
+    paths:
+      - '**.php'
 
 jobs:
   rector:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
-          token: ${{ secrets.PINT }}
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.1
+          php-version: 8.2
           coverage: none
 
-      - uses: "ramsey/composer-install@v2"
+      - uses: 'ramsey/composer-install@v3'
 
       - run: vendor/bin/rector --ansi
 
-      - uses: stefanzweifel/git-auto-commit-action@v4
+      - uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "[rector] Rector fixes"
-          commit_author: "GitHub Action <actions@github.com>"
-          commit_user_email: "action@github.com"
+          commit_message: '[rector][skip ci] Rector fixes'
+          commit_author: 'GitHub Action <actions@github.com>'
+          commit_user_email: 'action@github.com'
