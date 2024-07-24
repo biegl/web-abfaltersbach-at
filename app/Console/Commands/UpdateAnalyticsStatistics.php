@@ -33,7 +33,7 @@ class UpdateAnalyticsStatistics extends Command
     {
         parent::__construct();
 
-        $this->service = new AnalyticsService();
+        $this->service = new AnalyticsService;
     }
 
     /**
