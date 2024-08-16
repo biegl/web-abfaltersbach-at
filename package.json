@@ -22,7 +22,7 @@
         "resolve-url-loader": "5.0.0",
         "sass": "1.77.8",
         "sass-loader": "16.0.0",
-        "vue": "^3.4.37",
+        "vue": "^3.4.38",
         "vue-template-compiler": "2.7.16"
     },
     "dependencies": {
