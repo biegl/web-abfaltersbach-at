@@ -198,16 +198,16 @@
         },
         {
             "name": "deployer/deployer",
-            "version": "v7.5.4",
+            "version": "v7.5.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/deployphp/deployer.git",
-                "reference": "df7d86e47f9760ca98dc7ff10962dd07134ac489"
+                "reference": "4f43595502870cd499a839c4ec676f58e70143c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/deployphp/deployer/zipball/df7d86e47f9760ca98dc7ff10962dd07134ac489",
-                "reference": "df7d86e47f9760ca98dc7ff10962dd07134ac489",
+                "url": "https://api.github.com/repos/deployphp/deployer/zipball/4f43595502870cd499a839c4ec676f58e70143c4",
+                "reference": "4f43595502870cd499a839c4ec676f58e70143c4",
                 "shasum": ""
             },
             "require": {
@@ -248,7 +248,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-10-23T15:09:50+00:00"
+            "time": "2024-11-26T15:31:46+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
