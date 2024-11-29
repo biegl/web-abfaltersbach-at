@@ -29,7 +29,7 @@ class ResetPassword extends ResetPasswordNotification
             ], false));
         }
 
-        return (new MailMessage())
+        return (new MailMessage)
             ->subject(Lang::get('email.reset.subject'))
             ->line(Lang::get('email.reset.intro'))
             ->action(Lang::get('email.reset.action'), $url)
