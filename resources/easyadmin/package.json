@@ -29,7 +29,7 @@
         "luxon": "^1.28.1",
         "npm": "^8.11.0",
         "v-calendar": "2.4.1",
-        "vue": "^2.7.14",
+        "vue": "^3.0.0",
         "vue-class-component": "^7.2.3",
         "vue-code-diff": "^1.0.0",
         "vue-multiselect": "^2.1.7",
