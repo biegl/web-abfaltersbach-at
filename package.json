@@ -9,7 +9,7 @@
         "production": "mix --production"
     },
     "devDependencies": {
-        "@percy/cli": "v1.30.3",
+        "@percy/cli": "v1.30.4",
         "@percy/cypress": "^3.1.2",
         "axios": "1.7.8",
         "bootstrap": "5.3",
