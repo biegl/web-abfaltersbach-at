@@ -9,6 +9,8 @@ config:
   bin/php: "{{deployer_bin_php}}"
   http_user: "{{deployer_remote_user}}"
   writable_mode: chmod
+  writable_chmod_mode: "775"
+  writable_recursive: true
   keep_releases: "{{deployer_keep_releases}}"
 
 hosts:
