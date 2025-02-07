@@ -13,7 +13,7 @@ class AnalyticsController extends Controller
 
     public function __construct()
     {
-        $this->service = new AnalyticsService();
+        $this->service = new AnalyticsService;
     }
 
     public function index(Request $request)

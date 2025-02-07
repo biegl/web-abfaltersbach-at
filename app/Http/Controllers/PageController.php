@@ -18,7 +18,7 @@ class PageController extends Controller
 
     public function show(Request $request)
     {
-        $router = new Router();
+        $router = new Router;
 
         // Find page by URL
         $page = $router->findByUrl($request->getPathInfo());
