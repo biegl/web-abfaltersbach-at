@@ -53,7 +53,6 @@ export default {
                     maxFileSize: this.maxFileSizeInBytes,
                     minNumberOfFiles: 1,
                     maxNumberOfFiles: 1,
-                    allowedFileTypes: ["image/*", "application/pdf"],
                 },
                 onBeforeFileAdded: currentFile => {
                     if (currentFile.data.size > this.maxFileSizeInBytes) {
