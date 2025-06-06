@@ -32,4 +32,18 @@ class UserFactory extends Factory
             'role' => 1,
         ];
     }
+
+    /**
+     * Indicate that the user is an admin.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function admin()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'role' => 2,
+            ];
+        });
+    }
 }
