@@ -1,11 +1,14 @@
 <?php
 
+use App\Models\Event;
 use App\Models\File;
+use App\Models\News;
 use App\Models\User;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\getJson;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 uses(RefreshDatabase::class);
@@ -83,11 +86,14 @@ test('it deletes a file attached to an event and clears cache', function () {
     $user = User::factory()->admin()->create();
     actingAs($user, 'sanctum');
 
-    $event = \App\Models\Event::factory()->create();
+    $event = Event::factory()->create();
     $file = File::factory()->create([
         'attachable_id' => $event->ID,
-        'attachable_type' => \App\Models\Event::class,
+        'attachable_type' => Event::class,
     ]);
+
+    Cache::shouldReceive('forget')->with(Event::$CACHE_KEY_CURRENT_EVENTS)->once();
+    Cache::shouldReceive('forget')->with(Event::$CACHE_KEY_GROUPED_EVENTS)->once();
 
     $response = $this->deleteJson("/api/files/{$file->ID}");
 
@@ -99,11 +105,13 @@ test('it deletes a file attached to a news and clears cache', function () {
     $user = User::factory()->admin()->create();
     actingAs($user, 'sanctum');
 
-    $news = \App\Models\News::factory()->create();
+    $news = News::factory()->create();
     $file = File::factory()->create([
         'attachable_id' => $news->ID,
-        'attachable_type' => \App\Models\News::class,
+        'attachable_type' => News::class,
     ]);
+
+    Cache::shouldReceive('forget')->with(News::$CACHE_KEY_TOP_NEWS)->once();
 
     $response = $this->deleteJson("/api/files/{$file->ID}");
 
@@ -111,11 +119,11 @@ test('it deletes a file attached to a news and clears cache', function () {
     $this->assertDatabaseMissing('tbl_downloads', ['ID' => $file->ID]);
 });
 
-test('it returns an error when storing a file without a file', function () {
-    $user = User::factory()->admin()->create();
-    actingAs($user, 'sanctum');
+test('storeFile returns null if no file is present', function () {
+    $controller = new \App\Http\Controllers\Api\FilesController();
+    $request = new \Illuminate\Http\Request();
 
-    $response = $this->postJson('/api/files', []);
+    $result = $controller->storeFile($request);
 
-    $response->assertStatus(422);
+    expect($result)->toBeNull();
 }); 

@@ -75,12 +75,12 @@ class FilesController extends Controller
         $file->delete();
 
         // Delete cache if necessary
-        if (property_exists($file, 'attachable') && $file->attachable !== null && get_class($file->attachable) == 'App\Models\Event') {
+        if ($file->attachable_type === Event::class) {
             Cache::forget(Event::$CACHE_KEY_CURRENT_EVENTS);
             Cache::forget(Event::$CACHE_KEY_GROUPED_EVENTS);
         }
 
-        if (property_exists($file, 'attachable') && $file->attachable !== null && get_class($file->attachable) == 'App\Models\News') {
+        if ($file->attachable_type === News::class) {
             Cache::forget(News::$CACHE_KEY_TOP_NEWS);
         }
 
