@@ -5,7 +5,7 @@ return [
     /*
      * The view id of which you want to display data.
      */
-    'view_id' => env('ANALYTICS_VIEW_ID'),
+    'view_id' => env('ANALYTICS_VIEW_ID', '12345678'),
 
     /*
      * Path to the client secret json file. Take a look at the README of this package
@@ -13,16 +13,16 @@ return [
      * instead of a file path.
      */
     'service_account_credentials_json' => [
-        'type' => env('ANALYTICS_TYPE'),
-        'project_id' => env('ANALYTICS_PROJECT_ID'),
-        'private_key_id' => env('ANALYTICS_PRIVATE_KEY_ID'),
-        'private_key' => env('ANALYTICS_PRIVATE_KEY'),
-        'client_email' => env('ANALYTICS_CLIENT_EMAIL'),
-        'client_id' => env('ANALYTICS_CLIENT_ID'),
-        'auth_uri' => env('ANALYTICS_AUTH_URI'),
-        'token_uri' => env('ANALYTICS_TOKEN_URI'),
-        'auth_provider_x509_cert_url' => env('ANALYTICS_AUTH_PROVIDER_X509_CERT_URL'),
-        'client_x509_cert_url' => env('ANALYTICS_CLIENT_X509_CERT_URL'),
+        'type' => env('ANALYTICS_TYPE', 'service_account'),
+        'project_id' => env('ANALYTICS_PROJECT_ID', 'your-project-id'),
+        'private_key_id' => env('ANALYTICS_PRIVATE_KEY_ID', 'your-private-key-id'),
+        'private_key' => env('ANALYTICS_PRIVATE_KEY', 'your-private-key'),
+        'client_email' => env('ANALYTICS_CLIENT_EMAIL', 'your-client-email'),
+        'client_id' => env('ANALYTICS_CLIENT_ID', 'your-client-id'),
+        'auth_uri' => env('ANALYTICS_AUTH_URI', 'https://accounts.google.com/o/oauth2/auth'),
+        'token_uri' => env('ANALYTICS_TOKEN_URI', 'https://oauth2.googleapis.com/token'),
+        'auth_provider_x509_cert_url' => env('ANALYTICS_AUTH_PROVIDER_X509_CERT_URL', 'https://www.googleapis.com/oauth2/v1/certs'),
+        'client_x509_cert_url' => env('ANALYTICS_CLIENT_X509_CERT_URL', 'your-client-x509-cert-url'),
     ],
 
     /*
