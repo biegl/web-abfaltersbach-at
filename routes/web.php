@@ -16,5 +16,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/startseite', [PageController::class, 'landing']);
-Route::get('/files/{name}', [FilesController::class, 'download']);
+Route::get('/files/{name}', [FilesController::class, 'download'])->name('download');
 Route::fallback([PageController::class, 'show']);
