@@ -17,3 +17,9 @@ test('list controller returns items in correct order', function () {
     expect($items[1]->ID)->toBe($news3->ID);
     expect($items[2]->ID)->toBe($news1->ID);
 });
+
+test('list controller returns empty array when no ids are provided', function () {
+    $items = ListController::getItems(1, ['model' => News::class, 'ids' => []]);
+
+    expect($items)->toBe([]);
+});
