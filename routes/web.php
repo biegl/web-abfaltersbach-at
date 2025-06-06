@@ -23,3 +23,9 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/startseite', [PageController::class, 'landing']);
 Route::get('/files/{name}', [FilesController::class, 'download'])->name('download');
 Route::fallback([PageController::class, 'show']);
+
+if (app()->environment('testing')) {
+    Route::get('/login', function () {
+        return 'login page';
+    })->name('login');
+}
