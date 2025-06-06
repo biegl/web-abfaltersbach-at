@@ -24,9 +24,10 @@ class ModuleController extends Controller
         return $module;
     }
 
-    public function saveList(Module $module, Request $request)
+    public function saveList(Request $request, $id)
     {
         // Get module
+        $module = Module::find($id);
         if (! $module) {
             return response()->json('Not found', 404);
         }

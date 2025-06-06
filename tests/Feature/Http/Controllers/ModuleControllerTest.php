@@ -31,3 +31,8 @@ test('can save a list', function () {
         'configuration' => json_encode(array_merge($module->configuration, ['ids' => $order])),
     ]);
 });
+
+test('it returns 404 when saving a list for a non-existent module', function () {
+    $this->post(route('modules.saveList', ['id' => 999]), ['order' => [1, 2, 3]])
+         ->assertNotFound();
+});
