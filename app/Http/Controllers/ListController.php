@@ -17,14 +17,9 @@ class ListController extends Controller
             return [];
         }
 
-        $ids_ordered = implode(',', $listItemIds);
-
-        $cache_key = self::$CACHE_KEY_LIST.'_'.$id;
-
-        return Cache::remember($cache_key, config('cache.defaultTTL'), function () use ($model, $listItemIds, $ids_ordered) {
-            return $model::whereIn('id', $listItemIds)
-                ->orderByRaw("FIELD(id, $ids_ordered)")
-                ->get();
-        });
+        $items = $model::whereIn('id', $listItemIds)->get();
+        return $items->sortBy(function ($item) use ($listItemIds) {
+            return array_search($item->id, $listItemIds);
+        })->values();
     }
 }
