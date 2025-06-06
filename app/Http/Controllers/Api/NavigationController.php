@@ -21,7 +21,7 @@ class NavigationController extends Controller
         if ($showAll) {
             return Navigation::allTopLevel()
                 ->orderBy('position')
-                ->paginate($this->itemsPerPage);
+                ->get();
         }
 
         return Navigation::allTopLevel()
