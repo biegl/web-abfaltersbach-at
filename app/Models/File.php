@@ -44,7 +44,7 @@ class File extends Model
 
     public function getExistsAttribute()
     {
-        return Storage::disk(self::$DISK_NAME)->exists($this);
+        return Storage::disk(self::$DISK_NAME)->exists($this->file);
     }
 
     public function getFileSizeAttribute()
