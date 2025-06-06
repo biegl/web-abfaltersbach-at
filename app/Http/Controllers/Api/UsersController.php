@@ -17,7 +17,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        return User::all();
+        return User::paginate();
     }
 
     /**
@@ -78,7 +78,6 @@ class UsersController extends Controller
     public function revoke(User $user)
     {
         $user->password = null;
-        $user->api_token = null;
         $user->save();
 
         $token = Password::createToken($user);

@@ -15,18 +15,10 @@ class RegisterTest extends TestCase
             'password_confirmation' => 'toptal123',
         ];
 
-        $this->postJson('/api/register', $payload)
-            ->assertStatus(201)
-            ->assertJsonStructure([
-                'data' => [
-                    'id',
-                    'name',
-                    'email',
-                    'created_at',
-                    'updated_at',
-                    'api_token',
-                ],
-            ]);
+        $response = $this->post('/api/register', $payload);
+
+        $response->assertStatus(204);
+        $this->assertAuthenticated();
     }
 
     public function testRequiresPasswordEmailAndName()

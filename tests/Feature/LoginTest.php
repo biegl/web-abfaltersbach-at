@@ -34,16 +34,12 @@ class LoginTest extends TestCase
 
     public function testUserLogsInSuccessfully()
     {
-        $this->actingAs($this->user)->postJson('api/login', ['email' => $this->user->email, 'password' => 'password'])
-            ->assertStatus(200)
-            ->assertJsonStructure([
-                'id',
-                'name',
-                'email',
-                'email_verified_at',
-                'created_at',
-                'updated_at',
-                'api_token',
-            ]);
+        $response = $this->post('api/login', [
+            'email' => $this->user->email,
+            'password' => 'password',
+        ]);
+
+        $response->assertStatus(200);
+        $this->assertAuthenticatedAs($this->user);
     }
 }

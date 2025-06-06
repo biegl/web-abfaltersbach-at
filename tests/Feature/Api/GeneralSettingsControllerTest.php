@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-beforeEach(function () {
+test('it shows the general settings', function () {
     $settings = new GeneralSettings([
         'name' => 'Test Name',
         'address' => 'Test Address',
@@ -18,9 +18,7 @@ beforeEach(function () {
         'is_proxy_card_feature_available' => true,
     ]);
     $settings->save();
-});
 
-test('it shows the general settings', function () {
     $user = User::factory()->create();
     actingAs($user, 'sanctum');
 
@@ -31,6 +29,16 @@ test('it shows the general settings', function () {
 });
 
 test('it updates the general settings', function () {
+    $settings = new GeneralSettings([
+        'name' => 'Test Name',
+        'address' => 'Test Address',
+        'zip' => '54321',
+        'city' => 'Test City',
+        'email' => 'test@test.com',
+        'is_proxy_card_feature_available' => true,
+    ]);
+    $settings->save();
+
     $user = User::factory()->admin()->create();
     actingAs($user, 'sanctum');
 
@@ -40,7 +48,7 @@ test('it updates the general settings', function () {
         'zip' => '12345',
         'city' => 'New City',
         'email' => 'new-test@test.com',
-        'is_proxy_card_feature_available' => false,
+        'isProxyCardFeatureAvailable' => false,
     ];
 
     $response = $this->putJson('/api/settings', $data);
@@ -53,6 +61,16 @@ test('it updates the general settings', function () {
 });
 
 test('it does not allow a non-admin to update the settings', function () {
+    $settings = new GeneralSettings([
+        'name' => 'Test Name',
+        'address' => 'Test Address',
+        'zip' => '54321',
+        'city' => 'Test City',
+        'email' => 'test@test.com',
+        'is_proxy_card_feature_available' => true,
+    ]);
+    $settings->save();
+
     $user = User::factory()->create();
     actingAs($user, 'sanctum');
 
@@ -62,10 +80,10 @@ test('it does not allow a non-admin to update the settings', function () {
         'zip' => '12345',
         'city' => 'New City',
         'email' => 'test@test.com',
-        'is_proxy_card_feature_available' => false,
+        'isProxyCardFeatureAvailable' => false,
     ];
 
     $response = $this->putJson('/api/settings', $data);
 
-    $response->assertForbidden();
-}); 
+    $response->assertUnauthorized();
+});

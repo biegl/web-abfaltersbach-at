@@ -17,6 +17,11 @@ class GeneralSettingsResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'name' => $this->name,
+            'address' => $this->address,
+            'zip' => $this->zip,
+            'city' => $this->city,
+            'email' => $this->email,
             'isProxyCardFeatureAvailable' => $this->is_proxy_card_feature_available,
         ];
     }

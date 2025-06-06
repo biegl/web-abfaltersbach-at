@@ -7,11 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
+use Laravel\Sanctum\HasApiTokens;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class User extends Authenticatable
 {
+    use HasApiTokens;
     use HasFactory;
     use LogsActivity;
     use Notifiable;
@@ -48,14 +50,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'role' => 'integer',
     ];
-
-    public function generateToken()
-    {
-        $this->api_token = Str::random(60);
-        $this->save();
-
-        return $this->api_token;
-    }
 
     public function sendPasswordResetNotification($token)
     {
