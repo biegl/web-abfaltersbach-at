@@ -34,6 +34,11 @@ class GeneralSettingsRequest extends FormRequest
     public function rules()
     {
         return [
+            'name' => 'required|string',
+            'address' => 'required|string',
+            'zip' => 'required|string',
+            'city' => 'required|string',
+            'email' => 'required|email',
             'is_proxy_card_feature_available' => ['boolean'],
         ];
     }

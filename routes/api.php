@@ -35,10 +35,10 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::post('users/{user}/revoke', 'App\Http\Controllers\Api\UsersController@revoke');
         Route::apiResource('users', 'App\Http\Controllers\Api\UsersController');
         Route::get('activities', 'App\Http\Controllers\Api\ActivityLogsController@index');
+        Route::put('settings', [GeneralSettingsController::class, 'update']);
     });
 
     Route::get('settings', [GeneralSettingsController::class, 'show']);
-    Route::put('settings', [GeneralSettingsController::class, 'update']);
 });
 
 Route::post('register', 'App\Http\Controllers\Auth\RegisterController@register');
