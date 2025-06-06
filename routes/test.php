@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\NewsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/unauthenticated', function () {
@@ -8,4 +10,9 @@ Route::get('/unauthenticated', function () {
 
 Route::post('/_test/store-file', function (\App\Http\Requests\StoreFile $request) {
     return response()->json(['message' => 'ok']);
-}); 
+});
+
+Route::post('/modules', [ModuleController::class, 'store'])->name('modules.store');
+Route::post('/modules/{module}/save-list', [ModuleController::class, 'saveList'])->name('modules.saveList');
+
+Route::get('/news', [NewsController::class, 'index'])->name('news.index'); 
