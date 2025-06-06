@@ -16,10 +16,12 @@ class ModuleController extends Controller
     {
         $config = json_encode($request['configuration']);
 
-        return Module::create([
+        $module = Module::create([
             'type' => 'list',
             'configuration' => $config,
         ]);
+
+        return $module;
     }
 
     public function saveList(Module $module, Request $request)
@@ -33,6 +35,6 @@ class ModuleController extends Controller
         $config['ids'] = $request['order'];
         $module->update(['configuration' => $config]);
 
-        return $module->fresh();
+        return $module;
     }
 }
