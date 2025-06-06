@@ -28,6 +28,11 @@ class Page extends Model
     protected $fillable = [
         'seitentitel',
         'inhalt',
+        'keywords',
+        'description',
+        'template',
+        'template_name',
+        'navigation_id',
     ];
 
     public function getTitleAttribute()

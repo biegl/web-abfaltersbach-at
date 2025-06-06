@@ -24,6 +24,11 @@ class StorePage extends FormRequest
         return [
             'seitentitel' => 'required|max:255',
             'inhalt' => '',
+            'keywords' => 'required|max:255',
+            'description' => 'required|max:255',
+            'template' => 'required|max:255',
+            'template_name' => 'required|max:255',
+            'navigation_id' => 'nullable|integer',
         ];
     }
 }
