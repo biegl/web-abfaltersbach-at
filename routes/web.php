@@ -3,6 +3,7 @@
 use App\Http\Controllers\FilesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Auth::routes(['confirm' => true]);
 
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/startseite', [PageController::class, 'landing']);

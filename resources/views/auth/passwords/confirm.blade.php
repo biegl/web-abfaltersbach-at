@@ -10,7 +10,7 @@
                 <div class="card-body">
                     {{ __('passwords.confirm.description') }}
 
-                    <form method="POST" action="{{ route('passwords.confirm') }}">
+                    <form method="POST" action="{{ route('password.confirm') }}">
                         @csrf
 
                         <div class="form-group row">
@@ -33,8 +33,8 @@
                                     {{ __('passwords.confirm.button') }}
                                 </button>
 
-                                @if (Route::has('passwords.request'))
-                                    <a class="btn btn-link" href="{{ route('passwords.request') }}">
+                                @if (Route::has('password.request'))
+                                    <a class="btn btn-link" href="{{ route('password.request') }}">
                                         {{ __('passwords.request') }}
                                     </a>
                                 @endif
