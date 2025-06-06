@@ -6,6 +6,7 @@ use App\Models\Navigation;
 use App\Models\Page;
 use App\Router\Router;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class RouterTest extends TestCase
@@ -26,7 +27,7 @@ class RouterTest extends TestCase
         parent::tearDown();
     }
 
-    /** @test */
+    #[Test]
     public function it_should_find_a_page_by_url()
     {
         $pageOne = Page::factory()->create();
@@ -40,7 +41,7 @@ class RouterTest extends TestCase
         $this->assertEquals($pageOne->content, $page->content);
     }
 
-    /** @test */
+    #[Test]
     public function it_should_not_find_a_non_existing_page()
     {
         $pageOne = Page::factory()->create();
