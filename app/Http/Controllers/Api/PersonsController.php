@@ -114,9 +114,10 @@ class PersonsController extends Controller
         return response()->json($person->fresh(), 200);
     }
 
-    public function list(module $module)
+    public function list($module_id)
     {
         // Get module
+        $module = Module::find($module_id);
         if (! $module) {
             return response()->json('Not found', 404);
         }
