@@ -1,14 +1,15 @@
 <?php
 
 use App\Models\User;
-use function Pest\Laravel\actingAs;
-use function Pest\Laravel\getJson;
-use function Pest\Laravel\postJson;
-use function Pest\Laravel\putJson;
-use function Pest\Laravel\deleteJson;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
+
+use function Pest\Laravel\actingAs;
+use function Pest\Laravel\deleteJson;
+use function Pest\Laravel\getJson;
+use function Pest\Laravel\postJson;
+use function Pest\Laravel\putJson;
 
 uses(RefreshDatabase::class);
 
@@ -178,4 +179,4 @@ test('it does not allow a non-admin to revoke a user password', function () {
     $response = postJson("/api/users/{$otherUser->id}/revoke");
 
     $response->assertUnauthorized();
-}); 
+});

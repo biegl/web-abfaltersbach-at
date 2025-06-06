@@ -26,4 +26,4 @@ class ModuleFactory extends Factory
             'configuration' => [],
         ];
     }
-} 
+}

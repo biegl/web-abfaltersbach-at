@@ -2,14 +2,15 @@
 
 use App\Models\News;
 use App\Models\User;
-use function Pest\Laravel\actingAs;
-use function Pest\Laravel\getJson;
-use function Pest\Laravel\postJson;
-use function Pest\Laravel\putJson;
-use function Pest\Laravel\deleteJson;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+
+use function Pest\Laravel\actingAs;
+use function Pest\Laravel\deleteJson;
+use function Pest\Laravel\getJson;
+use function Pest\Laravel\postJson;
+use function Pest\Laravel\putJson;
 
 uses(RefreshDatabase::class);
 
@@ -113,4 +114,4 @@ test('it attaches a file to a news article', function () {
         'attachable_id' => $news->ID,
         'attachable_type' => News::class,
     ]);
-}); 
+});

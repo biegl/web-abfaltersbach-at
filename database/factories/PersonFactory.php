@@ -28,4 +28,4 @@ class PersonFactory extends Factory
             'email' => $this->faker->safeEmail(),
         ];
     }
-} 
+}

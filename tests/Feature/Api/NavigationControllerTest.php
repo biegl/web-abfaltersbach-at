@@ -2,9 +2,10 @@
 
 use App\Models\Navigation;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\getJson;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
@@ -32,4 +33,4 @@ test('it returns all navigation items when showAll is true', function () {
 
     $response->assertSuccessful();
     $response->assertJsonCount(30);
-}); 
+});

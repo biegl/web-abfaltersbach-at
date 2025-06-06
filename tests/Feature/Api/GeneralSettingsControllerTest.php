@@ -2,9 +2,10 @@
 
 use App\Models\GeneralSettings;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\getJson;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 

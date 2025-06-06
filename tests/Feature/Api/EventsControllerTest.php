@@ -2,11 +2,12 @@
 
 use App\Models\Event;
 use App\Models\User;
-use function Pest\Laravel\actingAs;
-use function Pest\Laravel\getJson;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+
+use function Pest\Laravel\actingAs;
+use function Pest\Laravel\getJson;
 
 uses(RefreshDatabase::class);
 
@@ -130,4 +131,4 @@ test('it attaches a file to an event', function () {
         'attachable_id' => $event->ID,
         'attachable_type' => Event::class,
     ]);
-}); 
+});

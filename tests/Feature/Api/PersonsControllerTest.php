@@ -3,15 +3,15 @@
 use App\Models\Module;
 use App\Models\Person;
 use App\Models\User;
-use function Pest\Laravel\actingAs;
-use function Pest\Laravel\getJson;
-use function Pest\Laravel\postJson;
-use function Pest\Laravel\putJson;
-use function Pest\Laravel\deleteJson;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use App\Models\File;
+
+use function Pest\Laravel\actingAs;
+use function Pest\Laravel\deleteJson;
+use function Pest\Laravel\getJson;
+use function Pest\Laravel\postJson;
+use function Pest\Laravel\putJson;
 
 uses(RefreshDatabase::class);
 
@@ -110,7 +110,7 @@ test('it returns a list of persons for a module', function () {
 
     $persons = Person::factory()->count(3)->create();
     $module = Module::factory()->create([
-        'configuration' => ['ids' => $persons->pluck('id')->toArray()]
+        'configuration' => ['ids' => $persons->pluck('id')->toArray()],
     ]);
 
     $response = getJson("/api/persons/list/{$module->id}");
@@ -137,4 +137,4 @@ test('it saves a list of persons for a module', function () {
     $response->assertSuccessful();
     $module->refresh();
     expect($module->configuration['ids'])->toEqual($orderedIds);
-}); 
+});

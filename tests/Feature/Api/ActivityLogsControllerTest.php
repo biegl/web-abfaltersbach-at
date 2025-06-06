@@ -1,9 +1,10 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\getJson;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
@@ -27,4 +28,4 @@ test('it returns a 401 for a non-admin user', function () {
     $response = getJson('/api/activities');
 
     $response->assertUnauthorized();
-}); 
+});

@@ -8,7 +8,6 @@ use App\Http\Requests\StorePersonListRequest;
 use App\Models\File;
 use App\Models\Module;
 use App\Models\Person;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class PersonsController extends Controller
@@ -142,4 +141,4 @@ class PersonsController extends Controller
 
         return response()->json($module, 200);
     }
-} 
+}
