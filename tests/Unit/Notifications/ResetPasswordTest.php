@@ -76,3 +76,38 @@ test('mail message has correct action', function () {
     expect($message->actionText)->toBe('Reset Password');
     expect($message->actionUrl)->toBe($url);
 });
+
+test('it uses the toMail callback when provided', function () {
+    $user = User::factory()->create();
+    $notification = new ResetPassword('test-token');
+
+    ResetPassword::toMailUsing(function ($notifiable, $token) {
+        return (new MailMessage)->line("Custom mail for token: {$token}");
+    });
+
+    $message = $notification->toMail($user);
+
+    expect($message->introLines)->toContain('Custom mail for token: test-token');
+
+    // Reset the callback
+    ResetPassword::toMailUsing(null);
+});
+
+test('it uses the createUrl callback when provided', function () {
+    $user = User::factory()->create();
+    $notification = new ResetPassword('test-token');
+
+    ResetPassword::createUrlUsing(function ($notifiable, $token) {
+        return "https://example.com/reset/{$token}";
+    });
+
+    Lang::shouldReceive('get')->with('email.reset.action')->andReturn('Reset Password');
+    Lang::shouldReceive('get')->andReturn('');
+
+    $message = $notification->toMail($user);
+
+    expect($message->actionUrl)->toBe('https://example.com/reset/test-token');
+
+    // Reset the callback
+    ResetPassword::createUrlUsing(null);
+});
