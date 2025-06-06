@@ -27,7 +27,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('persons/list/{module}', 'App\Http\Controllers\Api\PersonsController@list');
     Route::post('persons/list/{module}', 'App\Http\Controllers\Api\PersonsController@saveList');
     Route::post('persons/{person}/attach', 'App\Http\Controllers\Api\PersonsController@attachFile');
-    Route::post('persons/{person}/delete/{file}', 'App\Http\Controllers\Api\PersonsController@deleteFile');
 
     Route::get('analytics', 'App\Http\Controllers\Api\AnalyticsController@index');
 

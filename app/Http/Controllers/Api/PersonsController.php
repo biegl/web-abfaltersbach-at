@@ -3,18 +3,28 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\ListController;
 use App\Http\Requests\StorePerson;
 use App\Http\Requests\StorePersonListRequest;
 use App\Models\File;
 use App\Models\Module;
 use App\Models\Person;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class PersonsController extends Controller
 {
+    /**
+     * @var int
+     */
+    protected $itemsPerPage = 10;
+
+    public function __construct()
+    {
+        if (request()->query('itemsPerPage')) {
+            $this->itemsPerPage = request()->query('itemsPerPage');
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -22,20 +32,18 @@ class PersonsController extends Controller
      */
     public function index()
     {
-        return Person::orderBy('name', 'asc')->get();
+        return Person::orderBy('name', 'asc')->paginate($this->itemsPerPage);
     }
 
     /**
      * Store a newly created resource in storage.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StorePerson $request)
     {
-        $person = Person::create($request->validated(null, null));
-
-        Cache::forget(ListController::$CACHE_KEY_LIST.'_1');
-        Cache::forget(ListController::$CACHE_KEY_LIST.'_2');
+        $person = Person::create($request->all());
 
         return response()->json($person, 201);
     }
@@ -43,25 +51,24 @@ class PersonsController extends Controller
     /**
      * Display the specified resource.
      *
+     * @param  \App\Models\Person  $person
      * @return \Illuminate\Http\Response
      */
     public function show(Person $person)
     {
-        return $person;
+        return response()->json($person, 200);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Person  $person
      * @return \Illuminate\Http\Response
      */
     public function update(StorePerson $request, Person $person)
     {
-        $person->update($request->validated(null, null));
-
-        Cache::forget(ListController::$CACHE_KEY_LIST.'_1');
-        Cache::forget(ListController::$CACHE_KEY_LIST.'_2');
+        $person->update($request->all());
 
         return response()->json($person, 200);
     }
@@ -69,23 +76,19 @@ class PersonsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param  \App\Models\Person  $person
      * @return \Illuminate\Http\Response
      */
     public function destroy(Person $person)
     {
-        $image = $person->image()->get()->first();
-
         // Delete attachments
-        if (isset($image)) {
-            Storage::delete([$image->file]);
-            $person->image()->delete();
+        foreach ($person->image()->get() as $file) {
+            Storage::disk(File::$DISK_NAME)->delete(str_replace('/upload', '', $file->file));
+            $file->delete();
         }
 
         // Delete person
         $person->delete();
-
-        Cache::forget(ListController::$CACHE_KEY_LIST.'_1');
-        Cache::forget(ListController::$CACHE_KEY_LIST.'_2');
 
         return response()->json(null, 204);
     }
@@ -93,25 +96,21 @@ class PersonsController extends Controller
     /**
      * Attaches a file to a specific event.
      *
+     * @param  \App\Models\Person  $person
      * @return \Illuminate\Http\Response
      */
-    public function attachFile(Person $person, Request $request)
+    public function attachFile(Person $person)
     {
-        $file = FilesController::storeFile($request);
-        $person->image()->save($file);
+        request()->validate([
+            'file' => 'required',
+        ]);
 
-        return response()->json($person->fresh(), 200);
-    }
+        $file = request()->file('file')->store('/', File::$DISK_NAME);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function deleteFile(Person $person, File $file)
-    {
-        Storage::delete([$file]);
-        $person->image()->delete();
+        $person->image()->create([
+            'file' => '/upload/'.$file,
+            'title' => request()->file('file')->getClientOriginalName(),
+        ]);
 
         return response()->json($person->fresh(), 200);
     }
@@ -128,37 +127,19 @@ class PersonsController extends Controller
             return response()->json([], 200);
         }
 
-        $ids_ordered = implode(',', $ids);
-        $persons = Person::whereIn('id', $ids)
-            ->orderByRaw("FIELD(id, $ids_ordered)")
-            ->get();
+        $persons = Person::whereIn('id', $ids)->get();
+        $persons = $persons->sortBy(function ($person) use ($ids) {
+            return array_search($person->id, $ids);
+        });
 
-        return response()->json($persons, 200);
+        return response()->json($persons->values(), 200);
     }
 
     public function saveList(Module $module, StorePersonListRequest $request)
     {
-        if (! $module) {
-            return response()->json('Not found', 404);
-        }
+        $module->configuration = ['ids' => $request->order];
+        $module->save();
 
-        // validate
-
-        $order = $request->validated(null, null);
-
-        // store
-
-        $config = $module->configuration;
-        $config['ids'] = $order['order'];
-
-        $module->update(['configuration' => $config]);
-
-        // clear cache
-
-        Cache::forget(ListController::$CACHE_KEY_LIST.'_'.$module->id);
-
-        // response
-
-        return $this->list($module->fresh());
+        return response()->json($module, 200);
     }
-}
+} 
