@@ -47,7 +47,7 @@ class EventCreated extends Notification implements ShouldQueue
 
     public function dontSend($notifiable)
     {
-        return is_null($notifiable) || $notifiable->isExpired;
+        return is_null($notifiable) || $notifiable->date->isPast();
     }
 
     public function toTelegram($notifiable)
