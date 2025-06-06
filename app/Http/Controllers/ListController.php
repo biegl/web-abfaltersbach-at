@@ -17,9 +17,11 @@ class ListController extends Controller
             return [];
         }
 
-        $items = $model::whereIn('id', $listItemIds)->get();
-        return $items->sortBy(function ($item) use ($listItemIds) {
-            return array_search($item->id, $listItemIds);
+        $key = (new $model)->getKeyName();
+
+        $items = $model::whereIn($key, $listItemIds)->get();
+        return $items->sortBy(function ($item) use ($listItemIds, $key) {
+            return array_search($item->{$key}, $listItemIds);
         })->values();
     }
 }
