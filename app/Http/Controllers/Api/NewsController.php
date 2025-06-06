@@ -98,7 +98,7 @@ class NewsController extends Controller
      */
     public function attachFile(News $news, Request $request)
     {
-        $file = FilesController::storeFile($request);
+        $file = (new FilesController)->storeFile($request);
         $news->attachments()->save($file);
         Cache::forget(News::$CACHE_KEY_TOP_NEWS);
 

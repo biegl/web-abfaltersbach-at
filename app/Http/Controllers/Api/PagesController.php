@@ -82,7 +82,7 @@ class PagesController extends Controller
      */
     public function attachFile(Page $page, Request $request)
     {
-        $file = FilesController::storeFile($request);
+        $file = (new FilesController)->storeFile($request);
         $page->attachments()->save($file);
 
         return response()->json($page->fresh(), 200);

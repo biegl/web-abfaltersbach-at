@@ -34,7 +34,7 @@ class FilesController extends Controller
      */
     public function store(Request $request)
     {
-        $file = self::storeFile($request);
+        $file = $this->storeFile($request);
 
         return response()->json($file, 201);
     }
@@ -87,7 +87,7 @@ class FilesController extends Controller
         return response()->json(null, 204);
     }
 
-    public static function storeFile(Request $request)
+    public function storeFile(Request $request)
     {
         if (! $request->hasFile('file')) {
             return;
