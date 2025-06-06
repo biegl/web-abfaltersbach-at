@@ -85,6 +85,38 @@ test('it deletes a page', function () {
     $this->assertDatabaseMissing('tbl_site', ['ID' => $page->ID]);
 });
 
+test('it deletes a page with attachments', function () {
+    $user = User::factory()->admin()->create();
+    actingAs($user, 'sanctum');
+
+    Storage::fake('local');
+    $page = Page::factory()->create();
+    $file = UploadedFile::fake()->create('test.jpg');
+
+    // Mock the FilesController
+    $fileControllerMock = $this->mock(\App\Http\Controllers\Api\FilesController::class)->makePartial();
+    $fileModel = new \App\Models\File(['file' => 'test.jpg', 'title' => 'test.jpg']);
+    $fileControllerMock->shouldReceive('storeFile')->andReturn($fileModel);
+
+    // Attach the file
+    $request = new \Illuminate\Http\Request();
+    $request->files->set('file', $file);
+    $fileRecord = $fileControllerMock->storeFile($request);
+    $page->attachments()->save($fileRecord);
+
+    Storage::disk('local')->put('test.jpg', 'test');
+    Storage::disk('local')->assertExists($fileRecord->file);
+
+    // Delete the page
+    $response = $this->deleteJson("/api/pages/{$page->ID}");
+    $response->assertStatus(204);
+
+    // Assertions
+    $this->assertDatabaseMissing('tbl_site', ['ID' => $page->ID]);
+    $this->assertDatabaseMissing('tbl_downloads', ['ID' => $fileRecord->ID]);
+    Storage::disk('local')->assertMissing($fileRecord->file);
+});
+
 test('it attaches a file to a page', function () {
     $user = User::factory()->admin()->create();
     actingAs($user, 'sanctum');
