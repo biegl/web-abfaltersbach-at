@@ -9,5 +9,9 @@ test('home page can be rendered', function () {
     News::factory()->create();
     Navigation::factory()->create();
 
-    $this->get('/')->assertOk()->assertViewIs('home')->assertViewHasAll(['navigation', 'news', 'grouped_events']);
+    $response = $this->get('/');
+    $response->assertOk();
+    $response->assertViewIs('home');
+    $response->assertViewHasAll(['navigation', 'news', 'grouped_events']);
+    $this->assertInstanceOf(\Illuminate\View\View::class, $response->getOriginalContent());
 });
