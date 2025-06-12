@@ -2,12 +2,11 @@
 
 use App\Models\File;
 use App\Models\User;
+use function Pest\Laravel\actingAs;
+use function Pest\Laravel\getJson;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-
-use function Pest\Laravel\actingAs;
-use function Pest\Laravel\getJson;
 
 uses(RefreshDatabase::class);
 
@@ -79,3 +78,44 @@ test('it deletes a file', function () {
     $response->assertStatus(204);
     $this->assertDatabaseMissing('tbl_downloads', ['ID' => $file->ID]);
 });
+
+test('it deletes a file attached to an event and clears cache', function () {
+    $user = User::factory()->admin()->create();
+    actingAs($user, 'sanctum');
+
+    $event = \App\Models\Event::factory()->create();
+    $file = File::factory()->create([
+        'attachable_id' => $event->ID,
+        'attachable_type' => \App\Models\Event::class,
+    ]);
+
+    $response = $this->deleteJson("/api/files/{$file->ID}");
+
+    $response->assertStatus(204);
+    $this->assertDatabaseMissing('tbl_downloads', ['ID' => $file->ID]);
+});
+
+test('it deletes a file attached to a news and clears cache', function () {
+    $user = User::factory()->admin()->create();
+    actingAs($user, 'sanctum');
+
+    $news = \App\Models\News::factory()->create();
+    $file = File::factory()->create([
+        'attachable_id' => $news->ID,
+        'attachable_type' => \App\Models\News::class,
+    ]);
+
+    $response = $this->deleteJson("/api/files/{$file->ID}");
+
+    $response->assertStatus(204);
+    $this->assertDatabaseMissing('tbl_downloads', ['ID' => $file->ID]);
+});
+
+test('it returns an error when storing a file without a file', function () {
+    $user = User::factory()->admin()->create();
+    actingAs($user, 'sanctum');
+
+    $response = $this->postJson('/api/files', []);
+
+    $response->assertStatus(422);
+}); 

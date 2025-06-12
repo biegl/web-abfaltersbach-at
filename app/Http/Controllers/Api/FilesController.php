@@ -32,7 +32,7 @@ class FilesController extends Controller
      * @param  \App\Http\Requests\StoreFile  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(\App\Http\Requests\StoreFile $request)
     {
         $file = $this->storeFile($request);
 
