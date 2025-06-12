@@ -18,7 +18,7 @@ class AnalyticsService
 
     public function retrieveAnalyticsData($year, $month)
     {
-        $cache_key = "analytics_${year}_${month}";
+        $cache_key = "analytics_{$year}_{$month}";
 
         return Cache::remember($cache_key, $this->cache_ttl, function () use ($year, $month) {
             // Data for requested month

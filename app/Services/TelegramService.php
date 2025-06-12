@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Notifications\Channels;
+namespace App\Services;
 
 use Illuminate\Notifications\Notification;
 use Telegram\Bot\Api;
 use Telegram\Bot\Exceptions\TelegramSDKException;
+use Illuminate\Support\Facades\Log;
 
-class TelegramNotificationChannel
+class TelegramService
 {
     /**
      * @var Api
@@ -44,6 +45,8 @@ class TelegramNotificationChannel
         }
 
         $message = $notification->toTelegram($notifiable);
+
+        Log::info("Sending telegram message", $notifiable);
         
         if (is_string($message)) {
             $this->sendTextMessage($message);

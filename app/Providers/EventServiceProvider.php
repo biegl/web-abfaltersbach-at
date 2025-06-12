@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events\EventCreated;
+use App\Events\NewsCreated;
 use App\Listeners\NotificationSendingListener;
 use App\Listeners\SetEmailVerificationDate;
 use App\Models\Event;
@@ -31,6 +33,12 @@ class EventServiceProvider extends ServiceProvider
         NotificationSending::class => [
             NotificationSendingListener::class,
         ],
+        NewsCreated::class => [
+            'App\Listeners\SendNewsCreatedNotification',
+        ],
+        EventCreated::class => [
+            'App\Listeners\SendEventCreatedNotification',
+        ],
     ];
 
     /**
@@ -42,9 +50,7 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        if (config('app.env') == 'production') {
-            News::observe(NewsObserver::class);
-            Event::observe(EventObserver::class);
-        }
+        News::observe(NewsObserver::class);
+        Event::observe(EventObserver::class);
     }
 }

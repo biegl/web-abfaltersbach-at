@@ -32,7 +32,9 @@ return [
     | Example: @abfaltersbach
     |
     */
-    'default_channel' => env('TELEGRAM_CHANNEL_NAME', '@abfaltersbach'),
+    'default_channel' => env('APP_ENV') === 'production' 
+        ? '@abfaltersbach'
+        : env('TELEGRAM_CHANNEL_NAME', ''),
 
     /*
     |--------------------------------------------------------------------------
