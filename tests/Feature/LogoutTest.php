@@ -1,25 +1,18 @@
 <?php
 
-namespace Tests\Feature;
-
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Tests\TestCase;
 
-class LogoutTest extends TestCase
-{
-    private $user;
+uses(RefreshDatabase::class);
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->user = User::factory()->create();
-    }
-
-    public function testUserIsLoggedOutProperly()
-    {
-        $response = $this->actingAs($this->user)->postJson('/api/logout');
-        $this->assertFalse(Auth::check());
-    }
-}
+test('user can logout', function () {
+    // Arrange
+    $user = User::factory()->create();
+    
+    // Act
+    $response = $this->actingAs($user)
+        ->postJson('/api/logout');
+    
+    // Assert
+    expect(Auth::check())->toBeFalse();
+});
