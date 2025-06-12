@@ -29,7 +29,6 @@ class FilesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreFile  $request
      * @return \Illuminate\Http\Response
      */
     public function store(\App\Http\Requests\StoreFile $request)

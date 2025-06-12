@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Cache;
-
 class ListController extends Controller
 {
     public static $CACHE_KEY_LIST = 'CACHE_KEY_LIST';
@@ -20,6 +18,7 @@ class ListController extends Controller
         $key = (new $model)->getKeyName();
 
         $items = $model::whereIn($key, $listItemIds)->get();
+
         return $items->sortBy(function ($item) use ($listItemIds, $key) {
             return array_search($item->{$key}, $listItemIds);
         })->values();

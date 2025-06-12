@@ -50,7 +50,6 @@ class PersonsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Person  $person
      * @return \Illuminate\Http\Response
      */
     public function show(Person $person)
@@ -62,7 +61,6 @@ class PersonsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Person  $person
      * @return \Illuminate\Http\Response
      */
     public function update(StorePerson $request, Person $person)
@@ -75,7 +73,6 @@ class PersonsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Person  $person
      * @return \Illuminate\Http\Response
      */
     public function destroy(Person $person)
@@ -95,7 +92,6 @@ class PersonsController extends Controller
     /**
      * Attaches a file to a specific event.
      *
-     * @param  \App\Models\Person  $person
      * @return \Illuminate\Http\Response
      */
     public function attachFile(Person $person)

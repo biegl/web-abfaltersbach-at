@@ -13,7 +13,7 @@ class PageController extends Controller
      */
     public function landing()
     {
-        return redirect('/');
+        return redirect()->route('home');
     }
 
     public function show(Request $request, Router $router)
