@@ -19,4 +19,4 @@ Route::get('/news', [NewsController::class, 'index'])->name('news.index');
 
 Route::get('/login', function () {
     return 'login page';
-})->middleware('guest')->name('login'); 
+})->middleware('guest')->name('login');
