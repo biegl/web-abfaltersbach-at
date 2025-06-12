@@ -2,9 +2,9 @@
 
 namespace App\Console;
 
+use App\Console\Commands\SendTelegramMessage;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use App\Console\Commands\SendTelegramMessage;
 
 class Kernel extends ConsoleKernel
 {

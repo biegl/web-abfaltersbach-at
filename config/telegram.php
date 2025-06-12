@@ -32,7 +32,7 @@ return [
     | Example: @abfaltersbach
     |
     */
-    'default_channel' => env('APP_ENV') === 'production' 
+    'default_channel' => env('APP_ENV') === 'production'
         ? '@abfaltersbach'
         : env('TELEGRAM_CHANNEL_NAME', ''),
 
@@ -74,4 +74,4 @@ return [
     'commands' => [
         // Telegram\Bot\Commands\HelpCommand::class,
     ],
-]; 
+];

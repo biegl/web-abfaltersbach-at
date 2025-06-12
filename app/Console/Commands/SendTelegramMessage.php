@@ -31,8 +31,6 @@ class SendTelegramMessage extends Command
 
     /**
      * Create a new command instance.
-     *
-     * @param Api $telegram
      */
     public function __construct(Api $telegram)
     {
@@ -45,9 +43,10 @@ class SendTelegramMessage extends Command
         $title = $this->option('title') ?: $this->ask('Enter a title for the message');
         $message = $this->ask('Enter your message');
         $imageUrl = $this->option('image') ?: $this->ask('Enter an image URL (optional, press enter to skip)', null);
-        
+
         if (empty($message)) {
             $this->error('Message cannot be empty!');
+
             return 1;
         }
 
@@ -56,9 +55,11 @@ class SendTelegramMessage extends Command
         try {
             $this->sendToTelegram($title, $message, $imageUrl);
             $this->info('Message sent successfully!');
+
             return 0;
         } catch (TelegramSDKException $e) {
-            $this->error('Failed to send message: ' . $e->getMessage());
+            $this->error('Failed to send message: '.$e->getMessage());
+
             return 1;
         }
     }
@@ -70,7 +71,7 @@ class SendTelegramMessage extends Command
     {
         $formattedMessage = "*{$title}*\n\n{$message}";
         $channel = config('telegram.default_channel');
-        
+
         if ($imageUrl) {
             $this->telegram->sendPhoto([
                 'chat_id' => $channel,
@@ -86,4 +87,4 @@ class SendTelegramMessage extends Command
             ]);
         }
     }
-} 
+}

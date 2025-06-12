@@ -2,10 +2,9 @@
 
 namespace App\Services;
 
-use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Log;
 use Telegram\Bot\Api;
 use Telegram\Bot\Exceptions\TelegramSDKException;
-use Illuminate\Support\Facades\Log;
 
 class TelegramService
 {
@@ -14,40 +13,21 @@ class TelegramService
      */
     protected $telegram;
 
-    /**
-     * @var string
-     */
-    protected $defaultChannel;
+    protected string $defaultChannel;
 
-    /**
-     * Create a new Telegram notification channel instance.
-     *
-     * @param Api $telegram
-     */
-    public function __construct(Api $telegram)
+    public function __construct()
     {
-        $this->telegram = $telegram;
+        $this->telegram = new Api(config('telegram.bot_token'));
         $this->defaultChannel = config('telegram.default_channel');
     }
 
     /**
-     * Send the given notification.
-     *
-     * @param mixed $notifiable
-     * @param Notification $notification
-     * @return void
-     * @throws TelegramSDKException
+     * @throws \Exception
      */
-    public function send($notifiable, Notification $notification)
+    public function send(mixed $message): void
     {
-        if (! method_exists($notification, 'toTelegram')) {
-            throw new \Exception('Notification does not have toTelegram method.');
-        }
+        Log::info('Sending telegram message', $message);
 
-        $message = $notification->toTelegram($notifiable);
-
-        Log::info("Sending telegram message", $notifiable);
-        
         if (is_string($message)) {
             $this->sendTextMessage($message);
         } elseif (is_array($message)) {
@@ -58,13 +38,9 @@ class TelegramService
     }
 
     /**
-     * Send a text message.
-     *
-     * @param string $message
-     * @return void
      * @throws TelegramSDKException
      */
-    protected function sendTextMessage($message)
+    protected function sendTextMessage(string $message): void
     {
         $this->telegram->sendMessage([
             'chat_id' => $this->defaultChannel,
@@ -74,13 +50,9 @@ class TelegramService
     }
 
     /**
-     * Send a message from an array.
-     *
-     * @param array $message
-     * @return void
      * @throws TelegramSDKException
      */
-    protected function sendMessageFromArray(array $message)
+    protected function sendMessageFromArray(array $message): void
     {
         $params = array_merge([
             'chat_id' => $this->defaultChannel,
@@ -93,4 +65,4 @@ class TelegramService
             $this->telegram->sendMessage($params);
         }
     }
-} 
+}
