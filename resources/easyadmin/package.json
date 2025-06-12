@@ -27,7 +27,7 @@
         "core-js": "^3.30.2",
         "install": "^0.13.0",
         "luxon": "^1.28.1",
-        "npm": "^10.7.0",
+        "npm": "^11.3.0",
         "v-calendar": "2.4.1",
         "vue": "^3.0.0",
         "vue-class-component": "^7.2.3",
