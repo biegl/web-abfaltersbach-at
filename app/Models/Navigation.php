@@ -54,10 +54,10 @@ class Navigation extends Model
     public function getUrlAttribute()
     {
         if (! $this->hasParent) {
-            return RouterHelper::normalizeUrl($this->slug);
+            return RouterHelper::normalizeUrl('/'.$this->slug);
         }
 
-        return RouterHelper::normalizeUrl($this->parent()->slug.'/'.$this->slug);
+        return RouterHelper::normalizeUrl('/'.$this->parent()->slug.'/'.$this->slug);
     }
 
     public function getPageIdAttribute()
@@ -132,12 +132,16 @@ class Navigation extends Model
 
             $url = Str::lower(RouterHelper::normalizeUrl($url));
 
-            // Correct URL for startpage
-            if ($url === '/startseite') {
-                $url = '/';
-            }
+            // Get the page ID from the relationship
+            $pageId = Page::where('navigation_id', $page->ID)->first()?->ID;
+            if ($pageId) {
+                // Correct URL for startpage
+                if ($url === '/startseite') {
+                    $url = '/';
+                }
 
-            $map[$url] = $page->ID;
+                $map[$url] = $pageId;
+            }
         }
 
         return $map;

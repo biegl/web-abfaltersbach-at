@@ -67,40 +67,54 @@ class Page extends Model
         $breadcrumbs = Navigation::breadcrumbs($this);
         $subnavigation = Navigation::subnavigation($this);
 
-        switch ($this->templateName) {
-            case 'page.home':
+        if ($this->templateName === 'page.home') {
+            // Check if request has query params
+            if (request()->has('newsID')) {
+                $news = News::filter(new NewsFilter(request()))->get();
+            } else {
+                $news = Cache::remember(News::$CACHE_KEY_TOP_NEWS, config('cache.defaultTTL'), function () {
+                    return News::top()->get();
+                });
+            }
 
-                // Check if request has query params
-                if (request()->has('newsID')) {
-                    $news = News::filter(new NewsFilter(request()))->get();
-                } else {
-                    $news = Cache::remember(News::$CACHE_KEY_TOP_NEWS, config('cache.defaultTTL'), function () {
-                        return News::top()->get();
-                    });
-                }
+            // Check if request has query params
+            if (request()->has('eventID')) {
+                $current_events = Event::filter(new EventFilter(request()))->get();
+                $grouped_events = [];
+            } else {
+                // Load grouped events from cache
+                $grouped_events = Cache::remember(Event::$CACHE_KEY_GROUPED_EVENTS, config('cache.defaultTTL'), function () {
+                    return Event::byMonth();
+                });
 
-                // Check if request has query params
-                if (request()->has('eventID')) {
-                    $current_events = Event::filter(new EventFilter(request()))->get();
-                    $grouped_events = [];
-                } else {
-                    // Load grouped events from cache
-                    $grouped_events = Cache::remember(Event::$CACHE_KEY_GROUPED_EVENTS, config('cache.defaultTTL'), function () {
-                        return Event::byMonth();
-                    });
+                $current_events = Cache::remember(Event::$CACHE_KEY_CURRENT_EVENTS, config('cache.defaultTTL'), function () {
+                    return Event::current()->get();
+                });
+            }
 
-                    $current_events = Cache::remember(Event::$CACHE_KEY_CURRENT_EVENTS, config('cache.defaultTTL'), function () {
-                        return Event::current()->get();
-                    });
-                }
-
-                return ['title' => $title, 'content' => $content, 'navigation' => $navigation, 'breadcrumbs' => $breadcrumbs, 'news' => $news, 'grouped_events' => $grouped_events, 'current_events' => $current_events];
-            default:
-                $files = $this->files->merge($this->attachments);
-                $inserts = $this->inserts;
-
-                return ['title' => $title, 'content' => $content, 'navigation' => $navigation, 'breadcrumbs' => $breadcrumbs, 'subnavigation' => $subnavigation, 'files' => $files, 'inserts' => $inserts];
+            return [
+                'title' => $title,
+                'content' => $content,
+                'navigation' => $navigation,
+                'breadcrumbs' => $breadcrumbs,
+                'news' => $news,
+                'grouped_events' => $grouped_events,
+                'current_events' => $current_events,
+            ];
         }
+
+        $files = $this->files->merge($this->attachments);
+        $inserts = $this->inserts;
+
+        return [
+            'title' => $title,
+            'content' => $content,
+            'navigation' => $navigation,
+            'breadcrumbs' => $breadcrumbs,
+            'subnavigation' => $subnavigation,
+            'files' => $files,
+            'inserts' => $inserts,
+        ];
     }
 
     public function files()
