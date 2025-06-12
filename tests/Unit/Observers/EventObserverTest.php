@@ -11,7 +11,7 @@ test('deletes attachments on event deletion', function () {
         'attachable_id' => $event->ID,
         'attachable_type' => Event::class,
     ]);
-    $observer = new EventObserver();
+    $observer = new EventObserver;
 
     $event->refresh();
     expect($event->attachments)->toHaveCount(1);

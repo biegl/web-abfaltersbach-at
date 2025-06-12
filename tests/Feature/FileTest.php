@@ -10,7 +10,7 @@ uses(RefreshDatabase::class);
 test('it creates a file record in the database', function () {
     // Act
     File::factory()->create(['title' => 'Testfile']);
-    
+
     // Assert
     expect(File::where('title', 'Testfile')->exists())->toBeTrue();
 });

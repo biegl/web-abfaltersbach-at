@@ -3,8 +3,9 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use function Pest\Laravel\postJson;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+
+use function Pest\Laravel\postJson;
 
 uses(RefreshDatabase::class);
 

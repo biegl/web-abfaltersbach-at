@@ -99,7 +99,7 @@ test('it deletes a page with attachments', function () {
     $fileControllerMock->shouldReceive('storeFile')->andReturn($fileModel);
 
     // Attach the file
-    $request = new \Illuminate\Http\Request();
+    $request = new \Illuminate\Http\Request;
     $request->files->set('file', $file);
     $fileRecord = $fileControllerMock->storeFile($request);
     $page->attachments()->save($fileRecord);

@@ -13,7 +13,7 @@ test('verification notice can be rendered', function () {
 
 test('verified user is redirected', function () {
     $user = User::factory()->create();
-    $this->actingAs($user)->get('/email/verify')->assertRedirect(config('app.url') . '/home');
+    $this->actingAs($user)->get('/email/verify')->assertRedirect(config('app.url').'/home');
 });
 
 test('email can be verified', function () {
@@ -48,5 +48,5 @@ test('verification link can be resent', function () {
     $user = User::factory()->create(['email_verified_at' => null]);
 
     $this->actingAs($user)->post(route('verification.resend'))
-         ->assertRedirect();
+        ->assertRedirect();
 });

@@ -24,4 +24,4 @@ test('it shares the correct header image path for non-winter', function () {
     $this->assertEquals('/images/header/abfaltersbach.jpeg', View::shared('headerImagePath'));
 
     Carbon::setTestNow(); // Reset time
-}); 
+});

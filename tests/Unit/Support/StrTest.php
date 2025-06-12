@@ -33,7 +33,7 @@ test('normalizeClassName adds leading slash and works with objects', function ()
     expect(Str::normalizeClassName('\App\MyClass'))->toBe('\App\MyClass');
 
     // Test with an object
-    $object = new \stdClass();
+    $object = new \stdClass;
     expect(Str::normalizeClassName($object))->toBe('\stdClass');
 });
 
@@ -45,7 +45,7 @@ test('getClassId converts class names and objects to a lowercase underscore id',
     expect(Str::getClassId('\App\Models\User'))->toBe('app_models_user');
 
     // Test with an object
-    $object = new \App\Models\User();
+    $object = new \App\Models\User;
     expect(Str::getClassId($object))->toBe('app_models_user');
 });
 
@@ -57,7 +57,7 @@ test('getClassNamespace extracts the namespace from a class name or object', fun
     expect(Str::getClassNamespace('\App\Models\User'))->toBe('\App\Models');
 
     // Test with an object
-    $object = new \App\Models\User();
+    $object = new \App\Models\User;
     expect(Str::getClassNamespace($object))->toBe('\App\Models');
 
     // Test with a class in the root namespace

@@ -6,7 +6,7 @@ test('authorized user can listen to their own channel', function () {
     $user = User::factory()->create();
 
     $this->actingAs($user)
-        ->postJson('/broadcasting/auth', ['channel_name' => 'App.User.' . $user->id])
+        ->postJson('/broadcasting/auth', ['channel_name' => 'App.User.'.$user->id])
         ->assertSuccessful();
 });
 
@@ -22,13 +22,13 @@ test('unauthorized user cannot listen to another user channel', function () {
     $user2 = User::factory()->create();
 
     $this->actingAs($user1)
-        ->postJson('/broadcasting/auth', ['channel_name' => 'App.User.' . $user2->id])
+        ->postJson('/broadcasting/auth', ['channel_name' => 'App.User.'.$user2->id])
         ->assertForbidden();
 });
 
 test('guest cannot listen to any user channel', function () {
     $user = User::factory()->create();
 
-    $this->postJson('/broadcasting/auth', ['channel_name' => 'App.User.' . $user->id])
+    $this->postJson('/broadcasting/auth', ['channel_name' => 'App.User.'.$user->id])
         ->assertUnauthorized();
 });

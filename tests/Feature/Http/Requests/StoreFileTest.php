@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Route;
 
 test('file is required', function () {
     $this->postJson('/_test/store-file', [])

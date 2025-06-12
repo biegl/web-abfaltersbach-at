@@ -11,7 +11,7 @@ test('deletes attachments on news deletion', function () {
         'attachable_id' => $news->ID,
         'attachable_type' => News::class,
     ]);
-    $observer = new NewsObserver();
+    $observer = new NewsObserver;
 
     $news->refresh();
     expect($news->attachments)->toHaveCount(1);

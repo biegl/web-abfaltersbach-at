@@ -25,7 +25,6 @@ test('returns a telegram message', function () {
     expect($message)->toBeInstanceOf(TelegramMessage::class);
 });
 
-
 test('telegram message has correct content', function () {
     $news = News::factory()->create([
         'title' => 'Test Title',
@@ -35,8 +34,8 @@ test('telegram message has correct content', function () {
     $message = $notification->toTelegram($news);
     $messageData = $message->toArray();
 
-    $title = "*Test Title*";
-    $content = "Hello **World**";
+    $title = '*Test Title*';
+    $content = 'Hello **World**';
 
     expect($messageData['text'])->toBe(implode("\n", [$title, $content]));
 });

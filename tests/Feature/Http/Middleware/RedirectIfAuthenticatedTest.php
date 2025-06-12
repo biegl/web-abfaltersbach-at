@@ -1,8 +1,8 @@
 <?php
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
@@ -19,4 +19,4 @@ test('guest is not redirected from login page', function () {
     $response = $this->get('/login');
 
     $response->assertOk();
-}); 
+});

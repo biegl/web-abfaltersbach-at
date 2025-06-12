@@ -2,7 +2,6 @@
 
 use App\Http\Filters\QueryFilter;
 use App\Traits\HasFilters;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
@@ -11,7 +10,9 @@ use Illuminate\Support\Facades\Schema;
 class DummyModelForFilterTrait extends Model
 {
     use HasFilters;
+
     protected $table = 'dummy_models';
+
     protected $guarded = [];
 }
 
@@ -53,7 +54,7 @@ test('it can be filtered by a query filter class', function () {
     // Simulate a request with filter parameters
     $request = new Request([
         'name' => 'John Doe',
-        'status' => 'active'
+        'status' => 'active',
     ]);
     $filter = new DummyFilter($request);
 
@@ -73,7 +74,7 @@ test('it returns multiple records when filter matches them', function () {
 });
 
 test('it returns all records when no filter is applied', function () {
-    $request = new Request(); // Empty request
+    $request = new Request; // Empty request
     $filter = new DummyFilter($request);
 
     $results = DummyModelForFilterTrait::filter($filter)->get();

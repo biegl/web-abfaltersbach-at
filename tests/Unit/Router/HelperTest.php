@@ -34,7 +34,7 @@ it('rebuilds urls', function ($segments, $expected) {
 ]);
 
 it('parses values', function () {
-    $obj = new \stdClass();
+    $obj = new \stdClass;
     $obj->id = 1;
     $obj->name = 'Joe';
 
@@ -44,7 +44,7 @@ it('parses values', function () {
 });
 
 it('replaces parameters', function () {
-    $obj = new \stdClass();
+    $obj = new \stdClass;
     $obj->id = 1;
     $obj->name = 'Joe';
 
@@ -93,4 +93,4 @@ it('gets segment default value', function ($segment, $expected) {
     [':foo?bar', 'bar'],
     [':foo?bar|regexp', 'bar'],
     [':foo', false],
-]); 
+]);

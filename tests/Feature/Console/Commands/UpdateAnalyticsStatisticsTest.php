@@ -2,7 +2,6 @@
 
 use App\Services\AnalyticsService;
 use Carbon\Carbon;
-use Mockery\MockInterface;
 
 test('it updates analytics statistics and outputs success messages', function () {
     // Because the service is now injected into the handle method,

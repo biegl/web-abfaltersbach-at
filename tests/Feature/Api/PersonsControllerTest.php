@@ -103,13 +103,13 @@ test('it deletes a person with an image', function () {
     actingAs($user, 'sanctum');
 
     $person = Person::factory()->create();
-    Storage::fake(File::$DISK_NAME);
+    Storage::fake('attachments');
     $file = UploadedFile::fake()->image('avatar.jpg');
 
     // Attach the file
     $response = $this->postJson("/api/persons/{$person->id}/attach", ['file' => $file]);
     $fileRecord = $person->image()->first();
-    Storage::disk(File::$DISK_NAME)->assertExists(str_replace('/upload', '', $fileRecord->file));
+    Storage::disk('attachments')->assertExists(str_replace('/upload', '', $fileRecord->file));
 
     // Delete the person
     $response = deleteJson("/api/persons/{$person->id}");
@@ -118,7 +118,7 @@ test('it deletes a person with an image', function () {
     // Assertions
     $this->assertDatabaseMissing('persons', ['id' => $person->id]);
     $this->assertDatabaseMissing('tbl_downloads', ['id' => $fileRecord->id]);
-    Storage::disk(File::$DISK_NAME)->assertMissing(str_replace('/upload', '', $fileRecord->file));
+    Storage::disk('attachments')->assertMissing(str_replace('/upload', '', $fileRecord->file));
 });
 
 test('it attaches a file to a person', function () {
@@ -177,7 +177,7 @@ test('it returns a sorted list of persons for a module', function () {
     $persons = Person::factory()->count(3)->create();
     $sortedIds = $persons->pluck('id')->shuffle()->toArray();
     $module = Module::factory()->create([
-        'configuration' => ['ids' => $sortedIds]
+        'configuration' => ['ids' => $sortedIds],
     ]);
 
     $response = getJson("/api/persons/list/{$module->id}");
@@ -193,7 +193,7 @@ test('it returns 404 if module not found in list', function () {
     $user = User::factory()->create();
     actingAs($user, 'sanctum');
 
-    $response = getJson("/api/persons/list/999");
+    $response = getJson('/api/persons/list/999');
 
     $response->assertStatus(404);
 });

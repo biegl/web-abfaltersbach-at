@@ -56,7 +56,7 @@ test('it updates the general settings', function () {
 
     $response->assertSuccessful();
 
-    $settings = new GeneralSettings();
+    $settings = new GeneralSettings;
     expect($settings->name)->toBe('New Name');
     expect($settings->email)->toBe('new-test@test.com');
 });

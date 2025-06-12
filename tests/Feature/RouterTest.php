@@ -6,51 +6,60 @@ use App\Models\Navigation;
 use App\Models\Page;
 use App\Router\Router;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
 
-class RouterTest extends TestCase
-{
-    use RefreshDatabase;
+uses(RefreshDatabase::class);
 
-    private $router;
+beforeEach(function () {
+    $this->router = new Router;
+});
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->router = new Router;
-    }
+afterEach(function () {
+    $this->router->clearCache();
+});
 
-    protected function tearDown(): void
-    {
-        $this->router->clearCache();
-        parent::tearDown();
-    }
+test('it finds a page by url', function () {
+    // Arrange
+    $navOne = Navigation::factory()->create([
+        'refID' => null,
+        'navianzeigen' => 'Ja',
+        'linkname' => 'test-page',
+    ]);
+    $navTwo = Navigation::factory()->create([
+        'refID' => null,
+        'navianzeigen' => 'Ja',
+        'linkname' => 'another-page',
+    ]);
 
-    #[Test]
-    public function it_should_find_a_page_by_url()
-    {
-        $pageOne = Page::factory()->create();
-        $pageTwo = Page::factory()->create();
+    $pageOne = Page::factory()->create(['navigation_id' => $navOne->ID]);
+    $pageTwo = Page::factory()->create(['navigation_id' => $navTwo->ID]);
 
-        $navOne = Navigation::factory()->create(['refID' => $pageOne->id]);
-        $navTwo = Navigation::factory()->create(['refID' => $pageTwo->id]);
+    // Act
+    $page = $this->router->findByUrl('/test-page');
 
-        $page = $this->router->findByUrl($navOne->slug);
-        $this->assertNotNull($page);
-        $this->assertEquals($pageOne->content, $page->content);
-    }
+    // Assert
+    expect($page)->not->toBeNull()
+        ->and($page->content)->toBe($pageOne->content);
+});
 
-    #[Test]
-    public function it_should_not_find_a_non_existing_page()
-    {
-        $pageOne = Page::factory()->create();
-        $pageTwo = Page::factory()->create();
+test('it does not find a non existing page', function () {
+    // Arrange
+    $navOne = Navigation::factory()->create([
+        'refID' => null,
+        'navianzeigen' => 'Ja',
+        'linkname' => 'nav-one',
+    ]);
+    $navTwo = Navigation::factory()->create([
+        'refID' => null,
+        'navianzeigen' => 'Ja',
+        'linkname' => 'nav-two',
+    ]);
 
-        $navOne = Navigation::factory()->create(['refID' => $pageOne->id, 'linkname' => 'nav-one']);
-        $navTwo = Navigation::factory()->create(['refID' => $pageTwo->id, 'linkname' => 'nav-two']);
+    $pageOne = Page::factory()->create(['navigation_id' => $navOne->ID]);
+    $pageTwo = Page::factory()->create(['navigation_id' => $navTwo->ID]);
 
-        $page = $this->router->findByUrl('foo-bar');
-        $this->assertNull($page);
-    }
-}
+    // Act
+    $page = $this->router->findByUrl('foo-bar');
+
+    // Assert
+    expect($page)->toBeNull();
+});

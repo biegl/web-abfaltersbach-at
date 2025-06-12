@@ -11,7 +11,7 @@ test('sets email verification date on user', function () {
 
     $this->assertNull($user->email_verified_at);
 
-    $listener = new SetEmailVerificationDate();
+    $listener = new SetEmailVerificationDate;
     $listener->handle($event);
 
     $this->assertNotNull($user->fresh()->email_verified_at);
@@ -22,7 +22,7 @@ test('does not change existing verification date', function () {
     $user = User::factory()->create(['email_verified_at' => $now]);
     $event = new Verified($user);
 
-    $listener = new SetEmailVerificationDate();
+    $listener = new SetEmailVerificationDate;
     $listener->handle($event);
 
     $this->assertSame(

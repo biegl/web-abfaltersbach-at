@@ -128,7 +128,7 @@ test('it deletes an event with attachments', function () {
     $fileControllerMock->shouldReceive('storeFile')->andReturn($fileModel);
 
     // Attach the file
-    $request = new \Illuminate\Http\Request();
+    $request = new \Illuminate\Http\Request;
     $request->files->set('file', $file);
     $fileRecord = $fileControllerMock->storeFile($request);
     $event->attachments()->save($fileRecord);

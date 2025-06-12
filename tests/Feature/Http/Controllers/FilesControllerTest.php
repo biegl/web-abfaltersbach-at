@@ -17,13 +17,13 @@ test('it downloads a file', function () {
     $filename = $fakeFile->hashName();
 
     $file = File::factory()->create([
-        'file' => 'files/' . $filename,
+        'file' => 'files/'.$filename,
     ]);
 
-    Storage::disk('local')->put('files/' . $filename, $fakeFile->get());
+    Storage::disk('local')->put('files/'.$filename, $fakeFile->get());
 
     $response = $this->get(route('download', ['name' => $file->title]));
 
     $response->assertSuccessful();
-    $response->assertHeader('content-disposition', 'attachment; filename="' . $file->title . '"');
-}); 
+    $response->assertHeader('content-disposition', 'attachment; filename="'.$file->title.'"');
+});

@@ -17,7 +17,7 @@ it('filters by event id', function () {
 });
 
 it('does not filter by event id if it is not present', function () {
-    $request = new Request();
+    $request = new Request;
     $builder = Mockery::mock(Builder::class);
     $builder->shouldNotReceive('where');
 
@@ -32,4 +32,4 @@ it('does not filter by event id if it is null', function () {
 
     $filter = new EventFilter($request);
     $filter->apply($builder);
-}); 
+});

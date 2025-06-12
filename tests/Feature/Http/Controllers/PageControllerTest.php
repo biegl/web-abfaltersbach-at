@@ -6,7 +6,7 @@ use App\Router\Router;
 
 test('landing page redirects to home', function () {
     $this->get('/startseite')
-         ->assertRedirect('/');
+        ->assertRedirect('/');
 });
 
 test('shows page if found', function () {
@@ -20,8 +20,8 @@ test('shows page if found', function () {
     });
 
     $this->get('/a-random-url')
-         ->assertOk()
-         ->assertViewIs($page->templateName);
+        ->assertOk()
+        ->assertViewIs($page->templateName);
 });
 
 test('shows 404 if page not found', function () {
@@ -30,6 +30,6 @@ test('shows 404 if page not found', function () {
     });
 
     $this->get('/non-existent-page')
-         ->assertOk()
-         ->assertViewIs('errors.404');
+        ->assertOk()
+        ->assertViewIs('errors.404');
 });

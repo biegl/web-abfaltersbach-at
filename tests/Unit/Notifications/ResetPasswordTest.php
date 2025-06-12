@@ -3,7 +3,6 @@
 use App\Models\User;
 use App\Notifications\ResetPassword;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Lang;
 
 test('returns a mail message', function () {

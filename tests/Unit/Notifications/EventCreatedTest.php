@@ -44,7 +44,7 @@ test('telegram message has correct content', function () {
 
     $date = $event->date->toDateString();
     $title = "*Veranstaltung $date*";
-    $content = "Hello **World**";
+    $content = 'Hello **World**';
 
     expect($messageData['text'])->toBe(implode("\n", [$title, $content]));
 });

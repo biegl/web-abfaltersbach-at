@@ -1,8 +1,8 @@
 <?php
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
 
 uses(RefreshDatabase::class);
@@ -14,7 +14,7 @@ test('it returns a json 404 response for model not found exception', function ()
 
     // Define a temporary, authenticated route that throws the exception
     Route::get('/__test-404', function () {
-        throw new ModelNotFoundException();
+        throw new ModelNotFoundException;
     })->middleware(['api', 'auth:sanctum']);
 
     // Make a request to the temporary route

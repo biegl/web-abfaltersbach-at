@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Http\Filters;
 
+use App\Http\Filters\QueryFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Mockery;
-use App\Http\Filters\QueryFilter;
 
 class TestQueryFilter extends QueryFilter
 {
@@ -22,4 +22,4 @@ it('applies filters to the builder', function () {
 
     $filter = new TestQueryFilter($request);
     $filter->apply($builder);
-}); 
+});

@@ -24,7 +24,7 @@ test('can save a list', function () {
     $order = [3, 1, 2];
 
     $this->post(route('modules.saveList', $module), ['order' => $order])
-         ->assertOk();
+        ->assertOk();
 
     $this->assertDatabaseHas('modules', [
         'id' => $module->id,
@@ -34,5 +34,5 @@ test('can save a list', function () {
 
 test('it returns 404 when saving a list for a non-existent module', function () {
     $this->post(route('modules.saveList', ['id' => 999]), ['order' => [1, 2, 3]])
-         ->assertNotFound();
+        ->assertNotFound();
 });

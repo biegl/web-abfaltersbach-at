@@ -4,12 +4,13 @@ use App\Models\Event;
 use App\Models\File;
 use App\Models\News;
 use App\Models\User;
-use function Pest\Laravel\actingAs;
-use function Pest\Laravel\getJson;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+
+use function Pest\Laravel\actingAs;
+use function Pest\Laravel\getJson;
 
 uses(RefreshDatabase::class);
 
@@ -120,10 +121,10 @@ test('it deletes a file attached to a news and clears cache', function () {
 });
 
 test('storeFile returns null if no file is present', function () {
-    $controller = new \App\Http\Controllers\Api\FilesController();
-    $request = new \Illuminate\Http\Request();
+    $controller = new \App\Http\Controllers\Api\FilesController;
+    $request = new \Illuminate\Http\Request;
 
     $result = $controller->storeFile($request);
 
     expect($result)->toBeNull();
-}); 
+});
