@@ -2,9 +2,6 @@
 
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
-uses(RefreshDatabase::class);
 
 test('authenticated user is redirected from login page', function () {
     $user = User::factory()->create();

@@ -3,11 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 use function Pest\Laravel\postJson;
-
-uses(RefreshDatabase::class);
 
 test('requires email and password', function () {
     postJson('api/login')

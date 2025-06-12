@@ -2,13 +2,10 @@
 
 use App\Models\User;
 use App\Services\AnalyticsService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery\MockInterface;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\getJson;
-
-uses(RefreshDatabase::class);
 
 test('it returns analytics data', function () {
     $admin = User::factory()->admin()->create();

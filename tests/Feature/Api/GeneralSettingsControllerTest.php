@@ -2,12 +2,9 @@
 
 use App\Models\GeneralSettings;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\getJson;
-
-uses(RefreshDatabase::class);
 
 test('it shows the general settings', function () {
     $settings = new GeneralSettings([

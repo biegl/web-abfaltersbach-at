@@ -3,7 +3,6 @@
 use App\Models\Module;
 use App\Models\Person;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
@@ -12,8 +11,6 @@ use function Pest\Laravel\deleteJson;
 use function Pest\Laravel\getJson;
 use function Pest\Laravel\postJson;
 use function Pest\Laravel\putJson;
-
-uses(RefreshDatabase::class);
 
 test('it returns a list of persons', function () {
     $user = User::factory()->create();

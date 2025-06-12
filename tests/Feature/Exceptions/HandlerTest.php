@@ -2,10 +2,7 @@
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
-
-uses(RefreshDatabase::class);
 
 test('it returns a json 404 response for model not found exception', function () {
     // Create and authenticate as an admin user
