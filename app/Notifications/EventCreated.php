@@ -8,9 +8,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Illuminate\Queue\SerializesModels;
 use League\HTMLToMarkdown\HtmlConverter;
-use NotificationChannels\Telegram\TelegramChannel;
-use NotificationChannels\Telegram\TelegramFile;
-use NotificationChannels\Telegram\TelegramMessage;
 
 class EventCreated extends Notification implements ShouldQueue
 {
@@ -42,7 +39,7 @@ class EventCreated extends Notification implements ShouldQueue
             return [];
         }
 
-        return [TelegramChannel::class];
+        return ['telegram'];
     }
 
     public function dontSend($notifiable)
@@ -67,17 +64,24 @@ class EventCreated extends Notification implements ShouldQueue
         $content = $converter->convert($notifiable->text);
         $url = 'https://abfaltersbach.at?eventID='.$notifiable->ID;
 
+        $message = [
+            'text' => implode("\n", [$title, $content]),
+            'reply_markup' => json_encode([
+                'inline_keyboard' => [
+                    [
+                        [
+                            'text' => 'Online ansehen',
+                            'url' => $url
+                        ]
+                    ]
+                ]
+            ])
+        ];
+
         if ($src = array_pop($match)) {
-            return TelegramFile::create()
-                ->to(config('services.telegram-bot-api.channel'))
-                ->content(implode("\n", [$title, $content]))
-                ->photo($src)
-                ->button('Online ansehen', $url);
-        } else {
-            return TelegramMessage::create()
-                ->to(config('services.telegram-bot-api.channel'))
-                ->content(implode("\n", [$title, $content]))
-                ->button('Online ansehen', $url);
+            $message['photo'] = $src;
         }
+
+        return $message;
     }
 }

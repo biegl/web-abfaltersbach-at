@@ -8,8 +8,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Illuminate\Queue\SerializesModels;
 use League\HTMLToMarkdown\HtmlConverter;
-use NotificationChannels\Telegram\TelegramChannel;
-use NotificationChannels\Telegram\TelegramMessage;
 
 class NewsCreated extends Notification implements ShouldQueue
 {
@@ -41,7 +39,7 @@ class NewsCreated extends Notification implements ShouldQueue
             return [];
         }
 
-        return [TelegramChannel::class];
+        return ['telegram'];
     }
 
     public function dontSend($notifiable): bool
@@ -63,9 +61,18 @@ class NewsCreated extends Notification implements ShouldQueue
 
         $url = "https://abfaltersbach.at?newsID={$notifiable->ID}";
 
-        return TelegramMessage::create()
-            ->to(config('services.telegram-bot-api.channel'))
-            ->content(implode("\n", [$title, $content]))
-            ->button('Online ansehen', $url);
+        return [
+            'text' => implode("\n", [$title, $content]),
+            'reply_markup' => json_encode([
+                'inline_keyboard' => [
+                    [
+                        [
+                            'text' => 'Online ansehen',
+                            'url' => $url
+                        ]
+                    ]
+                ]
+            ])
+        ];
     }
 }

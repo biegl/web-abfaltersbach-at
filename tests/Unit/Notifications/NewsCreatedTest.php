@@ -2,8 +2,6 @@
 
 use App\Models\News;
 use App\Notifications\NewsCreated;
-use NotificationChannels\Telegram\TelegramChannel;
-use NotificationChannels\Telegram\TelegramMessage;
 
 test('does not send if news is expired', function () {
     $news = News::factory()->create(['expirationDate' => now()->subDay()]);
@@ -14,7 +12,7 @@ test('does not send if news is expired', function () {
 test('sends if news is not expired', function () {
     $news = News::factory()->create(['expirationDate' => now()->addDay()]);
     $notification = new NewsCreated($news);
-    expect($notification->via($news))->toBe([TelegramChannel::class]);
+    expect($notification->via($news))->toBe(['telegram']);
 });
 
 test('returns a telegram message', function () {
@@ -22,7 +20,8 @@ test('returns a telegram message', function () {
     $notification = new NewsCreated($news);
     $message = $notification->toTelegram($news);
 
-    expect($message)->toBeInstanceOf(TelegramMessage::class);
+    expect($message)->toBeArray()
+        ->and($message)->toHaveKey('text');
 });
 
 test('telegram message has correct content', function () {
@@ -32,20 +31,18 @@ test('telegram message has correct content', function () {
     ]);
     $notification = new NewsCreated($news);
     $message = $notification->toTelegram($news);
-    $messageData = $message->toArray();
 
     $title = '*Test Title*';
     $content = 'Hello **World**';
 
-    expect($messageData['text'])->toBe(implode("\n", [$title, $content]));
+    expect($message['text'])->toBe(implode("\n", [$title, $content]));
 });
 
 test('telegram message has correct button', function () {
     $news = News::factory()->create();
     $notification = new NewsCreated($news);
     $message = $notification->toTelegram($news);
-    $messageData = $message->toArray();
-    $replyMarkup = json_decode($messageData['reply_markup'], true);
+    $replyMarkup = json_decode($message['reply_markup'], true);
 
     $url = 'https://abfaltersbach.at?newsID='.$news->ID;
     expect($replyMarkup['inline_keyboard'][0][0]['url'])->toBe($url);
