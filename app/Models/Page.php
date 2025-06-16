@@ -35,86 +35,92 @@ class Page extends Model
         'navigation_id',
     ];
 
-    public function getTitleAttribute()
+    protected function title(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return $this->seitentitel;
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+            return $this->seitentitel;
+        });
     }
 
-    public function getContentAttribute()
+    protected function content(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return $this->inhalt;
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+            return $this->inhalt;
+        });
     }
 
-    public function getIsLandingPageAttribute()
+    protected function isLandingPage(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return $this->template === 'template_home.php';
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+            return $this->template === 'template_home.php';
+        });
     }
 
-    public function getTemplateNameAttribute(): string
+    protected function templateName(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        if ($this->isLandingPage) {
-            return 'page.home';
-        }
-
-        return 'page.default';
-    }
-
-    public function getModulesAttribute()
-    {
-        $title = $this->title;
-        $content = $this->content;
-        $navigation = Navigation::topLevel()->get();
-        $breadcrumbs = Navigation::breadcrumbs($this);
-        $subnavigation = Navigation::subnavigation($this);
-
-        if ($this->templateName === 'page.home') {
-            // Check if request has query params
-            if (request()->has('newsID')) {
-                $news = News::filter(new NewsFilter(request()))->get();
-            } else {
-                $news = Cache::remember(News::$CACHE_KEY_TOP_NEWS, config('cache.defaultTTL'), function () {
-                    return News::top()->get();
-                });
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+            if ($this->isLandingPage) {
+                return 'page.home';
             }
+            return 'page.default';
+        });
+    }
 
-            // Check if request has query params
-            if (request()->has('eventID')) {
-                $current_events = Event::filter(new EventFilter(request()))->get();
-                $grouped_events = [];
-            } else {
-                // Load grouped events from cache
-                $grouped_events = Cache::remember(Event::$CACHE_KEY_GROUPED_EVENTS, config('cache.defaultTTL'), function () {
-                    return Event::byMonth();
-                });
-
-                $current_events = Cache::remember(Event::$CACHE_KEY_CURRENT_EVENTS, config('cache.defaultTTL'), function () {
-                    return Event::current()->get();
-                });
+    protected function modules(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+            $title = $this->title;
+            $content = $this->content;
+            $navigation = Navigation::topLevel()->get();
+            $breadcrumbs = Navigation::breadcrumbs($this);
+            $subnavigation = Navigation::subnavigation($this);
+            if ($this->templateName === 'page.home') {
+                // Check if request has query params
+                if (request()->has('newsID')) {
+                    $news = News::filter(new NewsFilter(request()))->get();
+                } else {
+                    $news = Cache::remember(News::$CACHE_KEY_TOP_NEWS, config('cache.defaultTTL'), function () {
+                        return News::top()->get();
+                    });
+                }
+    
+                // Check if request has query params
+                if (request()->has('eventID')) {
+                    $current_events = Event::filter(new EventFilter(request()))->get();
+                    $grouped_events = [];
+                } else {
+                    // Load grouped events from cache
+                    $grouped_events = Cache::remember(Event::$CACHE_KEY_GROUPED_EVENTS, config('cache.defaultTTL'), function () {
+                        return Event::byMonth();
+                    });
+    
+                    $current_events = Cache::remember(Event::$CACHE_KEY_CURRENT_EVENTS, config('cache.defaultTTL'), function () {
+                        return Event::current()->get();
+                    });
+                }
+    
+                return [
+                    'title' => $title,
+                    'content' => $content,
+                    'navigation' => $navigation,
+                    'breadcrumbs' => $breadcrumbs,
+                    'news' => $news,
+                    'grouped_events' => $grouped_events,
+                    'current_events' => $current_events,
+                ];
             }
-
+            $files = $this->files->merge($this->attachments);
+            $inserts = $this->inserts;
             return [
                 'title' => $title,
                 'content' => $content,
                 'navigation' => $navigation,
                 'breadcrumbs' => $breadcrumbs,
-                'news' => $news,
-                'grouped_events' => $grouped_events,
-                'current_events' => $current_events,
+                'subnavigation' => $subnavigation,
+                'files' => $files,
+                'inserts' => $inserts,
             ];
-        }
-
-        $files = $this->files->merge($this->attachments);
-        $inserts = $this->inserts;
-
-        return [
-            'title' => $title,
-            'content' => $content,
-            'navigation' => $navigation,
-            'breadcrumbs' => $breadcrumbs,
-            'subnavigation' => $subnavigation,
-            'files' => $files,
-            'inserts' => $inserts,
-        ];
+        });
     }
 
     public function files()

@@ -117,7 +117,7 @@ class TelegramService
         }
 
         // If we've exhausted all retries, throw the last exception
-        if ($lastException) {
+        if ($lastException instanceof \Telegram\Bot\Exceptions\TelegramResponseException) {
             throw $lastException;
         }
     }

@@ -37,32 +37,39 @@ class File extends Model
 
     public static $DISK_NAME = 'attachments';
 
-    public function getExtensionAttribute()
+    protected function extension(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return pathinfo($this->file, PATHINFO_EXTENSION);
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+            return pathinfo($this->file, PATHINFO_EXTENSION);
+        });
     }
 
-    public function getExistsAttribute()
+    protected function exists(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return Storage::disk(self::$DISK_NAME)->exists($this->file);
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+            return Storage::disk(self::$DISK_NAME)->exists($this->file);
+        });
     }
 
-    public function getFileSizeAttribute()
+    protected function fileSize(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        try {
-            return Storage::disk(self::$DISK_NAME)->size(str_replace('/upload', '', $this->file));
-        } catch (Exception $error) {
-            return 0;
-        }
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+            try {
+                return Storage::disk(self::$DISK_NAME)->size(str_replace('/upload', '', $this->file));
+            } catch (Exception $error) {
+                return 0;
+            }
+        });
     }
 
-    public function getDownloadPathAttribute()
+    protected function downloadPath(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        if (str_starts_with($this->file, '/upload')) {
-            return $this->file;
-        }
-
-        return "/files/$this->file";
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+            if (str_starts_with($this->file, '/upload')) {
+                return $this->file;
+            }
+            return "/files/$this->file";
+        });
     }
 
     /**

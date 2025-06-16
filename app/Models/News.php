@@ -46,13 +46,14 @@ class News extends Model
         'expirationDate' => 'datetime:Y-m-d',
     ];
 
-    public function getIsExpiredAttribute()
+    protected function isExpired(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        if (is_null($this->expirationDate)) {
-            return false;
-        }
-
-        return $this->expirationDate < date('Y-m-d');
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+            if (is_null($this->expirationDate)) {
+                return false;
+            }
+            return $this->expirationDate < date('Y-m-d');
+        });
     }
 
     /**
