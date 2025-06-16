@@ -16,6 +16,7 @@ class TelegramService
     protected string $defaultChannel;
 
     protected int $maxRetries = 3;
+
     protected int $retryDelay = 1; // seconds
 
     public function __construct()
@@ -78,7 +79,6 @@ class TelegramService
     /**
      * Execute a Telegram API call with retry logic
      *
-     * @param callable $callback
      * @throws TelegramSDKException
      */
     protected function sendWithRetry(callable $callback): void
@@ -89,10 +89,11 @@ class TelegramService
         while ($attempts < $this->maxRetries) {
             try {
                 $callback();
+
                 return;
             } catch (\Telegram\Bot\Exceptions\TelegramResponseException $e) {
                 $lastException = $e;
-                
+
                 // Check if it's a rate limit error
                 if (str_contains($e->getMessage(), 'Too Many Requests')) {
                     $attempts++;
@@ -103,12 +104,13 @@ class TelegramService
                         } else {
                             $retryDelay = $this->retryDelay * $attempts;
                         }
-                        
+
                         sleep($retryDelay);
+
                         continue;
                     }
                 }
-                
+
                 // If it's not a rate limit error or we've exhausted retries, rethrow
                 throw $e;
             }

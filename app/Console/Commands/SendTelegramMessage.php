@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Services\TelegramService;
+use Illuminate\Console\Command;
 use Telegram\Bot\Exceptions\TelegramSDKException;
 
 class SendTelegramMessage extends Command

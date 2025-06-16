@@ -1,8 +1,6 @@
 <?php
 
-use App\Console\Commands\SendTelegramMessage;
 use App\Services\TelegramService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 beforeEach(function () {
     config(['telegram.bot_token' => 'dummy', 'telegram.default_channel' => 'dummy_channel']);
@@ -16,7 +14,11 @@ test('it sends text message to telegram', function () {
     $this->telegramServiceMock->shouldReceive('send')
         ->once()
         ->with("*Test Title*\n\nThis is a test message")
-        ->andReturnUsing(function () { $this->called = true; return null; });
+        ->andReturnUsing(function () {
+            $this->called = true;
+
+            return null;
+        });
     $this->artisan('telegram:send')
         ->expectsQuestion('Enter a title for the message', 'Test Title')
         ->expectsQuestion('Enter your message', 'This is a test message')
@@ -35,7 +37,11 @@ test('it sends photo message to telegram', function () {
             'photo' => 'https://example.com/image.jpg',
             'caption' => "*Test Title*\n\nThis is a test message with image",
         ])
-        ->andReturnUsing(function () { $this->called = true; return null; });
+        ->andReturnUsing(function () {
+            $this->called = true;
+
+            return null;
+        });
     $this->artisan('telegram:send')
         ->expectsQuestion('Enter a title for the message', 'Test Title')
         ->expectsQuestion('Enter your message', 'This is a test message with image')
@@ -61,7 +67,11 @@ test('it accepts command options', function () {
     $this->telegramServiceMock->shouldReceive('send')
         ->once()
         ->with("*Option Title*\n\nThis is a test message")
-        ->andReturnUsing(function () { $this->called = true; return null; });
+        ->andReturnUsing(function () {
+            $this->called = true;
+
+            return null;
+        });
     $this->artisan('telegram:send', ['--title' => 'Option Title'])
         ->expectsQuestion('Enter your message', 'This is a test message')
         ->expectsQuestion('Enter an image URL (optional, press enter to skip)', null)
