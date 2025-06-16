@@ -13,7 +13,7 @@ test('it downloads a file', function () {
     $user = User::factory()->create();
     $this->actingAs($user);
 
-    $fakeFile = UploadedFile::fake()->image('test.jpg');
+    $fakeFile = UploadedFile::fake()->create('test.txt', 1); // Create a 1KB text file instead of an image
     $filename = $fakeFile->hashName();
 
     $file = File::factory()->create([
