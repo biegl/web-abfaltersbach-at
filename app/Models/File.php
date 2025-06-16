@@ -69,6 +69,7 @@ class File extends Model
             if (str_starts_with($this->file, '/upload')) {
                 return $this->file;
             }
+
             return "/files/$this->file";
         });
     }

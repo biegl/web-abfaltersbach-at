@@ -48,6 +48,7 @@ class Navigation extends Model
     {
         return Attribute::make(get: function () {
             $path = RouterHelper::normalizeUrl(Request::path());
+
             return Str::contains($path, $this->url);
         });
     }
@@ -65,6 +66,7 @@ class Navigation extends Model
             if (! $this->hasParent) {
                 return RouterHelper::normalizeUrl('/'.$this->slug);
             }
+
             return RouterHelper::normalizeUrl('/'.$this->parent()->slug.'/'.$this->slug);
         });
     }
@@ -76,6 +78,7 @@ class Navigation extends Model
             if ($page) {
                 return \App\Models\Page::where('navigation_id', $this->ID)->first()->ID;
             }
+
             return null;
         });
     }

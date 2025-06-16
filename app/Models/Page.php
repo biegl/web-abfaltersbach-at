@@ -63,6 +63,7 @@ class Page extends Model
             if ($this->isLandingPage) {
                 return 'page.home';
             }
+
             return 'page.default';
         });
     }
@@ -84,7 +85,7 @@ class Page extends Model
                         return News::top()->get();
                     });
                 }
-    
+
                 // Check if request has query params
                 if (request()->has('eventID')) {
                     $current_events = Event::filter(new EventFilter(request()))->get();
@@ -94,12 +95,12 @@ class Page extends Model
                     $grouped_events = Cache::remember(Event::$CACHE_KEY_GROUPED_EVENTS, config('cache.defaultTTL'), function () {
                         return Event::byMonth();
                     });
-    
+
                     $current_events = Cache::remember(Event::$CACHE_KEY_CURRENT_EVENTS, config('cache.defaultTTL'), function () {
                         return Event::current()->get();
                     });
                 }
-    
+
                 return [
                     'title' => $title,
                     'content' => $content,
@@ -112,6 +113,7 @@ class Page extends Model
             }
             $files = $this->files->merge($this->attachments);
             $inserts = $this->inserts;
+
             return [
                 'title' => $title,
                 'content' => $content,

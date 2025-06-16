@@ -53,6 +53,7 @@ class News extends Model
             if (is_null($this->expirationDate)) {
                 return false;
             }
+
             return $this->expirationDate < date('Y-m-d');
         });
     }
