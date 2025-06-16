@@ -3,9 +3,6 @@
 use App\Console\Commands\SendTelegramMessage;
 use App\Services\TelegramService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Mockery;
-
-uses(RefreshDatabase::class);
 
 beforeEach(function () {
     config(['telegram.bot_token' => 'dummy', 'telegram.default_channel' => 'dummy_channel']);
