@@ -77,7 +77,7 @@ class TelegramService
     }
 
     /**
-     * Execute a Telegram API call with retry logic
+     * Execute a Telegram API call with retry logic.
      *
      * @throws TelegramSDKException
      */

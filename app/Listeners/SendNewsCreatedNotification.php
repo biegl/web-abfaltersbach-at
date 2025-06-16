@@ -14,7 +14,9 @@ class SendNewsCreatedNotification implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    public function __construct(protected TelegramService $telegramService) {}
+    public function __construct(protected TelegramService $telegramService)
+    {
+    }
 
     public function handle(NewsCreated $event): void
     {
@@ -35,7 +37,6 @@ class SendNewsCreatedNotification implements ShouldQueue
 
     private function buildMessage(News $news): array
     {
-
         $converter = new HtmlConverter([
             'strip_tags' => true,
             'remove_nodes' => 'img',
