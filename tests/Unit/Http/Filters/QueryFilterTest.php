@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Mockery;
 
-class TestQueryFilter extends QueryFilter
+class QueryFilterTest extends QueryFilter
 {
     public function name($value)
     {
