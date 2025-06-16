@@ -20,6 +20,6 @@ it('applies filters to the builder', function () {
     $builder = Mockery::mock(Builder::class);
     $builder->shouldReceive('where')->with('name', 'test')->once();
 
-    $filter = new TestQueryFilter($request);
+    $filter = new QueryFilterTest($request);
     $filter->apply($builder);
 });
