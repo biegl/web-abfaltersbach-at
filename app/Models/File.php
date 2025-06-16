@@ -34,7 +34,7 @@ class File extends Model
         'file',
     ];
 
-    protected $appends = ['extension', 'fileSize'];
+    protected $appends = ['extension', 'file_size'];
 
     public static $DISK_NAME = 'attachments';
 

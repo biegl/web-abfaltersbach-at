@@ -24,7 +24,7 @@ class Navigation extends Model
 
     protected $hidden = ['navianzeigen'];
 
-    protected $appends = ['pageId', 'isVisible'];
+    protected $appends = ['page_id', 'is_visible'];
 
     public $timestamps = false;
 

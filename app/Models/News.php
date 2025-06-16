@@ -25,7 +25,7 @@ class News extends Model
 
     public $with = ['attachments'];
 
-    public $appends = ['isExpired'];
+    public $appends = ['is_expired'];
 
     /**
      * @var string The name of the cache bucket.
