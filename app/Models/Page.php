@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Http\Filters\EventFilter;
 use App\Http\Filters\NewsFilter;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
@@ -35,30 +36,30 @@ class Page extends Model
         'navigation_id',
     ];
 
-    protected function title(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function title(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+        return Attribute::make(get: function () {
             return $this->seitentitel;
         });
     }
 
-    protected function content(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function content(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+        return Attribute::make(get: function () {
             return $this->inhalt;
         });
     }
 
-    protected function isLandingPage(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function isLandingPage(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+        return Attribute::make(get: function () {
             return $this->template === 'template_home.php';
         });
     }
 
-    protected function templateName(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function templateName(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+        return Attribute::make(get: function () {
             if ($this->isLandingPage) {
                 return 'page.home';
             }
@@ -66,9 +67,9 @@ class Page extends Model
         });
     }
 
-    protected function modules(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function modules(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+        return Attribute::make(get: function () {
             $title = $this->title;
             $content = $this->content;
             $navigation = Navigation::topLevel()->get();

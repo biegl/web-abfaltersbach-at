@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Exception;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -37,23 +38,23 @@ class File extends Model
 
     public static $DISK_NAME = 'attachments';
 
-    protected function extension(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function extension(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+        return Attribute::make(get: function () {
             return pathinfo($this->file, PATHINFO_EXTENSION);
         });
     }
 
-    protected function exists(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function exists(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+        return Attribute::make(get: function () {
             return Storage::disk(self::$DISK_NAME)->exists($this->file);
         });
     }
 
-    protected function fileSize(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function fileSize(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+        return Attribute::make(get: function () {
             try {
                 return Storage::disk(self::$DISK_NAME)->size(str_replace('/upload', '', $this->file));
             } catch (Exception $error) {
@@ -62,9 +63,9 @@ class File extends Model
         });
     }
 
-    protected function downloadPath(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function downloadPath(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+        return Attribute::make(get: function () {
             if (str_starts_with($this->file, '/upload')) {
                 return $this->file;
             }

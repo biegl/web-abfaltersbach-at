@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HasFilters;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -46,9 +47,9 @@ class News extends Model
         'expirationDate' => 'datetime:Y-m-d',
     ];
 
-    protected function isExpired(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function isExpired(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+        return Attribute::make(get: function () {
             if (is_null($this->expirationDate)) {
                 return false;
             }

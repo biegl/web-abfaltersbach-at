@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Router\Helper as RouterHelper;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -29,38 +30,38 @@ class Navigation extends Model
 
     protected static $logAttributes = ['*'];
 
-    protected function hasChildren(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function hasChildren(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+        return Attribute::make(get: function () {
             return $this->children()->count() > 0;
         });
     }
 
-    protected function hasParent(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function hasParent(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+        return Attribute::make(get: function () {
             return ! is_null($this->parent());
         });
     }
 
-    protected function isActive(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function isActive(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+        return Attribute::make(get: function () {
             $path = RouterHelper::normalizeUrl(Request::path());
             return Str::contains($path, $this->url);
         });
     }
 
-    protected function slug(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function slug(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+        return Attribute::make(get: function () {
             return trim($this->linkname);
         });
     }
 
-    protected function url(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function url(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+        return Attribute::make(get: function () {
             if (! $this->hasParent) {
                 return RouterHelper::normalizeUrl('/'.$this->slug);
             }
@@ -68,9 +69,9 @@ class Navigation extends Model
         });
     }
 
-    protected function pageId(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function pageId(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+        return Attribute::make(get: function () {
             $page = \App\Models\Page::where('navigation_id', $this->ID)->first();
             if ($page) {
                 return \App\Models\Page::where('navigation_id', $this->ID)->first()->ID;
@@ -79,9 +80,9 @@ class Navigation extends Model
         });
     }
 
-    protected function isVisible(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function isVisible(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+        return Attribute::make(get: function () {
             return $this->navianzeigen == 'Ja';
         });
     }
