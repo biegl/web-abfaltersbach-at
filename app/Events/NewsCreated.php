@@ -17,5 +17,6 @@ readonly class NewsCreated
      */
     public function __construct(
         public News $news
-    ) {}
+    ) {
+    }
 }
