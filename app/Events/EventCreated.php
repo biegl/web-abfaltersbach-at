@@ -17,6 +17,5 @@ readonly class EventCreated
      */
     public function __construct(
         public Event $event
-    ) {
-    }
+    ) {}
 }

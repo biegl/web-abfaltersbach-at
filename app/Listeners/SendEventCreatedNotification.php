@@ -14,9 +14,7 @@ class SendEventCreatedNotification implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    public function __construct(protected TelegramService $telegramService)
-    {
-    }
+    public function __construct(protected TelegramService $telegramService) {}
 
     public function handle(EventCreated $event): void
     {
