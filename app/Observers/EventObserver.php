@@ -2,29 +2,17 @@
 
 namespace App\Observers;
 
+use App\Events\EventCreated;
 use App\Models\Event;
-use App\Notifications\EventCreated;
 
 class EventObserver
 {
-    /**
-     * Handle the Event "created" event.
-     *
-     * @param  \App\Models\Event  $Event
-     * @return void
-     */
-    public function created(Event $event)
+    public function created(Event $event): void
     {
-        $event->notify(new EventCreated($event));
+        EventCreated::dispatch($event);
     }
 
-    /**
-     * Handle the Event "deleted" event.
-     *
-     * @param  \App\Models\Event  $Event
-     * @return void
-     */
-    public function deleted(Event $event)
+    public function deleted(Event $event): void
     {
         $event->attachments()->delete();
     }

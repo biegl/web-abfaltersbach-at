@@ -11,15 +11,13 @@ class PageController extends Controller
     /**
      * Redirects the user to the landing page.
      */
-    public function landing(Request $request)
+    public function landing()
     {
-        return redirect('/');
+        return redirect()->route('home');
     }
 
-    public function show(Request $request)
+    public function show(Request $request, Router $router)
     {
-        $router = new Router;
-
         // Find page by URL
         $page = $router->findByUrl($request->getPathInfo());
 

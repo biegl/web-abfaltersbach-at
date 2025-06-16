@@ -40,7 +40,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('settings', [GeneralSettingsController::class, 'show']);
 });
 
-Route::post('register', 'App\Http\Controllers\Auth\RegisterController@register');
 Route::post('login', 'App\Http\Controllers\Auth\LoginController@authenticate');
 Route::post('logout', 'App\Http\Controllers\Auth\LoginController@logout');
 

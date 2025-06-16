@@ -16,15 +16,18 @@ class ModuleController extends Controller
     {
         $config = json_encode($request['configuration']);
 
-        return Module::create([
+        $module = Module::create([
             'type' => 'list',
             'configuration' => $config,
         ]);
+
+        return $module;
     }
 
-    public function saveList(Module $module, Request $request)
+    public function saveList(Request $request, $id)
     {
         // Get module
+        $module = Module::find($id);
         if (! $module) {
             return response()->json('Not found', 404);
         }
@@ -33,6 +36,6 @@ class ModuleController extends Controller
         $config['ids'] = $request['order'];
         $module->update(['configuration' => $config]);
 
-        return $module->fresh();
+        return $module;
     }
 }

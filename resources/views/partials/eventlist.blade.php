@@ -1,8 +1,8 @@
 <div class="calender">
     <div class="calendar_date--big">
         <div class="calendar_date">
-            <div class="calendar_date_month">{{ \Carbon\Carbon::today()->formatLocalized('%a, %b') }}</div>
-            <div class="calendar_date_day">{{ \Carbon\Carbon::today()->formatLocalized('%d') }}</div>
+            <div class="calendar_date_month">{{ \Carbon\Carbon::today()->isoFormat('ddd, MMM') }}</div>
+            <div class="calendar_date_day">{{ \Carbon\Carbon::today()->format('d') }}</div>
         </div>
 
         <ol class="list-unstyled calendar_date--big mb-0">
@@ -58,8 +58,8 @@
 
                 <li class="media mb-3">
                     <div class="mr-3 calendar_date">
-                        <div class="calendar_date_month">{{ $event->date->formatLocalized('%b') }}</div>
-                        <div class="calendar_date_day">{{ $event->date->formatLocalized('%d') }}</div>
+                        <div class="calendar_date_month">{{ $event->date->isoFormat('MMM') }}</div>
+                        <div class="calendar_date_day">{{ $event->date->format('d') }}</div>
                     </div>
                     <div class="media-body calendar_day">
                         <div class="calendar_day_body">{!! $event->text !!}</div>

@@ -2,12 +2,9 @@
 
 use App\Models\Navigation;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\getJson;
-
-uses(RefreshDatabase::class);
 
 test('it returns a paginated list of visible navigation items', function () {
     $user = User::factory()->create();

@@ -11,7 +11,7 @@ The project uses Docker for local development. The following will build the app 
 $ docker run --rm \
     -v $(pwd):/opt \
     -w /opt \
-    laravelsail/php80-composer:latest \
+    laravelsail/php82-composer:latest \
     composer install
 $ sail up -d
 $ sail artisan key:generate

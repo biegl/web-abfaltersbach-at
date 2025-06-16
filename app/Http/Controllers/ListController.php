@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Cache;
-
 class ListController extends Controller
 {
     public static $CACHE_KEY_LIST = 'CACHE_KEY_LIST';
@@ -17,14 +15,12 @@ class ListController extends Controller
             return [];
         }
 
-        $ids_ordered = implode(',', $listItemIds);
+        $key = (new $model)->getKeyName();
 
-        $cache_key = self::$CACHE_KEY_LIST.'_'.$id;
+        $items = $model::whereIn($key, $listItemIds)->get();
 
-        return Cache::remember($cache_key, config('cache.defaultTTL'), function () use ($model, $listItemIds, $ids_ordered) {
-            return $model::whereIn('id', $listItemIds)
-                ->orderByRaw("FIELD(id, $ids_ordered)")
-                ->get();
-        });
+        return $items->sortBy(function ($item) use ($listItemIds, $key) {
+            return array_search($item->{$key}, $listItemIds);
+        })->values();
     }
 }

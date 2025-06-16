@@ -79,7 +79,7 @@ class Event extends Model
     public function scopeByMonth($query)
     {
         return $query->upcoming()->get()->groupBy(function ($d) {
-            return Carbon::parse($d->date)->formatLocalized('%B');
+            return Carbon::parse($d->date)->format('F');
         });
     }
 

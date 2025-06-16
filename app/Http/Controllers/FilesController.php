@@ -15,6 +15,8 @@ class FilesController extends Controller
             ->orWhere(['file' => $name])
             ->firstOrFail();
 
-        return Storage::download($file->file, $file->title);
+        $path = Storage::path($file->file);
+
+        return response()->download($path, $file->title);
     }
 }

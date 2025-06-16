@@ -2,10 +2,12 @@
 
 namespace Tests;
 
+use App\Services\TelegramService;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Artisan;
+use Mockery;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -15,6 +17,11 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
         Artisan::call('db:seed');
+
+        // Mock TelegramService for all tests
+        $telegramServiceMock = Mockery::mock(TelegramService::class);
+        $telegramServiceMock->shouldReceive('send')->andReturn(null);
+        $this->app->instance(TelegramService::class, $telegramServiceMock);
     }
 
     public function createApplication()

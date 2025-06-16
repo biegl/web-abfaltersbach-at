@@ -2,27 +2,17 @@
 
 namespace App\Observers;
 
+use App\Events\NewsCreated;
 use App\Models\News;
-use App\Notifications\NewsCreated;
 
 class NewsObserver
 {
-    /**
-     * Handle the News "created" event.
-     *
-     * @return void
-     */
-    public function created(News $news)
+    public function created(News $news): void
     {
-        $news->notify(new NewsCreated($news));
+        NewsCreated::dispatch($news);
     }
 
-    /**
-     * Handle the News "deleted" event.
-     *
-     * @return void
-     */
-    public function deleted(News $news)
+    public function deleted(News $news): void
     {
         $news->attachments()->delete();
     }

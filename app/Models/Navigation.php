@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Router\Helper as RouterHelper;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -23,56 +24,70 @@ class Navigation extends Model
 
     protected $hidden = ['navianzeigen'];
 
-    protected $appends = ['pageId', 'isVisible'];
+    protected $appends = ['page_id', 'is_visible'];
 
     public $timestamps = false;
 
     protected static $logAttributes = ['*'];
 
-    public function getHasChildrenAttribute()
+    protected function hasChildren(): Attribute
     {
-        return $this->children()->count() > 0;
+        return Attribute::make(get: function () {
+            return $this->children()->count() > 0;
+        });
     }
 
-    public function getHasParentAttribute()
+    protected function hasParent(): Attribute
     {
-        return ! is_null($this->parent());
+        return Attribute::make(get: function () {
+            return ! is_null($this->parent());
+        });
     }
 
-    public function getIsActiveAttribute()
+    protected function isActive(): Attribute
     {
-        $path = RouterHelper::normalizeUrl(Request::path());
+        return Attribute::make(get: function () {
+            $path = RouterHelper::normalizeUrl(Request::path());
 
-        return Str::contains($path, $this->url);
+            return Str::contains($path, $this->url);
+        });
     }
 
-    public function getSlugAttribute(): string
+    protected function slug(): Attribute
     {
-        return trim($this->linkname);
+        return Attribute::make(get: function () {
+            return trim($this->linkname);
+        });
     }
 
-    public function getUrlAttribute()
+    protected function url(): Attribute
     {
-        if (! $this->hasParent) {
-            return RouterHelper::normalizeUrl($this->slug);
-        }
+        return Attribute::make(get: function () {
+            if (! $this->hasParent) {
+                return RouterHelper::normalizeUrl('/'.$this->slug);
+            }
 
-        return RouterHelper::normalizeUrl($this->parent()->slug.'/'.$this->slug);
+            return RouterHelper::normalizeUrl('/'.$this->parent()->slug.'/'.$this->slug);
+        });
     }
 
-    public function getPageIdAttribute()
+    protected function pageId(): Attribute
     {
-        $page = \App\Models\Page::where('navigation_id', $this->ID)->first();
-        if ($page) {
-            return \App\Models\Page::where('navigation_id', $this->ID)->first()->ID;
-        }
+        return Attribute::make(get: function () {
+            $page = \App\Models\Page::where('navigation_id', $this->ID)->first();
+            if ($page) {
+                return \App\Models\Page::where('navigation_id', $this->ID)->first()->ID;
+            }
 
-        return null;
+            return null;
+        });
     }
 
-    public function getIsVisibleAttribute()
+    protected function isVisible(): Attribute
     {
-        return $this->navianzeigen == 'Ja';
+        return Attribute::make(get: function () {
+            return $this->navianzeigen == 'Ja';
+        });
     }
 
     public function children()
@@ -132,12 +147,16 @@ class Navigation extends Model
 
             $url = Str::lower(RouterHelper::normalizeUrl($url));
 
-            // Correct URL for startpage
-            if ($url === '/startseite') {
-                $url = '/';
-            }
+            // Get the page ID from the relationship
+            $pageId = Page::where('navigation_id', $page->ID)->first()?->ID;
+            if ($pageId) {
+                // Correct URL for startpage
+                if ($url === '/startseite') {
+                    $url = '/';
+                }
 
-            $map[$url] = $page->ID;
+                $map[$url] = $pageId;
+            }
         }
 
         return $map;

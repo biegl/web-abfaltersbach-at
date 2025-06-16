@@ -2,12 +2,9 @@
 
 use App\Models\GeneralSettings;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\getJson;
-
-uses(RefreshDatabase::class);
 
 test('it shows the general settings', function () {
     $settings = new GeneralSettings([
@@ -56,7 +53,7 @@ test('it updates the general settings', function () {
 
     $response->assertSuccessful();
 
-    $settings = new GeneralSettings();
+    $settings = new GeneralSettings;
     expect($settings->name)->toBe('New Name');
     expect($settings->email)->toBe('new-test@test.com');
 });

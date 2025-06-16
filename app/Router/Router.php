@@ -7,6 +7,7 @@ use App\Models\Page;
 use App\Router\Helper as RouterHelper;
 use App\Support\Str;
 use Cache;
+use Illuminate\Support\Facades\Log;
 
 /**
  * A router for static pages.
@@ -39,22 +40,30 @@ class Router
     public function findByUrl($url)
     {
         $url = Str::lower(RouterHelper::normalizeUrl($url));
+        Log::info('Looking for URL: '.$url);
 
         if (array_key_exists($url, self::$cache)) {
+            Log::info('Found in cache');
+
             return self::$cache[$url];
         }
 
         $urlMap = $this->getUrlMap();
+        Log::info('URL Map: '.json_encode($urlMap));
 
         if (! array_key_exists($url, $urlMap)) {
+            Log::info('URL not found in map');
+
             return null;
         }
 
         $pageId = $urlMap[$url];
+        Log::info('Found page ID: '.$pageId);
 
         if (($page = Page::find($pageId)) === null) {
             // If the page was not found, clear the URL cache and try again.
             $this->clearCache();
+            Log::info('Page not found in database, cleared cache');
 
             return self::$cache[$url] = Page::find($pageId);
         }
@@ -83,15 +92,20 @@ class Router
     protected function loadUrlMap()
     {
         self::$urlMap = Cache::remember(self::$CACHE_KEY_URL_MAP, config('cache.defaultTTL'), function () {
-            return Navigation::getUrlMap();
+            $map = Navigation::getUrlMap();
+            Log::info('Generated URL map: '.json_encode($map));
+
+            return $map;
         });
     }
 
     /**
-     * Clears the router cache.
+     * Clears the URL cache.
      */
     public function clearCache()
     {
         Cache::forget(self::$CACHE_KEY_URL_MAP);
+        self::$urlMap = [];
+        self::$cache = [];
     }
 }

@@ -2,14 +2,11 @@
 
 use App\Models\Event;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\getJson;
-
-uses(RefreshDatabase::class);
 
 test('it returns a paginated list of events', function () {
     $user = User::factory()->create();
@@ -112,6 +109,38 @@ test('it deletes an event', function () {
 
     $response->assertStatus(204);
     $this->assertDatabaseMissing('tbl_events', ['ID' => $event->ID]);
+});
+
+test('it deletes an event with attachments', function () {
+    $user = User::factory()->admin()->create();
+    actingAs($user, 'sanctum');
+
+    Storage::fake('local');
+    $event = Event::factory()->create();
+    $file = UploadedFile::fake()->create('test.jpg');
+
+    // Mock the FilesController
+    $fileControllerMock = $this->mock(\App\Http\Controllers\Api\FilesController::class)->makePartial();
+    $fileModel = new \App\Models\File(['file' => 'test.jpg', 'title' => 'test.jpg']);
+    $fileControllerMock->shouldReceive('storeFile')->andReturn($fileModel);
+
+    // Attach the file
+    $request = new \Illuminate\Http\Request;
+    $request->files->set('file', $file);
+    $fileRecord = $fileControllerMock->storeFile($request);
+    $event->attachments()->save($fileRecord);
+
+    Storage::disk('local')->put('test.jpg', 'test');
+    Storage::disk('local')->assertExists($fileRecord->file);
+
+    // Delete the event
+    $response = $this->deleteJson("/api/events/{$event->ID}");
+    $response->assertStatus(204);
+
+    // Assertions
+    $this->assertDatabaseMissing('tbl_events', ['ID' => $event->ID]);
+    $this->assertDatabaseMissing('tbl_downloads', ['ID' => $fileRecord->ID]);
+    Storage::disk('local')->assertMissing($fileRecord->file);
 });
 
 test('it attaches a file to an event', function () {

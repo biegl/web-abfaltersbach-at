@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Http\Filters\EventFilter;
 use App\Http\Filters\NewsFilter;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
@@ -35,41 +36,47 @@ class Page extends Model
         'navigation_id',
     ];
 
-    public function getTitleAttribute()
+    protected function title(): Attribute
     {
-        return $this->seitentitel;
+        return Attribute::make(get: function () {
+            return $this->seitentitel;
+        });
     }
 
-    public function getContentAttribute()
+    protected function content(): Attribute
     {
-        return $this->inhalt;
+        return Attribute::make(get: function () {
+            return $this->inhalt;
+        });
     }
 
-    public function getIsLandingPageAttribute()
+    protected function isLandingPage(): Attribute
     {
-        return $this->template === 'template_home.php';
+        return Attribute::make(get: function () {
+            return $this->template === 'template_home.php';
+        });
     }
 
-    public function getTemplateNameAttribute(): string
+    protected function templateName(): Attribute
     {
-        if ($this->isLandingPage) {
-            return 'page.home';
-        }
+        return Attribute::make(get: function () {
+            if ($this->isLandingPage) {
+                return 'page.home';
+            }
 
-        return 'page.default';
+            return 'page.default';
+        });
     }
 
-    public function getModulesAttribute()
+    protected function modules(): Attribute
     {
-        $title = $this->title;
-        $content = $this->content;
-        $navigation = Navigation::topLevel()->get();
-        $breadcrumbs = Navigation::breadcrumbs($this);
-        $subnavigation = Navigation::subnavigation($this);
-
-        switch ($this->templateName) {
-            case 'page.home':
-
+        return Attribute::make(get: function () {
+            $title = $this->title;
+            $content = $this->content;
+            $navigation = Navigation::topLevel()->get();
+            $breadcrumbs = Navigation::breadcrumbs($this);
+            $subnavigation = Navigation::subnavigation($this);
+            if ($this->templateName === 'page.home') {
                 // Check if request has query params
                 if (request()->has('newsID')) {
                     $news = News::filter(new NewsFilter(request()))->get();
@@ -94,13 +101,29 @@ class Page extends Model
                     });
                 }
 
-                return ['title' => $title, 'content' => $content, 'navigation' => $navigation, 'breadcrumbs' => $breadcrumbs, 'news' => $news, 'grouped_events' => $grouped_events, 'current_events' => $current_events];
-            default:
-                $files = $this->files->merge($this->attachments);
-                $inserts = $this->inserts;
+                return [
+                    'title' => $title,
+                    'content' => $content,
+                    'navigation' => $navigation,
+                    'breadcrumbs' => $breadcrumbs,
+                    'news' => $news,
+                    'grouped_events' => $grouped_events,
+                    'current_events' => $current_events,
+                ];
+            }
+            $files = $this->files->merge($this->attachments);
+            $inserts = $this->inserts;
 
-                return ['title' => $title, 'content' => $content, 'navigation' => $navigation, 'breadcrumbs' => $breadcrumbs, 'subnavigation' => $subnavigation, 'files' => $files, 'inserts' => $inserts];
-        }
+            return [
+                'title' => $title,
+                'content' => $content,
+                'navigation' => $navigation,
+                'breadcrumbs' => $breadcrumbs,
+                'subnavigation' => $subnavigation,
+                'files' => $files,
+                'inserts' => $inserts,
+            ];
+        });
     }
 
     public function files()

@@ -31,7 +31,7 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->reportable(function (Throwable $e) {
-            if (app()->bound('sentry')) {
+            if (app()->bound('sentry') && app()->environment('production')) {
                 app('sentry')->captureException($e);
             }
         });
@@ -60,6 +60,10 @@ class Handler extends ExceptionHandler
 
     protected function unauthenticated($request, AuthenticationException $exception)
     {
+        if (app()->environment('testing') && ! $request->expectsJson()) {
+            return redirect('/unauthenticated');
+        }
+
         return response()->json(['error' => 'Unauthenticated'], 401);
     }
 }

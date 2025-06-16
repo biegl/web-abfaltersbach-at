@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Exception;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -33,36 +34,44 @@ class File extends Model
         'file',
     ];
 
-    protected $appends = ['extension', 'fileSize'];
+    protected $appends = ['extension', 'file_size'];
 
     public static $DISK_NAME = 'attachments';
 
-    public function getExtensionAttribute()
+    protected function extension(): Attribute
     {
-        return pathinfo($this->file, PATHINFO_EXTENSION);
+        return Attribute::make(get: function () {
+            return pathinfo($this->file, PATHINFO_EXTENSION);
+        });
     }
 
-    public function getExistsAttribute()
+    protected function exists(): Attribute
     {
-        return Storage::disk(self::$DISK_NAME)->exists($this);
+        return Attribute::make(get: function () {
+            return Storage::disk(self::$DISK_NAME)->exists($this->file);
+        });
     }
 
-    public function getFileSizeAttribute()
+    protected function fileSize(): Attribute
     {
-        try {
-            return Storage::disk(self::$DISK_NAME)->size(str_replace('/upload', '', $this->file));
-        } catch (Exception $error) {
-            return 0;
-        }
+        return Attribute::make(get: function () {
+            try {
+                return Storage::disk(self::$DISK_NAME)->size(str_replace('/upload', '', $this->file));
+            } catch (Exception $error) {
+                return 0;
+            }
+        });
     }
 
-    public function getDownloadPathAttribute()
+    protected function downloadPath(): Attribute
     {
-        if (str_starts_with($this->file, '/upload')) {
-            return $this->file;
-        }
+        return Attribute::make(get: function () {
+            if (str_starts_with($this->file, '/upload')) {
+                return $this->file;
+            }
 
-        return "/files/$this->file";
+            return "/files/$this->file";
+        });
     }
 
     /**

@@ -1,0 +1,51 @@
+name: Code Style
+
+on:
+  pull_request:
+    paths:
+      - '**.php'
+      - 'composer.json'
+      - 'composer.lock'
+
+jobs:
+  code-style:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
+          coverage: none
+
+      - uses: "ramsey/composer-install@v3"
+
+      # Run Pint and commit changes
+      - name: Run Laravel Pint
+        run: vendor/bin/pint -v
+
+      - name: Commit Pint changes
+        uses: stefanzweifel/git-auto-commit-action@v6
+        with:
+          commit_message: "style: apply pint fixes [skip ci]"
+          commit_author: "GitHub Action <actions@github.com>"
+          commit_user_email: "action@github.com"
+          commit_options: "--no-verify"
+
+      # Run Rector and commit changes
+      - name: Run Rector
+        run: vendor/bin/rector --ansi
+
+      - name: Commit Rector changes
+        uses: stefanzweifel/git-auto-commit-action@v6
+        with:
+          commit_message: "style: apply rector fixes [skip ci]"
+          commit_author: "GitHub Action <actions@github.com>"
+          commit_user_email: "action@github.com"
+          commit_options: "--no-verify" 

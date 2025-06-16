@@ -17,11 +17,11 @@ class Helper
      */
     public static function normalizeUrl($url)
     {
-        if (substr($url, 0, 1) != '/') {
+        if (substr($url, 0, 1) !== '/') {
             $url = '/'.$url;
         }
 
-        if (substr($url, -1) == '/') {
+        if (substr($url, -1) === '/') {
             $url = substr($url, 0, -1);
         }
 
@@ -45,7 +45,7 @@ class Helper
 
         $result = [];
 
-        return array_filter($segments, 'strlen');
+        return array_values(array_filter($segments, 'strlen'));
     }
 
     /**
@@ -158,34 +158,18 @@ class Helper
      */
     public static function getParameterName($segment)
     {
-        $name = mb_substr($segment, 1);
+        $name = substr($segment, 1);
 
-        $optMarkerPos = mb_strpos($name, '?');
-        $wildMarkerPos = mb_strpos($name, '*');
-        $regexMarkerPos = mb_strpos($name, '|');
-
-        if ($wildMarkerPos !== false) {
-            if ($optMarkerPos !== false) {
-                return mb_substr($name, 0, $optMarkerPos);
-            }
-
-            return mb_substr($name, 0, $wildMarkerPos);
+        if (($pos = strpos($name, '?')) !== false) {
+            $name = substr($name, 0, $pos);
         }
 
-        if ($optMarkerPos !== false && $regexMarkerPos !== false) {
-            if ($optMarkerPos < $regexMarkerPos) {
-                return mb_substr($name, 0, $optMarkerPos);
-            }
-
-            return mb_substr($name, 0, $regexMarkerPos);
+        if (($pos = strpos($name, '*')) !== false) {
+            $name = substr($name, 0, $pos);
         }
 
-        if ($optMarkerPos !== false) {
-            return mb_substr($name, 0, $optMarkerPos);
-        }
-
-        if ($regexMarkerPos !== false) {
-            return mb_substr($name, 0, $regexMarkerPos);
+        if (($pos = strpos($name, '|')) !== false) {
+            $name = substr($name, 0, $pos);
         }
 
         return $name;

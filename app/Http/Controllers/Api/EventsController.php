@@ -108,7 +108,7 @@ class EventsController extends Controller
      */
     public function attachFile(Event $event, Request $request)
     {
-        $file = FilesController::storeFile($request);
+        $file = (new FilesController)->storeFile($request);
         $event->attachments()->save($file);
         Cache::forget(Event::$CACHE_KEY_CURRENT_EVENTS);
         Cache::forget(Event::$CACHE_KEY_GROUPED_EVENTS);

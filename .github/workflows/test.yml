@@ -15,41 +15,20 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      DB_CONNECTION: mysql
-      DB_HOST: 127.0.0.1
-      DB_PORT: 33306
-      DB_DATABASE: test
-      DB_USERNAME: test
-      DB_PASSWORD: test
-
-    services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_DATABASE: test
-          MYSQL_USER: test
-          MYSQL_PASSWORD: test
-          MYSQL_ROOT_PASSWORD: test
-        ports:
-          - 33306:3306
-        options: >-
-          --health-cmd="mysqladmin ping" 
-          --health-interval=10s 
-          --health-timeout=5s 
-          --health-retries=3
+      DB_CONNECTION: sqlite
+      DB_DATABASE: database/database.sqlite
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Verify MySQL connection
-        run: |
-          mysql --version
-          sudo apt-get install -y mysql-client
-          mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -utest -ptest -e "SHOW DATABASES"
-
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.testing', '.env');"
+
+      - name: Create SQLite database
+        run: |
+          mkdir -p database
+          touch database/database.sqlite
 
       - name: Get Composer Cache Directory
         id: composer-cache
@@ -66,7 +45,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.1
+          php-version: 8.4
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
           coverage: none
 
@@ -92,7 +71,7 @@ jobs:
       - name: Execute tests (Unit and Feature tests) via PHPUnit
         run: vendor/bin/pest tests
 
-      - name: Migrate MySQL DB
+      - name: Migrate SQLite DB
         run: php artisan migrate:fresh --seed
 
       - name: Upload artifacts

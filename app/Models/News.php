@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HasFilters;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -24,7 +25,7 @@ class News extends Model
 
     public $with = ['attachments'];
 
-    public $appends = ['isExpired'];
+    public $appends = ['is_expired'];
 
     /**
      * @var string The name of the cache bucket.
@@ -46,13 +47,15 @@ class News extends Model
         'expirationDate' => 'datetime:Y-m-d',
     ];
 
-    public function getIsExpiredAttribute()
+    protected function isExpired(): Attribute
     {
-        if (is_null($this->expirationDate)) {
-            return false;
-        }
+        return Attribute::make(get: function () {
+            if (is_null($this->expirationDate)) {
+                return false;
+            }
 
-        return $this->expirationDate < date('Y-m-d');
+            return $this->expirationDate < date('Y-m-d');
+        });
     }
 
     /**

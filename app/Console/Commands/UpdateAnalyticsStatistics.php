@@ -22,8 +22,6 @@ class UpdateAnalyticsStatistics extends Command
      */
     protected $description = 'Updates Google Analytics Statistics';
 
-    protected $service;
-
     /**
      * Create a new command instance.
      *
@@ -32,8 +30,6 @@ class UpdateAnalyticsStatistics extends Command
     public function __construct()
     {
         parent::__construct();
-
-        $this->service = new AnalyticsService;
     }
 
     /**
@@ -41,14 +37,14 @@ class UpdateAnalyticsStatistics extends Command
      *
      * @return int
      */
-    public function handle()
+    public function handle(AnalyticsService $service)
     {
         $this->info('Updating Analytics data...');
 
         $year = Carbon::today()->year;
         $month = Carbon::today()->month;
 
-        $this->service->retrieveAnalyticsData($year, $month);
+        $service->retrieveAnalyticsData($year, $month);
 
         $this->info('✅ Analytics data has been updated.');
     }
