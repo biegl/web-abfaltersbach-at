@@ -1,7 +1,11 @@
 name: Pint
 
 on:
-  pull_request: null
+  pull_request:
+    paths:
+      - '**.php'
+      - 'composer.json'
+      - 'composer.lock'
 
 jobs:
   pint:

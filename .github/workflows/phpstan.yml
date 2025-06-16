@@ -1,7 +1,12 @@
 name: PHPStan
 
 on:
-  pull_request: null
+  pull_request:
+    paths:
+      - '**.php'
+      - 'composer.json'
+      - 'composer.lock'
+      - 'phpstan.neon'
 
 jobs:
   phpstan:
