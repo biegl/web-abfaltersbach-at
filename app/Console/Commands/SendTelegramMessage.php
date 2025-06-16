@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Telegram\Bot\Api;
+use App\Services\TelegramService;
 use Telegram\Bot\Exceptions\TelegramSDKException;
 
 class SendTelegramMessage extends Command
@@ -25,17 +25,17 @@ class SendTelegramMessage extends Command
     protected $description = 'Send a message to Telegram';
 
     /**
-     * @var Api
+     * @var TelegramService
      */
-    protected $telegram;
+    protected $telegramService;
 
     /**
      * Create a new command instance.
      */
-    public function __construct(Api $telegram)
+    public function __construct(TelegramService $telegramService)
     {
         parent::__construct();
-        $this->telegram = $telegram;
+        $this->telegramService = $telegramService;
     }
 
     public function handle(): int
@@ -70,21 +70,14 @@ class SendTelegramMessage extends Command
     protected function sendToTelegram(string $title, string $message, ?string $imageUrl = null): void
     {
         $formattedMessage = "*{$title}*\n\n{$message}";
-        $channel = config('telegram.default_channel');
 
         if ($imageUrl) {
-            $this->telegram->sendPhoto([
-                'chat_id' => $channel,
+            $this->telegramService->send([
                 'photo' => $imageUrl,
                 'caption' => $formattedMessage,
-                'parse_mode' => 'Markdown',
             ]);
         } else {
-            $this->telegram->sendMessage([
-                'chat_id' => $channel,
-                'text' => $formattedMessage,
-                'parse_mode' => 'Markdown',
-            ]);
+            $this->telegramService->send($formattedMessage);
         }
     }
 }
