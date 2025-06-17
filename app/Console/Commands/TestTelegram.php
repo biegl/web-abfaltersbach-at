@@ -3,7 +3,9 @@
 namespace App\Console\Commands;
 
 use App\Models\Event;
+use App\Models\News;
 use App\Notifications\EventCreated;
+use App\Notifications\NewsCreated;
 use Illuminate\Console\Command;
 
 class TestTelegram extends Command
@@ -13,34 +15,47 @@ class TestTelegram extends Command
      *
      * @var string
      */
-    protected $signature = 'telegram:test {event_id? : The ID of the event to send. If not provided, the first event will be used.}';
+    protected $signature = 'telegram:test 
+                          {type : The type of notification to send (event/news)}
+                          {id : The ID of the event or news item}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Send a test message to the Telegram channel';
+    protected $description = 'Send a test message to the Telegram channel for an event or news item';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        $eventId = $this->argument('event_id');
-        
-        $event = $eventId 
-            ? Event::find($eventId)
-            : Event::first();
+        $type = strtolower($this->argument('type'));
+        $id = $this->argument('id');
 
-        if (!$event) {
-            $this->error('No event found.');
+        if (!in_array($type, ['event', 'news'])) {
+            $this->error('Type must be either "event" or "news"');
             return 1;
         }
 
-        $event->notify(new EventCreated($event));
-        $this->info("Test notification sent for event: {$eventId}");
-        
+        if ($type === 'event') {
+            $model = Event::find($id);
+            if (!$model) {
+                $this->error("Event with ID {$id} not found.");
+                return 1;
+            }
+            $model->notify(new EventCreated($model));
+        } else {
+            $model = News::find($id);
+            if (!$model) {
+                $this->error("News with ID {$id} not found.");
+                return 1;
+            }
+            $model->notify(new NewsCreated($model));
+        }
+
+        $this->info("Test notification sent for {$type} with ID: {$id}");
         return 0;
     }
 }
