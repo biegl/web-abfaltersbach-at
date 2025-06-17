@@ -34,6 +34,7 @@ tasks:
     - artisan:event:cache
     - artisan:route:cache
     - artisan:config:cache
+    - artisan:queue:restart
     - artisan:migrate
     - deploy:publish
 
