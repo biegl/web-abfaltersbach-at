@@ -13,7 +13,7 @@ class TestTelegram extends Command
      *
      * @var string
      */
-    protected $signature = 'telegram:test';
+    protected $signature = 'telegram:test {event_id? : The ID of the event to send. If not provided, the first event will be used.}';
 
     /**
      * The console command description.
@@ -27,7 +27,20 @@ class TestTelegram extends Command
      */
     public function handle()
     {
-        $event = Event::first();
+        $eventId = $this->argument('event_id');
+        
+        $event = $eventId 
+            ? Event::find($eventId)
+            : Event::first();
+
+        if (!$event) {
+            $this->error('No event found.');
+            return 1;
+        }
+
         $event->notify(new EventCreated($event));
+        $this->info("Test notification sent for event: {$eventId}");
+        
+        return 0;
     }
 }
