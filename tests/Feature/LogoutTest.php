@@ -17,7 +17,7 @@ class LogoutTest extends TestCase
         $this->user = User::factory()->create();
     }
 
-    public function testUserIsLoggedOutProperly()
+    public function test_user_is_logged_out_properly()
     {
         $response = $this->actingAs($this->user)->postJson('/api/logout');
         $this->assertFalse(Auth::check());

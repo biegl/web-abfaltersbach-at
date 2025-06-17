@@ -6,7 +6,7 @@ use Tests\TestCase;
 
 class RegisterTest extends TestCase
 {
-    public function testRegistersSuccessfully()
+    public function test_registers_successfully()
     {
         $payload = [
             'name' => 'John',
@@ -29,7 +29,7 @@ class RegisterTest extends TestCase
             ]);
     }
 
-    public function testRequiresPasswordEmailAndName()
+    public function test_requires_password_email_and_name()
     {
         $this->postJson('/api/register')
             ->assertStatus(422)
@@ -42,7 +42,7 @@ class RegisterTest extends TestCase
             ]);
     }
 
-    public function testRequirePasswordConfirmation()
+    public function test_require_password_confirmation()
     {
         $payload = [
             'name' => 'John',

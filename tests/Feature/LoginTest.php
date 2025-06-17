@@ -20,7 +20,7 @@ class LoginTest extends TestCase
         $kernel->pushMiddleware('Illuminate\Session\Middleware\StartSession');
     }
 
-    public function testRequiresEmailAndPassword()
+    public function test_requires_email_and_password()
     {
         $this->postJson('api/login')
             ->assertStatus(422)
@@ -32,7 +32,7 @@ class LoginTest extends TestCase
             ]);
     }
 
-    public function testUserLogsInSuccessfully()
+    public function test_user_logs_in_successfully()
     {
         $this->actingAs($this->user)->postJson('api/login', ['email' => $this->user->email, 'password' => 'password'])
             ->assertStatus(200)

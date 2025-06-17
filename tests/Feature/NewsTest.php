@@ -16,7 +16,7 @@ class NewsTest extends TestCase
         $this->user = User::factory()->create();
     }
 
-    public function testNewsAreCreatedCorrectly()
+    public function test_news_are_created_correctly()
     {
         $payload = [
             'title' => 'Lorem',
@@ -29,7 +29,7 @@ class NewsTest extends TestCase
             ->assertJson(['title' => 'Lorem', 'text' => 'Ipsum']);
     }
 
-    public function testNewsAreUpdatedCorrectly()
+    public function test_news_are_updated_correctly()
     {
         $news = News::factory()->create([
             'title' => 'First News',
@@ -52,7 +52,7 @@ class NewsTest extends TestCase
             ]);
     }
 
-    public function testNewsAreDeletedCorrectly()
+    public function test_news_are_deleted_correctly()
     {
         $news = News::factory()->create([
             'title' => 'First News',
@@ -64,7 +64,7 @@ class NewsTest extends TestCase
             ->assertStatus(204);
     }
 
-    public function testNewsAreListedCorrectly()
+    public function test_news_are_listed_correctly()
     {
         News::factory()->create([
             'title' => 'First News',
