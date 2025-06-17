@@ -15,7 +15,7 @@ class TestTelegram extends Command
      *
      * @var string
      */
-    protected $signature = 'telegram:test {id : The ID of the event or news item}';
+    protected $signature = 'telegram:test';
 
     /**
      * The console command description.
@@ -35,21 +35,32 @@ class TestTelegram extends Command
             0
         );
         
-        $id = $this->argument('id');
+        // Get available IDs based on type
+        $availableIds = $type === 'event' 
+            ? Event::pluck('id')->toArray()
+            : News::pluck('id')->toArray();
+
+        if (empty($availableIds)) {
+            $this->error("No {$type}s found in the database.");
+            return 1;
+        }
+
+        $id = $this->anticipate(
+            "Enter the {$type} ID",
+            $availableIds,
+            $availableIds[0]
+        );
+
+        if (!in_array($id, $availableIds)) {
+            $this->error("{$type} with ID {$id} not found.");
+            return 1;
+        }
 
         if ($type === 'event') {
             $model = Event::find($id);
-            if (!$model) {
-                $this->error("Event with ID {$id} not found.");
-                return 1;
-            }
             $model->notify(new EventCreated($model));
         } else {
             $model = News::find($id);
-            if (!$model) {
-                $this->error("News with ID {$id} not found.");
-                return 1;
-            }
             $model->notify(new NewsCreated($model));
         }
 
