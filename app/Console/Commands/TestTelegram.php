@@ -15,9 +15,7 @@ class TestTelegram extends Command
      *
      * @var string
      */
-    protected $signature = 'telegram:test 
-                          {type : The type of notification to send (event/news)}
-                          {id : The ID of the event or news item}';
+    protected $signature = 'telegram:test {id : The ID of the event or news item}';
 
     /**
      * The console command description.
@@ -31,13 +29,13 @@ class TestTelegram extends Command
      */
     public function handle()
     {
-        $type = strtolower($this->argument('type'));
+        $type = $this->choice(
+            'What type of notification do you want to send?',
+            ['event', 'news'],
+            0
+        );
+        
         $id = $this->argument('id');
-
-        if (!in_array($type, ['event', 'news'])) {
-            $this->error('Type must be either "event" or "news"');
-            return 1;
-        }
 
         if ($type === 'event') {
             $model = Event::find($id);
