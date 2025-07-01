@@ -17,5 +17,6 @@ class Authenticate extends Middleware
         if (! $request->expectsJson()) {
             return response()->json('Accept: application/json header missing', 400);
         }
+        return null;
     }
 }

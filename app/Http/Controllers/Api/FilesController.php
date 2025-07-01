@@ -90,7 +90,7 @@ class FilesController extends Controller
     public static function storeFile(Request $request)
     {
         if (! $request->hasFile('file')) {
-            return;
+            return null;
         }
 
         // Collect file information
