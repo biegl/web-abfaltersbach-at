@@ -9,8 +9,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.RECTOR }}
 
       - uses: shivammathur/setup-php@v2
         with:
@@ -20,9 +18,3 @@ jobs:
       - uses: "ramsey/composer-install@v3"
 
       - run: vendor/bin/pint -v
-
-      - uses: stefanzweifel/git-auto-commit-action@v6
-        with:
-          commit_message: "[pint] Pint style fixes"
-          commit_author: "GitHub Action <actions@github.com>"
-          commit_user_email: "action@github.com"
