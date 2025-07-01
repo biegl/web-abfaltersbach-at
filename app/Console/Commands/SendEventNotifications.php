@@ -19,16 +19,24 @@ class SendEventNotifications extends Command
     {
         $today = Carbon::today()->toDateString();
         
-        // Get all events for today
-        $events = Event::query()->whereDate('date', $today)->get();
+        // Get all events for today that haven't been notified yet
+        $events = Event::query()
+            ->whereDate('date', $today)
+            ->whereNull('notification_sent_at')
+            ->get();
         
         if ($events->isEmpty()) {
-            $this->info('No events found for today.');
+            $this->info('No new events to notify for today.');
             return;
         }
 
         foreach ($events as $event) {
             $this->sendTelegramNotification($event);
+            
+            // Mark the event as notified
+            $event->update([
+                'notification_sent_at' => Carbon::now()
+            ]);
         }
 
         $this->info('Event notifications sent successfully.');

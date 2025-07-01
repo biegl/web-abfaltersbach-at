@@ -27,6 +27,12 @@ class Event extends Model
         'date',
         'text',
         'filepath',
+        'notification_sent_at',
+    ];
+
+    protected $dates = [
+        'date',
+        'notification_sent_at',
     ];
 
     protected $casts = [
