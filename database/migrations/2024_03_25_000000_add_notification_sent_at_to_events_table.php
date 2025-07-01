@@ -12,4 +12,4 @@ return new class extends Migration
             $table->timestamp('notification_sent_at')->nullable();
         });
     }
-}; 
+};

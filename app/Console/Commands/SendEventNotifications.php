@@ -6,36 +6,37 @@ use App\Models\Event;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use League\HTMLToMarkdown\HtmlConverter;
-use NotificationChannels\Telegram\TelegramChannel;
 use NotificationChannels\Telegram\TelegramFile;
 use NotificationChannels\Telegram\TelegramMessage;
 
 class SendEventNotifications extends Command
 {
     protected $signature = 'events:send-notifications';
+
     protected $description = 'Send Telegram notifications for today\'s events';
 
     public function handle()
     {
         $today = Carbon::today()->toDateString();
-        
+
         // Get all events for today that haven't been notified yet
         $events = Event::query()
             ->whereDate('date', $today)
             ->whereNull('notification_sent_at')
             ->get();
-        
+
         if ($events->isEmpty()) {
             $this->info('No new events to notify for today.');
+
             return;
         }
 
         foreach ($events as $event) {
             $this->sendTelegramNotification($event);
-            
+
             // Mark the event as notified
             $event->update([
-                'notification_sent_at' => Carbon::now()
+                'notification_sent_at' => Carbon::now(),
             ]);
         }
 
@@ -74,4 +75,4 @@ class SendEventNotifications extends Command
                 ->send();
         }
     }
-} 
+}
