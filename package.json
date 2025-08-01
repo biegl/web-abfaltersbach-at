@@ -26,6 +26,6 @@
         "vue-template-compiler": "2.7.16"
     },
     "dependencies": {
-        "@tinymce/tinymce-vue": "^6.2.0"
+        "@tinymce/tinymce-vue": "^6.3.0"
     }
 }
