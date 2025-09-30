@@ -13,7 +13,7 @@
         "@percy/cypress": "^3.1.6",
         "axios": "1.12.2",
         "bootstrap": "5.3",
-        "cross-env": "10.0.0",
+        "cross-env": "10.1.0",
         "cypress": "^15.2.0",
         "jquery": "3.7.1",
         "laravel-mix": "6.0.49",
