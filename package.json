@@ -10,7 +10,7 @@
     },
     "devDependencies": {
         "@percy/cli": "v1.31.10",
-        "@percy/cypress": "^3.1.7",
+        "@percy/cypress": "^3.1.8",
         "axios": "1.14.1",
         "bootstrap": "5.3",
         "cross-env": "10.1.0",
