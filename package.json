@@ -11,7 +11,7 @@
     "devDependencies": {
         "@percy/cli": "v1.31.13",
         "@percy/cypress": "^3.1.8",
-        "axios": "1.15.2",
+        "axios": "1.16.0",
         "bootstrap": "5.3",
         "cross-env": "10.1.0",
         "cypress": "^15.14.2",
