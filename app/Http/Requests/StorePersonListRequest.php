@@ -22,7 +22,10 @@ class StorePersonListRequest extends FormRequest
     public function rules()
     {
         return [
-            'order' => ['required', 'distinct', 'exists:App\Models\Person,id'],
+            // ponytail: exists was on the whole array (errors landed on `order`, not
+            // per index); moved to `order.*` so a bad id reports as `order.0` etc.
+            'order' => ['required', 'distinct'],
+            'order.*' => ['exists:App\Models\Person,id'],
         ];
     }
 }
