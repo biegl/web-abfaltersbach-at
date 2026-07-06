@@ -24,7 +24,7 @@ class StorePersonListRequest extends FormRequest
         return [
             // ponytail: exists was on the whole array (errors landed on `order`, not
             // per index); moved to `order.*` so a bad id reports as `order.0` etc.
-            'order' => ['required', 'distinct'],
+            'order' => ['required', 'array', 'distinct'],
             'order.*' => ['exists:App\Models\Person,id'],
         ];
     }

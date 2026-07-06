@@ -50,8 +50,10 @@ it('rejects registration with a duplicate email', function () {
 it('rejects registration with a too-short password', function () {
     $this->postJson('api/register', [
         'name' => 'Max Muster',
-        'email' => 'max@example.com',
+        'email' => 'short-password@example.com',
         'password' => 'short',
         'password_confirmation' => 'short',
-    ])->assertStatus(422);
+    ])
+        ->assertStatus(422)
+        ->assertJsonValidationErrors('password');
 });
