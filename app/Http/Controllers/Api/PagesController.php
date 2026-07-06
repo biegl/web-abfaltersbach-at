@@ -28,7 +28,14 @@ class PagesController extends Controller
      */
     public function store(StorePage $request)
     {
-        $page = Page::create($request->validated(null, null));
+        // ponytail: `keywords`/`description` aren't in $fillable/StorePage but the migration
+        // history round-trips them back to NOT NULL (see add_template_default_value::down()),
+        // so leaving them unset 500s on the DB constraint. Setting them directly (bypassing mass
+        // assignment) until those legacy columns are dropped/defaulted properly.
+        $page = new Page($request->validated(null, null));
+        $page->keywords = '';
+        $page->description = '';
+        $page->save();
 
         return response()->json($page, 201);
     }
