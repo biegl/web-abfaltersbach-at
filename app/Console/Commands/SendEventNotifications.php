@@ -61,6 +61,10 @@ class SendEventNotifications extends Command
         $url = 'https://abfaltersbach.at?eventID='.$event->ID;
 
         if ($src = array_pop($match)) {
+            if (str_starts_with($src, '//')) {
+                $src = 'https:'.$src;
+            }
+
             TelegramFile::create()
                 ->to(config('services.telegram-bot-api.channel'))
                 ->content(implode("\n", [$title, $content]))

@@ -53,7 +53,7 @@ class SendEventNotificationsTest extends TestCase
         // Create an event for today with an image
         $event = Event::factory()->create([
             'date' => Carbon::today(),
-            'text' => 'Test event content with <img src="test.jpg"> image',
+            'text' => 'Test event content with <img src="//abfaltersbach.at/files/test.jpg"> image',
             'notification_sent_at' => null,
         ]);
 
