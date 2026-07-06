@@ -1,25 +1,22 @@
 <?php
 
-namespace Tests\Feature;
-
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Tests\TestCase;
 
-class LogoutTest extends TestCase
-{
-    private $user;
+// ponytail: api routes only get StartSession via Sanctum's stateful-frontend check,
+// which requires a Referer/Origin header. postJson sends none, so
+// $request->session() throws "Session store not set" in LoginController::logout.
+// Push the middleware directly so the logout flow under test has a session.
+beforeEach(function () {
+    app('Illuminate\Contracts\Http\Kernel')->pushMiddleware('Illuminate\Session\Middleware\StartSession');
+});
 
-    protected function setUp(): void
-    {
-        parent::setUp();
+it('logs a user out', function () {
+    $user = User::factory()->create();
 
-        $this->user = User::factory()->create();
-    }
+    $this->actingAs($user)->postJson('api/logout')
+        ->assertStatus(200)
+        ->assertJson(['data' => 'User logged out.']);
 
-    public function test_user_is_logged_out_properly()
-    {
-        $response = $this->actingAs($this->user)->postJson('/api/logout');
-        $this->assertFalse(Auth::check());
-    }
-}
+    expect(Auth::check())->toBeFalse();
+});
