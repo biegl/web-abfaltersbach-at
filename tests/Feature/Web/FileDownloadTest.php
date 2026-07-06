@@ -4,14 +4,6 @@ use App\Models\File;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
-beforeEach(function () {
-    // ponytail: .env.testing ships with an empty APP_KEY (no prior test hit a
-    // 'web' route, so EncryptCookies' Encrypter dependency was never resolved).
-    // Any web route now throws MissingAppKeyException without this. Set a
-    // throwaway key for the test run rather than committing one to .env.testing.
-    config(['app.key' => 'base64:'.base64_encode(random_bytes(32))]);
-});
-
 it('downloads a file by name', function () {
     Storage::fake('attachments');
 
