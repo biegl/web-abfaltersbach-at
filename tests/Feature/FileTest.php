@@ -5,13 +5,10 @@ namespace Tests\Feature;
 use App\Models\File;
 use App\Models\Navigation;
 use App\Models\Page;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class FileTest extends TestCase
 {
-    use RefreshDatabase;
-
     /** @test */
     public function it_should_create_a_table()
     {
