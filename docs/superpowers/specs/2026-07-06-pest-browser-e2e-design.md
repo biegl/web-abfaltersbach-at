@@ -19,7 +19,7 @@ The request that kicked this off assumed existing Laravel Dusk tests to migrate.
 - **Requirements:** PHP 8.3+, Pest 4.4.5+ (this repo has PHP `^8.3` and `pestphp/pest` `v4.7.4` — both satisfied), Node.js, `@playwright/test`.
 - **The admin SPA build (`public/admin`) is already committed to git** (built via `resources/easyadmin`'s `npm run build`, which copies `dist/` → `../../public/admin` via a `postbuild` script). It is not built fresh in the main `test-app` CI job today.
 - **No public self-registration UI exists.** `resources/easyadmin/src/components/` has `Login.vue` but no `Register.vue` — the `POST api/register` route (covered by the existing Feature-level `RegisterTest.php`) has no corresponding SPA screen. Browser e2e auth coverage is therefore login + logout only.
-- **CI currently pins Node to 16.x** (`.github/workflows/test.yml`, `test-easyadmin` job). Current Playwright releases require Node 18+; this work bumps CI to Node 20.x LTS.
+- **CI currently pins Node to 16.x** (`.github/workflows/test.yml`, `test-easyadmin` job). Current Playwright releases require Node 18+; the new browser-test job introduced by this work uses Node 20.x LTS (the existing `test-app`/`test-easyadmin` jobs are untouched — see CI section).
 
 ## Scope
 
