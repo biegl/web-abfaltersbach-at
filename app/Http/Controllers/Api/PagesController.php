@@ -28,12 +28,15 @@ class PagesController extends Controller
      */
     public function store(StorePage $request)
     {
-        // ponytail: `keywords`/`description` aren't in $fillable/StorePage but the migration
-        // history round-trips them back to NOT NULL (see add_template_default_value::down()),
-        // so leaving them unset 500s on the DB constraint. Setting them directly (bypassing mass
-        // assignment) until those legacy columns are dropped/defaulted properly.
+        // ponytail: keywords/template/template_name/description aren't in $fillable/StorePage but
+        // are legacy NOT NULL columns (see add_template_default_value migration). MySQL silently
+        // drops the TEXT column's DEFAULT ('template.php'), so an unset `template` inserts NULL and
+        // the constraint round-trip fails — set them directly (bypassing mass assignment) until
+        // those legacy columns are dropped/defaulted properly.
         $page = new Page($request->validated(null, null));
         $page->keywords = '';
+        $page->template = 'template.php';
+        $page->template_name = '';
         $page->description = '';
         $page->save();
 
