@@ -5,13 +5,10 @@ namespace Tests\Feature;
 use App\Models\Navigation;
 use App\Models\Page;
 use App\Router\Router;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class RouterTest extends TestCase
 {
-    use RefreshDatabase;
-
     private $router;
 
     protected function setUp(): void

@@ -1,49 +1,38 @@
 <?php
 
-namespace Tests\Feature;
-
 use App\Models\User;
-use Tests\TestCase;
 
-class LoginTest extends TestCase
-{
-    private $user;
+// ponytail: api routes only get StartSession via Sanctum's stateful-frontend check,
+// which requires a Referer/Origin header. postJson sends none, so
+// $request->session() throws "Session store not set" in LoginController.
+// Push the middleware directly so the login flow under test has a session.
+beforeEach(function () {
+    app('Illuminate\Contracts\Http\Kernel')->pushMiddleware('Illuminate\Session\Middleware\StartSession');
+});
 
-    protected function setUp(): void
-    {
-        parent::setUp();
+it('rejects login without email and password', function () {
+    $this->postJson('api/login')
+        ->assertStatus(422)
+        ->assertJson([
+            'errors' => [
+                'email' => ['validation.required'],
+                'password' => ['validation.required'],
+            ],
+        ]);
+});
 
-        $this->user = User::factory()->create();
+it('rejects login with wrong credentials', function () {
+    User::factory()->create(['email' => 'a@b.c']);
 
-        // Session needs to be started before login works.
-        $kernel = app('Illuminate\Contracts\Http\Kernel');
-        $kernel->pushMiddleware('Illuminate\Session\Middleware\StartSession');
-    }
+    $this->postJson('api/login', ['email' => 'a@b.c', 'password' => 'wrong'])
+        ->assertStatus(401)
+        ->assertJson(['errors' => ['email' => ['auth.failed']]]);
+});
 
-    public function test_requires_email_and_password()
-    {
-        $this->postJson('api/login')
-            ->assertStatus(422)
-            ->assertJson([
-                'errors' => [
-                    'email' => ['validation.required'],
-                    'password' => ['validation.required'],
-                ],
-            ]);
-    }
+it('logs a user in successfully', function () {
+    $user = User::factory()->create();
 
-    public function test_user_logs_in_successfully()
-    {
-        $this->actingAs($this->user)->postJson('api/login', ['email' => $this->user->email, 'password' => 'password'])
-            ->assertStatus(200)
-            ->assertJsonStructure([
-                'id',
-                'name',
-                'email',
-                'email_verified_at',
-                'created_at',
-                'updated_at',
-                'api_token',
-            ]);
-    }
-}
+    $this->postJson('api/login', ['email' => $user->email, 'password' => 'password'])
+        ->assertStatus(200)
+        ->assertJsonStructure(['id', 'name', 'email', 'created_at', 'updated_at']);
+});

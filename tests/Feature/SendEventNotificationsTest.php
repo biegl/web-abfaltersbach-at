@@ -5,15 +5,12 @@ namespace Tests\Feature;
 use App\Models\Event;
 use Carbon\Carbon;
 use GuzzleHttp\Psr7\Response;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
 use NotificationChannels\Telegram\Telegram;
 use Tests\TestCase;
 
 class SendEventNotificationsTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();

@@ -46,3 +46,22 @@ function something()
 {
     // ..
 }
+
+use App\Models\Role;
+use App\Models\User;
+
+function asUser(): User
+{
+    $user = User::factory()->create(['role' => Role::USER]);
+    test()->actingAs($user);
+
+    return $user;
+}
+
+function asAdmin(): User
+{
+    $user = User::factory()->create(['role' => Role::ADMIN]);
+    test()->actingAs($user);
+
+    return $user;
+}

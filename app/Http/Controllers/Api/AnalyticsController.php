@@ -11,9 +11,10 @@ class AnalyticsController extends Controller
 {
     protected $service;
 
-    public function __construct()
+    // ponytail: resolve via container instead of `new` so it's swappable/mockable in tests
+    public function __construct(AnalyticsService $service)
     {
-        $this->service = new AnalyticsService;
+        $this->service = $service;
     }
 
     public function index(Request $request)

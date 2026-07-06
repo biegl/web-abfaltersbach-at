@@ -93,5 +93,11 @@ class Router
     public function clearCache()
     {
         Cache::forget(self::$CACHE_KEY_URL_MAP);
+
+        // ponytail: also reset the in-memory static caches, not just the Cache
+        // facade entry - otherwise a process that already loaded the map (e.g.
+        // a test run) keeps serving the stale map forever.
+        self::$urlMap = [];
+        self::$cache = [];
     }
 }
