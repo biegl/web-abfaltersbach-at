@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Facades\Config;
 use NotificationChannels\Telegram\Telegram;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class SendEventNotificationsTest extends TestCase
@@ -27,7 +28,7 @@ class SendEventNotificationsTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function it_sends_notifications_for_todays_events()
     {
         // Create an event for today
@@ -46,7 +47,7 @@ class SendEventNotificationsTest extends TestCase
         $this->assertNotNull($event->fresh()->notification_sent_at);
     }
 
-    /** @test */
+    #[Test]
     public function it_sends_notifications_for_events_with_images()
     {
         // Create an event for today with an image
@@ -65,7 +66,7 @@ class SendEventNotificationsTest extends TestCase
         $this->assertNotNull($event->fresh()->notification_sent_at);
     }
 
-    /** @test */
+    #[Test]
     public function it_skips_events_that_were_already_notified()
     {
         // Create an event that was already notified
@@ -81,7 +82,7 @@ class SendEventNotificationsTest extends TestCase
             ->assertExitCode(0);
     }
 
-    /** @test */
+    #[Test]
     public function it_only_sends_notifications_for_todays_events()
     {
         // Create events for yesterday, today, and tomorrow
