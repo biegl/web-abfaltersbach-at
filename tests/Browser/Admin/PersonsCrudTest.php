@@ -33,6 +33,12 @@ it('creates a person via the multiselect tag input', function () {
     // selects it) — the name lives in an <input v-model>, which assertSee (Playwright
     // getByText) can't see. The person only becomes visible as page text, and gets
     // attached to a board column, once the form is actually submitted.
+    // Not skipped despite touching the same MySQL-only orderByRaw FIELD() codepath as
+    // the other tests: saving triggers Persons.vue's saveListOrder() in the background,
+    // which 500s on SQLite — but assertSee below is satisfied by the synchronous,
+    // optimistic Vuex update before that promise settles, and the app catches the
+    // rejection itself (a snotify toast, not an unhandled error). If this starts
+    // flaking, that background 500 is the first place to look.
     // Both board columns render their own .add-member-btn — scope to the first
     // (Gemeinderat's) via Playwright's chained nth= selector syntax, since a bare
     // class selector resolves to 2 elements and click() requires a single match.
