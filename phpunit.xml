@@ -28,6 +28,8 @@
         <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
+        <env name="SESSION_DOMAIN" value="null"/>
+        <env name="SANCTUM_STATEFUL_DOMAINS" value="__SANCTUM_CURRENT_REQUEST_HOST__"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
     </php>
 </phpunit>

@@ -42,7 +42,12 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
-        Auth::logout();
+        // Explicit guard: an earlier auth:sanctum-guarded request in the same process can leave
+        // Auth's default guard pointed at Sanctum's RequestGuard (which has no logout()) via
+        // Illuminate\Auth\Middleware\Authenticate::authenticate()'s shouldUse() call. This route
+        // always authenticates via the session-based "web" guard (see authenticate() above), so
+        // pin it explicitly rather than relying on the (mutable) default.
+        Auth::guard('web')->logout();
 
         $request->session()->invalidate();
 

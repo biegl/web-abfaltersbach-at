@@ -17,4 +17,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/startseite', [PageController::class, 'landing']);
 Route::get('/files/{name}', [FilesController::class, 'download']);
+
+if (app()->environment('testing')) {
+    Route::get('/admin/{any?}', function () {
+        return response()->file(public_path('admin/index.html'));
+    })->where('any', '.*');
+}
+
 Route::fallback([PageController::class, 'show']);
