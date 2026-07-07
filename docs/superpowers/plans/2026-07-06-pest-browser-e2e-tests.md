@@ -58,6 +58,14 @@ In `phpunit.xml`, inside the existing `<php>` block (alongside the other `<env>`
 
 Why: `.env.testing` sets `SESSION_DOMAIN=localhost`; the embedded server binds to `127.0.0.1`. A cookie scoped to `Domain=localhost` is not sent by a real browser on requests to `127.0.0.1`. Laravel's `env()` helper casts the literal string `"null"` to PHP `null`, which makes `config('session.domain')` unset (no domain restriction).
 
+**[Corrected during Task 1]** A second `<env>` was also needed here, discovered via a real failure (`RuntimeException: Session store not set on request` on the login POST's `$request->session()->regenerate()`):
+
+```xml
+<env name="SANCTUM_STATEFUL_DOMAINS" value="__SANCTUM_CURRENT_REQUEST_HOST__"/>
+```
+
+`__SANCTUM_CURRENT_REQUEST_HOST__` is a real Sanctum placeholder (see `vendor/laravel/sanctum/src/Sanctum.php`) that resolves to whatever host actually made the request — needed because the embedded test server's host varies (`127.0.0.1` with a random port), so a fixed domain in `SANCTUM_STATEFUL_DOMAINS` wouldn't reliably match and Sanctum's stateful-domain check would reject the session, leaving `$request->session()` unset.
+
 - [ ] **Step 3: Bind the app TestCase to the Browser directory**
 
 In `tests/Pest.php`, change:
@@ -550,7 +558,7 @@ Replace both `PLACEHOLDER_*_SELECTOR_FROM_STEP_1` strings with the actual select
 - [ ] **Step 3: Run, fix forward, restore, commit**
 
 Run: `vendor/bin/pest tests/Browser/Admin/PagesCrudTest.php`
-Expected: `Tests: 4 passed`.
+Expected: `Tests: 4 passed`. **[Corrected during Task 5 — a real production bug, not a test-writing issue]** Actual result is `2 passed, 2 skipped`: the Pages admin overview turned out to be `Navigation`-driven, not `Page`-driven (no create/update/delete API exists for `Navigation` at all), and `Pages.vue`'s `editPage()`/`deletePage()` pass the wrong ID property (`page.id` instead of the correct `page.pageId`). List/create were rewritten to test what's real; edit/delete are `->skip()`'d with the root cause documented inline in `tests/Browser/Admin/PagesCrudTest.php` — see that file for the full story.
 
 ```bash
 git checkout -- public/admin
@@ -635,7 +643,7 @@ Note: `.actions button:nth-child(2)`/`:nth-child(3)` are scoped to whichever `Pe
 - [ ] **Step 3: Run, fix forward, restore, commit**
 
 Run: `vendor/bin/pest tests/Browser/Admin/PersonsCrudTest.php`
-Expected: `Tests: 4 passed`. This task's tests are the most likely in the whole plan to need iteration — `vue-multiselect`'s tag-creation interaction (Step 2's second test) was not empirically verified during design research (it rests on the library's documented public behavior, not inspected rendered DOM). If `keys('.multiselect__input', 'Enter')` doesn't create the tag, inspect the rendered DOM directly (`--debug` flag: `vendor/bin/pest tests/Browser/Admin/PersonsCrudTest.php --debug` opens a headed, pausable browser) to find the actual highlighted-option/confirmation element and click it directly instead of relying on the Enter keypress.
+Expected: `Tests: 4 passed`. **[Corrected during Task 6]** Actual result on SQLite (this repo's local test DB) is `1 passed, 3 skipped`: `PersonsController::list()`'s `orderByRaw("FIELD(id, ...)")` is MySQL-only (matches an existing precedent in `tests/Feature/Api/PersonsTest.php`) — the 3 skipped tests need real MySQL to execute, which Task 8's CI job provides (`DB_CONNECTION=mysql` at the job env level), so they run for real in CI. Also, a bare `Person::factory()` is invisible on the page unless attached to a `Module`'s `configuration.ids` array — see `tests/Browser/Admin/PersonsCrudTest.php` for the real setup. This task's tests are the most likely in the whole plan to need iteration — `vue-multiselect`'s tag-creation interaction (Step 2's second test) was not empirically verified during design research (it rests on the library's documented public behavior, not inspected rendered DOM). If `keys('.multiselect__input', 'Enter')` doesn't create the tag, inspect the rendered DOM directly (`--debug` flag: `vendor/bin/pest tests/Browser/Admin/PersonsCrudTest.php --debug` opens a headed, pausable browser) to find the actual highlighted-option/confirmation element and click it directly instead of relying on the Enter keypress.
 
 ```bash
 git checkout -- public/admin
@@ -718,7 +726,7 @@ Note: `visitAsAdmin()` creates a fresh admin per test, but the database seeder (
 - [ ] **Step 2: Run, fix forward, restore, commit**
 
 Run: `vendor/bin/pest tests/Browser/Admin/UsersCrudTest.php`
-Expected: `Tests: 5 passed`.
+Expected: `Tests: 5 passed`. **[Corrected during Task 7 — a real production bug, not a test-writing issue]** Actual result is `4 passed, 1 skipped`: `UsersController::store()`/`::revoke()` always 500 in production, because `route('password.reset', ...)` (called from `ResetPassword::toMail()`) has no matching named route anywhere in the app. "creates a user" is `->skip()`'d with the root cause documented inline in `tests/Browser/Admin/UsersCrudTest.php`.
 
 ```bash
 git checkout -- public/admin
@@ -855,7 +863,7 @@ VUE_APP_PUBLIC_PATH=/admin/ VUE_APP_API_HOST= npm --prefix resources/easyadmin r
 - [ ] **Step 2: Run the full Browser suite**
 
 Run: `vendor/bin/pest tests/Browser`
-Expected: all tests pass (Task 1: 5, Task 2: 4, Task 3: 4 passed + 1 skipped [Uppy upload, see Global Constraints], Task 4: 4, Task 5: 4, Task 6: 4, Task 7: 5 = 30 passed + 1 skipped, adjust if any task's iteration changed its final count).
+Expected: **[Corrected — final real outcome, not the plan's original per-task estimates]** Task 1: 5, Task 2: 4, Task 3: 4 passed + 1 skipped (Uppy upload — plugin transport limitation), Task 4: 4, Task 5: 2 passed + 2 skipped (Pages.vue `page.id`/`pageId` bug), Task 6: 1 passed + 3 skipped (MySQL-only query, runs for real in CI), Task 7: 4 passed + 1 skipped (missing `password.reset` route) = **24 passed + 7 skipped** total on SQLite locally. In CI (MySQL), Task 6's 3 skips resolve to passes, so CI should show 27 passed + 4 skipped (the Uppy, 2 Pages, and 1 Users skips are real limitations that don't depend on the DB driver).
 
 - [ ] **Step 3: Confirm the existing suite is unaffected**
 

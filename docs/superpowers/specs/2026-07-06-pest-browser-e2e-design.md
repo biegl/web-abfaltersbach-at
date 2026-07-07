@@ -74,9 +74,9 @@ Mirrors `tests/Feature/Api/*` naming so the API-level (Phase 1) and browser-leve
 
 ### Conventions & helpers
 
-- Reuse Phase 1's `asAdmin()` helper and factories (`Person`, `Module`, etc.) from `tests/Pest.php`.
+- Reuse Phase 1's factories (`Person`, `Module`, etc.) from `tests/Pest.php`.
 - `RefreshDatabase` is already applied globally in `tests/Pest.php` (line 15, unscoped) — no new binding needed for it. Add `uses(Tests\TestCase::class)->in('Browser');` alongside the existing `.in('Unit')`/`.in('Feature')` lines, so `tests/Browser` gets the same app `TestCase` (migrations, `db:seed`, cache clearing) as the other suites.
-- CRUD/upload tests start pre-authenticated via `actingAs()`/`authenticate()` — only `AuthTest.php` drives the real login form. This keeps a login-form regression from failing 30+ unrelated tests, and matches the plugin's built-in support for cookie-based pre-authentication.
+- **[Corrected during Task 1 of the implementation plan — this bullet was wrong as originally written]** `asAdmin()`/`asUser()` (`actingAs()`'s session cookie) do **not** satisfy the admin SPA's client-side router guard, which gates on `sessionStorage['user']` set only by a real login POST response. Every CRUD test uses the `tests/Pest.php` helpers `visitAsAdmin(string $path)`/`visitAsUser(string $path)` instead — real form login + `navigate()`, not cookie-based pre-authentication. See the implementation plan's Global Constraints for the authoritative, up-to-date statement of this pattern.
 - Assertions favor `assertSee()` / `assertPath()` / `assertRoute()` / `assertNoBrokenImages()` over screenshot-diffing.
 
 ### Build freshness
