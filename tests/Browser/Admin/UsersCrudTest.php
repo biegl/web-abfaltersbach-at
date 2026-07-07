@@ -26,21 +26,7 @@ it('creates a user via the inline table row', function () {
         // so click('Speichern') can't find it via getByText — it must be targeted by attribute.
         ->click('[aria-label="Speichern"]')
         ->assertSee('Neuer Nutzer');
-})->skip(
-    // Root cause (confirmed independently via a Feature-test POST to api/users without
-    // Notification::fake(), outside the browser layer entirely): UsersController::store()
-    // always calls User::sendPasswordResetNotification(), whose App\Notifications\ResetPassword
-    // ::toMail() builds its action link via route('password.reset', ...) — but no route named
-    // "password.reset" is registered anywhere in this app (grepped routes/web.php, routes/api.php,
-    // and all service providers). This throws Symfony\Component\Routing\Exception\
-    // RouteNotFoundException ("Route [password.reset] not defined.") on every single call,
-    // regardless of role/payload, turning the store() response into an uncaught 500 — not a
-    // validation error the UI could show. The role-select step above is still correct and kept
-    // for when this is fixed. Same root cause breaks UsersController::revoke() (untested here).
-    // Re-enable once a "password.reset" named route exists (or ResetPassword::createUrlUsing()
-    // is registered) so the notification can actually build its link.
-    'UsersController::store() 500s on every call — sendPasswordResetNotification() references the undefined "password.reset" named route'
-);
+});
 
 it('edits an existing user', function () {
     $user = User::factory()->create(['name' => 'Alter Nutzername']);
