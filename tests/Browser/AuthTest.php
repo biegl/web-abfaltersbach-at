@@ -12,7 +12,9 @@ use App\Models\User;
 // it has loaded (before the delete click), so `window.confirm = () => true` overrides the global
 // before the click handler ever calls the native confirm() — the dialog event never fires at all.
 // Every later delete test in this plan should call ->script('window.confirm = () => true;')
-// once, right after visit()/navigate(), before clicking the delete control.
+// once, right after visit()/navigate(), before clicking the delete control — as a STANDALONE
+// statement, not chained: script() returns the JS eval result, not the Webpage, so chaining
+// it breaks the following ->click(). See the delete test below for the working pattern.
 
 it('redirects a guest to the login page', function () {
     // The admin SPA's assets must resolve under /admin/ in this single-document-root test
