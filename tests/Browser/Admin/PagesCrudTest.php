@@ -60,7 +60,10 @@ it('edits an existing page', function () {
     // title identifying it, and the v-c-tooltip directive never sets a title attribute either —
     // the only stable target is the icon's wrapping <button>, positional (edit=1st, delete=2nd)
     // within the row, scoped by the row's visible name text.
-    $navigation = Navigation::factory()->create(['name' => 'Alte Seite']);
+    // refID must be null (see 'lists existing pages' above for why: scopeAllTopLevel filters
+    // on it, and a random non-null default risks Navigation::children()'s infinite-recursion
+    // trap) — a future re-enabler will need this fixed too, not just the pageId routing.
+    $navigation = Navigation::factory()->create(['name' => 'Alte Seite', 'refID' => null]);
     $page = Page::factory()->create(['seitentitel' => 'Alte Seite']);
     $page->forceFill(['navigation_id' => $navigation->ID])->save();
 
@@ -83,7 +86,8 @@ it('deletes a page', function () {
     // regardless of whether the ids happen to line up. assertDontSee() can't pass until
     // deletePage() is routed through the linked Page's real id AND something also
     // removes/updates the Navigation row.
-    $navigation = Navigation::factory()->create(['name' => 'Zu löschende Seite']);
+    // refID must be null — same reason as the edit test above and the list test's comment.
+    $navigation = Navigation::factory()->create(['name' => 'Zu löschende Seite', 'refID' => null]);
     $page = Page::factory()->create(['seitentitel' => 'Zu löschende Seite']);
     $page->forceFill(['navigation_id' => $navigation->ID])->save();
 
