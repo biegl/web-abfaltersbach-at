@@ -77,6 +77,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Page from "../models/page";
+import Navigation from "../models/navigation";
 import PageNavigationItem from "@/components/PageNavigationItem.vue";
 import PageHeader from "@/components/PageHeader.vue";
 import FilterContainer from "@/components/FilterContainer.vue";
@@ -137,16 +138,21 @@ export default Vue.extend({
                     this.isLoading = false;
                 });
         },
-        editPage(page: Page) {
+        editPage(page: Navigation) {
+            // page.id is the Navigation's OWN id, not the linked Page's. page.pageId is the real
+            // linked Page id, computed server-side via Navigation::getPageIdAttribute() and
+            // appended to every navigation payload for exactly this purpose.
             this.$router.push({
                 name: "pages-edit",
-                params: { pageId: page.id },
+                params: { pageId: page.pageId },
             });
         },
-        deletePage(page: Page) {
+        deletePage(page: Navigation) {
             if (window.confirm("Soll die Seite wirklich gelöscht werden?")) {
                 this.$store
-                    .dispatch("pages/delete", page)
+                    // Same page.id-vs-page.pageId issue as editPage above — PageService.delete()
+                    // only reads .id, so hand it a Page shaped with the real linked id.
+                    .dispatch("pages/delete", Page.init({ ID: String(page.pageId) }))
                     .then(() => {
                         this.$snotify.success("Die Seite wurde gelöscht!");
                         this.loadNavigation();
