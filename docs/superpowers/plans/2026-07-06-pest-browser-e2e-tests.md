@@ -11,12 +11,15 @@
 ## Global Constraints
 
 - Chromium only — no Firefox/WebKit.
-- CRUD/upload tests start pre-authenticated via the existing `asAdmin()`/`asUser()` helpers (`tests/Pest.php`, already used throughout `tests/Feature`) called before `visit()` — never chained onto the `Webpage` object. Only `AuthTest.php` drives the real login form.
+- **[Corrected during Task 1 — see `.superpowers/sdd/task-1-report.md` Finding 3]** `asAdmin()`/`asUser()` (session-cookie auth via `actingAs()`) do **not** satisfy the admin SPA's client-side router guard — it gates on `sessionStorage['user']`, set only by a real login POST response, which `pest-plugin-browser`'s cookie injection never touches. Every CRUD test that needs to land on a protected `/admin/*` page must use the shared helpers added to `tests/Pest.php`: `visitAsAdmin(string $path)` / `visitAsUser(string $path)` (create the user, log in via the real form, `navigate()` to `$path`, return the `Webpage`). `asAdmin()`/`asUser()` are still fine for server-side-only setup (e.g. attaching ownership to a factory record) that doesn't depend on the SPA's own auth state. Once logged in, use `->navigate()` for same-tab transitions, never a fresh `visit()` (which opens a new context and drops `sessionStorage`).
 - Full CRUD (list/create/edit/delete) for all five entities: News, Events, Pages, Persons, Users.
 - File upload covered once, on News, via the Uppy widget.
 - No screenshot-diffing, no accessibility assertions, no Firefox/WebKit — explicitly out of scope per spec.
 - Full reference: `docs/superpowers/specs/2026-07-06-pest-browser-e2e-design.md`.
-- Never commit a test-rebuilt `public/admin` — it must always be restored to the production build (`git checkout -- public/admin`) after local test runs. Each task's steps that rebuild it end with this restore.
+- Never commit a test-rebuilt `public/admin` — it must always be restored to the production build (`git checkout -- public/admin && git clean -fd public/admin/`) after local test runs. Each task's steps that rebuild it end with this restore.
+- **[Corrected during Task 1 — Finding 1]** The admin SPA build command is now `VUE_APP_PUBLIC_PATH=/admin/ VUE_APP_API_HOST= npm --prefix resources/easyadmin run build` (no `--dest`, no `--public-path` — neither is a real `@vue/cli-service` 5.x flag; `publicPath`/`Config.host` now read these env vars, added in Task 1's commit). Every later task's "rebuild the admin SPA" step means this command, not the plan's original literal text.
+- **[Corrected during Task 1 — Finding 5]** Because `publicPath` is `/admin/` under test, the Vue Router `base` is too — every SPA-internal route (redirects, logout target) is `/admin/login`, `/admin/dashboard`, etc., not bare `/login`.
+- Dialog handling (every delete test): call `->script('window.confirm = () => true;')` right after reaching the target page, before the delete click — `pest-plugin-browser` v4.3.1 has no dialog API; see `tests/Browser/AuthTest.php`'s header comment.
 
 ---
 
@@ -297,31 +300,29 @@ git commit -S -m "test: add public site browser tests"
 - [ ] **Step 1: Rebuild the admin SPA for this test run**
 
 ```bash
-npm --prefix resources/easyadmin run build -- --dest ../../public/admin --public-path /admin/
+VUE_APP_PUBLIC_PATH=/admin/ VUE_APP_API_HOST= npm --prefix resources/easyadmin run build
 ```
 
-(Required before every task that visits `/admin` — the production build is restored at the end of each such task's steps.)
+(Required before every task that visits `/admin` — the production build is restored at the end of each such task's steps. **[Corrected during Task 1]** command updated — see Global Constraints.)
 
 - [ ] **Step 2: Write the test file**
 
-Create `tests/Browser/Admin/NewsCrudTest.php`. Note the `TextEditor` body field has no distinguishing selector from its label (the component hardcodes `<label>Inhalt</label>` regardless of any `label` prop passed to it — verified in `resources/easyadmin/src/components/TextEditor.vue`), so target the `#source-switch` checkbox to reveal a plain `<textarea>`, then the sole `textarea.form-control` on the page:
+Create `tests/Browser/Admin/NewsCrudTest.php`. Note the `TextEditor` body field has no distinguishing selector from its label (the component hardcodes `<label>Inhalt</label>` regardless of any `label` prop passed to it — verified in `resources/easyadmin/src/components/TextEditor.vue`), so target the `#source-switch` checkbox to reveal a plain `<textarea>`, then the sole `textarea.form-control` on the page. **[Corrected during Task 1]** each test logs in via `visitAsAdmin()` (see Global Constraints) instead of `beforeEach(fn () => asAdmin())` + `visit()`; the delete test calls `->script('window.confirm = () => true;')` before the delete click (no dialog API exists in `pest-plugin-browser` — see Global Constraints):
 
 ```php
 <?php
 
 use App\Models\News;
 
-beforeEach(fn () => asAdmin()); // existing tests/Pest.php helper, matches tests/Feature convention
-
 it('lists existing news items', function () {
     News::factory()->create(['title' => 'Erste Meldung']);
 
-    visit('/admin/content/news/overview')
+    visitAsAdmin('/admin/content/news/overview')
         ->assertSee('Erste Meldung');
 });
 
 it('creates a news item via the SPA', function () {
-    visit('/admin/content/news/overview')
+    visitAsAdmin('/admin/content/news/overview')
         ->click('Erstellen')
         ->assertPathIs('/admin/content/news/add')
         ->click('#source-switch')
@@ -335,7 +336,7 @@ it('creates a news item via the SPA', function () {
 it('edits an existing news item', function () {
     $news = News::factory()->create(['title' => 'Alter Titel']);
 
-    visit('/admin/content/news/overview')
+    visitAsAdmin('/admin/content/news/overview')
         ->click('.fa-edit')
         ->assertPathIs('/admin/content/news/'.$news->id)
         ->fill('Titel', 'Aktualisierter Titel')
@@ -348,9 +349,12 @@ it('edits an existing news item', function () {
 it('deletes a news item', function () {
     News::factory()->create(['title' => 'Zu löschende Meldung']);
 
-    visit('/admin/content/news/overview')
-        ->assertSee('Zu löschende Meldung')
-        ->click('[aria-label="Löschen"]')
+    $page = visitAsAdmin('/admin/content/news/overview')
+        ->assertSee('Zu löschende Meldung');
+
+    $page->script('window.confirm = () => true;');
+
+    $page->click('[aria-label="Löschen"]')
         ->assertDontSee('Zu löschende Meldung');
 });
 
@@ -358,7 +362,7 @@ it('attaches a file to an existing news item via the Uppy widget', function () {
     $news = News::factory()->create();
     $filePath = base_path('tests/Browser/fixtures/sample.jpg');
 
-    visit('/admin/content/news/'.$news->id)
+    visitAsAdmin('/admin/content/news/'.$news->id)
         ->attach('.uppy-FileInput-input', $filePath)
         ->assertSee('Upload erfolgreich');
 });
@@ -402,26 +406,24 @@ git commit -S -m "test: add News CRUD and file upload browser tests"
 
 - [ ] **Step 1: Rebuild the admin SPA, write the test, run, fix forward, restore, commit**
 
-Rebuild (same command as Task 3 Step 1). Create `tests/Browser/Admin/EventsCrudTest.php`:
+Rebuild (same command as Task 3 Step 1 — the corrected env-var form). Create `tests/Browser/Admin/EventsCrudTest.php`. **[Corrected during Task 1]** `visitAsAdmin()` replaces `beforeEach(fn () => asAdmin())` + `visit()`; delete test uses `->script('window.confirm = () => true;')`:
 
 ```php
 <?php
 
 use App\Models\Event;
 
-beforeEach(fn () => asAdmin());
-
 it('lists existing events', function () {
     Event::factory()->create(['text' => 'Sommerfest']);
 
-    visit('/admin/content/events/overview')
+    visitAsAdmin('/admin/content/events/overview')
         ->assertSee('Sommerfest');
 });
 
 it('creates an event via the SPA', function () {
     // Event.date defaults to today client-side (resources/easyadmin/src/models/event.ts) —
     // no DatePicker interaction needed for a happy-path create.
-    visit('/admin/content/events/overview')
+    visitAsAdmin('/admin/content/events/overview')
         ->click('Erstellen')
         ->assertPathIs('/admin/content/events/add')
         ->click('#source-switch')
@@ -434,7 +436,7 @@ it('creates an event via the SPA', function () {
 it('edits an existing event', function () {
     $event = Event::factory()->create(['text' => 'Altes Fest']);
 
-    visit('/admin/content/events/overview')
+    visitAsAdmin('/admin/content/events/overview')
         ->click('.fa-edit')
         ->assertPathIs('/admin/content/events/'.$event->id)
         ->click('#source-switch')
@@ -447,9 +449,12 @@ it('edits an existing event', function () {
 it('deletes an event', function () {
     Event::factory()->create(['text' => 'Zu löschendes Fest']);
 
-    visit('/admin/content/events/overview')
-        ->assertSee('Zu löschendes Fest')
-        ->click('[aria-label="Löschen"]')
+    $page = visitAsAdmin('/admin/content/events/overview')
+        ->assertSee('Zu löschendes Fest');
+
+    $page->script('window.confirm = () => true;');
+
+    $page->click('[aria-label="Löschen"]')
         ->assertDontSee('Zu löschendes Fest');
 });
 ```
@@ -488,24 +493,22 @@ Read the surrounding template code to find any wrapping element (a `<button>` or
 
 - [ ] **Step 2: Rebuild, write the test**
 
-Rebuild the admin SPA (Task 3 Step 1's command). Create `tests/Browser/Admin/PagesCrudTest.php`:
+Rebuild the admin SPA (Task 3 Step 1's command — the corrected env-var form). Create `tests/Browser/Admin/PagesCrudTest.php`. **[Corrected during Task 1]** `visitAsAdmin()` replaces `beforeEach(fn () => asAdmin())` + `visit()`; delete test uses `->script('window.confirm = () => true;')`:
 
 ```php
 <?php
 
 use App\Models\Page;
 
-beforeEach(fn () => asAdmin());
-
 it('lists existing pages', function () {
     Page::factory()->create(['seitentitel' => 'Impressum']);
 
-    visit('/admin/content/pages/overview')
+    visitAsAdmin('/admin/content/pages/overview')
         ->assertSee('Impressum');
 });
 
 it('creates a page via the SPA', function () {
-    visit('/admin/content/pages/overview')
+    visitAsAdmin('/admin/content/pages/overview')
         ->click('Erstellen')
         ->assertPathIs('/admin/content/pages/add')
         ->fill('Titel', 'Neue Seite')
@@ -519,7 +522,7 @@ it('creates a page via the SPA', function () {
 it('edits an existing page', function () {
     $page = Page::factory()->create(['seitentitel' => 'Alte Seite']);
 
-    visit('/admin/content/pages/overview')
+    visitAsAdmin('/admin/content/pages/overview')
         // Use the selector confirmed in Step 1 in place of a placeholder click target:
         ->click('PLACEHOLDER_EDIT_SELECTOR_FROM_STEP_1')
         ->assertPathIs('/admin/content/pages/'.$page->id)
@@ -532,9 +535,12 @@ it('edits an existing page', function () {
 it('deletes a page', function () {
     Page::factory()->create(['seitentitel' => 'Zu löschende Seite']);
 
-    visit('/admin/content/pages/overview')
-        ->assertSee('Zu löschende Seite')
-        ->click('PLACEHOLDER_DELETE_SELECTOR_FROM_STEP_1')
+    $webpage = visitAsAdmin('/admin/content/pages/overview')
+        ->assertSee('Zu löschende Seite');
+
+    $webpage->script('window.confirm = () => true;');
+
+    $webpage->click('PLACEHOLDER_DELETE_SELECTOR_FROM_STEP_1')
         ->assertDontSee('Zu löschende Seite');
 });
 ```
@@ -571,7 +577,7 @@ Persons are grouped into the two board columns via `Module` records (the same `M
 
 - [ ] **Step 2: Rebuild, write the test**
 
-Rebuild the admin SPA (Task 3 Step 1's command). Create `tests/Browser/Admin/PersonsCrudTest.php`, seeding whatever `Module` record(s) Step 1 determined are required for the board to render its columns:
+Rebuild the admin SPA (Task 3 Step 1's command — the corrected env-var form). Create `tests/Browser/Admin/PersonsCrudTest.php`, seeding whatever `Module` record(s) Step 1 determined are required for the board to render its columns. **[Corrected during Task 1]** `visitAsAdmin()` replaces `asAdmin()` + `visit()` (the `Module`-seeding part of `beforeEach` stays — that's server-side setup, unrelated to the SPA's auth gate); delete test uses `->script('window.confirm = () => true;')`:
 
 ```php
 <?php
@@ -579,7 +585,6 @@ Rebuild the admin SPA (Task 3 Step 1's command). Create `tests/Browser/Admin/Per
 use App\Models\Person;
 
 beforeEach(function () {
-    asAdmin();
     // Seed the Module record(s) Step 1 determined the Persons board requires
     // for its "Gemeinderat"/"Angestellte" columns to render — replace with the
     // real setup once confirmed (e.g. Module::factory()->create(['name' => '...'])).
@@ -588,12 +593,12 @@ beforeEach(function () {
 it('lists existing persons', function () {
     Person::factory()->create(['name' => 'Maria Musterfrau']);
 
-    visit('/admin/content/persons')
+    visitAsAdmin('/admin/content/persons')
         ->assertSee('Maria Musterfrau');
 });
 
 it('creates a person via the multiselect tag input', function () {
-    visit('/admin/content/persons')
+    visitAsAdmin('/admin/content/persons')
         ->click('.add-member-btn')
         ->type('.multiselect__input', 'Neuer Bürger')
         ->keys('.multiselect__input', 'Enter')
@@ -603,7 +608,7 @@ it('creates a person via the multiselect tag input', function () {
 it('edits an existing person via the sidebar form', function () {
     Person::factory()->create(['name' => 'Alter Name', 'phone' => '111']);
 
-    visit('/admin/content/persons')
+    visitAsAdmin('/admin/content/persons')
         // Click the edit icon within the person's card — second button in .actions,
         // per PersonCard.vue's DOM order [drag-handle, edit, delete].
         ->click('.actions button:nth-child(2)')
@@ -615,9 +620,12 @@ it('edits an existing person via the sidebar form', function () {
 it('deletes a person', function () {
     Person::factory()->create(['name' => 'Zu löschende Person']);
 
-    visit('/admin/content/persons')
-        ->assertSee('Zu löschende Person')
-        ->click('.actions button:nth-child(3)')
+    $page = visitAsAdmin('/admin/content/persons')
+        ->assertSee('Zu löschende Person');
+
+    $page->script('window.confirm = () => true;');
+
+    $page->click('.actions button:nth-child(3)')
         ->assertDontSee('Zu löschende Person');
 });
 ```
@@ -649,31 +657,27 @@ git commit -S -m "test: add Persons CRUD browser tests"
 
 - [ ] **Step 1: Rebuild, write the test**
 
-Rebuild the admin SPA (Task 3 Step 1's command). Create `tests/Browser/Admin/UsersCrudTest.php`:
+Rebuild the admin SPA (Task 3 Step 1's command — the corrected env-var form). Create `tests/Browser/Admin/UsersCrudTest.php`. **[Corrected during Task 1]** `visitAsAdmin()`/`visitAsUser()` replace `beforeEach(fn () => asAdmin())`/`asUser()` + `visit()` (see Global Constraints — `asAdmin()`/`asUser()` alone don't satisfy the SPA's auth gate, so the non-admin test's original form would have always trivially passed by sitting on the login page rather than actually testing permission-based hiding); delete test uses `->script('window.confirm = () => true;')`:
 
 ```php
 <?php
 
 use App\Models\User;
 
-beforeEach(fn () => asAdmin());
-
 it('lists existing users', function () {
     User::factory()->create(['name' => 'Bestehender Benutzer']);
 
-    visit('/admin/users')
+    visitAsAdmin('/admin/users')
         ->assertSee('Bestehender Benutzer');
 });
 
 it('a non-admin cannot reach the users page', function () {
-    asUser(); // overrides this test's beforeEach acting-as with a non-admin session
-
-    visit('/admin/users')
+    visitAsUser('/admin/users')
         ->assertDontSee('Erstellen');
 });
 
 it('creates a user via the inline table row', function () {
-    visit('/admin/users')
+    visitAsAdmin('/admin/users')
         ->click('Erstellen')
         ->fill('table tbody tr:first-child td:nth-child(1) input', 'Neuer Nutzer')
         ->fill('table tbody tr:first-child td:nth-child(2) input', 'neuer.nutzer@example.com')
@@ -684,7 +688,7 @@ it('creates a user via the inline table row', function () {
 it('edits an existing user', function () {
     $user = User::factory()->create(['name' => 'Alter Nutzername']);
 
-    visit('/admin/users')
+    visitAsAdmin('/admin/users')
         // Scope to the row containing this user before clicking its edit action —
         // exact scoping mechanism depends on whether the plugin supports a
         // parent-relative selector; if not, and only one non-seed user exists,
@@ -699,14 +703,17 @@ it('edits an existing user', function () {
 it('deletes a user', function () {
     User::factory()->create(['name' => 'Zu löschender Nutzer']);
 
-    visit('/admin/users')
-        ->assertSee('Zu löschender Nutzer')
-        ->click('[aria-label="Löschen"]')
+    $page = visitAsAdmin('/admin/users')
+        ->assertSee('Zu löschender Nutzer');
+
+    $page->script('window.confirm = () => true;');
+
+    $page->click('[aria-label="Löschen"]')
         ->assertDontSee('Zu löschender Nutzer');
 });
 ```
 
-Note: `asAdmin()` creates a fresh admin per test, but the database seeder (`Tests\TestCase::setUp` calls `db:seed`, which creates 5 non-admin users per the Phase 1 harness's documented facts) means the users list is never empty — the "edits"/"deletes" tests' `[aria-label="Bearbeiten"]`/`[aria-label="Löschen"]` clicks may match a seeded user's row instead of the one just created if `click()` matches the first occurrence on the page. If a test fails because it modified the wrong row, this is the cause — scope the click more precisely (e.g. locate the row containing the target user's known name/email first, per whatever scoping mechanism Task 6 Step 3 resolves, since it's the same underlying problem).
+Note: `visitAsAdmin()` creates a fresh admin per test, but the database seeder (`Tests\TestCase::setUp` calls `db:seed`, which creates 5 non-admin users per the Phase 1 harness's documented facts) means the users list is never empty — the "edits"/"deletes" tests' `[aria-label="Bearbeiten"]`/`[aria-label="Löschen"]` clicks may match a seeded user's row instead of the one just created if `click()` matches the first occurrence on the page. If a test fails because it modified the wrong row, this is the cause — scope the click more precisely (e.g. locate the row containing the target user's known name/email first, per whatever scoping mechanism Task 6 Step 3 resolves, since it's the same underlying problem).
 
 - [ ] **Step 2: Run, fix forward, restore, commit**
 
@@ -799,9 +806,12 @@ In `.github/workflows/test.yml`, add a new job after `test-easyadmin`:
 
       - name: Build admin SPA (test public path)
         working-directory: ./resources/easyadmin
+        env:
+          VUE_APP_PUBLIC_PATH: /admin/
+          VUE_APP_API_HOST: ""
         run: |
           npm install
-          npm run build -- --dest ../../public/admin --public-path /admin/
+          npm run build
 
       - name: Run browser e2e tests
         run: vendor/bin/pest tests/Browser
@@ -839,7 +849,7 @@ git commit -S -m "ci: add browser e2e test job"
 
 ```bash
 npm run production
-npm --prefix resources/easyadmin run build -- --dest ../../public/admin --public-path /admin/
+VUE_APP_PUBLIC_PATH=/admin/ VUE_APP_API_HOST= npm --prefix resources/easyadmin run build
 ```
 
 - [ ] **Step 2: Run the full Browser suite**
