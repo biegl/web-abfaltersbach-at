@@ -558,7 +558,7 @@ Replace both `PLACEHOLDER_*_SELECTOR_FROM_STEP_1` strings with the actual select
 - [ ] **Step 3: Run, fix forward, restore, commit**
 
 Run: `vendor/bin/pest tests/Browser/Admin/PagesCrudTest.php`
-Expected: `Tests: 4 passed`. **[Corrected during Task 5 — a real production bug, not a test-writing issue]** Actual result is `2 passed, 2 skipped`: the Pages admin overview turned out to be `Navigation`-driven, not `Page`-driven (no create/update/delete API exists for `Navigation` at all), and `Pages.vue`'s `editPage()`/`deletePage()` pass the wrong ID property (`page.id` instead of the correct `page.pageId`). List/create were rewritten to test what's real; edit/delete are `->skip()`'d with the root cause documented inline in `tests/Browser/Admin/PagesCrudTest.php` — see that file for the full story.
+Expected: `Tests: 4 passed`. **[Corrected during Task 5 — a real production bug, not a test-writing issue]** Actual result is `2 passed, 2 skipped`: the Pages admin overview turned out to be `Navigation`-driven, not `Page`-driven (no create/update/delete API exists for `Navigation` at all), and `Pages.vue`'s `editPage()`/`deletePage()` passed the wrong ID property (`page.id` instead of the correct `page.pageId`). List/create were rewritten to test what's real. **[Corrected post-plan, user-requested fix]** The `page.id`/`page.pageId` routing bug itself is now fixed (commit `f1ce2ba`) — edit/delete both operate on the correct linked `Page`, verified via direct DB assertion, not just by re-running the browser test. Both tests remain `->skip()`'d for a narrower reason: the overview list still renders `Navigation.name` (unaffected by editing a `Page`'s title) and `PagesController::destroy()` never touches `tbl_navigation` (so a deleted page's nav entry survives) — both are separate product decisions, not bugs this fix resolves. See `tests/Browser/Admin/PagesCrudTest.php` for the full story.
 
 ```bash
 git checkout -- public/admin
@@ -726,7 +726,7 @@ Note: `visitAsAdmin()` creates a fresh admin per test, but the database seeder (
 - [ ] **Step 2: Run, fix forward, restore, commit**
 
 Run: `vendor/bin/pest tests/Browser/Admin/UsersCrudTest.php`
-Expected: `Tests: 5 passed`. **[Corrected during Task 7 — a real production bug, not a test-writing issue]** Actual result is `4 passed, 1 skipped`: `UsersController::store()`/`::revoke()` always 500 in production, because `route('password.reset', ...)` (called from `ResetPassword::toMail()`) has no matching named route anywhere in the app. "creates a user" is `->skip()`'d with the root cause documented inline in `tests/Browser/Admin/UsersCrudTest.php`.
+Expected: `Tests: 5 passed`. **[Corrected during Task 7 — a real production bug, not a test-writing issue]** Actual result at task completion was `4 passed, 1 skipped`: `UsersController::store()`/`::revoke()` always 500 in production, because `route('password.reset', ...)` (called from `ResetPassword::toMail()`) had no matching named route anywhere in the app. **[Corrected post-plan, user-requested fix]** Fixed (commit `c2fb490`): registered the missing `password.reset`/`password.update` routes in `routes/web.php` against the already-existing `ResetPasswordController`/Blade view, and removed `.env.testing`'s `MAIL_FROM_ADDRESS=null` (which shadowed `config/mail.php`'s own fallback and caused a second, previously-hidden failure once the route existed). All 5 tests now pass for real — the "creates a user" skip was removed.
 
 ```bash
 git checkout -- public/admin
@@ -863,7 +863,7 @@ VUE_APP_PUBLIC_PATH=/admin/ VUE_APP_API_HOST= npm --prefix resources/easyadmin r
 - [ ] **Step 2: Run the full Browser suite**
 
 Run: `vendor/bin/pest tests/Browser`
-Expected: **[Corrected — final real outcome, not the plan's original per-task estimates]** Task 1: 5, Task 2: 4, Task 3: 4 passed + 1 skipped (Uppy upload — plugin transport limitation), Task 4: 4, Task 5: 2 passed + 2 skipped (Pages.vue `page.id`/`pageId` bug), Task 6: 1 passed + 3 skipped (MySQL-only query, runs for real in CI), Task 7: 4 passed + 1 skipped (missing `password.reset` route) = **24 passed + 7 skipped** total on SQLite locally. In CI (MySQL), Task 6's 3 skips resolve to passes, so CI should show 27 passed + 4 skipped (the Uppy, 2 Pages, and 1 Users skips are real limitations that don't depend on the DB driver).
+Expected: **[Corrected — final real outcome, not the plan's original per-task estimates]** Task 1: 5, Task 2: 4, Task 3: 4 passed + 1 skipped (Uppy upload — plugin transport limitation), Task 4: 4, Task 5: 2 passed + 2 skipped (Pages.vue's `page.id`/`page.pageId` routing bug is fixed, but the overview list not reflecting Page-level edits/deletes remains — a product decision, not a bug), Task 6: 1 passed + 3 skipped (MySQL-only query, runs for real in CI), Task 7: 5 passed (missing `password.reset` route — fixed) = **25 passed + 6 skipped** total on SQLite locally. In CI (MySQL), Task 6's 3 skips resolve to passes, so CI should show 28 passed + 3 skipped (the Uppy and 2 Pages skips are real limitations that don't depend on the DB driver).
 
 - [ ] **Step 3: Confirm the existing suite is unaffected**
 
