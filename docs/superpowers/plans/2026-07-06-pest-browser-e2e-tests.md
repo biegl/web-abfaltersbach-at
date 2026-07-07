@@ -13,7 +13,7 @@
 - Chromium only — no Firefox/WebKit.
 - **[Corrected during Task 1 — see `.superpowers/sdd/task-1-report.md` Finding 3]** `asAdmin()`/`asUser()` (session-cookie auth via `actingAs()`) do **not** satisfy the admin SPA's client-side router guard — it gates on `sessionStorage['user']`, set only by a real login POST response, which `pest-plugin-browser`'s cookie injection never touches. Every CRUD test that needs to land on a protected `/admin/*` page must use the shared helpers added to `tests/Pest.php`: `visitAsAdmin(string $path)` / `visitAsUser(string $path)` (create the user, log in via the real form, `navigate()` to `$path`, return the `Webpage`). `asAdmin()`/`asUser()` are still fine for server-side-only setup (e.g. attaching ownership to a factory record) that doesn't depend on the SPA's own auth state. Once logged in, use `->navigate()` for same-tab transitions, never a fresh `visit()` (which opens a new context and drops `sessionStorage`).
 - Full CRUD (list/create/edit/delete) for all five entities: News, Events, Pages, Persons, Users.
-- File upload covered once, on News, via the Uppy widget.
+- File upload covered once, on News, via the Uppy widget. **[Corrected during Task 3 — user-approved]** `pest-plugin-browser` v4.3.1 cannot upload local files at all over its WebSocket transport (`Locator::setInputFiles()` always sends `localPaths`, which Playwright rejects server-side unless the client is collocated — never true for this plugin's `run-server` driver mode; confirmed not a version-skew issue by reproducing against the plugin's own declared-minimum Playwright version). This test is `->skip()`'d with the root cause documented inline in `tests/Browser/Admin/NewsCrudTest.php` — re-enable once the plugin ships in-memory (payloads-based) uploads. The backend attach endpoint itself is already covered by `tests/Feature/Api/NewsTest.php`'s `it('attaches a file to news')` test.
 - No screenshot-diffing, no accessibility assertions, no Firefox/WebKit — explicitly out of scope per spec.
 - Full reference: `docs/superpowers/specs/2026-07-06-pest-browser-e2e-design.md`.
 - Never commit a test-rebuilt `public/admin` — it must always be restored to the production build (`git checkout -- public/admin && git clean -fd public/admin/`) after local test runs. Each task's steps that rebuild it end with this restore.
@@ -855,7 +855,7 @@ VUE_APP_PUBLIC_PATH=/admin/ VUE_APP_API_HOST= npm --prefix resources/easyadmin r
 - [ ] **Step 2: Run the full Browser suite**
 
 Run: `vendor/bin/pest tests/Browser`
-Expected: all tests pass (Task 1: 5, Task 2: 4, Task 3: 5, Task 4: 4, Task 5: 4, Task 6: 4, Task 7: 5 = 31 total, adjust if any task's iteration changed its final count).
+Expected: all tests pass (Task 1: 5, Task 2: 4, Task 3: 4 passed + 1 skipped [Uppy upload, see Global Constraints], Task 4: 4, Task 5: 4, Task 6: 4, Task 7: 5 = 30 passed + 1 skipped, adjust if any task's iteration changed its final count).
 
 - [ ] **Step 3: Confirm the existing suite is unaffected**
 
