@@ -72,5 +72,9 @@ it('attaches a file to an existing news item via the Uppy widget', function () {
     // any local-path file upload test in this harness will hit the same wall. Re-enable once
     // pest-plugin-browser ships a payloads-based (in-memory) setInputFiles, or once Playwright
     // gains a supported way to mark the WS client as collocated.
+    // The failure happens in Playwright's prepareFilesForUpload(), before the browser ever
+    // processes attach() — so '.uppy-FileInput-input' and assertSee('Upload erfolgreich') below
+    // were never actually exercised against the real DOM. Whoever re-enables this must verify
+    // both independently, not assume they're already proven correct.
     'attach() cannot upload local files over pest-plugin-browser\'s WS server transport'
 );
