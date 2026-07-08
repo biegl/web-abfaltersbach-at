@@ -96,7 +96,7 @@ jobs:
         run: php artisan migrate:fresh --seed
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@master
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: Logs
@@ -125,3 +125,85 @@ jobs:
           npm run build --if-present
         env:
           CI: true
+
+  test-browser:
+    name: Test Browser E2E
+    runs-on: ubuntu-latest
+
+    env:
+      DB_CONNECTION: mysql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 33306
+      DB_DATABASE: test
+      DB_USERNAME: test
+      DB_PASSWORD: test
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_DATABASE: test
+          MYSQL_USER: test
+          MYSQL_PASSWORD: test
+          MYSQL_ROOT_PASSWORD: test
+        ports:
+          - 33306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.testing', '.env');"
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, gd
+          coverage: none
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "20.x"
+
+      - name: Install PHP dependencies
+        run: |
+          composer install --no-interaction --no-suggest --prefer-dist --optimize-autoloader
+          chmod -R 777 storage bootstrap/cache
+
+      - name: Generate Application Key
+        run: php artisan key:generate
+
+      - name: Install root npm dependencies and Playwright
+        run: |
+          npm install
+          npx playwright install --with-deps chromium
+
+      - name: Build public site assets
+        run: npm run production
+
+      - name: Build admin SPA (test public path)
+        working-directory: ./resources/easyadmin
+        env:
+          VUE_APP_PUBLIC_PATH: /admin/
+          VUE_APP_API_HOST: ""
+        run: |
+          npm install
+          npm run build
+
+      - name: Run browser e2e tests
+        run: vendor/bin/pest tests/Browser
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: Browser-Test-Logs
+          path: ./storage/logs

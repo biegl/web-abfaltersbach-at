@@ -2,7 +2,12 @@ import authService from "@/services/auth.service";
 
 export default class Config {
     static isProduction = process.env.NODE_ENV === "production";
-    static host = Config.isProduction ? "//abfaltersbach.at" : "//localhost";
+    // VUE_APP_API_HOST lets browser tests point API calls at the embedded test server's own
+    // origin (same-origin relative URL) instead of the hardcoded production/dev host below.
+    // "??" (not "||") so an explicit empty-string override is respected.
+    static host =
+        process.env.VUE_APP_API_HOST ??
+        (Config.isProduction ? "//abfaltersbach.at" : "//localhost");
 
     static editorApiKey = "6jjm4jham8ufq2x8fg8ogve4cbyxshwh5d3ijcuplwk6a5dp";
 

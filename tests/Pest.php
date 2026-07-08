@@ -15,6 +15,7 @@
 uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 uses(Tests\TestCase::class)->in('Unit');
 uses(Tests\TestCase::class)->in('Feature');
+uses(Tests\TestCase::class)->in('Browser');
 
 /*
 |--------------------------------------------------------------------------
@@ -64,4 +65,28 @@ function asAdmin(): User
     test()->actingAs($user);
 
     return $user;
+}
+
+// The admin SPA's router guard checks sessionStorage (set only by a real login POST response),
+// not the Laravel session cookie actingAs() injects — so Browser tests that need to land on a
+// protected /admin/* page must log in via the real form. Use these instead of asAdmin()/asUser()
+// whenever a Browser test needs to be on an authenticated page (asAdmin()/asUser() are still
+// fine for server-side-only setup that doesn't depend on the SPA's own auth state).
+function loginViaFormAndNavigate(User $user, string $path)
+{
+    return visit('/admin/login')
+        ->type('username', $user->email)
+        ->type('password', 'password')
+        ->click('Anmelden')
+        ->navigate($path);
+}
+
+function visitAsAdmin(string $path)
+{
+    return loginViaFormAndNavigate(User::factory()->create(['role' => Role::ADMIN]), $path);
+}
+
+function visitAsUser(string $path)
+{
+    return loginViaFormAndNavigate(User::factory()->create(['role' => Role::USER]), $path);
 }

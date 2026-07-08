@@ -20,3 +20,5 @@ run/var
 .vscode
 .DS_Store
 .php-cs-fixer.cache
+.superpowers
+/tests/Browser/Screenshots
