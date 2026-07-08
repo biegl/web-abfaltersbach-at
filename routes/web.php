@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\FilesController;
 use App\Http\Controllers\PageController;
@@ -26,10 +27,8 @@ Route::get('/files/{name}', [FilesController::class, 'download']);
 Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
 
-if (app()->environment('testing')) {
-    Route::get('/admin/{any?}', function () {
-        return response()->file(public_path('admin/index.html'));
-    })->where('any', '.*');
-}
+// Serves the built admin SPA shell for every /admin path. Must be a controller action, not a
+// closure: php artisan route:cache (run on every deploy) cannot serialize closure routes.
+Route::get('/admin/{any?}', [AdminController::class, 'index'])->where('any', '.*');
 
 Route::fallback([PageController::class, 'show']);
