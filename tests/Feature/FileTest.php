@@ -5,18 +5,19 @@ namespace Tests\Feature;
 use App\Models\File;
 use App\Models\Navigation;
 use App\Models\Page;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class FileTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function it_should_create_a_table()
     {
         File::factory()->create(['title' => 'Testfile']);
         $this->assertDatabaseHas('tbl_downloads', ['title' => 'Testfile']);
     }
 
-    /** @test */
+    #[Test]
     public function it_should_list_all_attached_files_for_a_specific_page()
     {
         // GIVEN
