@@ -2,8 +2,7 @@ import { dateFormatFilter } from "./filters/dateFormat";
 import { percentageFilter } from "./filters/percentage";
 import VCalendar from "v-calendar";
 import Vue from "vue";
-import * as Sentry from "@sentry/browser";
-import { Vue as VueIntegration } from "@sentry/integrations";
+import * as Sentry from "@sentry/vue";
 import CoreuiVue from "@coreui/vue";
 import Snotify, { SnotifyPosition } from "vue-snotify";
 
@@ -34,7 +33,8 @@ if (process.env.NODE_ENV === "production") {
     Sentry.init({
         dsn:
             "https://a9635e891e99429b93755c8b2822d9bd@o442304.ingest.sentry.io/5413876",
-        integrations: [new VueIntegration({ Vue, attachProps: true })],
+        Vue,
+        attachProps: true,
         attachStacktrace: true,
     });
 }
