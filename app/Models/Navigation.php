@@ -119,7 +119,9 @@ class Navigation extends Model
 
     public static function getUrlMap()
     {
-        $pages = self::visible()->get();
+        // Every navigation entry is routable by URL regardless of navianzeigen,
+        // which only governs whether it shows up in the rendered nav tree.
+        $pages = self::all();
 
         $map = [];
 

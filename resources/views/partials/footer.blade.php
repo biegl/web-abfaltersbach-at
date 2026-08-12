@@ -2,13 +2,7 @@
     <div class="footer__inner">
         <div class="container">
             <div class="row">
-                <div class="col-md-3 mt-3 mt-md-0">
-                <h3>Webcam</h3>
-                <a href="https://www.residence-mitterdorfer.at/webcam" target="_blank">
-                    <img class="webcam__image async-img" data-src="https://www.residence-mitterdorfer.at/webcam/webcam.jpg?{{ Session::getId() }}" alt="Aktuelles Webcam Bild der Gemeinde Abfaltersbach">
-                </a>
-                </div>
-                <div class="col-md-3 mt-3 mt-md-0">
+                <div class="col-md-4 mt-3 mt-md-0">
                 <h3>Aktuelles Wetter</h3>
                 <div class="weather-widget row">
                     <div class="weather-widget__temperature col">
@@ -21,7 +15,7 @@
                     </div>
                 </div>
                 </div>
-                <div class="col-md-3 mt-3 mt-md-0">
+                <div class="col-md-4 mt-3 mt-md-0">
                 <h3>Lage</h3>
                 <div class="google-map">
                     <a href="https://www.google.com/maps/place/Abfaltersbach/" title="Google Maps öffnen" target="_blank">
@@ -29,7 +23,7 @@
                     </a>
                 </div>
                 </div>
-                <div class="col-md-3 mt-3 mt-md-0">
+                <div class="col-md-4 mt-3 mt-md-0">
                     <h3>Gemeinde Abfaltersbach</h3>
                     <address>
                         9913 Abfaltersbach 183<br>
@@ -46,8 +40,9 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                <a href="/impressum">Impressum</a>
-                <a href="/datenschutz">Datenschutz</a>
+                <a href="/impressum" class="mr-3">Impressum</a>
+                <a href="/datenschutz" class="mr-3">Datenschutz</a>
+                <a href="/barrierefreiheitserklaerung">Barrierefreiheitserklärung</a>
                 </div>
             </div>
         </div>
