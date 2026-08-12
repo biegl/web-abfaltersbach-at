@@ -12,8 +12,7 @@ Prüfmodulen für das, was axe nicht abdeckt: Tastaturbedienung und Fokus, Kontr
 Interaktionszuständen, Reflow/Zoom/Textabstand, Formularstatik, Überschriftenstruktur,
 Alternativtext-Eignung, Medieninventar und Statusmeldungen. Jedes Modul meldet nur mechanisch
 entscheidbare Verstöße als Fehler; alles andere geht als `needsReview` an ein menschliches Urteil.
-**PDFs und Office-Dateien wurden in diesem Prüflauf nicht geprüft** (EN 301 549 Kapitel 10, Issue
-[#16](https://github.com/biegl/wcag-check/issues/16)) — die Amtstafel, die Rechnungsabschlüsse und
+**PDFs und Office-Dateien wurden in diesem Prüflauf nicht geprüft** (EN 301 549 Kapitel 10) — die Amtstafel, die Rechnungsabschlüsse und
 die übrigen Dokumentenlisten der Website enthalten voraussichtlich Dokumente, für die keine
 Aussage vorliegt.
 
