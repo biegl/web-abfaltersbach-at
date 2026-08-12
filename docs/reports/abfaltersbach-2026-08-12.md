@@ -92,9 +92,7 @@ sie nur als „iframe" ohne weitere Angabe ansagen.
 
 ## Was ein Mensch noch beurteilen muss
 
-680 Befunde sind mechanisch nicht entscheidbar — das ist erwartungsgemäß bei diesem Prüfumfang
-(siehe [`docs/research/automatisierung-offene-pruefungen.md`](../research/automatisierung-offene-pruefungen.md)
-für die Methodengrenzen). Die größten Gruppen:
+680 Befunde sind mechanisch nicht entscheidbar — das ist erwartungsgemäß bei diesem Prüfumfang. Die größten Gruppen:
 
 - **569 Kontrastknoten (SC 1.4.3), 36 Seiten.** Überwiegend Text über Bildhintergründen oder in
   Verläufen — axe kann Bildinhalte nicht auswerten. Ein Mensch muss diese Fälle im Browser mit
