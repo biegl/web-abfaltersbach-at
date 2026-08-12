@@ -6,6 +6,10 @@
         {
             "updateTypes": ["minor", "patch", "pin", "digest"],
             "automerge": true
+        },
+        {
+            "updateTypes": ["major"],
+            "enabled": false
         }
     ],
     "schedule": ["after 10pm and before 5am on every weekday", "every weekend"],

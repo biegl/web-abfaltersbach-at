@@ -8,6 +8,9 @@ updates:
       - "dependabot 🤖"
       - "dependencies"
       - "gh-actions"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: "npm"
     directory: "/"
@@ -17,6 +20,21 @@ updates:
       - "dependabot 🤖"
       - "dependencies"
       - "npm"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: "npm"
+    directory: "/resources/easyadmin"
+    schedule:
+      interval: "daily"
+    labels:
+      - "dependabot 🤖"
+      - "dependencies"
+      - "npm"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: "composer"
     directory: "/"
@@ -26,6 +44,9 @@ updates:
       - "dependabot 🤖"
       - "dependencies"
       - "composer"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: "docker"
     directory: "/"
@@ -35,3 +56,6 @@ updates:
       - "dependabot 🤖"
       - "dependencies"
       - "docker"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
