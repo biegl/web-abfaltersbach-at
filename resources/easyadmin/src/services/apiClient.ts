@@ -46,14 +46,14 @@ class ApiClient {
         url: string,
         config?: AxiosRequestConfig
     ): Promise<R> {
-        return this.client.get(url, config);
+        return this.client.get<T>(url, config) as unknown as Promise<R>;
     }
 
     delete<T = void, R = AxiosResponse<T>>(
         url: string,
         config?: AxiosRequestConfig
     ): Promise<R> {
-        return this.client.delete(url, config);
+        return this.client.delete<T>(url, config) as unknown as Promise<R>;
     }
 
     post<T = any, R = AxiosResponse<T>>(
@@ -61,7 +61,7 @@ class ApiClient {
         data?: any,
         config?: AxiosRequestConfig
     ): Promise<R> {
-        return this.client.post(url, data, config);
+        return this.client.post<T>(url, data, config) as unknown as Promise<R>;
     }
 
     put<T = any, R = AxiosResponse<T>>(
@@ -69,7 +69,7 @@ class ApiClient {
         data?: any,
         config?: AxiosRequestConfig
     ): Promise<R> {
-        return this.client.put(url, data, config);
+        return this.client.put<T>(url, data, config) as unknown as Promise<R>;
     }
 
     patch<T = any, R = AxiosResponse<T>>(
@@ -77,11 +77,13 @@ class ApiClient {
         data?: any,
         config?: AxiosRequestConfig
     ): Promise<R> {
-        return this.client.patch(url, data, config);
+        return this.client.patch<T>(url, data, config) as unknown as Promise<R>;
     }
 
     refreshToken<T = void, R = AxiosResponse<T>>(): Promise<R> {
-        return this.client.get(`${Config.host}/sanctum/csrf-cookie`);
+        return this.client.get<T>(
+            `${Config.host}/sanctum/csrf-cookie`
+        ) as unknown as Promise<R>;
     }
 }
 
