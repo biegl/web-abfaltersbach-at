@@ -13,7 +13,7 @@
     </g>
     </svg>
 </a>
-<h2 class="newslist_header mb-3">{{ __('newslist.header') }}</h2>
+<h1 class="newslist_header mb-3">{{ __('newslist.header') }}</h1>
 <ol class="newslist list-unstyled">
 
     @forelse ($news as $news_item)

@@ -40,7 +40,7 @@
 
         @include('partials.header')
 
-        <section id="main-content" class="content" tabindex="-1">
+        <main id="main-content" class="content" tabindex="-1">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-9 text-content">
@@ -53,7 +53,7 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </main>
 
         @include('partials.footer')
 

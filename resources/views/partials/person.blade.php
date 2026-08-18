@@ -7,10 +7,10 @@
         </div>
     @endif
     <div class="media-body">
-        <h5 class="person-name">{{ $person->name }}</h5>
+        <h2 class="person-name">{{ $person->name }}</h2>
 
         @if($person->role)
-            <h6 class="person-role mb-2 text-muted">{{ $person->role }}</h6>
+            <h3 class="person-role mb-2 text-muted">{{ $person->role }}</h3>
         @endif
 
         @if($person->phone || $person->email)

@@ -2,7 +2,7 @@
 
 <div class="card">
     <div class="card-header">
-        <h4 class="card-header__title">{{ __('files.header') }}</h4>
+        <h2 class="card-header__title">{{ __('files.header') }}</h2>
     </div>
     <div class="card-body">
         <ul class="list-unstyled">
