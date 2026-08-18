@@ -100,6 +100,7 @@
     a:hover,
     a:focus {
         color: #ebb60a;
+        text-decoration: underline;
     }
 
     input:checked + .slider::before {
