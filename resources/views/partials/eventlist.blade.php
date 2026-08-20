@@ -9,8 +9,8 @@
 
             @forelse ($current_events as $event)
 
-                <li class="d-flex align-items-start pt-3">
-                    <div class="flex-grow-1 calendar_day">
+                <li class="media pt-3">
+                    <div class="media-body calendar_day">
                         <div class="calendar_day_body">{!! $event->text !!}</div>
 
                         @if ($event->attachments->count() > 0)
@@ -52,16 +52,16 @@
 
         @forelse ($grouped_events as $month => $events)
 
-            <li class="d-flex align-items-start calendar_month_header mb-3">{{ $month }}</li>
+            <li class="media calendar_month_header mb-3">{{ $month }}</li>
 
             @forelse ($events as $event)
 
-                <li class="d-flex align-items-start mb-3">
+                <li class="media mb-3">
                     <div class="me-3 calendar_date">
                         <div class="calendar_date_month">{{ $event->date->formatLocalized('%b') }}</div>
                         <div class="calendar_date_day">{{ $event->date->formatLocalized('%d') }}</div>
                     </div>
-                    <div class="flex-grow-1 calendar_day">
+                    <div class="media-body calendar_day">
                         <div class="calendar_day_body">{!! $event->text !!}</div>
 
                         @if ($event->attachments->count() > 0)

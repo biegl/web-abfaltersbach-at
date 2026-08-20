@@ -1,4 +1,4 @@
-<div class="d-flex align-items-start mb-5">
+<div class="media mb-5">
     @if($person->image)
         <img class="person-image me-3" src="{{ $person->image->downloadPath }}" alt="{{ $person->name }}">
     @else
@@ -6,7 +6,7 @@
             <i class="fas fa-user-circle"></i>
         </div>
     @endif
-    <div class="flex-grow-1">
+    <div class="media-body">
         <h2 class="person-name">{{ $person->name }}</h2>
 
         @if($person->role)

@@ -11,9 +11,9 @@
 
             @if ($file->exists)
 
-            <li class="d-flex align-items-start mb-2 download-file__item">
+            <li class="media mb-2 download-file__item">
                 <i class="far fa-file {{ create_fa_ext_icon($file) }} me-2 download-file__extension" title="{{ __('files.type') }}: {{ strtoupper($file->extension) }}"></i>
-                <div class="flex-grow-1">
+                <div class="media-body">
                     <a href="{{ asset($file->downloadPath) }}" target="_blank">
                         <div class="download-file__name">{{ $file->title }}</div>
                     </a>
