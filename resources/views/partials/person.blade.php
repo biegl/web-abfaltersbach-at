@@ -1,16 +1,16 @@
 <div class="media mb-5">
     @if($person->image)
-        <img class="person-image mr-3" src="{{ $person->image->downloadPath }}" alt="{{ $person->name }}">
+        <img class="person-image me-3" src="{{ $person->image->downloadPath }}" alt="{{ $person->name }}">
     @else
         <div class="person-placeholder">
             <i class="fas fa-user-circle"></i>
         </div>
     @endif
     <div class="media-body">
-        <h5 class="person-name">{{ $person->name }}</h5>
+        <h2 class="person-name">{{ $person->name }}</h2>
 
         @if($person->role)
-            <h6 class="person-role mb-2 text-muted">{{ $person->role }}</h6>
+            <h3 class="person-role mb-2 text-muted">{{ $person->role }}</h3>
         @endif
 
         @if($person->phone || $person->email)

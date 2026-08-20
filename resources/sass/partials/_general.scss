@@ -30,3 +30,13 @@ img {
     max-width: 100%;
     height: auto;
 }
+
+// Bootstrap 5 unterstreicht Links per Default. Fuer Inhalts-, Footer- und
+// Randspalten-Links ist das gewollt (SC 1.4.1, Links nicht nur ueber Farbe
+// erkennbar). Bei Logo, Seitentitel und den Skip-Links wirkt eine
+// Unterstreichung dagegen wie ein Darstellungsfehler.
+.header-titlebar__logo-link,
+.navbar__title,
+.visually-hidden-focusable {
+    text-decoration: none;
+}

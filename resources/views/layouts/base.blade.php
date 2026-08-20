@@ -35,12 +35,12 @@
         @endif
     </head>
     <body>
-        <a href="#main-content" class="sr-only">Zum Inhalt springen</a>
+        <a href="#main-content" class="visually-hidden-focusable">Zum Inhalt springen</a>
         @include('partials.disclaimer')
 
         @include('partials.header')
 
-        <section id="main-content" class="content" tabindex="-1">
+        <main id="main-content" class="content" tabindex="-1">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-9 text-content">
@@ -53,7 +53,7 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </main>
 
         @include('partials.footer')
 

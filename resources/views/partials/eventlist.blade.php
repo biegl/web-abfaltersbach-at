@@ -21,7 +21,7 @@
                                     @foreach ($event->attachments as $file)
 
                                         <li>
-                                            <i class="far fa-file {{ create_fa_ext_icon($file) }} mr-2 download-file__extension" title="{{ __('files.type') }}: {{ strtoupper($file->extension) }}"></i>
+                                            <i class="far fa-file {{ create_fa_ext_icon($file) }} me-2 download-file__extension" title="{{ __('files.type') }}: {{ strtoupper($file->extension) }}"></i>
                                             <a href="/files/{{ $file->title }}">
                                                 {{ $file->title }}
                                             </a>
@@ -57,7 +57,7 @@
             @forelse ($events as $event)
 
                 <li class="media mb-3">
-                    <div class="mr-3 calendar_date">
+                    <div class="me-3 calendar_date">
                         <div class="calendar_date_month">{{ $event->date->formatLocalized('%b') }}</div>
                         <div class="calendar_date_day">{{ $event->date->formatLocalized('%d') }}</div>
                     </div>
@@ -72,7 +72,7 @@
                                     @foreach ($event->attachments as $file)
 
                                         <li>
-                                            <i class="far fa-file {{ create_fa_ext_icon($file) }} mr-2 download-file__extension" title="{{ __('files.type') }}: {{ strtoupper($file->extension) }}"></i>
+                                            <i class="far fa-file {{ create_fa_ext_icon($file) }} me-2 download-file__extension" title="{{ __('files.type') }}: {{ strtoupper($file->extension) }}"></i>
                                             <a href="/files/{{ $file->title }}">
                                                 {{ $file->title }}
                                             </a>

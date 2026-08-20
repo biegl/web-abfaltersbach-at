@@ -1,4 +1,4 @@
-<div class="header-titlebar header-titlebar--large header-titlebar--has-topbar header-titlebar--has-logo">
+<header class="header-titlebar header-titlebar--large header-titlebar--has-topbar header-titlebar--has-logo">
     <div class="header-titlebar__inner">
         <div class="container">
         <div class="header-titlebar__logo">
@@ -19,6 +19,6 @@
         <div class="header-titlebar__background-image header-titlebar__background-image--default" style="background-image: url({{ $headerImagePath }}); "></div>
     </div>
     <span class="header-titlebar__overlay"></span>
-</div>
+</header>
 
 @include('partials.navigation')
