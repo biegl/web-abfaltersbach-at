@@ -29,9 +29,9 @@ Zwei Prüfschritte, nicht einer:
 | Kriterium | 12.08. | 18.08. (vor Rollout) | Status heute |
 |---|---|---|---|
 | 2.4.7 Fokus sichtbar | 146 | 179 | Befund entfällt — nicht reproduzierbar (siehe unten) |
-| 1.4.3 Kontrast (Minimum) | 155 | 156 | Korrektur fertiggestellt, Rollout ausstehend |
-| 1.4.1 Verwendung von Farbe | 15 | 15 | Korrektur fertiggestellt, Rollout ausstehend |
-| 1.4.10 Reflow | 19 | 21 | Korrektur fertiggestellt, Rollout ausstehend |
+| 1.4.3 Kontrast (Minimum) | 155 | 156 | **Behoben, live seit 20.08.2026** ([Bericht 21.08.](abfaltersbach-2026-08-21.md)) |
+| 1.4.1 Verwendung von Farbe | 15 | 15 | **Behoben, live seit 20.08.2026** ([Bericht 21.08.](abfaltersbach-2026-08-21.md)) |
+| 1.4.10 Reflow | 19 | 21 | **Behoben, live seit 20.08.2026**; Restbefund auf /gemeinde/mitarbeiter am 21.08. nachgezogen |
 | 4.1.2 Name, Rolle, Wert | 1 | 1 | **Behoben, live** |
 
 Die leichte Drift bei 1.4.3, 1.4.1 und 1.4.10 (155→156, 19→21) ist normale Bewegung durch neue
@@ -61,7 +61,7 @@ wäre Sache des wcag-check-Projekts selbst zu untersuchen.
 **Ergebnis:** Der Punkt wird aus der Liste der nicht barrierefreien Inhalte gestrichen. Es war keine
 Codeänderung nötig, weil kein Fehler vorlag.
 
-### 2. Kontrast bei der Dateigrößen-Angabe — Korrektur fertig, Rollout ausstehend
+### 2. Kontrast bei der Dateigrößen-Angabe — behoben, live seit 20.08.2026
 
 Ursache bestätigt, aber präziser als im ersten Bericht beschrieben: `.download-file__size` war
 fest auf `color: #fff` (Weiß) gesetzt, während der Hintergrund der Dokumenten-Karten in der
@@ -70,12 +70,12 @@ Kontrastverhältnis von rund **1,87:1** statt der geforderten 4,5:1. Korrektur: 
 gesetzt (dieselbe dunkle Farbe, die an anderer Stelle im Theme für Text auf `$highlightColor`
 verwendet wird). Eine einzelne CSS-Regel, betrifft alle Fundstellen.
 
-### 3. Datenschutz-Link im Cookie-Hinweis — Korrektur fertig, Rollout ausstehend
+### 3. Datenschutz-Link im Cookie-Hinweis — behoben, live seit 20.08.2026
 
 Ursache exakt wie im ersten Bericht beschrieben: `#tcn_notice a` hatte keine
 `text-decoration`. Korrektur: `text-decoration: underline` für diese Linkklasse ergänzt.
 
-### 4. Reflow bei schmalen Bildschirmen — Ursache präzisiert, Korrektur fertig, Rollout ausstehend
+### 4. Reflow bei schmalen Bildschirmen — Ursache präzisiert, behoben, live seit 20.08.2026
 
 Die genaue Ursache unterscheidet sich von der ursprünglichen Beschreibung: es ist **kein** Raster
 fixer Breite. Die Personenkarten (`/gemeinde/gemeinderat`, `/gemeinde/mitarbeiter`) sind
@@ -102,9 +102,10 @@ Nachher-Beleg.
 ## Offene Punkte
 
 - **Rollout der drei Code-Korrekturen** (Kontrast, Datenschutz-Link, Reflow bei den
-  Personenkarten): fertig im Quellcode (`resources/sass/partials/_sidebar.scss`,
-  `_disclaimer.scss`, `_person.scss`), noch nicht deployt. Bis zum Rollout gelten diese drei Punkte
-  weiterhin als nicht barrierefrei.
+  Personenkarten): **am 20.08.2026 ausgerollt und live nachgemessen** — Kontrast 6,76:1,
+  Datenschutz-Link unterstrichen, `overflow-wrap` aktiv. Siehe
+  [Bericht vom 21.08.](abfaltersbach-2026-08-21.md). Damit gilt keiner dieser drei Punkte mehr als
+  nicht barrierefrei; die Erklärung zur Barrierefreiheit ist entsprechend zu aktualisieren.
 - **PDFs und Office-Dateien** bleiben ungeprüft (unverändert gegenüber dem 12.08.-Bericht).
 - Die 680 needsReview-Befunde und 220 Best-Practice-Hinweise aus dem ursprünglichen Bericht sind
   unverändert und nicht Gegenstand dieser Aktualisierung.
