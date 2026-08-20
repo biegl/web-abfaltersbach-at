@@ -73,7 +73,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "16.x"
+          node-version-file: .node-version
 
       - name: Install Dependencies (PHP vendors)
         run: |
@@ -86,8 +86,20 @@ jobs:
 
       - name: Build site
         run: |
-          npm install
+          npm ci
           npm run production
+
+      # Die kompilierten Assets unter public/ sind eingecheckt und deploy.yml
+      # baut sie nicht neu -- ausgeliefert wird genau das, was hier im Repo
+      # liegt. Ohne diesen Schritt kann package.json beliebig weit von den
+      # Assets wegdriften: genau so lag hier monatelang ein Bootstrap-4-Build
+      # im Repo, waehrend package.json schon auf Bootstrap 5 stand.
+      - name: Verify committed assets match the build
+        run: |
+          if ! git diff --exit-code --stat public/; then
+            echo "::error::public/ ist nicht auf dem Stand von 'npm run production'. Bitte lokal neu bauen und die Assets mitcommitten."
+            exit 1
+          fi
 
       - name: Execute tests (Unit and Feature tests) via PHPUnit
         run: vendor/bin/pest tests
