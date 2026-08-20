@@ -75,7 +75,8 @@ Behebung, nur zur Kenntnis der Gemeinde vermerkt.
   eine frisch asphaltierte Gemeindestraße, nicht den Ort im Allgemeinen. Alt-Text auf „Neu
   asphaltierte Gemeindestraße" präzisiert.
 - **SC 2.1.2, mögliche Tastaturfalle in der eingebetteten Google-Maps-Karte auf `/gemeinde/lage`:
-  nicht geprüft.** Der manuelle Tastaturtest scheiterte an einem Tooling-Problem (Tab-Tastendrücke
+  am 21.08.2026 geprüft, kein Befund** — der Fokus verlässt die Karte mit einem Tabulatorschritt in
+  beide Richtungen, siehe [Bericht vom 21.08.](abfaltersbach-2026-08-21.md). Ursprüngliche Notiz: Der manuelle Tastaturtest scheiterte an einem Tooling-Problem (Tab-Tastendrücke
   kamen im Browser nicht mehr an, bestätigt durch einen Kontrolltest auf einer unabhängigen Seite).
   Dieser Punkt bleibt offen und sollte bei nächster Gelegenheit erneut manuell im Browser geprüft
   werden: eine Google-Maps-Karte fokussieren, mit Tab und Umschalt+Tab prüfen, ob sich der Fokus
@@ -83,6 +84,6 @@ Behebung, nur zur Kenntnis der Gemeinde vermerkt.
 
 ## Status
 
-Alle Code-Änderungen (Templates, SCSS, kompiliertes `app.css`) liegen im selben Branch/PR wie die
-Fixes vom 18.08. — noch nicht deployt. Die Seiteninhalt-Änderungen (leere Überschriften, fehlende
+Alle Code-Änderungen (Templates, SCSS, kompiliertes `app.css`) sind am **20.08.2026 ausgerollt**
+und live nachgemessen — siehe [Bericht vom 21.08.](abfaltersbach-2026-08-21.md). Die Seiteninhalt-Änderungen (leere Überschriften, fehlende
 `<h1>`, Alt-Texte) wurden direkt im CMS vorgenommen und sind bereits live.
