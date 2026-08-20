@@ -35,3 +35,10 @@ $card-cap-padding-y: 0.75rem;      // BS5: $card-spacer-y * .5
 $card-cap-padding-x: 1.25rem;      // BS5: $card-spacer-x
 $dropdown-link-color: #212529;   // BS5: $body-color (hier #333)
 $dropdown-color: #212529;        // BS5: $body-color (hier #333)
+
+// $enable-rfs bleibt bewusst auf dem BS5-Default (true): Ueberschriften im
+// Seiteninhalt skalieren dadurch auf schmalen Viewports herunter (375 px:
+// h1 36->26,1 px, h2 28,8->23,4 px). Genau das laesst den horizontalen
+// Ueberlauf bei 375 px zurueckgehen (Amtstafel und Beratungsstellen 39->0,
+// Protokolle 48->0, Zimmervermieter 112->52) und hilft damit SC 1.4.10.
+// Bei 1280 px gibt es keine Abweichung zum 4.6-Build.
