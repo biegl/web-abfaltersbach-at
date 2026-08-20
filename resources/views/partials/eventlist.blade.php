@@ -9,8 +9,8 @@
 
             @forelse ($current_events as $event)
 
-                <li class="media pt-3">
-                    <div class="media-body calendar_day">
+                <li class="d-flex align-items-start pt-3">
+                    <div class="flex-grow-1 calendar_day">
                         <div class="calendar_day_body">{!! $event->text !!}</div>
 
                         @if ($event->attachments->count() > 0)
@@ -21,7 +21,7 @@
                                     @foreach ($event->attachments as $file)
 
                                         <li>
-                                            <i class="far fa-file {{ create_fa_ext_icon($file) }} mr-2 download-file__extension" title="{{ __('files.type') }}: {{ strtoupper($file->extension) }}"></i>
+                                            <i class="far fa-file {{ create_fa_ext_icon($file) }} me-2 download-file__extension" title="{{ __('files.type') }}: {{ strtoupper($file->extension) }}"></i>
                                             <a href="/files/{{ $file->title }}">
                                                 {{ $file->title }}
                                             </a>
@@ -52,16 +52,16 @@
 
         @forelse ($grouped_events as $month => $events)
 
-            <li class="media calendar_month_header mb-3">{{ $month }}</li>
+            <li class="d-flex align-items-start calendar_month_header mb-3">{{ $month }}</li>
 
             @forelse ($events as $event)
 
-                <li class="media mb-3">
-                    <div class="mr-3 calendar_date">
+                <li class="d-flex align-items-start mb-3">
+                    <div class="me-3 calendar_date">
                         <div class="calendar_date_month">{{ $event->date->formatLocalized('%b') }}</div>
                         <div class="calendar_date_day">{{ $event->date->formatLocalized('%d') }}</div>
                     </div>
-                    <div class="media-body calendar_day">
+                    <div class="flex-grow-1 calendar_day">
                         <div class="calendar_day_body">{!! $event->text !!}</div>
 
                         @if ($event->attachments->count() > 0)
@@ -72,7 +72,7 @@
                                     @foreach ($event->attachments as $file)
 
                                         <li>
-                                            <i class="far fa-file {{ create_fa_ext_icon($file) }} mr-2 download-file__extension" title="{{ __('files.type') }}: {{ strtoupper($file->extension) }}"></i>
+                                            <i class="far fa-file {{ create_fa_ext_icon($file) }} me-2 download-file__extension" title="{{ __('files.type') }}: {{ strtoupper($file->extension) }}"></i>
                                             <a href="/files/{{ $file->title }}">
                                                 {{ $file->title }}
                                             </a>

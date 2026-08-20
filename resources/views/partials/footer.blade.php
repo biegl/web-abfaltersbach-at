@@ -30,9 +30,9 @@
                         Tirol<br>
                     </address>
                     <br>
-                    <i class="fa fa-phone mr-2" title="Telefon"></i> +43 (0) 4846 6210<br>
-                    <i class="fa fa-fax mr-2" title="Fax"></i> +43 (0) 4846 6210-5<br>
-                    <i class="fas fa-envelope mr-2" title="Email"></i> <a href="mailto:{!! safe_email('verwaltung@abfaltersbach.at') !!}">{!! safe_email('verwaltung@abfaltersbach.at') !!}</a><br>
+                    <i class="fa fa-phone me-2" title="Telefon"></i> +43 (0) 4846 6210<br>
+                    <i class="fa fa-fax me-2" title="Fax"></i> +43 (0) 4846 6210-5<br>
+                    <i class="fas fa-envelope me-2" title="Email"></i> <a href="mailto:{!! safe_email('verwaltung@abfaltersbach.at') !!}">{!! safe_email('verwaltung@abfaltersbach.at') !!}</a><br>
                     <br><br>
                     <h3>Öffnungszeiten:</h3>
                     Montag - Freitag: 08:00 - 12:00
@@ -40,13 +40,13 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                <a href="/impressum" class="mr-3">Impressum</a>
-                <a href="/datenschutz" class="mr-3">Datenschutz</a>
+                <a href="/impressum" class="me-3">Impressum</a>
+                <a href="/datenschutz" class="me-3">Datenschutz</a>
                 <a href="/barrierefreiheitserklaerung">Barrierefreiheitserklärung</a>
                 </div>
             </div>
         </div>
     </div>
-    <a href="#navigation" class="sr-only">Zur Navigation springen</a>
-    <a href="#main-content" class="sr-only">Zum Inhalt springen</a>
+    <a href="#navigation" class="visually-hidden-focusable">Zur Navigation springen</a>
+    <a href="#main-content" class="visually-hidden-focusable">Zum Inhalt springen</a>
 </footer>
