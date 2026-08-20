@@ -6,7 +6,11 @@ on:
     - cron: "0 2 * * *"
 
 concurrency:
-  group: ${{ github.base_ref }}
+  # head_ref ist bei einem PR der Quellbranch -- also eine Gruppe pro PR.
+  # Mit base_ref lagen alle PRs gegen main in derselben Gruppe und haben sich
+  # gegenseitig die Laeufe abgebrochen (54 % der PR-Laeufe, siehe #2223).
+  # Fallback github.ref fuer das schedule-Event, wo head_ref leer ist.
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
 
 jobs:
