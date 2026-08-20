@@ -1,4 +1,4 @@
-<a href="https://t.me/abfaltersbach" target="_blank" class="telegram_channel float-right">
+<a href="https://t.me/abfaltersbach" target="_blank" class="telegram_channel float-end">
     Follow us on Telegram
     <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
     <defs>
@@ -35,7 +35,7 @@
                         @foreach ($news_item->attachments as $file)
 
                             <li>
-                                <i class="far fa-file {{ create_fa_ext_icon($file) }} mr-2 download-file__extension" title="{{ __('files.type') }}: {{ strtoupper($file->extension) }}"></i>
+                                <i class="far fa-file {{ create_fa_ext_icon($file) }} me-2 download-file__extension" title="{{ __('files.type') }}: {{ strtoupper($file->extension) }}"></i>
                                 <a href="/files/{{ $file->title }}">
                                     {{ $file->title }}
                                 </a>

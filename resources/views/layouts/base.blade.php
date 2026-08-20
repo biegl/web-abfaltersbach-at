@@ -35,7 +35,7 @@
         @endif
     </head>
     <body>
-        <a href="#main-content" class="sr-only">Zum Inhalt springen</a>
+        <a href="#main-content" class="visually-hidden-focusable">Zum Inhalt springen</a>
         @include('partials.disclaimer')
 
         @include('partials.header')

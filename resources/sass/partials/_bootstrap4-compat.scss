@@ -1,0 +1,39 @@
+// Bootstrap 5 hat das Media-Object und die -r/-l-Abstandsklassen entfernt.
+// Die Regeln bleiben hier 1:1 aus 4.6.2 erhalten, weil diese Klassen auch in
+// CMS-Seiteninhalten stehen (/fotogalerie) und dort nicht per Template
+// migriert werden koennen. `flex-grow-1` ist kein Ersatz fuer `.media-body`:
+// `flex: 1` bedeutet `1 1 0%`, sonst werden die Boxen messbar flacher.
+.media {
+    display: flex;
+    align-items: flex-start;
+}
+
+.media-body {
+    flex: 1;
+}
+
+.mr-3 {
+    margin-right: 1rem !important;
+}
+
+// BS5-Reboot hat `label { margin-bottom: .5rem }` entfernt. Die Regel gilt
+// global wie in 4.6; im aktuellen Markup traegt sie nur beim Schalter im
+// Cookie-Hinweis sichtbar, greift aber wie zuvor fuer jedes label.
+label {
+    margin-bottom: 0.5rem;
+}
+
+// BS5-Reboot setzt ol/ul auf padding-left: 2rem; BS4 liess den Browser-Default
+// (40px) stehen. Klassenbasierte Regeln wie .list-unstyled oder .navbar-nav
+// haben hoehere Spezifitaet und gewinnen weiterhin.
+ol,
+ul {
+    padding-left: 40px;
+}
+
+// BS4: small,.small{font-size:.875em;font-weight:400} - BS5 hat den
+// font-weight aus dieser Regel entfernt.
+small,
+.small {
+    font-weight: 400;
+}

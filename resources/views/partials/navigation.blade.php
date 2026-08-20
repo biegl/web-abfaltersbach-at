@@ -12,21 +12,21 @@
     <div class="container">
         <img src="{{ asset('images/logo/wappen_abfaltersbach.png') }}" class="navigation__logo-image" alt="Wappen der Gemeinde Abfaltersbach">
         <a href="/" class="navbar__title">Gemeinde Abfaltersbach</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
+        <ul class="navbar-nav me-auto">
 
             @foreach($navigation as $topLevelItem)
 
                 @if ($topLevelItem->hasChildren)
 
                     <li class="nav-item dropdown{{ ($topLevelItem->isActive) ? ' active' : '' }}">
-                        <a id="dropdown-{{ $topLevelItem->ID }}" class="nav-link dropdown-toggle" href="{{ $topLevelItem->url }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a id="dropdown-{{ $topLevelItem->ID }}" class="nav-link dropdown-toggle" href="{{ $topLevelItem->url }}" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {{ $topLevelItem->name }}
-                            <span class="sr-only">(current)</span>
+                            <span class="visually-hidden">(current)</span>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdown-{{ $topLevelItem->ID }}">
 
@@ -44,7 +44,7 @@
                     <li class="nav-item{{ ($topLevelItem->isActive) ? ' active' : '' }}">
                         <a class="nav-link" href="{{ $topLevelItem->url }}" role="button">
                             {{ $topLevelItem->name }}
-                            <span class="sr-only">(current)</span>
+                            <span class="visually-hidden">(current)</span>
                         </a>
                     </li>
 

@@ -1,6 +1,6 @@
 <div class="media mb-5">
     @if($person->image)
-        <img class="person-image mr-3" src="{{ $person->image->downloadPath }}" alt="{{ $person->name }}">
+        <img class="person-image me-3" src="{{ $person->image->downloadPath }}" alt="{{ $person->name }}">
     @else
         <div class="person-placeholder">
             <i class="fas fa-user-circle"></i>
