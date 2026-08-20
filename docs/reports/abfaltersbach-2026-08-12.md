@@ -6,11 +6,13 @@
 Chromium, ergänzt um acht eigene Prüfmodule), keine manuelle Nachprüfung.
 
 Dieser Bericht ist die technische Grundlage für die
-[Erklärung zur Barrierefreiheit](../erklaerung/abfaltersbach.html). Was geprüft wurde und mit
-welcher Methode, steht in [`docs/pruefabdeckung.md`](../pruefabdeckung.md) und
-[`docs/research/automatisierung-offene-pruefungen.md`](../research/automatisierung-offene-pruefungen.md).
-**PDFs und Office-Dateien wurden in diesem Prüflauf nicht geprüft** (EN 301 549 Kapitel 10, Issue
-[#16](https://github.com/biegl/wcag-check/issues/16)) — die Amtstafel, die Rechnungsabschlüsse und
+[Erklärung zur Barrierefreiheit](https://abfaltersbach.at/barrierefreiheitserklaerung). Geprüft
+wurde mit axe-core (echtes Chromium, ein Ladezustand, ein Viewport 1280×900) sowie acht eigenen
+Prüfmodulen für das, was axe nicht abdeckt: Tastaturbedienung und Fokus, Kontrast in
+Interaktionszuständen, Reflow/Zoom/Textabstand, Formularstatik, Überschriftenstruktur,
+Alternativtext-Eignung, Medieninventar und Statusmeldungen. Jedes Modul meldet nur mechanisch
+entscheidbare Verstöße als Fehler; alles andere geht als `needsReview` an ein menschliches Urteil.
+**PDFs und Office-Dateien wurden in diesem Prüflauf nicht geprüft** (EN 301 549 Kapitel 10) — die Amtstafel, die Rechnungsabschlüsse und
 die übrigen Dokumentenlisten der Website enthalten voraussichtlich Dokumente, für die keine
 Aussage vorliegt.
 
@@ -89,9 +91,7 @@ sie nur als „iframe" ohne weitere Angabe ansagen.
 
 ## Was ein Mensch noch beurteilen muss
 
-680 Befunde sind mechanisch nicht entscheidbar — das ist erwartungsgemäß bei diesem Prüfumfang
-(siehe [`docs/research/automatisierung-offene-pruefungen.md`](../research/automatisierung-offene-pruefungen.md)
-für die Methodengrenzen). Die größten Gruppen:
+680 Befunde sind mechanisch nicht entscheidbar — das ist erwartungsgemäß bei diesem Prüfumfang. Die größten Gruppen:
 
 - **569 Kontrastknoten (SC 1.4.3), 36 Seiten.** Überwiegend Text über Bildhintergründen oder in
   Verläufen — axe kann Bildinhalte nicht auswerten. Ein Mensch muss diese Fälle im Browser mit
@@ -126,10 +126,9 @@ Erklärung zur Barrierefreiheit.
 
 ## Was nicht geprüft wurde
 
-- **PDFs und Office-Dateien** (EN 301 549 Kapitel 10) — auf Anweisung in diesem Prüflauf
-  ausgelassen. Die Website verlinkt Dokumente auf mindestens der Amtstafel und den
-  Rechnungsabschlüssen; ohne Prüfung kann für diese Dokumente weder Vereinbarkeit noch eine
-  Ausnahme belegt werden.
+- **PDFs und Office-Dateien** (EN 301 549 Kapitel 10). Die Website verlinkt Dokumente auf
+  mindestens der Amtstafel und den Rechnungsabschlüssen; ohne Prüfung kann für diese Dokumente
+  weder Vereinbarkeit noch eine Ausnahme belegt werden.
 - **Audiodeskription** (SC 1.2.3, 1.2.5) — die Website hat aktuell keine Video- oder
   Audio-Inhalte; das Medieninventar-Modul lief mit, fand aber nichts zu prüfen.
 - Alles, was nur durch Interaktion entsteht, die dieser Prüflauf bewusst nicht ausgelöst hat
