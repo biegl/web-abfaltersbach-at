@@ -16,13 +16,19 @@
     overflow-wrap: anywhere;
 }
 
+// SC 1.4.10: lange Namen und Rollenbezeichnungen (z. B.
+// "Kindergartenpaedagogin/Kindergartenleiterin") sprengen bei 320 px sonst die
+// Spalte -- gemessen auf /gemeinde/mitarbeiter. .person-contact hatte das
+// bereits, Name und Rolle fehlten.
 .person-name {
+    overflow-wrap: anywhere;
     font-size: 1.125rem;
     font-weight: 500;
     font-family: "Source Sans Pro", Arial, sans-serif;
 }
 
 .person-role {
+    overflow-wrap: anywhere;
     font-size: 0.9rem;
     font-weight: 500;
     font-family: "Source Sans Pro", Arial, sans-serif;

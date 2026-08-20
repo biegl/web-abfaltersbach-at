@@ -1,5 +1,5 @@
 @if (!isset($_COOKIE['consent']) || $_COOKIE['consent'] == 'false')
-    <div id="tcn_notice" class="custom">
+    <aside id="tcn_notice" class="custom" aria-label="{{ __('disclaimer.label') }}">
         <div class="content">
             {!! __('disclaimer.content') !!}
         </div>
@@ -20,5 +20,5 @@
         <div class="close_notice button">
             <span>{{ __('disclaimer.accept') }}</span>
         </div>
-    </div>
+    </aside>
 @endif
